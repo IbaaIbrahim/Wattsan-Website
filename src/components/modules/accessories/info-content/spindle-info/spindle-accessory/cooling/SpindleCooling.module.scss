@@ -1,0 +1,27 @@
+.title {
+	font-size: 20px;
+	font-weight: 600;
+	text-align: left;
+	margin-bottom: 16px;
+}
+
+.cooling-overview,
+.air-cooling__description,
+.water-cooling__description {
+	font-size: 15px;
+	font-weight: 400;
+	text-align: left;
+	margin-bottom: 16px;
+	display: block;
+}
+
+.air-cooling__title,
+.water-cooling__title {
+	font-size: 15px;
+	font-weight: 600;
+	text-align: left;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #92b0d2;
+	display: block;
+	margin-bottom: 8px;
+}

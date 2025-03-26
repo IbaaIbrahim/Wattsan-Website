@@ -1,0 +1,17 @@
+.description {
+  margin-top: 16px;
+}
+
+.actions {
+  margin-top: 24px;
+}
+
+.doubleButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}
+
+.hint {
+  margin-bottom: 24px;
+}

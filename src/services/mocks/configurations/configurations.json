@@ -1,0 +1,233 @@
+{
+	"basicSpecification": {
+		"Work area": "600x900 mm",
+		"Too lift height (Z axis)": "200 mm",
+		"Spindle": "Power 1,5 kW, Air cooling, One spindle",
+		"Tool auto switch": "Not included",
+		"Motor": "Stepper motor with feedback",
+		"Control system": "DSP A11",
+		"Liquid cooling system": "Not included",
+		"Instrument sensor": "Not included",
+		"Lubrication system": "Not included",
+		"Aspiration": "Not included",
+		"Vacuum table": "Not included",
+		"Rotary device": "Not included",
+		"Cabin": "Not included"
+	},
+	"configurations": [
+		{
+			"status": "Ordered",
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"type": "modified",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"price": "$5000",
+			"specification": {
+				"Work area": "600x900 mm",
+				"Too lift height (Z axis)": "300 mm",
+				"Spindle": "Power 2,2 kW, Air cooling, One spindle",
+				"Tool auto switch": "Not included",
+				"Motor": "Stepper motor with feedback",
+				"Control system": "DSP A18",
+				"Liquid cooling system": "Oil mist",
+				"Instrument sensor": "Not included",
+				"Lubrication system": "Included",
+				"Aspiration": "Included",
+				"Vacuum table": "Included",
+				"Rotary device": "Not included",
+				"Cabin": "Not included"
+			}
+		},
+		{
+			"status": "In process",
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"type": "modified",
+			"id": "1002",
+			"image": "/img/grid-machines/M3.png",
+			"price": "$5000",
+			"specification": {
+				"Work area": "600x900 mm",
+				"Too lift height (Z axis)": "300 mm",
+				"Spindle": "Power 2,2 kW, Air cooling, One spindle",
+				"Tool auto switch": "Not included",
+				"Motor": "Stepper motor with feedback",
+				"Control system": "DSP A18",
+				"Liquid cooling system": "Oil mist",
+				"Instrument sensor": "Not included",
+				"Lubrication system": "Included",
+				"Aspiration": "Included",
+				"Vacuum table": "Included",
+				"Rotary device": "Not included",
+				"Cabin": "Not included"
+			}
+		},
+		{
+			"status": "Deleted",
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"type": "modified",
+			"id": "1003",
+			"image": "/img/grid-machines/M3.png",
+			"price": "$5000",
+			"specification": {
+				"Work area": "600x900 mm",
+				"Too lift height (Z axis)": "300 mm",
+				"Spindle": "Power 2,2 kW, Air cooling, One spindle",
+				"Tool auto switch": "Not included",
+				"Motor": "Stepper motor with feedback",
+				"Control system": "DSP A18",
+				"Liquid cooling system": "Oil mist",
+				"Instrument sensor": "Not included",
+				"Lubrication system": "Included",
+				"Aspiration": "Included",
+				"Vacuum table": "Included",
+				"Rotary device": "Not included",
+				"Cabin": "Not included"
+			}
+		},
+		{
+			"status": "Ordered",
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"type": "modified",
+			"id": "1004",
+			"image": "/img/grid-machines/M3.png",
+			"price": "$5000",
+			"specification": {
+				"Work area": "600x900 mm",
+				"Too lift height (Z axis)": "300 mm",
+				"Spindle": "Power 2,2 kW, Air cooling, One spindle",
+				"Tool auto switch": "Not included",
+				"Motor": "Stepper motor with feedback",
+				"Control system": "DSP A18",
+				"Liquid cooling system": "Oil mist",
+				"Instrument sensor": "Not included",
+				"Lubrication system": "Included",
+				"Aspiration": "Included",
+				"Vacuum table": "Included",
+				"Rotary device": "Not included",
+				"Cabin": "Not included"
+			}
+		}
+	],
+	"myTemplates": [
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		},
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		},
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		}
+	],
+	"popularTemplates": [
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		},
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		},
+		{
+			"tags": [
+				"Laser machines",
+				"For hobbies",
+				"For thin materials",
+				"For wood"
+			],
+			"name": "Laser Cutting Engraving Machine",
+			"code": "6040 ST",
+			"specialization": "For wood",
+			"id": "1001",
+			"image": "/img/grid-machines/M3.png",
+			"description": {
+				"title": "Wattsan 6040 ST perfect for",
+				"content": "The Wattsan 6040 ST laser machine is an advanced medium format model for laser cutting and engraving of non-metallic materials. The Wattsan 6040 ST is suitable for mass production and hobby applications. We design machines to meet the needs of our customers.",
+				"preview": "The Watson 6040 ST laser machine is an advanced medium format model for laser cutting and engravi...",
+				"price": "$5000"
+			}
+		}
+	]
+}

@@ -1,0 +1,116 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    border: 1px solid #DEEBFA;
+    border-radius: 16px;
+}
+
+.header {
+    width: 100%;
+    padding: 28px 32px 0 32px;
+    cursor: pointer;
+
+    &Content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 24px;
+        align-items: center;
+        text-align: left;
+    }
+}
+
+.theme {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.id {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.createDate {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.status {
+    width: fit-content;
+    padding: 5px 16px;
+    border-radius: 16px;
+}
+
+.yellow {
+    background-color: #F9E9AE;
+}
+
+.green {
+    background-color: #C0F4BC;
+}
+
+.divider {
+    margin-top: 28px;
+    width: 100%;
+    height: 1px;
+    background-color: #92B0D2;
+    opacity: 1;
+    transition: opacity .5s ease;
+
+    &Folded {
+        opacity: 0;
+    }
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.content {
+    max-height: 100vh;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.icon {
+    transform: rotate(-90deg);
+    transition: transform .3s ease;
+
+    &Folded {
+        transform: rotate(-270deg);
+    }
+}
+
+.folded {
+    max-height: 0;
+}
+
+.innerContent {
+    padding: 24px 32px;
+}
+
+.contentTitle {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+    opacity: .4;
+}
+
+.message {
+    margin-bottom: 16px;
+    max-width: 45%;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.info {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    opacity: .7;
+}

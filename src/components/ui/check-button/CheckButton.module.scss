@@ -1,0 +1,13 @@
+.btn {
+	padding: 4px 12px 4px 12px;
+	border-radius: 12px;
+	background: #deebfa;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 19.6px;
+
+	&--selected {
+		background: #6c99cc;
+		color: #ffffff;
+	}
+}

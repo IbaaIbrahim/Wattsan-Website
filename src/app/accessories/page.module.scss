@@ -1,0 +1,131 @@
+.page {
+  display: grid;
+
+  @media (min-width: 1440px) {
+    grid-template-columns: 300px auto 1fr;
+  }
+
+  @media (max-width: 1440px) {
+    grid-template-rows: auto 1fr;
+  }
+
+  @media (max-width: 768px) {
+    overflow-y: scroll;
+  }
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  text-decoration: none;
+
+  &__lablel {
+    margin-left: 8px;
+    color: #000000;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  &__icon {
+    width: 18px;
+    height: 12px;
+  }
+}
+
+.wrapper {
+  background: #deebfa;
+  min-width: 300px;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 40px 24px 40px 40px;
+  z-index: 1;
+
+  @media (max-width: 1440px) {
+    height: max-content;
+    background-color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px 20px;
+  }
+}
+
+.accessories {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+  }
+
+  &__items {
+    margin-top: 24px;
+
+    @media (max-width: 1440px) {
+      margin-top: 0;
+    }
+  }
+}
+
+.toggler-wrapper {
+  padding-bottom: 8px;
+}
+
+.bottomSheet {
+  background-color: #fff;
+
+  &Content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 24px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+  }
+}
+
+.hideTablet {
+  @media (max-width: 1440px) {
+    display: none;
+  }
+}
+
+.showMobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    margin: 8px 0;
+    display: block;
+  }
+}
+
+.hideMobile {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.partOptionsBar {
+  @media (max-width: 1440px) {
+    display: none;
+  }
+}
+
+.mobileSettings {
+  display: none;
+
+  @media (max-width: 1440px) {
+    display: flex;
+  }
+}

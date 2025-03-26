@@ -1,0 +1,82 @@
+{
+  "promoCodes": [
+    {
+      "id": "1001",
+      "header": "10%",
+      "title": "10% discount on first order",
+      "description": "Use the promo code during checkout. Limited time offer, don't miss out!",
+      "expirationDate": "23.01.2023",
+      "promoCode": "NEWBIE10",
+      "terms": ["The code is valid for 30 days from the date of registration.", "Applicable on orders of $500 or more.", "Applicable to the Laser Cutting Machines category.", "One-time use for new users only.", "Not valid on items already on sale or with existing discounts.", "Cannot be combined with other promo codes or ongoing promotions.", "Available for orders shipped to countries where the brand operates."]
+    },
+    {
+      "id": "1002",
+      "header": "15%",
+      "title": "Exclusive 15% discount on laser cutting machine accessories",
+      "description": "Use the promo code during checkout. Limited time offer, don't miss out!",
+      "expirationDate": "23.01.2023",
+      "promoCode": "LASER15LASER15LASER15LASER15",
+      "terms": ["The code is valid for 30 days from the date of registration.", "Applicable on orders of $500 or more.", "Applicable to the Laser Cutting Machines category.", "One-time use for new users only.", "Not valid on items already on sale or with existing discounts.", "Cannot be combined with other promo codes or ongoing promotions.", "Available for orders shipped to countries where the brand operates."]
+    },
+    {
+      "id": "1003",
+      "header": "Free accessory",
+      "title": "Free gift with Laser cutting machine purchase",
+      "description": "Add a laser cutting machine to your cart and apply promo code to receive a gift.",
+      "expirationDate": "23.01.2023",
+      "promoCode": "LASERGIFT2023LASERGIFT2023",
+      "terms": ["The code is valid for 30 days from the date of registration.", "Applicable on orders of $500 or more.", "Applicable to the Laser Cutting Machines category.", "One-time use for new users only.", "Not valid on items already on sale or with existing discounts.", "Cannot be combined with other promo codes or ongoing promotions.", "Available for orders shipped to countries where the brand operates."]
+    },
+    {
+      "id": "1004",
+      "header": "10%",
+      "title": "10% discount on first order",
+      "description": "Use the promo code during checkout. Limited time offer, don't miss out!",
+      "expirationDate": "23.01.2023",
+      "promoCode": "NEWBIE10",
+      "terms": ["The code is valid for 30 days from the date of registration.", "Applicable on orders of $500 or more.", "Applicable to the Laser Cutting Machines category.", "One-time use for new users only.", "Not valid on items already on sale or with existing discounts.", "Cannot be combined with other promo codes or ongoing promotions.", "Available for orders shipped to countries where the brand operates."]
+    }
+  ],
+  "offers": [
+    {
+      "id": "1001",
+      "image": "/img/account/offer.png",
+      "tag": "Event",
+      "title": "Invitation to online masterclass on laser cutting",
+      "description": "Join our online masterclass dedicated to using the Laser Cutting Engraving Machine 0503. Gain exclusive insights from professionals in the field of laser cutting.",
+      "terms": ["The software is intended solely for use with Laser Cutting Engraving Machine 0503, and any unauthorized distribution or use on other devices is strictly prohibited.", "Users are required to download the software exclusively from the official platform and adhere to the provided instructions for proper installation.", "Prior to updating, users must ensure the compatibility of their machine with the software and take the necessary precautions by backing up any important data.", "All intellectual property rights associated with the software remain with the manufacturer, and users are prohibited from engaging in reverse engineering or modification without explicit permission.", "The software is provided on an \"as is\" basis, with no warranties, and users are encouraged to seek technical support from the manufacturer if needed."]
+    },
+    {
+      "id": "1002",
+      "image": "/img/account/offer.png",
+      "tag": "Software",
+      "title": "Updated software for Laser cutting engraving machine 0503",
+      "description": "Join our online masterclass dedicated to using the Laser Cutting Engraving Machine 0503. Gain exclusive insights from professionals in the field of laser cutting.",
+      "terms": ["The software is intended solely for use with Laser Cutting Engraving Machine 0503, and any unauthorized distribution or use on other devices is strictly prohibited.", "Users are required to download the software exclusively from the official platform and adhere to the provided instructions for proper installation.", "Prior to updating, users must ensure the compatibility of their machine with the software and take the necessary precautions by backing up any important data.", "All intellectual property rights associated with the software remain with the manufacturer, and users are prohibited from engaging in reverse engineering or modification without explicit permission.", "The software is provided on an \"as is\" basis, with no warranties, and users are encouraged to seek technical support from the manufacturer if needed."]
+    },
+    {
+      "id": "1003",
+      "image": "/img/account/offer.png",
+      "tag": "Education",
+      "title": "Unlimited access to manuals and instructions",
+      "description": "Join our online masterclass dedicated to using the Laser Cutting Engraving Machine 0503. Gain exclusive insights from professionals in the field of laser cutting.",
+      "terms": ["The software is intended solely for use with Laser Cutting Engraving Machine 0503, and any unauthorized distribution or use on other devices is strictly prohibited.", "Users are required to download the software exclusively from the official platform and adhere to the provided instructions for proper installation.", "Prior to updating, users must ensure the compatibility of their machine with the software and take the necessary precautions by backing up any important data.", "All intellectual property rights associated with the software remain with the manufacturer, and users are prohibited from engaging in reverse engineering or modification without explicit permission.", "The software is provided on an \"as is\" basis, with no warranties, and users are encouraged to seek technical support from the manufacturer if needed."]
+    },
+    {
+      "id": "1004",
+      "image": "/img/account/offer.png",
+      "tag": "Event",
+      "title": "Invitation to online masterclass on laser cutting",
+      "description": "Join our online masterclass dedicated to using the Laser Cutting Engraving Machine 0503. Gain exclusive insights from professionals in the field of laser cutting.",
+      "terms": ["The software is intended solely for use with Laser Cutting Engraving Machine 0503, and any unauthorized distribution or use on other devices is strictly prohibited.", "Users are required to download the software exclusively from the official platform and adhere to the provided instructions for proper installation.", "Prior to updating, users must ensure the compatibility of their machine with the software and take the necessary precautions by backing up any important data.", "All intellectual property rights associated with the software remain with the manufacturer, and users are prohibited from engaging in reverse engineering or modification without explicit permission.", "The software is provided on an \"as is\" basis, with no warranties, and users are encouraged to seek technical support from the manufacturer if needed."]
+    },
+    {
+      "id": "1005",
+      "image": "/img/account/offer.png",
+      "tag": "Event",
+      "title": "Invitation to online masterclass on laser cutting",
+      "description": "Join our online masterclass dedicated to using the Laser Cutting Engraving Machine 0503. Gain exclusive insights from professionals in the field of laser cutting.",
+      "terms": ["The software is intended solely for use with Laser Cutting Engraving Machine 0503, and any unauthorized distribution or use on other devices is strictly prohibited.", "Users are required to download the software exclusively from the official platform and adhere to the provided instructions for proper installation.", "Prior to updating, users must ensure the compatibility of their machine with the software and take the necessary precautions by backing up any important data.", "All intellectual property rights associated with the software remain with the manufacturer, and users are prohibited from engaging in reverse engineering or modification without explicit permission.", "The software is provided on an \"as is\" basis, with no warranties, and users are encouraged to seek technical support from the manufacturer if needed."]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity .3s ease;
+}
+
+.disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.hidden {
+    display: none;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+}

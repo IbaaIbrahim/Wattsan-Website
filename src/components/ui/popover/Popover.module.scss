@@ -1,0 +1,11 @@
+.popover {
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+}

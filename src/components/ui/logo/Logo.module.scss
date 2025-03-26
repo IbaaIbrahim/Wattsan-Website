@@ -1,0 +1,36 @@
+@import '../../../styles/mixins';
+
+.wrapper {
+	display: flex;
+	align-items: flex-end;
+}
+
+.l {
+	width: 176px;
+	height: 30px;
+
+	@media (max-width: 1440px) {
+		width: 130px;
+		height: 23px;
+	}
+
+	@media (max-width: 768px) {
+		width: 110px;
+		height: 20px;
+	}
+}
+
+.m {
+	width: 130px;
+	height: 23px;
+
+	@media (max-width: 768px) {
+		width: 110px;
+		height: 20px;
+	}
+}
+
+.s {
+	width: 110px;
+	height: 20px;
+}

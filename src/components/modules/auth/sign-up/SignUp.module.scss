@@ -1,0 +1,32 @@
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.changeScreen {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+  text-decoration: underline;
+}
+
+.description {
+  margin-bottom: 24px;
+}
+
+
+.field {
+  margin-bottom: 16px;
+}
+
+.signUpButton {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.checkbox {
+  margin-bottom: 8px;
+}

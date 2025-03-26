@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+  height: calc(100vh - 48px - 74px);
+  width: 100%;
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+
+  @media (max-width: 1440px) {
+    grid-template-columns: 104px 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.page {
+  padding: 40px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: 20px 20px 80px 20px;
+  }
+}

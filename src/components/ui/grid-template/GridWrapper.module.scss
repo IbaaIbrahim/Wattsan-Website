@@ -1,0 +1,11 @@
+.wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 24px;
+	background-color: #fff;
+	color: #444;
+	
+	@media (max-width: 1024px) {
+		grid-template-columns: 1fr;
+	}
+}

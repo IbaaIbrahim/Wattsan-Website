@@ -1,0 +1,9 @@
+.container {
+	height: calc(100vh - 48px);
+	width: 100%;
+	display: grid;
+	align-items: stretch;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	overflow: hidden;
+}

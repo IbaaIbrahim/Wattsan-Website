@@ -1,0 +1,28 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  margin-bottom: 16px;
+}
+
+.list {
+  margin-bottom: 24px;
+  padding-left: 30px;
+}
+
+.listItem {
+  list-style-type: disc;
+  color: #e63c32;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.actions {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}

@@ -1,0 +1,118 @@
+{
+  "items": [
+    {
+      "id": "1001",
+      "selected": true,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    },
+    {
+      "id": "1002",
+      "selected": false,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    },
+    {
+      "id": "1003",
+      "selected": false,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    },
+    {
+      "id": "1004",
+      "selected": false,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    },
+    {
+      "id": "1005",
+      "selected": false,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    },
+    {
+      "id": "1006",
+      "selected": false,
+      "image": "/img/grid-machines/A1.png",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "In stock",
+      "discount": 1000,
+      "quantity": 3,
+      "limit": 99,
+      "price": 5000
+    }
+  ],
+  "popularItems": [
+    {
+      "id": "1001",
+      "image": "/img/grid-machines/A1.png",
+      "name": "Accessories for CNC Router Machines",
+      "code": "Spindle SDK GDZ120x103-4.5",
+      "modification": "modified",
+      "price": "5000"
+    },
+    {
+      "id": "1001",
+      "image": "/img/grid-machines/A1.png",
+      "name": "Accessories for CNC Router Machines",
+      "code": "Spindle SDK GDZ120x103-4.5",
+      "modification": "modified",
+      "price": "5000"
+    },
+    {
+      "id": "1001",
+      "image": "/img/grid-machines/A1.png",
+      "name": "Accessories for CNC Router Machines",
+      "code": "Spindle SDK GDZ120x103-4.5",
+      "modification": "modified",
+      "price": "5000"
+    },
+    {
+      "id": "1001",
+      "image": "/img/grid-machines/A1.png",
+      "name": "Accessories for CNC Router Machines",
+      "code": "Spindle SDK GDZ120x103-4.5",
+      "modification": "modified",
+      "price": "5000"
+    },
+    {
+      "id": "1001",
+      "image": "/img/grid-machines/A1.png",
+      "name": "Accessories for CNC Router Machines",
+      "code": "Spindle SDK GDZ120x103-4.5",
+      "modification": "modified",
+      "price": "5000"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+.wrapper {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.header {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.content {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.date {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    opacity: .4;
+}

@@ -1,0 +1,92 @@
+.wrapper {
+    position: relative;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 100px minmax(100px, auto);
+    opacity: .4;
+    transition: opacity .2s ease;
+}
+
+.selected {
+    opacity: 1;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-gap: 32px;
+    padding-left: 56px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.name {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.code {
+    margin-bottom: 22px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+.status {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    opacity: .4;
+}
+
+.checkbox {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.hidden {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.image {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+.actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

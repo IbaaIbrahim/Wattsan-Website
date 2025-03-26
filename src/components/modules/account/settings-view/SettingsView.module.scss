@@ -1,0 +1,94 @@
+.page {
+    display: grid;
+    grid-gap: 40px;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 48px;
+}
+
+.switchers {
+    display: grid;
+    grid-gap: 16px;
+}
+
+.contentTitle {
+    margin-bottom: 32px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+}
+
+.sessions {
+    display: grid;
+    grid-gap: 24px;
+}
+
+.endAllSessions {
+    margin-top: 32px;
+    margin-bottom: 40px;
+}
+
+.form {
+    width: 100%;
+    max-width: 660px;
+}
+
+.user {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.userImage {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #DEEBFA;
+    border-radius: 50%;
+    background-color: #F5F8FB;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+    color: #92B0D2;
+
+    img {
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+}
+
+.changeImage {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+}
+
+.userName {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+}
+
+.changeName {
+
+}
+
+.fields {
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
+}
+
+.checkbox {
+    margin-bottom: 32px;
+}

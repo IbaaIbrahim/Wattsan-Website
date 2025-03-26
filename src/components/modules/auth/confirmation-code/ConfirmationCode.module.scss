@@ -1,0 +1,37 @@
+.confirmation {
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .4;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.description {
+  margin-bottom: 24px;
+}
+
+.codeField {
+  margin-bottom: 24px;
+}
+
+.requestNewCode {
+  width: 100%;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}

@@ -1,0 +1,267 @@
+{
+	"header": {
+		"navigation": {
+			"comparision": "Karşılaştırmak",
+			"favorites": "Favoriler",
+			"basket": "Sepet"
+		},
+		"homeLink": "Eve git",
+		"personal_dd": {
+			"dashboard": "Gösterge Paneli",
+			"orders": "Emirler",
+			"configurations": "Yapılandırmalar",
+			"my_equipment": "Ekipmanım",
+			"pers_offers": "Kişisel teklifler",
+			"account": "Hesap",
+			"log_out": "Çıkış"
+		}
+	},
+	"languages": {
+		"eng": "Ingilizce",
+		"turk": "Türk"
+	},
+	"equipment": {
+		"title": "Ekipman seçin",
+		"soon_label": "yakında"
+	},
+	"accessories": {
+		"parts": {
+			"back_nav": "Ekipmana geri dön",
+			"title": "Aksesuarları seç",
+			"work_area_z_axis": "Çalışma alanı ve Z ekseni",
+			"spindle": "Mil",
+			"motor": "Motor",
+			"control_system": "Kontrol sistemi",
+			"add_options": "Ekstra seçenekler"
+		},
+		"part_options": {
+			"work_area": "Çalışma alanı boyutu",
+			"z_axis": "Takım kaldırma yüksekliği (Z ekseni)",
+			"spindle_power": "Mil (güç, soğutma, pens)",
+			"spindle_auto_quant": "Otomatik değiştirme araçlarının miktarı",
+			"spindle_quant": "Mil miktarı",
+			"motor": "Motor",
+			"control_sys": "Kontrol sistemi",
+			"spindle_tool_switch": "Araç anahtarı",
+			"spindle_auto": "Otomatik",
+			"spindle_semi_auto": "Yarı Otomatik",
+			"spindle_manual": "Manuel",
+			"add_liq_cool_sys": "Sıvı soğutma sistemi",
+			"add_remov_inst_sens": "Çıkarılabilir alet sensörü",
+			"add_buil_in_inst_sens": "Yerleşik cihaz sensörü",
+			"add_lubrication": "Yağlama sistemi",
+			"add_aspiration": "Aspirasyon",
+			"add_vacuum": "Vakum tablosu",
+			"add_rotary_device": "Döner cihaz",
+			"add_cabine": "Kabin"
+		},
+		"actions_bar": {
+			"save": "Kaydetmek",
+			"reset": "Sıfırla",
+			"summary": "Özet",
+			"total": "Toplam",
+			"power": "Güç"
+		},
+		"view_btns": {
+			"rotate": "3D modeli döndür",
+			"real_photo": "Gerçek fotoğrafları",
+			"video": "Gerçek videoları"
+		}
+	},
+	"summary": {
+		"view": {
+			"back_nav": "Düzenlemeye geri dön"
+		},
+		"title": "Özet",
+		"modified_label": "değiştirilmiş",
+		"conf_tabs": {
+			"your_conf": "Yapılandırmanız",
+			"compar_conf": "Temel ile karşılaştırma",
+			"basic": "Temel",
+			"changes": "değişiklikler"
+		},
+		"buttons": {
+			"view_all": "üm özellikleri görüntüle",
+			"pdf_download": "PDF'yi indir",
+			"share_label": "Paylaş",
+			"save_conf": "Konfigi kaydet",
+			"add_basket": "Sepete ekle",
+			"show_diff": "Yalnızca farklılıkları göster"
+		}
+	},
+	"machines": {
+		"machine": "makine",
+		"title_all": "Tüm ekipmanlar",
+		"warking_area_all": "Tüm",
+		"edit_btn": "Düzenlemeye başlayın",
+		"area_sizes": "Mevcut boyutlar"
+	},
+	"request_modal": {
+		"if_machine_title": "Bu makine geçici olarak yapılandırma için kullanılamıyor",
+		"if_accessory": {
+			"title": "Uyumsuzluk sorunu",
+			"subtitle_not_compatible": "Bu aksesuarlar $1 ile uyumlu değil",
+			"subtitle_compatible": "Bu aksesuar $1 serisiyle uyumludur",
+			"description": "Maalesef bu makine geçici olarak yapılandırma için kullanılamıyor."
+		},
+		"description": "Lütfen bir geri arama isteği bırakın; yöneticimiz size $1 makinesiyle ilgili tavsiyelerde bulunacaktır.",
+		"fullname": {
+			"label": "Ad Soyad",
+			"placeholder": "Ad ve soyadınızı girin"
+		},
+		"phone": {
+			"label": "Telefon",
+			"placeholder": "Telefon numaranızı girin"
+		},
+		"ok_btn": "Geri arama isteği",
+		"cansel_btn": "İptal etmek"
+	},
+	"request_result_modal": {
+		"title": "Isteğin için teşekkürler",
+		"description": "Geri arama talebiniz alınmıştır. Ekibimiz kısa süre içinde sağladığınız telefon numarasından sizinle iletişime geçecektir:",
+		"confirm_btn_text": "Yapılandırıcıya dön"
+	},
+	"recommendation_modal": {
+		"title": "Uyumsuzluk sorunu",
+		"subtitle_not_compatible": "Bu aksesuarlar $1 ile uyumlu değil",
+		"subtitle_compatible": "Geçerli yapılandırmayı kaydederken yeni bir makine yapılandırabilirsiniz",
+		"subtitle_accesory_not_compatible": "Bu aksesuarlar uyumlu değil",
+		"subtitle_accesory_compatible": "Bu aksesuara uygun farklı bir $1 seçebilirsiniz",
+		"ok_btn": "Yeni yapılandırma",
+		"confirm": "Onaylamak",
+		"cansel_btn": "İptal etmek",
+		"cancel_description": "Sonuç iptal ediliyor: $1"
+	},
+	"save_confirm_modal": {
+		"title": "Geçerli yapılandırma kaydedilsin mi?",
+		"description": "Yeni bir yapılandırma başlatabilir ve mevcut yapılandırmayı daha sonra tekrar ziyaret etmek üzere kişisel hesabınıza kaydedebilirsiniz.",
+		"ok_btn": "Kaydetmek",
+		"cansel_btn": "At"
+	},
+	"basket_modal": {
+		"title": "Mevcut yapılandırma başarıyla kaydedildi",
+		"description": "Artık kayıtlı yapılandırmanızı yönetmek veya yeni ekipmanı yapılandırmaya başlamak için kişisel hesabınıza gidebilirsiniz.",
+		"modified": "değiştirilmiş",
+		"ok_btn": "Yeni bir yapılandırma başlatın",
+		"cansel_btn": "Yapılandırmalarıma git",
+		"add_basket": "Sepete ekle",
+		"go_basket": "Sepete git"
+	},
+	"summary_basket_modal": {
+		"title": "Yapılandırma başarıyla sepetinize eklendi",
+		"description": "Artık satın alma işlemini tamamlamak için sepetinize geçebilirsiniz.",
+		"modified": "değiştirildi",
+		"ok_btn": "Sepete git",
+		"cansel_btn": "Kapat"
+	},
+	"saved_conf_modal": {
+		"title": "Yapılandırma kişisel hesabınıza başarıyla kaydedildi",
+		"description": "Artık kişisel hesabınıza gidebilir ve yapılandırmanızı yönetebilirsiniz.",
+		"ok_btn": "Yapılandırmalarıma git",
+		"cansel_btn": "Kapat"
+	},
+	"info_login_modal_before_save": {
+		"title": "Yapılandırmayı kaydetmek için Oturum açmanız veya Kaydolmanız gerekir",
+		"ok_btn": "Giriş yapın veya kaydolun",
+		"cansel_btn": "İptal"
+	},
+	"reset_confirm_modal": {
+		"title": "Geçerli ayarları varsayılana sıfırlamak istediğinizden emin misiniz?",
+		"ok_btn": "Onayla",
+		"cansel_btn": "İptal"
+	},
+	"show_parts_card": {
+		"not_chosen": "Seçilmedi"
+	},
+	"accessory_info_modal": {
+		"title_accessory": "Aksesuar hakkında bilgi",
+		"title_option": "Seçenekler hakkında bilgi"
+	},
+	"spindle_info": {
+		"overview": {
+			"title": "İş mili",
+			"description": "CNC makinelerinin ahşap ve metal ürünlerin imalatındaki performansı, malzeme işlemede yer alan mekanizmaların verimliliğine bağlıdır. Bir freze makinesinde, CNC'den talimatlar alan iş mili bu rolü yerine getirir."
+		},
+		"power": {
+			"title": "Güç",
+			"description": "Genellikle iş milinin, makinenin gerçekleştirdiği belirli görevlere göre seçilmesi gerekir, böylece gerekli güç parametresi, satın alınacak cihazın türünü belirtebilir. Farklı türdeki işleme görevleri, değişen ekipman gücü gerektirir.",
+			"first_column_title": "İş türü",
+			"second_column_title": "Güç",
+			"work_type_1": "Delik delme ve gravür",
+			"work_type_1_val": "1,5 kW'tan itibaren",
+			"work_type_2": "Tahta kesme (tüm frezeleme işlemleri dahil)",
+			"work_type_2_val": "2,2 kW'tan 4,5 kW'a",
+			"work_type_3": "Sert ağaç türlerinin işlenmesi",
+			"work_type_3_val": "3,5 kW'tan az değil"
+		},
+		"slider": {
+			"description": "Mil özellikleri, makinenin çalışmasını ve parça kalitesini etkiler. Bir CNC makinesi için birini seçmeden önce, özelliklerini ve verimlilik katsayısını anlamak önemlidir."
+		},
+		"quantity": {
+			"title": "Mil sayısı",
+			"description": "Bir freze makinesinin portalındaki mil sayısı, aynı anda birden fazla parçayı işleme veya yeniden yapılandırma gerektirmeden çeşitli operasyonları gerçekleştirme yeteneğini belirler. Bu, üretim verimliliğini önemli ölçüde artırır.",
+			"first_column_title": "Miktar",
+			"second_column_title": "Atama",
+			"pcs1": "1 adet",
+			"pcs1_val1": "Küçük hacimler ve ardışık işlemler için",
+			"pcs1_val2": "Kurulumda daha fazla esneklik ancak daha az paralel işleme",
+			"pcs2": "2 adet",
+			"pcs2_val1": "Birden fazla parça ve operasyonla eşzamanlı çalışma",
+			"pcs2_val2": "Eşzamanlı işleme ile daha yüksek verimlilik"
+		},
+		"plate_type": {
+			"title": "Plaka tipi",
+			"description": "Bunlar, makine bileşenlerinin veya aletlerinin konumlandırıldığı ve makinede operasyon için sabitlendiği yüzeyler veya platformlardır.",
+			"first_column_title": "Plaka tipi",
+			"second_column_title": "Atama",
+			"plate_type_1": "Bir plaka",
+			"plate_type_1_val": "Bu durumda, mil tek bir plakada bulunur ve birleşik ve entegre bir yapı sağlar.",
+			"plate_type_2": "Bağımlı ayrı",
+			"plate_type_2_val": "Burada miller ayrı plakalar üzerine yerleştirilmiştir, ancak operasyonları birbirine bağlıdır. İşleme sırasında koordineli ve birbirine bağımlıdırlar.",
+			"plate_type_3": "Bağımsız ayrı",
+			"plate_type_3_val": "Bu plakalar, her biri bağımsız çalışan bireysel millere sahiptir. Bu, makinede daha esnek ve otonom işlemler yapılmasına olanak tanır."
+		},
+		"structure": {
+			"title": "Mil yapısı",
+			"sentense_1": "Temel, yuva içindeki rulmanlarla desteklenen döner bir milten oluşur.",
+			"sentense_2": "Cihaza gömülü bir elektrik motoru döndürmeyi sağlar.",
+			"sentense_3": "Kesme aletleri, çeşitli saplarla uyum sağlamak için koller kullanılarak mile sabitlenir.",
+			"sentense_4": "Mili makinenin başlığında monte etmek, X, Y ve Z eksenleri boyunca hareketi mümkün kılan özel bir taşıyıcı aracılığıyla gerçekleştirilir."
+		},
+		"cooling": {
+			"title": "Mil soğutma",
+			"overview": "Mil makinesinin soğutulması, uzun süreli çalışması için gereklidir. Entegre bir soğutma sistemi yüksek performans ve güvenli kullanım sağlar. Genellikle hava veya sıvı soğutma yöntemleri kullanılır.",
+			"air": {
+				"title": "Hava soğutma",
+				"description": "Özel hava girişleri aracılığıyla, cihaz kasasının içinde hava akışını teşvik eder. Gürültüye rağmen, maliyet açısından etkili bir seçenektir."
+			},
+			"water": {
+				"title": "Su soğutma",
+				"description": "Su soğutma, daha sessiz çalışma ve gelişmiş verimlilik sunar, milin gücünü artırır. Örneğin, su soğutma kullanan 3,5 kW'lık bir mil, aynı güce sahip hava soğutmalı bir milin yapamayacağı çelik üzerine gravür yapabilir."
+			}
+		},
+		"video": {
+			"title": "Mili nasıl yapıldığını gösteren videomuzu izleyin",
+			"info": "Kullanılan alete bağlı olarak (uç frezeler, gravürler, matkaplar), mil kılavuzunda belirtildiği gibi, uygun bir kollet (ER11, ER16) kullanılır."
+		},
+		"imgs_label": "Mil",
+		"info_block": "WATTSAN şirketi, onlarca Çin mili test etmiş ve olağanüstü güvenilirlik ve teknik özelliklere sahip olanları belirlemiştir, makinelerde eşsiz mil kalitesi ve performansını sağlar."
+	},
+	"spindle_power_option": {
+		"title": "Mil gücü nedir?",
+		"more_btn": "Milller hakkında daha fazla bilgi edinin"
+	},
+	"advantages": "Avantajlar",
+	"disadvantages": "Dezavantajlar",
+	"rotate_modal_title": "3D modeli döndür",
+	"view_videos_title": "Gerçek videoları izleyin",
+	"view_photos_title": "Gerçek fotoğrafları görüntüleyin",
+	"config_name_modal": {
+		"title": "Konfigürasyon adını değiştir",
+		"description": "Yalnızca yapılandırdığınız ekipmanın alt başlığını değiştirebilirsiniz, ana başlığı değil.",
+		"save_btn": "Kaydet",
+		"close_btn": "İptal",
+		"input_label": "Konfigürasyon adı",
+		"input_placeholder": "Konfigürasyon adınızı girin"
+	}
+}

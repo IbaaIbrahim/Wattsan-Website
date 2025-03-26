@@ -1,0 +1,32 @@
+.checked {
+
+}
+
+.toggle {
+    padding: 8px;
+    background-color: #F5F8FB;
+    border-radius: 60px;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 8px;
+}
+
+.item {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 400;
+    background-color: transparent;
+    border-radius: 40px;
+    transition: background-color .3s ease;
+
+    &Checked {
+        background-color: #DEEBFA;
+    }
+}

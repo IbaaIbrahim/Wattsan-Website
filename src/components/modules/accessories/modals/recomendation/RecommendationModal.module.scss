@@ -1,0 +1,36 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  margin-bottom: 16px;
+}
+
+.recommendations {
+  margin-bottom: 24px;
+  max-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: #f7f7f7;
+  border-radius: 16px;
+  overflow-y: auto;
+}
+
+.list {
+  margin-bottom: 24px;
+  padding-left: 30px;
+}
+
+.listItem {
+  list-style-type: disc;
+  color: #e63c32;
+}
+
+.actions {
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}

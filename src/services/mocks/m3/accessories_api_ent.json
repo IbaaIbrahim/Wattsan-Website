@@ -1,0 +1,1192 @@
+{
+	"status": true,
+	"content": {
+		"workareaCharacteristics": [
+			{
+				"id": 3,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 1,
+				"staticCharacteristic": {
+					"id": 1,
+					"name": "600*900",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 1,
+					"code": "WorkArea",
+					"val": "600*900",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"affectedCharacteristicsList": [
+						{
+							"id": 36,
+							"name": "600",
+							"unit": null,
+							"order": 1,
+							"code": "RotarySeparate",
+							"val": "600",
+							"isActive": true,
+							"price": 1200
+						},
+						{
+							"id": 38,
+							"name": "900",
+							"unit": null,
+							"order": 2,
+							"code": "RotarySeparate",
+							"val": "900",
+							"isActive": true,
+							"price": 1300
+						}
+					]
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 4,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 2,
+				"staticCharacteristic": {
+					"id": 2,
+					"name": "600*900",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 2,
+					"code": "WorkArea",
+					"val": "600*900",
+					"isActive": true,
+					"price": 2000,
+					"categoryId": null,
+					"category": null,
+					"isDisabledForthisSeries": false
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 5,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 1,
+				"staticCharacteristic": {
+					"id": 3,
+					"name": "600*900",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 1,
+					"code": "WorkArea",
+					"val": "600*900",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 6,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 2,
+				"staticCharacteristic": {
+					"id": 4,
+					"name": "400*400",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 2,
+					"code": "WorkArea",
+					"val": "400*400",
+					"isActive": true,
+					"price": 2000,
+					"categoryId": null,
+					"category": null,
+					"isDisabledForthisSeries": false
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"zaxisCharacteristics": [
+			{
+				"id": 0,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 1,
+				"staticCharacteristic": {
+					"id": 0,
+					"name": "200",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 1,
+					"code": "ZAxis",
+					"val": "200",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 3,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 1,
+				"staticCharacteristic": {
+					"id": 1,
+					"name": "300",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 1,
+					"code": "ZAxis",
+					"val": "300",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 4,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 2,
+				"staticCharacteristic": {
+					"id": 2,
+					"name": "100",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 2,
+					"code": "ZAxis",
+					"val": "100",
+					"isActive": false,
+					"price": 2000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 5,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 1,
+				"staticCharacteristic": {
+					"id": 3,
+					"name": "150",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 1,
+					"code": "ZAxis",
+					"val": "150",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": false
+			},
+			{
+				"id": 6,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 2,
+				"staticCharacteristic": {
+					"id": 4,
+					"name": "400",
+					"unit": "mm",
+					"charCategory": 0,
+					"order": 2,
+					"code": "ZAxis",
+					"val": "400",
+					"isActive": false,
+					"price": 2000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"liquidCoolingSystemCharacteristics": [
+			{
+				"id": 100,
+				"characteristicId": 100,
+				"staticCharacteristic": {
+					"id": 100,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "LiquidCoolingSystem",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 101,
+				"characteristicId": 101,
+				"staticCharacteristic": {
+					"id": 101,
+					"name": "Automatic irrigation",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "LiquidCoolingSystem",
+					"val": "Automatic irrigation",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 102,
+				"characteristicId": 102,
+				"staticCharacteristic": {
+					"id": 102,
+					"name": "Oil mist",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "LiquidCoolingSystem",
+					"val": "Oil mist",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"removableInstrumentSensorCharacteristics": [
+			{
+				"id": 103,
+				"characteristicId": 103,
+				"staticCharacteristic": {
+					"id": 103,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "RemovableInstrumentSensor",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 104,
+				"characteristicId": 104,
+				"staticCharacteristic": {
+					"id": 104,
+					"name": "Included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "RemovableInstrumentSensor",
+					"val": "Included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"builtInInstrumentSensorCharacteristics": [
+			{
+				"id": 105,
+				"characteristicId": 105,
+				"staticCharacteristic": {
+					"id": 105,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "BuiltInInstrumentSensor",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 106,
+				"characteristicId": 106,
+				"staticCharacteristic": {
+					"id": 106,
+					"name": "Included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "BuiltInInstrumentSensor",
+					"val": "Included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"lubricationSystemCharacteristics": [
+			{
+				"id": 107,
+				"characteristicId": 107,
+				"staticCharacteristic": {
+					"id": 107,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "LubricationSystem",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 108,
+				"characteristicId": 108,
+				"staticCharacteristic": {
+					"id": 108,
+					"name": "Included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "LubricationSystem",
+					"val": "Included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"aspirationCharacteristics": [
+			{
+				"id": 109,
+				"characteristicId": 109,
+				"staticCharacteristic": {
+					"id": 109,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "Aspiration",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 110,
+				"characteristicId": 110,
+				"staticCharacteristic": {
+					"id": 110,
+					"name": "220V",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "Aspiration",
+					"val": "220V",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 1100,
+				"characteristicId": 1100,
+				"staticCharacteristic": {
+					"id": 1100,
+					"name": "380V",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "Aspiration",
+					"val": "380V",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"vacuumTableCharacteristics": [
+			{
+				"id": 111,
+				"characteristicId": 111,
+				"staticCharacteristic": {
+					"id": 111,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "VacuumTable",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 112,
+				"characteristicId": 112,
+				"staticCharacteristic": {
+					"id": 112,
+					"name": "Included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "VacuumTable",
+					"val": "Included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"rotaryDeviceCharacteristics": [
+			{
+				"id": 113,
+				"characteristicId": 113,
+				"staticCharacteristic": {
+					"id": 113,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "RotaryDevice",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 114,
+				"characteristicId": 114,
+				"staticCharacteristic": {
+					"id": 114,
+					"name": "Separate",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "RotaryDevice",
+					"val": "Separate",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 115,
+				"characteristicId": 115,
+				"staticCharacteristic": {
+					"id": 115,
+					"name": "Integrated",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "RotaryDevice",
+					"val": "Integrated",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"cabineCharacteristics": [
+			{
+				"id": 116,
+				"characteristicId": 116,
+				"staticCharacteristic": {
+					"id": 116,
+					"name": "Not included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "Cabine",
+					"val": "Not included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 117,
+				"characteristicId": 117,
+				"staticCharacteristic": {
+					"id": 117,
+					"name": "Included",
+					"unit": "",
+					"charCategory": 0,
+					"order": 4,
+					"code": "Cabine",
+					"val": "Included",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": false
+			}
+		],
+		"motorCharacteristics": [
+			{
+				"id": 10,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 11,
+				"staticCharacteristic": {
+					"id": 11,
+					"name": "Stepper motor",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "Motor",
+					"val": "Stepper motor",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 11,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 12,
+				"staticCharacteristic": {
+					"id": 12,
+					"name": "Stepper motor with feedback",
+					"unit": null,
+					"charCategory": 0,
+					"order": 2,
+					"code": "Motor",
+					"val": "Stepper motor with feedback",
+					"isActive": true,
+					"price": 250,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 12,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 13,
+				"staticCharacteristic": {
+					"id": 13,
+					"name": "Servo motor",
+					"unit": null,
+					"charCategory": 0,
+					"order": 3,
+					"code": "Motor",
+					"val": "Servo motor",
+					"isActive": true,
+					"price": 100,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"spindleQuantityCharacteristics": [
+			{
+				"id": 1,
+				"characteristicId": 26,
+				"staticCharacteristic": {
+					"id": 26,
+					"name": "4",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleQuantity",
+					"val": "4",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 7,
+				"characteristicId": 24,
+				"staticCharacteristic": {
+					"id": 24,
+					"name": "2",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 2,
+					"code": "SpindleQuantity",
+					"val": "2",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 9,
+				"characteristicId": 25,
+				"staticCharacteristic": {
+					"id": 25,
+					"name": "3",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 3,
+					"code": "SpindleQuantity",
+					"val": "3",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 10,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 21,
+					"name": "One spindle",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindleQuantity",
+					"val": "One spindle",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"spindleAutoQuantityCharacteristics": [
+			{
+				"id": 40,
+				"characteristicId": 22,
+				"staticCharacteristic": {
+					"id": 40,
+					"name": "4",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleAutoQuantity",
+					"val": "4",
+					"isActive": true,
+					"price": 500,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto"]
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 41,
+				"characteristicId": 22,
+				"staticCharacteristic": {
+					"id": 41,
+					"name": "6",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleAutoQuantity",
+					"val": "6",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 42,
+				"characteristicId": 22,
+				"staticCharacteristic": {
+					"id": 42,
+					"name": "8",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleAutoQuantity",
+					"val": "8",
+					"isActive": true,
+					"price": 2000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 43,
+				"characteristicId": 22,
+				"staticCharacteristic": {
+					"id": 43,
+					"name": "10",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleAutoQuantity",
+					"val": "10",
+					"isActive": false,
+					"price": 3000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 44,
+				"characteristicId": 22,
+				"staticCharacteristic": {
+					"id": 44,
+					"name": "12",
+					"unit": "pcs",
+					"charCategory": 0,
+					"order": 4,
+					"code": "SpindleAutoQuantity",
+					"val": "12",
+					"isActive": false,
+					"price": 4000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"spindlePowerCharacteristics": [
+			{
+				"id": 21,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 21,
+					"name": "1,5 kW, water, ER11",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "1,5 kW, water, ER11",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 22,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 22,
+					"name": "2,2 kW, water, ER20",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "2,2 kW, water, ER20",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 23,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 23,
+					"name": "3,2 kW, water, ER20",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "3,2 kW, water, ER20",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 24,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 24,
+					"name": "3,5 kW, water, ISO25",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "3,5 kW, water, ISO25",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 25,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 25,
+					"name": "4,5 kW, air, ER32",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "4,5 kW, air, ER32",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 26,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 26,
+					"name": "4,5 kW, air, ISO30",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "4,5 kW, air, ISO30",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 27,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 27,
+					"name": "4,5 kW, water, ER20",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "4,5 kW, water, ER20",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 28,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 28,
+					"name": "4,5 kW, water, ER25",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "4,5 kW, water, ER25",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 29,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 29,
+					"name": "5,5 kW, air, ER32",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "5,5 kW, air, ER32",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 30,
+				"characteristicId": 21,
+				"staticCharacteristic": {
+					"id": 30,
+					"name": "5,5 kW, water, ER25",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "SpindlePower",
+					"val": "5,5 kW, water, ER25",
+					"isActive": true,
+					"price": 1000,
+					"categoryId": null,
+					"category": null,
+					"toolSwitch": ["auto", "semi-auto", "manual"]
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			}
+		],
+		"controlSystemCharacteristics": [
+			{
+				"id": 8,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 27,
+				"staticCharacteristic": {
+					"id": 27,
+					"name": "DSP A11",
+					"unit": null,
+					"charCategory": 0,
+					"order": 1,
+					"code": "ControlSystem",
+					"val": "DSP A11",
+					"isActive": true,
+					"price": 2000,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": true,
+				"isExisted": true
+			},
+			{
+				"id": 9,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 28,
+				"staticCharacteristic": {
+					"id": 28,
+					"name": "DSP A18",
+					"unit": null,
+					"charCategory": 0,
+					"order": 2,
+					"code": "ControlSystem",
+					"val": "DSP A18",
+					"isActive": true,
+					"price": 1200,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 10,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 28,
+				"staticCharacteristic": {
+					"id": 29,
+					"name": "NcStudio",
+					"unit": null,
+					"charCategory": 0,
+					"order": 3,
+					"code": "ControlSystem",
+					"val": "NcStudio",
+					"isActive": true,
+					"price": 1200,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": true,
+				"isDefault": false,
+				"isExisted": true
+			},
+			{
+				"id": 11,
+				"seriesId": 2,
+				"series": null,
+				"characteristicId": 28,
+				"staticCharacteristic": {
+					"id": 30,
+					"name": "Sintec",
+					"unit": null,
+					"charCategory": 0,
+					"order": 4,
+					"code": "ControlSystem",
+					"val": "Sintec",
+					"isActive": true,
+					"price": 1200,
+					"categoryId": null,
+					"category": null
+				},
+				"isAvailable": false,
+				"isDefault": false,
+				"isExisted": true
+			}
+		]
+	},
+	"error_des": null,
+	"error_code": 0
+}

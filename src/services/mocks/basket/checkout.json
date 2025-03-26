@@ -1,0 +1,52 @@
+{
+  "countries": [
+    {
+      "id": "01",
+      "text": "France"
+    },
+    {
+      "id": "02",
+      "text": "China"
+    },
+    {
+      "id": "03",
+      "text": "Italy"
+    },
+    {
+      "id": "04",
+      "text": "Brazil"
+    }
+  ],
+  "deliveryMethods": [
+    {
+      "id": "01",
+      "name": "EXW",
+      "cost": "Free",
+      "conditions": ["Customer pickup from the factory", "No additional services"]
+    },
+    {
+      "id": "02",
+      "name": "CFR/CIF/CPT",
+      "cost": "$30 – $50",
+      "conditions": ["Delivery to recipient's port or city", "Excludes customs, port charges, and final delivery to the address"]
+    },
+    {
+      "id": "03",
+      "name": "FOB",
+      "cost": "$20 – $30",
+      "conditions": ["Delivery to China port", "Customer arranges onward delivery"]
+    },
+    {
+      "id": "04",
+      "name": "DAP",
+      "cost": "$50 – $80",
+      "conditions": ["Delivery to recipient's address", "Excludes customs and local fees"]
+    },
+    {
+      "id": "05",
+      "name": "DDP",
+      "cost": "$50 – $100",
+      "conditions": ["Delivery to recipient's door", "All-inclusive, covers customs and fees"]
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+	"orders": [
+		{
+			"id": "1001",
+			"createDate": "23.01.2023",
+			"price": "$25000",
+			"status": "Completed",
+			"deliveryDate": "05.08.2024"
+		},
+		{
+			"id": "1002",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Completed",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1003",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Canceled",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1004",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Canceled",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1005",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Current",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1006",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Current",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1007",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Returns",
+			"deliveryDate": "27.12.2023"
+		},
+		{
+			"id": "1008",
+			"createDate": "23.01.2023",
+			"price": "$5000",
+			"status": "Returns",
+			"deliveryDate": "27.12.2023"
+		}
+	],
+	"ordersInfo": {
+		"1001": {
+			"id": "1001",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$25000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1002": {
+			"id": "1002",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1003": {
+			"id": "1003",
+			"createDate": "23.01.2023",
+			"status": "Canceled",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1004": {
+			"id": "1004",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1005": {
+			"id": "1005",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1006": {
+			"id": "1006",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1007": {
+			"id": "1007",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		},
+		"1008": {
+			"id": "1008",
+			"createDate": "23.01.2023",
+			"status": "Completed",
+			"waitTime": "Calculation wait time: 1-2 days",
+			"deliveryMethod": {
+				"company": "EXW",
+				"country": "China",
+				"price": null
+			},
+			"price": "$5000",
+			"receiptDocument": "",
+			"items": [
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				},
+				{
+					"imgSrc": "/img/grid-machines/A1.png",
+					"name": "Laser Cutting Engraving Machine",
+					"code": "6040 ST",
+					"price": "$5000"
+				}
+			]
+		}
+	}
+}

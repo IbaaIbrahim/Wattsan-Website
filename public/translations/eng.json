@@ -1,0 +1,267 @@
+{
+	"header": {
+		"navigation": {
+			"comparision": "Comparison",
+			"favorites": "Favorites",
+			"basket": "Basket"
+		},
+		"homeLink": "Go Home",
+		"personal_dd": {
+			"dashboard": "Dashboard",
+			"orders": "Orders",
+			"configurations": "Configurations",
+			"my_equipment": "My equipment",
+			"pers_offers": "Personal offers",
+			"account": "Account",
+			"log_out": "Log out"
+		}
+	},
+	"languages": {
+		"eng": "English",
+		"turk": "Turkey"
+	},
+	"equipment": {
+		"title": "Choose equipment",
+		"soon_label": "soon"
+	},
+	"accessories": {
+		"parts": {
+			"back_nav": "Back to equipment",
+			"title": "Choose accessories",
+			"work_area_z_axis": "Work area and Z axis",
+			"spindle": "Spindle",
+			"motor": "Motor",
+			"control_system": "Control system",
+			"add_options": "Additional options"
+		},
+		"part_options": {
+			"work_area": "Work area size",
+			"z_axis": "Tool lift height (Z axis)",
+			"spindle_power": "Spindle (power, cooling, collet)",
+			"spindle_auto_quant": "Quantity of auto-change tools",
+			"spindle_quant": "Spindle quantity",
+			"motor": "Motor",
+			"control_sys": "Control System",
+			"spindle_tool_switch": "Tool switch",
+			"spindle_auto": "Automatic",
+			"spindle_semi_auto": "Semi-Automatic",
+			"spindle_manual": "Manual",
+			"add_liq_cool_sys": "Liquid cooling system",
+			"add_remov_inst_sens": "Removable instrument sensor",
+			"add_buil_in_inst_sens": "Built-in instrument sensor",
+			"add_lubrication": "Lubrication system",
+			"add_aspiration": "Aspiration",
+			"add_vacuum": "Vacuum table",
+			"add_rotary_device": "Rotary device",
+			"add_cabine": "Cabine"
+		},
+		"actions_bar": {
+			"save": "Save",
+			"reset": "Reset",
+			"summary": "Summary",
+			"total": "Total",
+			"power": "Power"
+		},
+		"view_btns": {
+			"rotate": "Rotate 3D model",
+			"real_photo": "View real photos",
+			"video": "View real videos"
+		}
+	},
+	"summary": {
+		"view": {
+			"back_nav": "Back to editing"
+		},
+		"title": "Summary",
+		"modified_label": "modified",
+		"conf_tabs": {
+			"your_conf": "Your configuration",
+			"compar_conf": "Comparison with basic",
+			"basic": "Basic",
+			"changes": "changes"
+		},
+		"buttons": {
+			"view_all": "View all specifications",
+			"pdf_download": "Download PDF",
+			"share_label": "Share",
+			"save_conf": "Save conf",
+			"add_basket": "Add to basket",
+			"show_diff": "Show only differences"
+		}
+	},
+	"machines": {
+		"machine": "machine",
+		"title_all": "All equipments",
+		"warking_area_all": "All",
+		"edit_btn": "Start editing",
+		"area_sizes": "Available sizes"
+	},
+	"request_modal": {
+		"if_machine_title": "This machine is temporarily unavailable for configuration",
+		"if_accessory": {
+			"title": "Incompatibility issue",
+			"subtitle_not_compatible": "These accessories are not compatible with $1",
+			"subtitle_compatible": "This accessory is compatible with the $1 series",
+			"description": "Unfortunately, this machine is temporarily unavailable for configuration."
+		},
+		"description": "Please leave a callback request, and our manager will advise you regarding the $1 machine.",
+		"fullname": {
+			"label": "Full Name",
+			"placeholder": "Enter your Full Name"
+		},
+		"phone": {
+			"label": "Phone",
+			"placeholder": "Enter your phone number"
+		},
+		"ok_btn": "Request a callback",
+		"cansel_btn": "Cancel"
+	},
+	"request_result_modal": {
+		"title": "Thank you for your request",
+		"description": "Your request for a callback has been received. Our team will shortly get in touch with you at the phone number you provided:",
+		"confirm_btn_text": "Return to configurator"
+	},
+	"recommendation_modal": {
+		"title": "Incompatibility issue",
+		"subtitle_not_compatible": "These accessories are not compatible with $1",
+		"subtitle_compatible": "You can configure a new machine while saving the current configuration",
+		"subtitle_accesory_not_compatible": "These accessories are not compatible",
+		"subtitle_accesory_compatible": "You can choose a different $1 that suits this accessory",
+		"ok_btn": "Start a new configuration",
+		"confirm": "Confirm",
+		"cansel_btn": "Cancel",
+		"cancel_description": "Cancelling result: $1"
+	},
+	"save_confirm_modal": {
+		"title": "Save the current configuration?",
+		"description": "You can start a new configuration and save the current configuration in your personal account to revisit later.",
+		"ok_btn": "Save",
+		"cansel_btn": "Discard"
+	},
+	"basket_modal": {
+		"title": "Current configuration successfully saved",
+		"description": "Now you can either go to your personal account to manage your saved configuration or start configuring new equipment.",
+		"modified": "modified",
+		"ok_btn": "Start a new configuration",
+		"cansel_btn": "Go to my configurations",
+		"add_basket": "Add to basket",
+		"go_basket": "Go to basket"
+	},
+	"summary_basket_modal": {
+		"title": "Configuration successfully added to your basket",
+		"description": "Now you can proceed to your basket to complete the purchase.",
+		"modified": "modified",
+		"ok_btn": "Go to basket",
+		"cansel_btn": "Close"
+	},
+	"saved_conf_modal": {
+		"title": "Configuration successfully saved in your personal account",
+		"description": "Now you can go to your personal account and manage your configuration.",
+		"ok_btn": "Go to my configurations",
+		"cansel_btn": "Close"
+	},
+	"info_login_modal_before_save": {
+		"title": "To save the configuration, you need to Log in or Sign up",
+		"ok_btn": "Log in or Sign up",
+		"cansel_btn": "Cancel"
+	},
+	"reset_confirm_modal": {
+		"title": "Are you sure you want to reset the current settings to default?",
+		"ok_btn": "Confirm",
+		"cansel_btn": "Cancel"
+	},
+	"show_parts_card": {
+		"not_chosen": "Not chosen"
+	},
+	"accessory_info_modal": {
+		"title_accessory": "Information about accessory",
+		"title_option": "Information about options"
+	},
+	"spindle_info": {
+		"overview": {
+			"title": "Spindle",
+			"description": "The performance of CNC machines in manufacturing wood and metal products relies on the efficiency of mechanisms involved in material processing. In a milling machine, the spindle—receiving instructions from the CNC—fulfills this role."
+		},
+		"power": {
+			"title": "Power",
+			"description": "Often, the spindle needs to be selected based on the specific tasks the machine performs, so the required power parameter can indicate the type of device to purchase. Different types of machining tasks require varying equipment power.",
+			"first_column_title": "Work type",
+			"second_column_title": "Power",
+			"work_type_1": "Drilling and engraving",
+			"work_type_1_val": "from 1,5 kW",
+			"work_type_2": "Wood cutting (including the entire range of milling operations)",
+			"work_type_2_val": "from 2,2 kW to 4,5 kW",
+			"work_type_3": "Processing hard wood species",
+			"work_type_3_val": "no less than 3,5 kW"
+		},
+		"slider": {
+			"description": "Spindle specs affect machine work and part quality. Prior to selecting one for a CNC machine, understanding its features and productivity coefficient is key."
+		},
+		"quantity": {
+			"title": "Spindle quantity",
+			"description": "The number of spindles on a milling machine's gantry determines its ability to simultaneously process multiple parts or perform various operations without the need for reconfiguration. This significantly enhances production efficiency.",
+			"first_column_title": "Quantity",
+			"second_column_title": "Appointment",
+			"pcs1": "1 pcs",
+			"pcs1_val1": "For small volumes and sequential operations",
+			"pcs1_val2": "More flexibility in setup but less parallel processing",
+			"pcs2": "2 pcs",
+			"pcs2_val1": "Simultaneous work with multiple parts and operations",
+			"pcs2_val2": "Greater efficiency with simultaneous processing"
+		},
+		"plate_type": {
+			"title": "Plate type",
+			"description": "These are surfaces or platforms where machine components or tools are positioned and secured for operation on the machine.",
+			"first_column_title": "Plate type",
+			"second_column_title": "Appointment",
+			"plate_type_1": "One plate",
+			"plate_type_1_val": "In this case, the spindle is located on a single plate, providing a unified and integrated structure.",
+			"plate_type_2": "Dependent separate",
+			"plate_type_2_val": "Here, spindles are placed on separate plates, but their operation relies on each other. They are coordinated and interdependent during processing",
+			"plate_type_3": "Independent separate",
+			"plate_type_3_val": "These plates have individual spindles, each functioning independently. This allows for more flexible and autonomous operations on the machine."
+		},
+		"structure": {
+			"title": "Spindle structure",
+			"sentense_1": "The foundation consists of a rotary shaft supported by bearings within the housing.",
+			"sentense_2": "An electric motor embedded within the device ensures rotation.",
+			"sentense_3": "Cutting tools are secured on the shaft using collets to accommodate tools with various shanks.",
+			"sentense_4": "Installing the spindle at the machine's headstock is achieved through a special carriage, enabling movement along the X, Y, and Z axes."
+		},
+		"cooling": {
+			"title": "Spindle cooling",
+			"overview": "Cooling of the spindle machine is essential for its prolonged operation. An integrated cooling system ensures high performance and safe usage. Typically, air or liquid cooling methods are employed.",
+			"air": {
+				"title": "Air cooling",
+				"description": "Through dedicated air intakes, it stimulates airflow within the device casing. Despite the noise, it remains a cost-effective option."
+			},
+			"water": {
+				"title": "Water cooling",
+				"description": "Water cooling offers quieter operation and enhanced efficiency, amplifying the spindle's power. For instance, a 3.5 kW spindle utilizing water cooling can engrave steel, a task beyond the capabilities of an equally powered spindle relying on air cooling."
+			}
+		},
+		"video": {
+			"title": "Watch our video on how the spindle is constructed",
+			"info": "Depending on the tool used (end mills, engravers, drills), a corresponding collet (ER11, ER16) is utilized, as indicated in the spindle manual."
+		},
+		"imgs_label": "Spindle",
+		"info_block": "Company WATTSAN has tested dozens of Chinese spindles and identified ones with exceptional reliability and technical characteristics, ensuring unparalleled spindle quality and performance in machines."
+	},
+	"spindle_power_option": {
+		"title": "What is spindle power?",
+		"more_btn": "Read more about spindles"
+	},
+	"advantages": "Advantages",
+	"disadvantages": "Disadvantages",
+	"rotate_modal_title": "Rotate 3D model",
+	"view_videos_title": "View real videos",
+	"view_photos_title": "View real photos",
+	"config_name_modal": {
+		"title": "Change configuration name",
+		"description": "You can only change the caption, not the main title, of the equipment you have configured.",
+		"save_btn": "Save",
+		"close_btn": "Cancel",
+		"input_label": "Configuration name",
+		"input_placeholder": "Enter your configuration name"
+	}
+}

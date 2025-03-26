@@ -1,0 +1,19 @@
+{
+  "userName": "Mark",
+  "lastOrder": {
+    "id": "1001",
+    "status": "Completed",
+    "price": "$25000",
+    "createDate": "05.08.2024",
+    "deliveryDate": "06.08.2024"
+  },
+  "otherOrders": {
+    "all": "99",
+    "current": "2",
+    "completed": "45",
+    "canceled": "3",
+    "returns": "2"
+  },
+  "configurations": "2",
+  "equipment": "99"
+}

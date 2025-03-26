@@ -1,0 +1,39 @@
+{
+  "requests": [
+    {
+      "id": "12345660-7",
+      "status": "In process",
+      "theme": "Returns and exchanges",
+      "createDate": "23.01.2023",
+      "message": "I'd like to return the item Laser machine purchased from you on 23.01.2023. Could you please guide me on how I can proceed with the return? Do I need any additional information for this process?"
+    },
+    {
+      "id": "12345660-8",
+      "status": "In process",
+      "theme": "Delivery inquiries",
+      "createDate": "23.01.2023",
+      "message": "I'd like to return the item Laser machine purchased from you on 23.01.2023. Could you please guide me on how I can proceed with the return? Do I need any additional information for this process?"
+    },
+    {
+      "id": "12345660-9",
+      "status": "In process",
+      "theme": "Returns and exchanges",
+      "createDate": "23.01.2023",
+      "message": "I'd like to return the item Laser machine purchased from you on 23.01.2023. Could you please guide me on how I can proceed with the return? Do I need any additional information for this process?"
+    },
+    {
+      "id": "12345660-10",
+      "status": "Completed",
+      "theme": "Returns and exchanges",
+      "createDate": "23.01.2023",
+      "message": "I'd like to return the item Laser machine purchased from you on 23.01.2023. Could you please guide me on how I can proceed with the return? Do I need any additional information for this process?"
+    },
+    {
+      "id": "12345660-11",
+      "status": "Completed",
+      "theme": "Returns and exchanges",
+      "createDate": "23.01.2023",
+      "message": "I'd like to return the item Laser machine purchased from you on 23.01.2023. Could you please guide me on how I can proceed with the return? Do I need any additional information for this process?"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+.title {
+  margin-bottom: 16px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 38.4px;
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.description {
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.expirationDate {
+  margin-bottom: 24px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+  opacity: .4;
+}
+
+.copyCode {
+  margin-bottom: 24px;
+  padding: 14px 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  border: 1px solid #92B0D2;
+  border-radius: 8px;
+  background-color: #F5F8FB;
+  white-space: nowrap;
+
+  &Content {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-right: 24px;
+  }
+}
+
+.termsTitle {
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.terms {
+  margin-bottom: 24px;
+
+  &Item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+  }
+
+  &Count {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    opacity: .4;
+  }
+}
+
+.promoInfo {
+  padding: 24px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  display: flex;
+  gap: 16px;
+}

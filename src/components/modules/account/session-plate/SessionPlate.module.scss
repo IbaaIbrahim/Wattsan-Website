@@ -1,0 +1,55 @@
+.plate {
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 24px;
+    align-items: center;
+    border: 1px solid #000000;
+    border-radius: 16px;
+}
+
+.plate.inactive {
+    border-color: rgba(0, 0, 0, .4);
+
+    .name, .place, .ip {
+        opacity: .4;
+    }
+}
+
+.name {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.place {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.ip {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.status {
+    width: fit-content;
+    padding: 5px 16px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    border-radius: 16px;
+}
+
+.yellow {
+    background-color: #F9E9AE;
+}
+
+.red {
+    background-color: #FFCBC4;
+}
+
+.close {
+
+}

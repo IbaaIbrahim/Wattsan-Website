@@ -1,0 +1,146 @@
+.part-options-wrapper {
+  background: #f5f8fb;
+  height: 100%;
+  min-width: 0;
+  width: 0;
+  will-change: width;
+  transition: min-width 0.2s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+
+  &--shown {
+    width: auto;
+    min-width: 340px;
+
+    @media (max-width: 1440px) {
+      min-width: auto;
+      height: auto;
+      border-radius: 8px;
+    }
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 40px 40px 24px 24px;
+  display: inline-block;
+
+  @media (max-width: 1024px) {
+    padding: 16px;
+  }
+}
+
+.content {
+  width: 100%;
+  min-width: 300px;
+  position: absolute;
+
+  @media (max-width: 1440px) {
+    position: relative;
+  }
+}
+
+.subtitle {
+  padding-bottom: 4px;
+  border-bottom: 1px solid #92b0d2;
+  margin-bottom: 16px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  &__text {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.options {
+  padding: 24px 40px 24px 24px;
+  min-width: 338px;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    padding: 0 16px 16px 16px;
+  }
+
+  &__block {
+    margin-bottom: 24px;
+  }
+}
+
+.option {
+  width: 100%;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgb(222, 235, 250);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  &__price {
+    font-size: 14px;
+    font-weight: 400;
+    color: #92b0d2;
+  }
+
+  &:hover {
+    border-bottom: 1px solid rgb(155, 201, 255);
+  }
+}
+
+.optionContent {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.option-value {
+  display: flex;
+  align-items: center;
+
+  &--not-active {
+    font-size: 14px;
+    font-weight: 300;
+  }
+}
+
+.info-image {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1px 8px;
+  cursor: pointer;
+
+  :hover {
+    box-shadow: 0px 0px 0px 1px rgba(155, 201, 255, 1);
+    border-radius: 50%;
+  }
+}
+
+.selection-mark {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  margin: 0 8px 1px 0;
+
+  &--selected {
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #000000;
+      border-radius: 50%;
+    }
+  }
+}

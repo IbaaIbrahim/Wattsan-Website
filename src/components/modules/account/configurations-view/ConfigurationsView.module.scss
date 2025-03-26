@@ -1,0 +1,50 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows: auto;
+    grid-gap: 24px;
+
+    @media (max-width: 1440px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.header {
+    margin: 0 0 40px;
+}
+
+.title {
+    margin: 0 0 40px;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 48px;
+}
+
+.popularTemplatesTitle {
+    margin-top: 40px;
+    margin-bottom: 32px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+}
+
+.popularTemplates {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.templatesFilter {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.templatesReset {
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+    white-space: nowrap;
+    text-decoration: underline;
+}

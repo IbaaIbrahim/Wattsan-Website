@@ -1,0 +1,79 @@
+.section {
+	margin-bottom: 32px;
+	width: 100%;
+}
+
+.title {
+	font-size: 32px;
+	font-weight: 600;
+	text-align: left;
+	display: inline-block;
+	padding-bottom: 24px;
+}
+
+.main {
+	background: #deebfa;
+	border-radius: 18px;
+	width: 100%;
+	padding: 32px;
+	box-sizing: border-box;
+}
+
+.description {
+	font-size: 15px;
+	font-weight: 400;
+	text-align: left;
+	margin-bottom: 16px;
+}
+
+.pros-cons {
+	&__values {
+		display: flex;
+		align-items: flex-start;
+		padding: 8px 0;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid #deebfa;
+		}
+
+		.first-column {
+			display: inline-block;
+			width: calc(50% - 24px);
+			margin-right: 24px;
+			font-size: 15px;
+			font-weight: 600;
+			text-align: left;
+		}
+
+		.second-column {
+			font-size: 15px;
+			font-weight: 400;
+			text-align: left;
+		}
+	}
+
+	&__titles {
+		opacity: 40%;
+		font-size: 15px;
+		font-weight: 600;
+		text-align: left;
+		border-bottom: 1px solid #92b0d2;
+		padding-bottom: 8px;
+
+		.first-column {
+			display: inline-block;
+			width: 50%;
+			text-align: left;
+		}
+
+		.second-column {
+			text-align: left;
+		}
+	}
+}
+
+.more-btn {
+	width: 100%;
+	padding: 12px;
+	margin-bottom: 12px;
+}

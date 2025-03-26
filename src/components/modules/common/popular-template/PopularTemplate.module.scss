@@ -1,0 +1,112 @@
+.wrapper {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    grid-gap: 32px;
+    border: 1px solid #92B0D2;
+    border-radius: 16px;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 220px 1fr;
+    }
+
+    @media (max-width: 768px) {
+        padding: 24px;
+        grid-template-columns: 1fr;
+        grid-gap: 16px;
+    }
+}
+
+.image {
+    position: relative;
+    margin: 0 auto;
+    width: 220px;
+    height: 220px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.tags {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 5px 16px;
+    background-color: #F5F8FB;
+    border-radius: 16px;
+}
+
+.name {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.code {
+    display: flex;
+    align-items: flex-end;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.specialization {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    opacity: .4;
+}
+
+.startEditing {
+    margin-top: auto;
+    width: max-content;
+
+    @media (max-width: 768px) {
+        margin-top: 16px;
+        width: 100%;
+    }
+}
+
+.recommendation {
+    padding: 20px;
+    background-color: #DEEBFA;
+    border-radius: 8px;
+
+    @media (max-width: 1024px) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    @media (max-width: 768px) {
+        grid-column-start: auto;
+        grid-column-end: auto;
+    }
+}
+
+.recommendationTitle {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+    border-bottom: 1px solid #92B0D2;
+}
+
+.recommendationContent {
+    margin-bottom: 16px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.recommendationButton {
+    width: 100%;
+}

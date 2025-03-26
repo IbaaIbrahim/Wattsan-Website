@@ -1,0 +1,38 @@
+.modal {
+  &__title {
+    display: block;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    opacity: 0.4;
+    margin-bottom: 24px;
+  }
+}
+
+.category {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  opacity: 0.4;
+}
+
+.machine-name {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.content__image {
+  height: 100%;
+  object-fit: cover;
+  cursor: grab;
+}
+
+.view {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}

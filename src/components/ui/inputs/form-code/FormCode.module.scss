@@ -1,0 +1,88 @@
+.formCode {
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-2px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.15s linear 0s 3;
+}
+
+.fields {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 550px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 8px;
+  }
+}
+
+.input {
+  margin-right: 8px;
+  width: 66px;
+  height: 74px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 41.6px;
+  text-align: center;
+  background-color: #EFEFEF;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border-color .2s ease;
+
+  @media (max-width: 550px) {
+    margin-right: 0;
+    width: inherit;
+    height: 64px;
+  }
+
+  &:focus, &:focus-visible {
+    border-color: #000000;
+    outline-color: #000000;
+  }
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  &:nth-of-type(3) {
+    margin-right: 24px;
+
+    @media (max-width: 550px) {
+      margin-right: 0;
+    }
+  }
+
+  &Error {
+    border-color: #E63C32;
+  }
+}
+
+.error {
+  margin-top: 16px;
+  text-align: center;
+  color: #E63C32;
+}

@@ -1,0 +1,29 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 50% 25% 25%;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #DEEBFA;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.section {
+  @media (max-width: 768px) {
+    margin-bottom: 4px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}

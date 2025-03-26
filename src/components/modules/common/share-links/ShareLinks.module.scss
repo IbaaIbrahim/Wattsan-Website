@@ -1,0 +1,28 @@
+.share-links {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+
+	&__label {
+		font-size: 14px;
+		font-weight: 400;
+		margin-right: 6px;
+		opacity: 40%;
+	}
+
+	&__links {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.share-link {
+	height: 24px;
+	width: 24px;
+	margin-right: 4px;
+	cursor: pointer;
+
+	&:last-child {
+		margin: 0;
+	}
+}

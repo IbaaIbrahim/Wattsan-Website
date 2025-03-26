@@ -1,0 +1,131 @@
+.personal-menu {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  position: relative;
+
+  &__username {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: left;
+  }
+}
+
+.accountButton {
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-180deg);
+
+  &Up {
+    transform: rotate(0deg);
+  }
+}
+
+.dd-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  padding: 32px;
+  background: #ffffff;
+  box-shadow: 0 8px 32px -8px #00000052;
+  border-radius: 16px;
+  white-space: nowrap;
+
+  &__fullname {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #000000;
+    display: flex;
+    align-items: center;
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    margin: 24px 0 18px 0;
+  }
+
+  &__logout {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: left;
+    padding-top: 32px;
+    cursor: pointer;
+    border-top: 1px solid #efefef;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: #e63c32;
+
+      .dd-link__icon {
+        filter: invert(32%) sepia(77%) saturate(3611%) hue-rotate(340deg) brightness(101%) contrast(102%);
+      }
+    }
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 0 16px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  text-decoration: none;
+
+  &:hover:not(.active) {
+    color: #6C99CC;
+
+    .icon {
+      filter: brightness(0) saturate(100%) invert(69%) sepia(6%) saturate(4764%) hue-rotate(182deg) brightness(88%) contrast(78%);
+    }
+  }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.active {
+  color: #E63C32;
+
+  .icon {
+    filter: invert(32%) sepia(77%) saturate(3611%) hue-rotate(340deg) brightness(101%) contrast(102%);
+  }
+}
+
+.notifications-icon {
+  margin-left: 35px;
+  cursor: pointer;
+}
+
+.mobileMenu {
+  display: none !important;
+
+  @media (max-width: 1024px) {
+    display: flex !important;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

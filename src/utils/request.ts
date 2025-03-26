@@ -1,0 +1,63 @@
+import { authStore } from '@store/auth'
+import { STATUSES, requestsStore } from '@store/requests'
+import axios from 'axios'
+import qs from 'query-string'
+
+export const request = async (url, method, data = undefined) => {
+	try {
+		return await axios({
+			method,
+			url,
+			data,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+	} catch (error) {
+		console.error(error)
+
+		throw error
+	}
+}
+
+export const authorizedRequest = async ({
+	url,
+	method,
+	data = undefined,
+	query = undefined,
+	track = true
+}: {
+	url: string
+	method: 'POST' | 'GET'
+	data?: any
+	query?: object
+	track?: boolean
+}) => {
+	try {
+		const token = authStore.get.token()
+
+		if (!token) {
+			return new Error('Authorization token is missing')
+		}
+
+		if (track) requestsStore.set.updateRequest(url, STATUSES.loading)
+
+		const response = await axios({
+			method,
+			url: method === 'GET' ? qs.stringifyUrl({ url, query } as any) : url,
+			data,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token
+			}
+		})
+
+		if (track) requestsStore.set.updateRequest(url, STATUSES.success)
+
+		return response?.data ?? null
+	} catch (error) {
+		if (track) requestsStore.set.updateRequest(url, STATUSES.failure)
+
+		throw error
+	}
+}

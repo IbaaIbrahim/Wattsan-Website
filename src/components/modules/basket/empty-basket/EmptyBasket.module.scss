@@ -1,0 +1,32 @@
+.popularItems {
+    margin-top: 40px;
+
+    &Title {
+        margin-bottom: 40px;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 38.4px;
+    }
+}
+
+.items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 24px;
+
+    @media (min-width: 1440px) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+    
+    @media (max-width: 1440px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}

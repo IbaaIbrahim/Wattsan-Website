@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 88px;
+}
+
+.button {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background-color: #92B0D2;
+    border-radius: 50%;
+
+    &:before, &:after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 12px;
+        height: 2px;
+        background-color: #ffffff;
+        border-radius: 2px;
+    }
+
+    &:after {
+        opacity: 0;
+        width: 2px;
+        height: 12px;
+    }
+
+    &Plus {
+        &:after {
+            opacity: 1;
+        }
+    }
+
+    &:disabled {
+        opacity: .4;
+    }
+}
+
+.quantity {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.disabled {
+    opacity: .4;
+}

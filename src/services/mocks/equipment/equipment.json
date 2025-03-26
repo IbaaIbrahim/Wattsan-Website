@@ -1,0 +1,112 @@
+{
+  "equipments": [
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1001"
+    },
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1002"
+    },
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1003"
+    },
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1004"
+    },
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1005"
+    },
+    {
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "image": "/img/grid-machines/M3.png",
+      "serialNumber": "YIO795U630493G83",
+      "id": "1006"
+    }
+  ],
+  "equipmentsInfo": {
+    "1001": {
+      "image": "/img/grid-machines/M3.png",
+      "id": "1001",
+      "type": "Laser machines",
+      "name": "Laser Cutting Engraving Machine",
+      "code": "6040 ST",
+      "status": "modified",
+      "serialNumber": "YIO795U630493G83",
+      "productionDate": "23.01.2023",
+      "specificationPdf": "/",
+      "repairEndDate": "23.01.2023",
+      "currentStatus": "Is used",
+      "historyDescription": "The equipment is operational and complies with specifications.",
+      "history": [
+        {
+          "type": "Repair",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        },
+        {
+          "type": "Technical support",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        },
+        {
+          "type": "Technical support",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        },
+        {
+          "type": "Repair",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        },
+        {
+          "type": "Delivery",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        },
+        {
+          "type": "Production",
+          "date": "23.01.2023",
+          "issue": "Safety sensor intermittently triggering, causing work interruptions.",
+          "performedTasks": "Safety sensor replacement, thorough inspection, and testing conducted."
+        }
+      ]
+    }
+  }
+}

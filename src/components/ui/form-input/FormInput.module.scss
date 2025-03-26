@@ -1,0 +1,53 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	color: rgba(0, 0, 0, 0.4);
+	width: 100%;
+	position: relative;
+
+	&__label {
+		font-size: 12px;
+		font-weight: 400;
+		margin-bottom: 4px;
+		width: 100%;
+	}
+
+	&__input {
+		height: 48px;
+		text-align: left;
+		vertical-align: middle;
+		border: 1px solid #92b0d2;
+		border-radius: 8px;
+		width: 100%;
+		font-size: 15px;
+		font-weight: 400;
+		text-indent: 24px;
+		padding: 0;
+		box-sizing: border-box;
+
+		&::placeholder {
+			font-size: 15px;
+			font-weight: 400;
+			opacity: 40%;
+		}
+
+		&:focus {
+			border: 1px solid #4b8dd8;
+			box-shadow: 0px 0px 1px 1px #4b8dd8;
+			outline: none;
+		}
+
+		&--phone {
+			text-indent: 68px;
+		}
+	}
+}
+
+.phone-codes {
+	position: absolute;
+	left: 16px;
+	bottom: 24px;
+	transform: translateY(50%);
+	z-index: 1;
+}

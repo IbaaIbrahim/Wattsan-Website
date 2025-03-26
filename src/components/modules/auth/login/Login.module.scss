@@ -1,0 +1,27 @@
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.changeScreen {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+  text-decoration: underline;
+}
+
+.description {
+  margin-bottom: 24px;
+}
+
+.radio {
+  margin-bottom: 16px;
+}
+
+.loginButton {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  width: 100%;
+}

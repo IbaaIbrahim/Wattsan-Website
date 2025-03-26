@@ -1,0 +1,14 @@
+{
+	"description": "This power is ideal for precise wood processing in small and medium-scale productions.",
+	"pros": [
+		"Suitable for precise work in small-scale productions",
+		"Ideal for cutting and engraving wood",
+		"Enables conducting light yet precise operations."
+	],
+	"cons": [
+		"Not suitable for larger-scale productions",
+		"Limited power for working with hard materials",
+		"Not suitable for heavier and larger tasks"
+	],
+	"tip": "For heavy tasks like working with metals or dense materials, it's better to choose powerful spindles (for instance, 3 kW and above) for efficient processing."
+}

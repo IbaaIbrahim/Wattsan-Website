@@ -1,0 +1,71 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 16px;
+
+    &Border {
+        border-bottom: 1px solid #DEEBFA;
+    }
+    
+    &:not(.foldable) {
+        .header {
+            cursor: default;
+        }
+    }
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &Folded {
+        &:after {
+            opacity: 0;
+        }
+    }
+}
+
+.title {
+    display: flex;
+    align-items: flex-end;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.content {
+    max-height: 200vh;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    transform: rotate(-90deg);
+    transition: transform .3s ease;
+
+    &Folded {
+        transform: rotate(-270deg);
+    }
+}
+
+.folded {
+    max-height: 0;
+}
+
+.foldable {
+    .icon {
+        display: flex;
+    }
+}
+
+.innerContent {
+    padding: 16px 0 0;
+}

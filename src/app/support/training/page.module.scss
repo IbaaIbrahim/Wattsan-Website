@@ -1,0 +1,151 @@
+.page {
+    margin-top: 40px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 322px minmax(auto, 1000px);
+    grid-gap: 140px;
+    background-color: #F5F8FB;
+
+    @media (max-width: 1440px) {
+        grid-gap: 40px;
+    }
+
+    @media (max-width: 1024px) {
+        padding: 32px 20px;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 32px;
+    }
+}
+
+.sidebar {
+    height: max-content;
+    padding: 32px 24px;
+    background-color: #fff;
+    border-radius: 16px;
+
+    @media (max-width: 1024px) {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    &Title {
+        margin-bottom: 32px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+
+        @media (max-width: 768px) {
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.types {
+    display: grid;
+    grid-gap: 8px;
+
+    @media (max-width: 1024px) {
+        display: none;
+    }
+}
+
+.mobileTypes {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
+
+    @media (max-width: 1024px) {
+        display: grid;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+}
+
+.plateHeader {
+    position: relative;
+    height: 24px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -16px;
+        width: 100%;
+        height: 1px;
+        background-color: #92B0D2;
+        transition: opacity .3s ease;
+    }
+}
+
+.serviceTitle {
+    font-size: 15px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+    opacity: .4;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+        line-height: 28px;
+    }
+}
+
+.subtitle {
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 32px;
+        font-size: 24px;
+        line-height: 28px;
+    }
+}
+
+.tabs {
+    margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 32px;
+    }
+}
+
+.sidebarPlate {
+    padding: 16px 24px;
+    background-color: #F5F8FB;
+    border-radius: 8px;
+}
+
+.machines {
+    display: grid;
+    grid-gap: 8px;
+    padding-top: 16px;
+    padding-left: 16px;
+}
+
+.machineName {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: left;
+    transition: opacity .3s ease;
+
+    &:hover {
+        opacity: .4;
+    }
+}
+
+.materials {
+    display: grid;
+    grid-gap: 16px;
+}

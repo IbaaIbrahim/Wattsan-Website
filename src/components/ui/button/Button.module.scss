@@ -1,0 +1,158 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  text-align: center;
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+
+  &:hover:not(.disabled) {
+    cursor: pointer;
+  }
+
+  &:active:not(.disabled) {
+    transform: scale(.98);
+  }
+}
+
+.buttonWithoutAddons {
+  @media (max-width: 768px) {
+    gap: 0;
+  }
+}
+
+.block {
+  width: 100%;
+}
+
+.disabled {
+  opacity: .4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.s {
+  padding: 4px 16px;
+}
+
+.s.withoutContent {
+  padding: 6px;
+}
+
+.m {
+  padding: 8px 24px;
+
+  @media (max-width: 768px) {
+    padding: 4px 16px;
+  }
+}
+
+.l {
+  padding: 11px 32px;
+
+  @media (max-width: 768px) {
+    padding: 8px 24px;
+  }
+}
+
+.default {
+  background-color: transparent;
+  border-color: transparent;
+  color: #000000;
+}
+
+.bordered {
+  background-color: transparent;
+  border-color: #000000;
+  color: #000000;
+
+  &:hover:not(.disabled) {
+    border-color: #414141;
+    color: #414141;
+  }
+}
+
+.red {
+  background-color: #E63C32;
+  border-color: #E63C32;
+  color: #ffffff;
+
+  &:hover:not(.disabled) {
+    background-color: #C31B11;
+    border-color: #C31B11;
+  }
+}
+
+.black {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+
+  &:hover:not(.disabled) {
+    background-color: #414141;
+    border-color: #414141;
+  }
+}
+
+.blue {
+  background-color: #DEEBFA;
+  border-color: #DEEBFA;
+  color: #000000;
+
+  &:hover:not(.disabled) {
+    background-color: #BED5EF;
+    border-color: #BED5EF;
+  }
+}
+
+.green {
+  background-color: #52A94B;
+  border-color: #52A94B;
+  color: #ffffff;
+
+  &:hover:not(.disabled) {
+    background-color: #42883C;
+    border-color: #42883C;
+  }
+}
+
+.accent {
+  border-color: #E63C32;
+  color: #E63C32;
+
+  & > .leftAddon, & > .rightAddon {
+    filter: brightness(0) saturate(100%) invert(37%) sepia(29%) saturate(3611%) hue-rotate(336deg) brightness(89%) contrast(103%);
+  }
+
+  &.disabled {
+    border-color: #000000;
+    color: #000000;
+
+    & > .leftAddon, & > .rightAddon {
+      filter: brightness(0) saturate(100%) invert(0%) sepia(7%) saturate(2712%) hue-rotate(103deg) brightness(112%) contrast(107%);
+    }
+  }
+}
+
+.leftAddon, .rightAddon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addonsHideMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.withoutBorder {
+  border: none !important;
+}

@@ -1,0 +1,63 @@
+.fieldLabel {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  opacity: .4;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.input {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #000000;
+  border-radius: 50%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background-color: #000000;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+
+  &Checked {
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.hidden {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.label {
+
+}
+
+.disabled {
+  opacity: .4;
+}

@@ -1,0 +1,110 @@
+.row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #deebfa;
+	padding: 4px 0;
+	width: 100%;
+
+	&:last-child {
+		border: none;
+	}
+}
+
+.label-and-basic {
+	width: 66.6%;
+	display: flex;
+	justify-content: flex-start;
+
+	&__label {
+		width: 50%;
+		font-size: 14px;
+		font-weight: 400;
+		text-align: left;
+		opacity: 40%;
+	}
+
+	&__basic {
+		width: 50%;
+		font-size: 14px;
+		font-weight: 400;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		position: relative;
+
+		&--centered {
+			padding-left: 14%;
+			box-sizing: border-box;
+		}
+	}
+}
+
+.current,
+.price {
+	width: 33.3%;
+}
+
+.current {
+	font-size: 14px;
+	font-weight: 400;
+	text-align: left;
+}
+
+.price {
+	font-size: 14px;
+	font-weight: 600;
+	text-align: right;
+}
+.comparision-header {
+	width: 100%;
+	font-size: 14px;
+	font-weight: 600;
+	text-align: left;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #92b0d2;
+	margin-bottom: 16px;
+
+	&__basic {
+		width: 33.33%;
+		margin-left: 33.33%;
+		display: inline-block;
+	}
+	&__current {
+		width: 33.33%;
+		display: inline-block;
+	}
+}
+
+.checkbox {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 600;
+	padding-bottom: 24px;
+	user-select: none;
+
+	&::before {
+		content: '\2713';
+		color: transparent;
+		display: inline-block;
+		font-size: 20px;
+		font-weight: 600;
+		text-align: center;
+		border: 2px solid #000000;
+		height: 24px;
+		line-height: 24px;
+		width: 24px;
+		border-radius: 6px;
+		margin-right: 8px;
+	}
+
+	&--checked::before {
+		color: #000000;
+	}
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

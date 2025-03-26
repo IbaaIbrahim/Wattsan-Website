@@ -1,0 +1,62 @@
+.title {
+  margin-bottom: 16px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 38.4px;
+}
+
+.compare {
+  margin-bottom: 24px;
+}
+
+.comparisonWrapper {
+  table {
+    display: grid;
+    border-collapse: collapse;
+    grid-template-columns:
+            minmax(180px, 1fr)
+            minmax(170px, 1fr)
+            minmax(170px, 1fr)
+  }
+
+  thead,
+  tbody,
+  tr {
+    display: contents;
+  }
+
+  th,
+  td {
+    padding: 4px 8px 4px 0;
+  }
+
+  td {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19.6px;
+    border-bottom: 1px solid #DEEBFA;
+  }
+
+  td:nth-of-type(1) {
+    opacity: .4;
+  }
+
+  th {
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19.6px;
+    text-align: left;
+    border-bottom: 1px solid #92B0D2;
+  }
+}
+
+.compared {
+  td {
+    opacity: .4;
+  }
+}
+
+.difference {
+  opacity: 1 !important;
+}

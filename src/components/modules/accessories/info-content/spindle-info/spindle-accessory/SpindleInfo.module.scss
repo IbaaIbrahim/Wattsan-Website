@@ -1,0 +1,47 @@
+.section {
+	margin-bottom: 32px;
+	width: 100%;
+}
+
+.slider {
+	height: 542px;
+}
+
+.spindle-images {
+	display: flex;
+
+	&__item {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+		box-sizing: content-box;
+		width: 50%;
+
+		&:not(:last-child) {
+			padding-right: 8px;
+		}
+
+		&:last-child {
+			padding-left: 8px;
+		}
+	}
+}
+
+.spindle-img {
+	display: block;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 24px;
+	height: auto;
+}
+
+.info {
+	margin-bottom: 32px;
+}
+
+.label {
+	opacity: 40%;
+	font-size: 15px;
+	font-weight: 400;
+	margin-top: 8px;
+}

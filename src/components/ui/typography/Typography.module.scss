@@ -1,0 +1,102 @@
+.typography {
+  margin: 0;
+  padding: 0;
+}
+
+.h1 {
+  font-size: 40px;
+  line-height: 120%;
+  font-weight: 800 !important;
+
+  @media (max-width: 1440px) {
+    font-size: 32px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
+}
+
+.h2 {
+  font-size: 32px;
+  line-height: 120%;
+  font-weight: 600;
+
+  @media (max-width: 1440px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.h3 {
+  font-size: 24px;
+  line-height: 140%;
+  font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.p {
+  line-height: 140%;
+}
+
+.semi-bold {
+  font-weight: 600;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+.p.xl {
+  font-size: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.p.l {
+  font-size: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.p.m {
+  font-size: 15px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.p.s {
+  font-size: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+}
+
+.discolored {
+  opacity: .4;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}

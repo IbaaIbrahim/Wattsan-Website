@@ -1,0 +1,12 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+}
+
+.image {
+    position: relative;
+    aspect-ratio: 6 / 3;
+    overflow: hidden;
+    border-radius: 4px;
+}

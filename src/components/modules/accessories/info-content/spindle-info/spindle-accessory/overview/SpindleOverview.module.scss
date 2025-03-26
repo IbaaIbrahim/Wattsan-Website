@@ -1,0 +1,30 @@
+.overview {
+	height: 344px;
+	padding: 32px;
+	background: #deebfa;
+	box-sizing: border-box;
+	border-radius: 16px;
+
+	&__title {
+		font-size: 30px;
+		font-weight: 600;
+		text-align: left;
+	}
+
+	&__content {
+		margin-top: 24px;
+	}
+}
+
+.content {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+
+	&__description {
+		font-size: 15px;
+		font-weight: 400;
+		text-align: left;
+		margin: 0 12px 0 0;
+	}
+}

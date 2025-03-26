@@ -1,0 +1,27 @@
+.title {
+  margin-bottom: 16px;
+}
+
+.description {
+  margin-bottom: 24px;
+}
+
+.categoryName {
+  margin-bottom: 8px;
+}
+
+.machineName {
+  display: flex;
+  align-items: flex-end;
+}
+
+.field {
+  margin-top: 24px;
+}
+
+.actions {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}

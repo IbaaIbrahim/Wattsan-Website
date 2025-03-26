@@ -1,0 +1,85 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    border: 1px solid #92B0D2;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.header {
+    padding: 24px 32px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 38.4px;
+    background-color: #F5F8FB;
+}
+
+.content {
+    padding: 24px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.title {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+.description {
+    margin-bottom:8px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.viewDetails {
+    margin-bottom: 8px;
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 21px;
+    text-decoration: underline;
+}
+
+.expirationDate {
+    margin-bottom: 48px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    opacity: .4;
+}
+
+.copyCode {
+    position: relative;
+    margin-top: auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    border: 1px solid #92B0D2;
+    border-radius: 8px;
+    white-space: nowrap;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: -28px;
+        left: 0;
+        width: 100%;
+        border: 1px dashed #92B0D2;
+        pointer-events: none;
+    }
+
+    &Content {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding-right: 24px;
+    }
+}
