@@ -4,7 +4,8 @@ export enum FORMS {
 	equipmentCategory = 'equipmentCategory',
 	equipmentFilters = 'equipmentFilters',
 	machineConfiguration = 'machineConfiguration',
-	basicMachineConfiguration = 'basicMachineConfiguration'
+	basicMachineConfiguration = 'basicMachineConfiguration',
+	basket = 'basket'
 }
 
 export const FORMS_FIELDS = {

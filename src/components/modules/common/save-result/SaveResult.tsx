@@ -1,5 +1,6 @@
 import Button from '@components/ui/button/Button'
 import { Typography } from '@components/ui/typography/Typography'
+import { createBasket } from '@store/basket/actions'
 import { configuratorStore } from '@store/configurator'
 import { modalsStore } from '@store/modals'
 import Image from 'next/image'
@@ -16,7 +17,9 @@ const SaveResultModal = () => {
 
 	const summary = configuratorStore.use.summarySelector(machineId)
 
-	const handleAddToBasket = () => {}
+	const handleAddToBasket = () => {
+		createBasket()
+	}
 
 	return (
 		<div>

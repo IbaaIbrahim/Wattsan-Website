@@ -19,5 +19,13 @@ export const requestsStore = createStore('requests')<{
 	.extendSelectors((set, get) => ({
 		loadingSelector: (request: string) =>
 			get.requests()?.[request] === STATUSES.loading ?? false,
-		statusSelector: (request: string) => get.requests()?.[request] ?? null
+		statusSelector: (request: string) =>
+			get.requests()?.[request] ?? STATUSES.idle,
+		multipleLoadingSelector: requests =>
+			requests.some(request => get.requests()?.[request] === STATUSES.loading),
+		multipleIdleSelector: requests =>
+			requests.some(
+				request =>
+					(get.requests()?.[request] ?? STATUSES.idle) === STATUSES.idle
+			)
 	}))

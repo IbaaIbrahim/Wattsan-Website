@@ -13,6 +13,7 @@ import downloadIcon from '@public/img/icons/download.svg'
 import editIcon from '@public/img/icons/edit.svg'
 import twoCirclesIcon from '@public/img/icons/two-circles.svg'
 import { authStore } from '@store/auth'
+import { createBasket } from '@store/basket/actions'
 import { configuratorStore } from '@store/configurator'
 import { savePersonalConfiguration } from '@store/configurator/actions'
 import {
@@ -49,14 +50,27 @@ const SummaryAbout = () => {
 		modalsStore.set.open(MODALS.configNameModal, {})
 	}
 
+	const handleAddToBasket = async () => {
+		await savePersonalConfiguration(machineId, categoryId)
+		await createBasket()
+	}
+
 	const openBasketModal = () => {
-		// openDialog({
-		// 	okText: translations.summary_basket_modal.ok_btn,
-		// 	cancelText: translations.summary_basket_modal.cansel_btn,
-		// 	isRedOkBtn: true,
-		// 	isValid: true,
-		// 	children: <BasketModal machineOverview={machine} />
-		// })
+		if (authorized) {
+			handleAddToBasket()
+		} else {
+			modalsStore.set.open(MODALS.infoModal, {
+				title: 'To save the configuration, you need to Log in or Sign up',
+				accentButton: {
+					text: 'Log in or Sign up',
+					onClick: handleLogin(handleAddToBasket)
+				},
+				secondaryButton: {
+					text: 'Cancel',
+					onClick: () => modalsStore.set.close()
+				}
+			})
+		}
 	}
 
 	const authorized = authStore.use.authorized()
@@ -65,11 +79,11 @@ const SummaryAbout = () => {
 		savePersonalConfiguration(machineId, categoryId)
 	}
 
-	const handleLogin = () => {
+	const handleLogin = nextAction => () => {
 		modalsStore.set.open(MODALS.login, {
 			initialScreen: 'LOGIN',
 			closeOnEscape: false,
-			onComplete: handleSave,
+			onComplete: nextAction,
 			onError: () => {}
 		})
 	}
@@ -82,7 +96,7 @@ const SummaryAbout = () => {
 				title: 'To save the configuration, you need to Log in or Sign up',
 				accentButton: {
 					text: 'Log in or Sign up',
-					onClick: handleLogin
+					onClick: handleLogin(handleSave)
 				},
 				secondaryButton: {
 					text: 'Cancel',

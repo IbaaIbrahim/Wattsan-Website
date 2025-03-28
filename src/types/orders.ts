@@ -1,8 +1,8 @@
 export interface IOrder {
-	id: string
+	id: string | number
 	createDate: string
-	price: string
-	status: string
+	price: string | number
+	status: string | number
 	deliveryDate: string
 }
 

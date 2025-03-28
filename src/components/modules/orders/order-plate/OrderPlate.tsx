@@ -6,6 +6,7 @@ import { IOrder } from '@my-types/orders'
 import { FC } from 'react'
 
 import { PAGES } from '../../../../config/pages.url.config'
+import { getOrderDate } from '../../../../utils/time'
 
 import styles from './OrderPlate.module.scss'
 
@@ -29,9 +30,11 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 			<div className={styles.header}>
 				<div>
 					<div>№&nbsp;{order.id}</div>
-					<div className={styles.createDate}>from&nbsp;{order.createDate}</div>
+					<div className={styles.createDate}>
+						from&nbsp;{getOrderDate(order.createDate)}
+					</div>
 				</div>
-				<div className={styles.price}>{order.price}</div>
+				<div className={styles.price}>$ {order.price}</div>
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.footer}>
@@ -41,11 +44,11 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 							text={order.status}
 							view={colorMap[order.status]}
 						/>
-						<span>Delivery date&nbsp;{order.deliveryDate}</span>
+						<span>Delivery date&nbsp;{getOrderDate(order.deliveryDate)}</span>
 					</div>
 					{!isMobile && (
 						<Button
-							href={PAGES.orderId(order.id.replaceAll(' ', ''))}
+							// href={PAGES.orderId(order.id.replaceAll(' ', ''))}
 							size='l'
 						>
 							View details
@@ -64,7 +67,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 				{isMobile && (
 					<Button
 						className={styles.action}
-						href={PAGES.orderId(order.id.replaceAll(' ', ''))}
+						// href={PAGES.orderId(order.id.replaceAll(' ', ''))}
 						size='l'
 					>
 						View details

@@ -1,21 +1,20 @@
-import { basketStore } from '@store/basketStore'
+import { basketStore } from '@store/basket'
+import { basketForm } from '@store/forms'
 import clsx from 'clsx'
 import { FC } from 'react'
 
 import styles from './DeliveryMethod.module.scss'
 
 const DeliveryMethod: FC<{ className: string }> = ({ className }) => {
-	const { checkoutInfo, deliveryMethod, changeDeliveryMethod } = basketStore(
-		({ checkoutInfo, deliveryMethod, changeDeliveryMethod }) => ({
-			checkoutInfo,
-			deliveryMethod,
-			changeDeliveryMethod
-		})
-	)
+	const { country, deliveryMethod } = basketForm.use.valuesSelector()
+
+	const deliveryMethods = basketStore.use.deliveryMethodsSelector({
+		countryId: country
+	})
 
 	return (
 		<div className={clsx(styles.wrapper, className && className)}>
-			{checkoutInfo.deliveryMethods.map(({ id, name, cost, conditions }) => (
+			{deliveryMethods.map(({ id, name, cost, details }) => (
 				<label
 					key={id}
 					className={clsx(
@@ -27,7 +26,7 @@ const DeliveryMethod: FC<{ className: string }> = ({ className }) => {
 						type='radio'
 						className={styles.hidden}
 						value={id}
-						onClick={() => changeDeliveryMethod(id)}
+						onClick={() => basketForm.set.change('deliveryMethod', id)}
 					/>
 					<div
 						className={clsx(
@@ -38,14 +37,7 @@ const DeliveryMethod: FC<{ className: string }> = ({ className }) => {
 					<div className={styles.name}>{name}</div>
 					<div className={styles.cost}>{cost}</div>
 					<div className={styles.divider} />
-					{conditions.map((condition, index) => (
-						<div
-							key={index}
-							className={styles.condition}
-						>
-							{condition}
-						</div>
-					))}
+					<div className={styles.condition}>{details}</div>
 				</label>
 			))}
 		</div>

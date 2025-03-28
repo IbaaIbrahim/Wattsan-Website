@@ -10,10 +10,10 @@ const DuplicateConfigurationModal: FC<{
 	price: string
 }> = ({ image, name, price, code }) => {
 	return (
-		<>
+		<div>
 			<div className={styles.title}>Duplicate this configuration?</div>
 			<ConfigurationTemplatePlate item={{ image, name, code, price }} />
-		</>
+		</div>
 	)
 }
 

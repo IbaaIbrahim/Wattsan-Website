@@ -29,15 +29,20 @@ export const getStartParameters = async ({
 	categoryId?: any
 }) => {
 	try {
+		const track = categoryId
+			? 'getStartParametersByCategory'
+			: 'getStartParameters'
+
 		if (init && configuratorStore.get.categories()?.length !== 0) return
 		if (configuratorStore.get.startParameters()?.[categoryId]) return
 
-		if (requestsStore.get.loadingSelector(API_START_PARAMETERS)) return
+		if (requestsStore.get.loadingSelector(track)) return
 
 		const response = await authorizedRequest({
 			url: API_START_PARAMETERS,
 			method: 'GET',
-			query: { categoryId }
+			query: { categoryId },
+			track
 		})
 
 		if (init) {
@@ -162,11 +167,11 @@ export const getPersonalConfiguration = async () => {
 		const clientId = authStore.get.clientId()
 
 		// modalsStore.set.open(MODALS.saveResultModal, {})
-		const response = await authorizedRequest({
-			url: API_GET_CONFIGURATIONS,
-			method: 'GET',
-			query: { filter: `clientId~eq~'${clientId}'` }
-		})
+		// const response = await authorizedRequest({
+		// 	url: API_GET_CONFIGURATIONS,
+		// 	method: 'GET',
+		// 	query: { filter: `clientId~eq~'${clientId}'` }
+		// })
 	} catch (error) {
 		console.error(error)
 	}
@@ -194,12 +199,13 @@ export const savePersonalConfiguration = async (machineId, categoryId) => {
 		} = machineConfigurationForm.get.valuesSelector()
 		const configurationName = configuratorStore.get.configurationNameSelector()
 		const customName = configuratorStore.get.customName()
+		const price = configuratorStore.get.summarySelector(machineId)
 
 		const response = await authorizedRequest({
 			url: API_SAVE_CONFIGURATION,
 			method: 'POST',
 			data: {
-				configurationName: `${configurationName}${customName}`,
+				configurationName: `${configurationName} ${customName}`,
 				clientId,
 				seriesId: +machineId,
 				workArea: workAreaCharacteristics,
@@ -218,9 +224,14 @@ export const savePersonalConfiguration = async (machineId, categoryId) => {
 				rotaryDevice: rotaryDeviceCharacteristics,
 				cabine: cabineCharacteristics,
 				rotarySeparate: 66,
-				status: 1
+				status: 1,
+				price: price.replace(/\D/g, '')
 			}
 		})
+
+		const referenceId = response?.data?.[0]?.id
+
+		configuratorStore.set.savedReferenceId(referenceId)
 
 		modalsStore.set.open(MODALS.saveResultModal, {
 			machineId,

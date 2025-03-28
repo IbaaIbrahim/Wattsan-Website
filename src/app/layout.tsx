@@ -1,3 +1,4 @@
+import { AuthProvider } from '@components/modules/auth/auth-provider'
 import { Modal } from '@components/ui/modal/Modal'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
@@ -24,8 +25,10 @@ export default function RootLayout({
 	return (
 		<html>
 			<body className={`${roboto_init.variable} roboto`}>
-				<Layout>{children}</Layout>
-				<Modal />
+				<AuthProvider>
+					<Layout>{children}</Layout>
+					<Modal />
+				</AuthProvider>
 			</body>
 		</html>
 	)

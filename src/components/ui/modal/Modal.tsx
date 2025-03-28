@@ -25,17 +25,21 @@ import ReturnOrderSuccessModal from '@components/modules/common/return-order-suc
 import Rotate3dModal from '@components/modules/common/rotate-3d-modal/Rotate3dModal'
 import SaveResultModal from '@components/modules/common/save-result/SaveResult'
 import TemplateReadMoreModal from '@components/modules/common/template-read-more-modal/TemplateReadMoreModal'
+import AddToBasketModal from '@components/modules/summary/modals/add-to-basket-modal/AddToBasketModal'
 import { ComparisonModal } from '@components/modules/summary/modals/comparison-modal/ComparisonModal'
 import ConfigNameModal from '@components/modules/summary/modals/config-name-modal/ConfigNameModal'
 import { ConfigurationModal } from '@components/modules/summary/modals/configuration-modal/ConfigurationModal'
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import closeIcon from '@public/img/icons/close.svg'
 import { modalsStore } from '@store/modals'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import cn from './Modal.module.scss'
+
+import styles from '@components/ui/modal/new/styles.module.scss'
 
 export const MODALS = {
 	login: 'login',
@@ -65,7 +69,8 @@ export const MODALS = {
 	recommendationModal: 'recommendationModal',
 	requestModal: 'requestModal',
 	configNameModal: 'configNameModal',
-	registerSuccessModal: 'registerSuccessModal'
+	registerSuccessModal: 'registerSuccessModal',
+	addToBasketModal: 'addToBasketModal'
 }
 
 const MODAL_COMPONENTS = {
@@ -96,7 +101,8 @@ const MODAL_COMPONENTS = {
 	[MODALS.recommendationModal]: RecommendationModal,
 	[MODALS.requestModal]: RequestModal,
 	[MODALS.configNameModal]: ConfigNameModal,
-	[MODALS.registerSuccessModal]: RegisterSuccessModal
+	[MODALS.registerSuccessModal]: RegisterSuccessModal,
+	[MODALS.addToBasketModal]: AddToBasketModal
 }
 
 const MODAL_SIZES: any = {
@@ -125,7 +131,8 @@ const MODAL_SIZES: any = {
 	[MODALS.recommendationModal]: 'm',
 	[MODALS.requestModal]: 'm',
 	[MODALS.configNameModal]: 'm',
-	[MODALS.registerSuccessModal]: 'm'
+	[MODALS.registerSuccessModal]: 'm',
+	[MODALS.addToBasketModal]: 'm'
 }
 
 export const Modal = () => {
@@ -150,11 +157,20 @@ export const Modal = () => {
 		return () => window.removeEventListener('keydown', handleEscape)
 	}, [modal.name])
 
+	const [open, setOpen] = useState(false)
+
 	const handleClose = () => {
 		if (!disabled) {
 			modalsStore.set.close()
+			setOpen(false)
 		}
 	}
+
+	useEffect(() => {
+		if (modal?.name) {
+			setOpen(true)
+		}
+	}, [modal?.name])
 
 	const ModalComponent = useMemo(() => {
 		return MODAL_COMPONENTS?.[modal?.name] ?? null
@@ -163,27 +179,30 @@ export const Modal = () => {
 	if (!modal.name) return null
 
 	return (
-		<div className={cn.wrapper}>
-			<div
-				className={cn.overlay}
-				onClick={handleClose}
-			/>
-			<div className={clsx(cn.modal, cn[MODAL_SIZES[modal.name] ?? 'l'])}>
-				<button
-					className={cn.close}
-					onClick={handleClose}
+		<Dialog
+			open={open}
+			className={cn.dialog}
+			onClose={handleClose}
+		>
+			<DialogBackdrop className={cn.overlay} />
+			<div className={cn.wrapper}>
+				<DialogPanel
+					className={clsx(cn.modal, cn[MODAL_SIZES[modal.name] ?? 'l'])}
 				>
-					<Image
-						src={closeIcon}
-						alt=''
-					/>
-				</button>
-				<div className={cn.contentWrapper}>
-					<div className={cn.content}>
+					<button
+						className={cn.close}
+						onClick={handleClose}
+					>
+						<Image
+							src={closeIcon}
+							alt=''
+						/>
+					</button>
+					<div className={cn.contentWrapper}>
 						<ModalComponent {...modal.props} />
 					</div>
-				</div>
+				</DialogPanel>
 			</div>
-		</div>
+		</Dialog>
 	)
 }

@@ -20,7 +20,7 @@ const ConfigNameModal = () => {
 	}
 
 	return (
-		<>
+		<div>
 			<Typography
 				className={styles.title}
 				tag='h2'
@@ -82,7 +82,7 @@ const ConfigNameModal = () => {
 					Cancel
 				</Button>
 			</div>
-		</>
+		</div>
 	)
 }
 

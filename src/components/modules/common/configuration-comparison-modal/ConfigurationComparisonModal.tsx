@@ -28,7 +28,7 @@ const ConfigurationComparisonModal: FC<{
 	})
 
 	return (
-		<>
+		<div>
 			<div className={styles.title}>Comparison with basic</div>
 			<FormCheckbox
 				className={styles.compare}
@@ -60,7 +60,7 @@ const ConfigurationComparisonModal: FC<{
 					</tbody>
 				</table>
 			</div>
-		</>
+		</div>
 	)
 }
 

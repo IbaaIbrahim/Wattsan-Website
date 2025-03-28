@@ -13,7 +13,7 @@ const Quantity: FC<{
 		<div className={styles.wrapper}>
 			<button
 				className={styles.button}
-				disabled={disabled || quantity < 2}
+				disabled={disabled || quantity === 0}
 				onClick={() => onChange(quantity - 1)}
 			/>
 			<div className={clsx(styles.quantity, disabled && styles.disabled)}>
@@ -21,7 +21,7 @@ const Quantity: FC<{
 			</div>
 			<button
 				className={clsx(styles.button, styles.buttonPlus)}
-				disabled={disabled || quantity > limit - 1}
+				disabled={disabled || quantity === limit}
 				onClick={() => onChange(quantity + 1)}
 			/>
 		</div>

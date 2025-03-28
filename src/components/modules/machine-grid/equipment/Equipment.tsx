@@ -1,7 +1,8 @@
 'use client'
 
 import { FormRadioConfigurator } from '@components/ui/inputs/form-radio/configurator-variant/FormRadioConfigurator'
-import FormSelect from '@components/ui/inputs/form-select/FormSelect'
+import { FormSelect } from '@components/ui/inputs/form-select/headless-ui'
+// import FormSelect from '@components/ui/inputs/form-select/FormSelect'
 import { Typography } from '@components/ui/typography/Typography'
 import { useLang } from '@hooks/useLang'
 import { ILanguage } from '@my-types/languages'

@@ -4,7 +4,13 @@ import MachineView from '@components/modules/accessories/machine-view/MachineVie
 import { Params } from '@components/modules/accessories/params/Params'
 import ShowCardMobile from '@components/modules/accessories/show-card/ShowCardMobile'
 import BottomSheet from '@components/modules/bottom-sheet/BottomSheet'
+import { PageLoader } from '@components/modules/page-loader'
 import Checkbox, { Type } from '@components/ui/checkbox/Checkbox'
+import {
+	API_CONFIGURATION_BY_SERIES,
+	API_CONFIGURATION_BY_SERIES_AND_MODEL,
+	API_GET_CONFIGURATION_IMAGES
+} from '@constants/api'
 import { ConfiguratorSubSections } from '@constants/configurator'
 import { useConfigurator } from '@hooks/use-configurator'
 import { useLang } from '@hooks/useLang'
@@ -13,6 +19,7 @@ import arrowSrc from '@public/img/icons/arrow-left.svg'
 import { configuratorStore } from '@store/configurator'
 import { getConfigurationImages } from '@store/configurator/actions'
 import { machineConfigurationForm } from '@store/forms'
+import { requestsStore } from '@store/requests'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -38,7 +45,18 @@ const SECTION_LABELS = {
 	[ConfiguratorSections.additionalOptions]: 'Additional options'
 }
 
+const REQUESTS = [
+	'getStartParametersByCategory',
+	'getStartParameters',
+	API_GET_CONFIGURATION_IMAGES,
+	API_CONFIGURATION_BY_SERIES,
+	API_CONFIGURATION_BY_SERIES_AND_MODEL
+]
+
 const MachineId = () => {
+	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
+	const notInitialized = requestsStore.use.multipleIdleSelector(REQUESTS)
+
 	useConfigurator()
 
 	const machineId = configuratorStore.use.machineId()
@@ -65,10 +83,9 @@ const MachineId = () => {
 
 	const [openedBottomSheet, setOpenedBottomSheet] = useState<boolean>(false)
 
-	if (!machineId) return null
-
 	return (
 		<div className={styles.page}>
+			<PageLoader visible={loading || notInitialized} />
 			<article className={styles['wrapper']}>
 				<Link
 					className={styles['back-link']}

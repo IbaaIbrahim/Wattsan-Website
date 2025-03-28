@@ -6,6 +6,7 @@ import {
 } from '@constants/api'
 import { loginForm, signUpForm } from '@store/forms'
 import { STATUSES, requestsStore } from '@store/requests'
+import Cookie from 'js-cookie'
 import qs from 'query-string'
 
 import { request } from '../../utils/request'
@@ -62,6 +63,14 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 		authStore.set.token(response.data.content.token)
 		authStore.set.authorized(true)
 		signUpForm.set.reset()
+
+		Cookie.set(
+			'wattsan_data',
+			JSON.stringify({
+				clientId: response.data.content.id,
+				token: response?.data?.content?.token
+			})
+		)
 
 		onComplete()
 	} catch (error) {
@@ -126,5 +135,21 @@ export const verifyHandler = async (code, onComplete, onError) => {
 		requestsStore.set.updateRequest('verify', STATUSES.failure)
 
 		onError()
+	}
+}
+
+export const checkAuthorize = async () => {
+	try {
+		const { token = null, clientId = null } = Object(
+			JSON.parse(Cookie.get('wattsan_data') ?? '')
+		)
+
+		if (token) {
+			authStore.set.token(token)
+			authStore.set.clientId(clientId)
+			authStore.set.authorized(true)
+		}
+	} catch (error) {
+		console.error(error)
 	}
 }

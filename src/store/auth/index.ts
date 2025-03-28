@@ -16,3 +16,8 @@ export const authStore = createStore('auth')<TAuthStore>({
 	// token: null,
 	sessionId: null
 })
+
+/**
+ * скрыть templates на страницах orders, configurations
+ * configurations - status - in process: 1, ordered: 2, deleted: 3
+ * */

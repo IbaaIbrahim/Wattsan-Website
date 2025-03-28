@@ -2,10 +2,15 @@
 
 import Button from '@components/ui/button/Button'
 import Input from '@components/ui/input/Input'
-import basketIcon from '@public/img/icons/basket.svg'
+import { API_GET_CHECK_COUPON, API_ORDERS_CREATE } from '@constants/api'
+import deleteIcon from '@public/img/icons/delete-icon.svg'
 import promoInfo from '@public/img/icons/promo-info.svg'
-import { basketStore } from '@store/basketStore'
+import { basketStore } from '@store/basket'
+import { checkCoupon, createOrder } from '@store/basket/actions'
+import { basketForm } from '@store/forms'
+import { STATUSES, requestsStore } from '@store/requests'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 
 import styles from './PaymentInfo.module.scss'
@@ -14,75 +19,63 @@ const PaymentInfo: FC<{
 	disabled: boolean
 	view: 'preview' | 'payment'
 }> = ({ disabled, view }) => {
-	const {
-		items,
-		promoCode,
-		changePromoCode,
-		appliedPromoCode,
-		applyPromoCode,
-		deliveryMethod,
-		selectedCountry,
-		checkoutInfo
-	} = basketStore(
-		({
-			items,
-			promoCode,
-			changePromoCode,
-			appliedPromoCode,
-			applyPromoCode,
-			deliveryMethod,
-			selectedCountry,
-			checkoutInfo
-		}) => ({
-			items,
-			promoCode,
-			changePromoCode,
-			appliedPromoCode,
-			applyPromoCode,
-			deliveryMethod,
-			selectedCountry,
-			checkoutInfo
-		})
+	const router = useRouter()
+
+	const loading = requestsStore.use.loadingSelector(API_ORDERS_CREATE)
+	const promoCodeLoading =
+		requestsStore.use.loadingSelector(API_GET_CHECK_COUPON)
+	const promoCodeError =
+		requestsStore.use.statusSelector(API_GET_CHECK_COUPON) === STATUSES.failure
+
+	const positions = basketStore.use.positions()
+	const deliveryMethodName = basketStore.use.deliveryMethodNameSelector()
+	const totalPrice = basketStore.use.totalPriceSelector()
+	const appliedPromoCode = basketStore.use.appliedPromoCode()
+	const promoDiscount = basketStore.use.promoDiscount()
+	const countries = basketStore.use.countries()
+
+	const selectedPositions = positions.reduce(
+		(acc, el) => (el.selected ? acc + el?.quantity : acc),
+		0
 	)
 
-	const selected = items.filter(({ selected }) => selected)
-	const amount = selected
-		.map(({ price, quantity }) => price * quantity)
-		.reduce((acc, value) => acc + value, 0)
-	const discount = selected
-		.map(({ discount, quantity }) => discount * quantity)
-		.reduce((acc, value) => acc + value, 0)
-	const discountPercent = ((discount / amount) * 100).toFixed(0)
-	const total = amount - discount
-	const method = checkoutInfo.deliveryMethods.find(
-		({ id }) => deliveryMethod === id
-	)?.name
-	const country = checkoutInfo.countries.find(
-		({ id }) => selectedCountry === id
-	)?.text
-	const paymentAvailable = !!method && !!country
+	const discountPercent = ((promoDiscount / totalPrice) * 100).toFixed(0)
+
+	const { country, deliveryMethod, promoCode } = basketForm.use.valuesSelector()
+
+	const paymentAvailable = !!deliveryMethod && !!country
+
+	const countryName = countries.find(({ id }) => country === id)?.name
+
+	const handleCreateOrder = () => {
+		createOrder(router)
+	}
+
+	const handleCheckCoupon = () => {
+		checkCoupon()
+	}
 
 	return (
 		<div className={styles.plate}>
 			<div className={styles.title}>The order total</div>
 			<div>
-				{view === 'payment' && deliveryMethod && selectedCountry && (
+				{view === 'payment' && paymentAvailable && (
 					<div className={styles.deliveryInfo}>
 						<div className={styles.deliveryTitle}>Delivery method</div>
 						<div className={styles.deliveryMethod}>
-							{method}
-							<div>{country}</div>
+							{deliveryMethodName}
+							<div>{countryName}</div>
 						</div>
 					</div>
 				)}
 				<div className={styles.calculation}>
-					<div className={styles.counter}>{selected.length}&nbsp;items</div>
-					<div className={styles.amount}>${amount}</div>
-					{discount === 0 ? null : (
+					<div className={styles.counter}>{selectedPositions}&nbsp;items</div>
+					<div className={styles.amount}>${totalPrice}</div>
+					{promoDiscount === 0 ? null : (
 						<>
 							<div className={styles.counter}>Discount</div>
 							<div className={styles.discount}>
-								-{discount}
+								${promoDiscount}
 								<div className={styles.discountPercent}>
 									-{discountPercent}%
 								</div>
@@ -94,8 +87,8 @@ const PaymentInfo: FC<{
 				<div className={styles.result}>
 					<div className={styles.resultTitle}>Total</div>
 					<div className={styles.resultAmount}>
-						${total}
-						{view === 'payment' && !disabled && (
+						${totalPrice}
+						{view === 'payment' && !deliveryMethodName && (
 							<div className={styles.resultAmountInfo}>
 								Delivery not included
 							</div>
@@ -133,8 +126,8 @@ const PaymentInfo: FC<{
 							className={styles.createOrder}
 							view={paymentAvailable ? 'green' : 'blue'}
 							size='l'
-							disabled={!paymentAvailable || disabled}
-							href='/checkout/1001'
+							disabled={!paymentAvailable || disabled || loading}
+							onClick={handleCreateOrder}
 						>
 							{paymentAvailable
 								? 'Place an order'
@@ -145,36 +138,43 @@ const PaymentInfo: FC<{
 								value={promoCode}
 								placeholder='Promo code'
 								hasBorder={false}
-								disabled={disabled}
-								onChange={changePromoCode}
+								disabled={disabled || promoCodeLoading}
+								onChange={value => basketForm.set.change('promoCode', value)}
 							/>
 							<Button
 								view='blue'
 								size='l'
-								disabled={promoCode.length === 0 || disabled}
-								onClick={() => {
-									applyPromoCode(promoCode)
-									changePromoCode('')
-								}}
+								disabled={
+									(promoCode as string).length === 0 ||
+									disabled ||
+									promoCodeLoading
+								}
+								onClick={handleCheckCoupon}
 							>
 								Apply
 							</Button>
 						</div>
-						{appliedPromoCode.length > 0 && (
+						{promoDiscount !== 0 && (
 							<div className={styles.codeApplied}>
 								The promo code&nbsp;{appliedPromoCode}&nbsp;has been applied
 								{/*TODO Заменить иконку*/}
 								<button
 									className={styles.deletePromoCode}
 									onClick={() => {
-										applyPromoCode('')
+										basketStore.set.promoDiscount(0)
+										basketForm.set.change('promoCode', '')
 									}}
 								>
 									<Image
-										src={basketIcon}
+										src={deleteIcon}
 										alt=''
 									/>
 								</button>
+							</div>
+						)}
+						{promoCodeError && (
+							<div className={styles.codeApplied}>
+								The promo code&nbsp;{appliedPromoCode}&nbsp;incorrect
 							</div>
 						)}
 					</>

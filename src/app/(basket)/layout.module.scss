@@ -1,7 +1,5 @@
 .container {
   padding: 40px;
-  height: calc(100vh - 48px);
-  overflow-y: scroll;
   overflow-x: hidden;
 
   @media (max-width: 768px) {

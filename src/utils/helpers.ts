@@ -6,6 +6,7 @@ import {
 	isEmpty,
 	isNil,
 	keys,
+	pickAll,
 	union
 } from 'ramda'
 
@@ -47,3 +48,5 @@ export const countKeysDiff = (obj1, obj2) => {
 
 	return differences.length
 }
+
+export { pickAll }

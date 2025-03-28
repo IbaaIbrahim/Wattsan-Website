@@ -1,44 +1,27 @@
 'use client'
 
 import BasketView from '@components/modules/basket/basket-view/BasketView'
-import { TBasketItems, TPopularItems } from '@my-types/basket'
-import { TUserInfo } from '@my-types/user'
-import { basketService } from '@services/basket.service'
-import { userService } from '@services/user.service'
-import { useEffect, useState } from 'react'
+import { PageLoader } from '@components/modules/page-loader'
+import {
+	API_GET_BASKETS,
+	API_GET_COUNTRIES,
+	API_GET_DELIVERY_METHODS
+} from '@constants/api'
+import { useBasket } from '@hooks/use-basket'
+import { requestsStore } from '@store/requests'
 
-// TODO Вынести в вызов апи
-const request = async () => {
-	const [basket, userInfo] = await Promise.all([
-		basketService.getBasket(),
-		userService.getUserInfo()
-	])
-
-	return [basket, userInfo]
-}
+const REQUESTS = [API_GET_COUNTRIES, API_GET_DELIVERY_METHODS, API_GET_BASKETS]
 
 const Page = () => {
-	const [data, setData] = useState<any>({})
+	useBasket()
 
-	useEffect(() => {
-		request().then(([basket, userInfo]) => {
-			setData({ basket, userInfo })
-		})
-	}, [])
-
-	if (!data?.basket) return null
+	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
+	const notInitialized = requestsStore.use.multipleIdleSelector(REQUESTS)
 
 	return (
 		<div>
-			<BasketView
-				basket={
-					data?.basket as {
-						basketItems: TBasketItems
-						popularItems: TPopularItems
-					}
-				}
-				userInfo={data?.userInfo as TUserInfo}
-			/>
+			<PageLoader visible={loading || notInitialized} />
+			<BasketView />
 		</div>
 	)
 }

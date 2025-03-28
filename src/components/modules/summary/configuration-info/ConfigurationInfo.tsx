@@ -61,17 +61,17 @@ export const ConfigurationInfo = ({
 			)}
 			{FlatConfiguratorSections.slice(0, 5).map(section => {
 				const basicAccessoriesId = basicConfiguration[section]
-				const basicInfo = params[section].find(
+				const basicInfo = params[section]?.find(
 					({ id }) => id === basicAccessoriesId
 				)?.staticCharacteristic
-				const basicValue = `${basicInfo.name} ${basicInfo.unit ?? ''}`
+				const basicValue = `${basicInfo?.name} ${basicInfo?.unit ?? ''}`
 
 				const yourAccessoriesId = yourConfiguration[section]
-				const yourInfo = params[section].find(
+				const yourInfo = params[section]?.find(
 					({ id }) => id === yourAccessoriesId
 				)?.staticCharacteristic
 
-				const yourValue = `${yourInfo.name} ${yourInfo.unit ?? ''}`
+				const yourValue = `${yourInfo?.name} ${yourInfo?.unit ?? ''}`
 
 				return (
 					<div

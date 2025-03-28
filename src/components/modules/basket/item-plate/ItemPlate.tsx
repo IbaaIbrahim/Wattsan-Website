@@ -11,17 +11,17 @@ import styles from './ItemPlate.module.scss'
 
 const ItemPlate: FC<{
 	className?: string
-	id: string
-	selected: boolean
-	quantity: number
-	image: string
-	name: string
-	code: string
-	status: string
-	limit: number
-	price: number
-	onSelect: (id: string) => void
-	onChangeQuantity: (id: string, quantity: number) => void
+	id?: number
+	selected?: boolean
+	quantity?: number
+	image?: string
+	name?: string
+	code?: string
+	status?: string
+	limit?: number
+	price?: number
+	onSelect: (id: number, selected: boolean) => void
+	onChangeQuantity: (id: number, quantity: number) => void
 }> = ({
 	className,
 	id,
@@ -48,7 +48,7 @@ const ItemPlate: FC<{
 				<input
 					type='checkbox'
 					className={styles.hidden}
-					onChange={() => onSelect(id)}
+					onChange={() => onSelect(id, !selected)}
 				/>
 				<div className={styles.checkbox}>
 					<Image

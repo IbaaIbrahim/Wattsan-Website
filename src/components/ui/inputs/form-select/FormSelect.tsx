@@ -79,7 +79,7 @@ const FormSelect: FC<{
 	return (
 		<Tooltip
 			placement='bottom-start'
-			trigger={false}
+			trigger='outsideClick'
 			opened={open}
 			onToggle={handleToggle}
 			content={

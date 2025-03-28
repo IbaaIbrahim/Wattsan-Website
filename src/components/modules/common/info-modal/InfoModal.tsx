@@ -25,7 +25,7 @@ const InfoModal = ({
 	}
 }) => {
 	return (
-		<>
+		<div>
 			{hint && (
 				<Typography
 					className={styles.hint}
@@ -72,7 +72,7 @@ const InfoModal = ({
 					</Button>
 				)}
 			</div>
-		</>
+		</div>
 	)
 }
 

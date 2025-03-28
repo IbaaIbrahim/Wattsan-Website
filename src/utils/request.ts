@@ -31,7 +31,7 @@ export const authorizedRequest = async ({
 	method: 'POST' | 'GET'
 	data?: any
 	query?: object
-	track?: boolean
+	track?: boolean | string
 }) => {
 	try {
 		const token = authStore.get.token()
@@ -40,7 +40,11 @@ export const authorizedRequest = async ({
 			return new Error('Authorization token is missing')
 		}
 
-		if (track) requestsStore.set.updateRequest(url, STATUSES.loading)
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.loading
+			)
 
 		const response = await axios({
 			method,
@@ -52,11 +56,19 @@ export const authorizedRequest = async ({
 			}
 		})
 
-		if (track) requestsStore.set.updateRequest(url, STATUSES.success)
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.success
+			)
 
 		return response?.data ?? null
 	} catch (error) {
-		if (track) requestsStore.set.updateRequest(url, STATUSES.failure)
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.failure
+			)
 
 		throw error
 	}

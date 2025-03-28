@@ -4,7 +4,7 @@ import { FC } from 'react'
 import styles from './Status.module.scss'
 
 const Status: FC<{
-	text: string
+	text: string | number
 	view?: 'default' | 'yellow' | 'green' | 'purple' | 'red'
 	size?: 'l' | 'm'
 	counter?: string | undefined

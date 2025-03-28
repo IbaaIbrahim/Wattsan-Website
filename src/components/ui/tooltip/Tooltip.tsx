@@ -145,7 +145,7 @@ const Tooltip: FC<{
 			const eventTarget = event.target as Element
 
 			if (clickedOutside(eventTarget)) {
-				// close()
+				close()
 			}
 		}
 

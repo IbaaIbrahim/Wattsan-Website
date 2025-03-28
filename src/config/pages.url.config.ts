@@ -24,6 +24,7 @@ export const PAGES = {
 	summaryId: params => `/summary/${params}`,
 	basket: '/basket',
 	checkout: '/checkout',
+	checkoutId: (id, clientId) => `${PAGES.checkout}/${id}?clientId=${clientId}`,
 	logout: '/logout',
 	support: '/support',
 	training: '/support/training',

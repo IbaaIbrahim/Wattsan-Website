@@ -34,6 +34,7 @@ export type TUseConfiguratorStore = {
 		[key: string]: string
 	}
 	workAreaAffected: any[]
+	savedReferenceId: number
 }
 
 const IMAGES_PLACEHOLDER = {
@@ -55,7 +56,8 @@ export const configuratorStore = createStore(
 	startParameters: {},
 	seriesConfigurations: {},
 	images: {},
-	workAreaAffected: []
+	workAreaAffected: [],
+	savedReferenceId: null
 })
 	.extendActions((set, get) => ({
 		setStartParameters: (category, parameters) => {
@@ -119,7 +121,7 @@ export const configuratorStore = createStore(
 			get.seriesConfigurations()?.[seriesId] ?? {},
 		summarySelector: machineId => {
 			const params = get.seriesConfigurations()?.[machineId] ?? {}
-			const values = machineConfigurationForm.use.valuesSelector()
+			const values = machineConfigurationForm.get.valuesSelector()
 
 			const summary = Object.entries(values)
 				.map(([fieldName, fieldValue]) => {

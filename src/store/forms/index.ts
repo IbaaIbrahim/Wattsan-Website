@@ -220,3 +220,9 @@ export const basicMachineConfigurationForm = createFormStore(
 		cabineCharacteristics: { value: '' }
 	}
 )
+
+export const basketForm = createFormStore(FORMS.basket, {
+	country: { value: '' },
+	deliveryMethod: { value: '' },
+	promoCode: { value: '' }
+})

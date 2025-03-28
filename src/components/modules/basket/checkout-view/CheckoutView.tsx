@@ -3,47 +3,28 @@
 import DeliveryMethod from '@components/modules/basket/delivery-method/DeliveryMethod'
 import PaymentInfo from '@components/modules/basket/payment-info/PaymentInfo'
 import Button from '@components/ui/button/Button'
-import FormSelect from '@components/ui/inputs/form-select/FormSelect'
+import { FormSelect } from '@components/ui/inputs/form-select/headless-ui'
 import { MODALS } from '@components/ui/modal/Modal'
-import { TCheckoutInfo } from '@my-types/basket'
-import { TUserInfo } from '@my-types/user'
 import avatarSrc from '@public/img/account/user-avatar.png'
 import arrowSrc from '@public/img/icons/arrow-left.svg'
-import { basketStore } from '@store/basketStore'
+import { authStore } from '@store/auth'
+import { basketStore as newBasketStore } from '@store/basket'
+import { basketForm } from '@store/forms'
 import { modalsStore } from '@store/modals'
 import Image from 'next/image'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 
 import styles from './CheckoutView.module.scss'
 
-const CheckoutView: FC<{
-	checkoutInfo: TCheckoutInfo
-	userInfo: TUserInfo
-}> = ({ checkoutInfo, userInfo }) => {
-	const { info, saveCheckoutInfo, selectedCountry, changeSelectedCountry } =
-		basketStore(
-			({
-				checkoutInfo,
-				saveCheckoutInfo,
-				selectedCountry,
-				changeSelectedCountry
-			}) => ({
-				info: checkoutInfo,
-				saveCheckoutInfo,
-				selectedCountry,
-				changeSelectedCountry
-			})
-		)
-
-	useEffect(() => {
-		saveCheckoutInfo(checkoutInfo)
-	}, [checkoutInfo])
-
+const CheckoutView: FC = () => {
 	const handleLogin = () => {
 		modalsStore.set.open(MODALS.login, {
 			initialScreen: 'LOGIN',
 			closeOnEscape: false,
-			onlyInitialScreen: true
+			onlyInitialScreen: true,
+			onComplete: () => {
+				modalsStore.set.close()
+			}
 		})
 	}
 
@@ -51,15 +32,24 @@ const CheckoutView: FC<{
 		modalsStore.set.open(MODALS.login, {
 			initialScreen: 'SIGN_UP',
 			closeOnEscape: false,
-			onlyInitialScreen: false
+			onlyInitialScreen: false,
+			onComplete: () => {
+				modalsStore.set.close()
+			}
 		})
 	}
+
+	const authorized = authStore.use.authorized()
+
+	const countries = newBasketStore.use.countries()
+
+	const { country } = basketForm.use.valuesSelector()
 
 	return (
 		<div>
 			<Button
 				className={styles.navigation}
-				href='/equipment'
+				href='/basket'
 				view='default'
 				leftAddon={
 					<Image
@@ -75,7 +65,7 @@ const CheckoutView: FC<{
 				<div className={styles.content}>
 					<div className={styles.plate}>
 						<div className={styles.plateTitle}>Personal info</div>
-						{userInfo.authorized ? (
+						{authorized ? (
 							<div className={styles.userInfo}>
 								<div className={styles.name}>
 									<div className={styles.image}>
@@ -112,20 +102,26 @@ const CheckoutView: FC<{
 					<div className={styles.plate}>
 						<div className={styles.plateTitle}>Delivery method</div>
 						<div className={styles.divider} />
-						{userInfo.authorized ? (
+						{authorized ? (
 							<>
 								<div className={styles.sectionTitle}>Country</div>
 								<FormSelect
 									className={styles.countrySelect}
+									name='country'
+									color='blue'
+									bordered={true}
 									placeholder='Select delivery country'
-									options={checkoutInfo.countries.map(country => ({
-										value: country.id,
-										text: country.text
+									value={country}
+									options={countries.map(({ id, name }) => ({
+										value: id,
+										text: name
 									}))}
-									value={selectedCountry}
-									onSelect={changeSelectedCountry}
+									onSelect={selected => {
+										console.log(selected, 'selected')
+										basketForm.set.change('country', selected)
+									}}
 								/>
-								{selectedCountry === '' ? null : (
+								{country === '' ? null : (
 									<>
 										<div className={styles.sectionTitle}>
 											Choose delivery method
@@ -151,7 +147,7 @@ const CheckoutView: FC<{
 					<div className={styles.plate}>
 						<div className={styles.plateTitle}>Payment method</div>
 						<div className={styles.divider} />
-						{userInfo.authorized ? (
+						{authorized ? (
 							<div className={styles.paragraph}>
 								After placing your order, our manager will reach out to discuss
 								the most convenient payment method for you. Once agreed upon,
@@ -166,7 +162,7 @@ const CheckoutView: FC<{
 					</div>
 				</div>
 				<PaymentInfo
-					disabled={!userInfo.authorized}
+					disabled={!authorized}
 					view='payment'
 				/>
 			</div>

@@ -1,127 +1,127 @@
 .title {
-    margin-bottom: 40px;
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 48px;
+  margin-bottom: 40px;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 48px;
 }
 
 .wrapper {
-    display: grid;
-    grid-template-columns: 1fr 440px;
-    grid-gap: 24px;
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  grid-gap: 24px;
 
-    @media (max-width: 1440px) {
-        grid-template-columns: 1fr;
-    }
+  @media (max-width: 1440px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .content {
-    display: grid;
-    grid-gap: 24px;
+  display: grid;
+  grid-gap: 24px;
 }
 
 .navigation {
-    margin-left: -24px;
-    margin-bottom: 24px;
+  margin-left: -24px;
+  margin-bottom: 24px;
 }
 
 .plate {
-    padding: 32px;
-    border: 1px solid #DEEBFA;
-    border-radius: 16px;
+  padding: 32px;
+  border: 1px solid #DEEBFA;
+  border-radius: 16px;
 
-    @media (max-width: 768px) {
-        padding: 24px;
-    }
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
 }
 
 .plateTitle {
-    margin-bottom: 32px;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
+  margin-bottom: 32px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
 }
 
 .divider {
-    margin-bottom: 32px;
-    width: 100%;
-    height: 1px;
-    background-color: #DEEBFA;
+  margin-bottom: 32px;
+  width: 100%;
+  height: 1px;
+  background-color: #DEEBFA;
 }
 
 .sectionTitle {
-    margin-bottom: 16px;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
-    opacity: .4;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  opacity: .4;
 }
 
 .paragraph {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 21px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
 }
 
 .userInfo {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-column-gap: 24px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 24px;
+  align-items: center;
 
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr 1fr;
-        grid-row-gap: 16px;
-    }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 16px;
+  }
 }
 
 .authActions {
-    width: 100%;
-    max-width: 400px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 16px;
+  width: 100%;
+  max-width: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
 }
 
 .image {
-    position: relative;
-    margin-right: 16px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
+  position: relative;
+  margin-right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .name {
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
 
-    @media (max-width: 768px) {
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
+  @media (max-width: 768px) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 }
 
 .phone {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 21px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
 }
 
 .email {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 21px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
 }
 
 .countrySelect {
-    margin-bottom: 32px;
-    max-width: 400px;
+  margin-bottom: 32px;
+  max-width: 400px;
 }
 
 .deliveryMethod {
-    margin-top: 24px;
+  margin-top: 24px;
 }

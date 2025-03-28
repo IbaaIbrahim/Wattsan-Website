@@ -1,14 +1,17 @@
 import AllOrders from '@components/modules/orders/all-orders/AllOrders'
-import { IOrders } from '@my-types/orders'
 import { ordersService } from '@services/orders.service'
-import { authStore } from '@store/auth'
+import { useEffect, useState } from 'react'
 
-const OrdersPage = async () => {
-	const orders: IOrders = await ordersService.getOrders()
+const OrdersPage = () => {
+	const [orders, setOrders] = useState([])
+
+	useEffect(() => {
+		ordersService.getOrders().then(data => setOrders(data))
+	}, [])
 
 	return (
 		<>
-			{/*<AllOrders orders={orders} />*/}
+			<AllOrders orders={orders} />
 		</>
 	)
 }
