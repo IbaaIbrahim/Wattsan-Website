@@ -1,6 +1,8 @@
 import { TGetConfigurations } from '@my-types/configurations'
 
 import configurationsMock from './mocks/configurations/configurations.json'
+import { authorizedRequest } from '../utils/request'
+import { API_GET_REAL_ATTACHMENTS } from '@constants/api'
 
 class ConfigurationsService {
 	private BASE_URL = ''
@@ -15,6 +17,20 @@ class ConfigurationsService {
 			myTemplates: response.myTemplates,
 			popularTemplates: response.popularTemplates,
 			basicSpecification: response.basicSpecification
+		}
+	}
+
+	async getRealPhotos(): Promise<any> {
+		const response = await authorizedRequest({
+			url: API_GET_REAL_ATTACHMENTS,
+			method: 'GET',
+			query: {
+				attachmentType: 2
+			}
+		});
+
+		return {
+			data: response.data
 		}
 	}
 }

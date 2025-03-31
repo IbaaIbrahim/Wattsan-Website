@@ -9,7 +9,6 @@ import { requestsStore } from '@store/requests'
 import styles from './page.module.scss'
 
 const ConfiguratorPage = () => {
-	console.log('123')
 	useConfigurator()
 
 	const loading = requestsStore.use.multipleLoadingSelector([

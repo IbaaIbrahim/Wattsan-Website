@@ -18,3 +18,6 @@ export const API_CREATE_BASKET = `${API_URL}/Baskets/Create`
 export const API_GET_ORDERS = `${API_URL}/Orders/Read`
 export const API_ORDERS_CREATE = `${API_URL}/Orders/Create`
 export const API_GET_CHECK_COUPON = `${API_URL}/Coupons/CheckCoupon`
+export const API_GET_REAL_ATTACHMENTS = `${API_URL}/ConfiguratorImages/ReadRealAttachments`
+export const API_GET_SUPPORT_ABOUT_US = `${API_URL}/Support/AboutUs`
+export const API_GET_SUPPORT_TRAINING_FILES = `${API_URL}/Support/ReadAssets`

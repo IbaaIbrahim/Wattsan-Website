@@ -23,7 +23,7 @@ import { configuratorStore } from '@store/configurator'
 import { modalsStore } from '@store/modals'
 import clsx from 'clsx'
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import ActionsPanel from '../actions-panel/ActionsPanel'
 

@@ -4,6 +4,9 @@ import { CarouselItem } from '@my-types/carouselItem'
 import { ILanguage } from '@my-types/languages'
 
 import styles from './MediaModal.module.scss'
+import { useEffect, useState } from 'react'
+import { configurationsService } from '@services/configurations.service'
+import { Loader } from '@components/modules/page-loader/components/loader'
 
 const MediaModal = ({
 	items,
@@ -13,6 +16,24 @@ const MediaModal = ({
 	isVideoModal?: boolean
 }) => {
 	const { translations }: { translations: ILanguage } = useLang()
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		const getData = async () => {
+			const { data } = await configurationsService.getRealPhotos()
+			setLoading(false)
+		}
+		getData().then(r => {})
+	}, [])
+
+	if (loading) {
+		return (
+			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+				<Loader size={40} />
+			</div>
+		)
+		// return null
+	}
 
 	return (
 		<div className={styles.view}>
