@@ -68,6 +68,19 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 		}
 	}, [])
 
+	useEffect(() => {
+		const modelViewerElement = modelViewerRef.current;
+		if (modelViewerElement) {
+			const handleError = (error) => {
+				console.error('Model loading error:', error);
+			};
+
+			modelViewerElement.addEventListener('error', handleError);
+			return () => {
+				modelViewerElement.removeEventListener('error', handleError);
+			};
+		}
+	}, []);
 	return (
 		<>
 			{loading && (
@@ -98,8 +111,14 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 				alt={alt}
 				auto-rotate={autoRotate}
 				camera-controls={cameraControls}
+			style={{
+			width: '100%',
+			height: '100%'
+		}}
+				// @ts-ignore
+				// crossOrigin="anonymous"
 				//@ts-ignore
-				class={className}
+				className={className}
 			/>
 		</>
 	)

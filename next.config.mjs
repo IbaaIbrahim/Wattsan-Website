@@ -1,5 +1,5 @@
 import path from 'path'
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -12,7 +12,16 @@ const nextConfig = {
     experimental: {
         missingSuspenseWithCSRBailout: false,
     },
-    reactStrictMode: false
+    reactStrictMode: false,
+
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'api.wattsancnc.com',
+            },
+        ],
+    },
 }
 
 export default nextConfig

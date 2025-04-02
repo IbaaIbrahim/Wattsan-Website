@@ -14,28 +14,29 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
+import _ from 'lodash'
 
 import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './Params.module.scss'
 
 export const SUBSECTIONS_TITLE = {
-	workAreaCharacteristics: 'Work area size',
-	zAxisCharacteristics: 'Tool lift height (Z axis)',
-	toolswithchCharacteristics: 'Tool switch',
-	spindleCharacteristics: 'Spindle (power, cooling, collet)',
-	spindleQuantityCharacteristics: 'Spindle quantity',
-	motorCharacteristics: 'Motor',
-	controlSystemCharacteristics: 'Control System',
-	liquidCoolingSystemCharacteristics: 'Liquid cooling system',
-	removableSensorCharacteristics: 'Removable instrument sensor',
-	builtInSensorCharacteristics: 'Built-in instrument sensor',
-	lubricationSystemCharacteristics: 'Lubrication system',
-	aspirationCharacteristics: 'Removable instrument sensor',
-	vaccumTableCharacteristics: 'Vacuum table',
-	rotaryDeviceCharacteristics: 'Rotary device',
-	rotarySeparateCharacteristics: 'Rotary separate',
-	cabineCharacteristics: 'Cabine'
+	workAreaCharacteristics: {name: 'Work area size', code: 'WorkArea'},
+	zAxisCharacteristics: {name: 'Tool lift height (Z axis)', code: 'ZAxis'},
+	toolswithchCharacteristics: {name: 'Tool switch', code: 'ToolSwitch'},
+	spindleCharacteristics: {name: 'Spindle (power, cooling, collet)', code: 'Spindle'},
+	spindleQuantityCharacteristics: {name: 'Spindle quantity', code: 'SpindleQuantity'},
+	motorCharacteristics: {name: 'Motor', code: 'Motor'},
+	controlSystemCharacteristics: {name: 'Control System', code: 'ControlSystem'},
+	liquidCoolingSystemCharacteristics: {name: 'Liquid cooling system', code: 'LiquidCoolingSystem'},
+	removableSensorCharacteristics: {name: 'Removable instrument sensor', code: 'RemovableSensor'},
+	builtInSensorCharacteristics: {name: 'Built-in instrument sensor', code: 'BuildInSensor'},
+	lubricationSystemCharacteristics: {name: 'Lubrication system', code: 'LubricationSystem'},
+	aspirationCharacteristics: {name: 'Removable instrument sensor', code: 'Aspiration'},
+	vaccumTableCharacteristics: {name: 'Vacuum table', code: 'VaccumTable'},
+	rotaryDeviceCharacteristics: {name: 'Rotary device', code: 'RotaryDevice'},
+	rotarySeparateCharacteristics: {name: 'Rotary separate', code: 'RotarySeparate'},
+	cabineCharacteristics: {name: 'Cabine', code: 'Cabine'}
 }
 
 export const PARAM_NAME_BY_CODE = {
@@ -88,7 +89,7 @@ export const Params = ({
 
 				modalsStore.set.open(MODALS.recommendationModal, {
 					machineName: `${categoryInfo?.name} ${machineInfo?.name}`,
-					paramName: `${SUBSECTIONS_TITLE[name]} ${characteristic?.name} ${characteristic?.unit}`,
+					paramName: `${_.get(SUBSECTIONS_TITLE, `${name}.name`)} ${characteristic?.name} ${characteristic?.unit}`,
 					suggestions: [
 						{
 							suggestionDetails: suggestion.suggestionDetails,
@@ -124,7 +125,10 @@ export const Params = ({
 							}
 						})
 					},
-					hint: ''
+					hint: '',
+					styles: {
+						display: 'block'
+					}
 				})
 			}
 
@@ -138,18 +142,24 @@ export const Params = ({
 				if (suggestions.length === 0) {
 					modalsStore.set.open(MODALS.requestModal, {
 						machineName: `${categoryInfo?.name} ${machineInfo?.name}`,
-						paramName: `${SUBSECTIONS_TITLE[name]} ${characteristic?.name} ${characteristic?.unit ?? ''}`,
-						hint: ''
+						paramName: `${_.get(SUBSECTIONS_TITLE, `${name}.name`)} ${characteristic?.name} ${characteristic?.unit ?? ''}`,
+						hint: '',
+						styles: {
+							display: 'block'
+						}
 					})
 				} else {
 					modalsStore.set.open(MODALS.recommendationModal, {
 						machineName: `${categoryInfo?.name} ${machineInfo?.name}`,
-						paramName: `${SUBSECTIONS_TITLE[name]} ${characteristic?.name} ${characteristic?.unit ?? ''}`,
+						paramName: `${_.get(SUBSECTIONS_TITLE, `${name}.name`)} ${characteristic?.name} ${characteristic?.unit ?? ''}`,
 						suggestions,
 						hint: '',
 						actionButtonText: 'Confirm',
 						onAction: selectedParam => {
 							console.log(selectedParam)
+						},
+						styles: {
+							display: 'block'
 						}
 					})
 				}
@@ -178,7 +188,11 @@ export const Params = ({
 		}
 	}
 
-	const handleSectionInfo = section => () => {}
+	const handleSectionInfo = section => () => {
+		modalsStore.set.open(MODALS.characteristicCodeInfoModal, {
+			characteristicCode: _.get(SUBSECTIONS_TITLE, `${section}.code`),
+		})
+	}
 
 	const handleParamInfo = param => () => {}
 
@@ -231,6 +245,10 @@ export const Params = ({
 		return affectedIds.has(staticCharacteristic.id)
 	}
 
+	// while (true){
+	// 	console.log('true')
+	// }
+
 	return (
 		<article
 			className={clsx(
@@ -250,20 +268,18 @@ export const Params = ({
 						>
 							<span className={styles.subtitle}>
 								<span className={styles['subtitle__text']}>
-									{SUBSECTIONS_TITLE[sectionName]}
+									{_.get(SUBSECTIONS_TITLE, `${sectionName}.name`)}
 								</span>
 								{/*TODO Добавить в ответ апи*/}
-								{false && (
-									<div
-										className={styles['info-image']}
-										onClick={handleSectionInfo(sectionName)}
-									>
-										<Image
-											src={infoSrc}
-											alt=''
-										/>
-									</div>
-								)}
+								<div
+									className={styles['info-image']}
+									onClick={handleSectionInfo(sectionName)}
+								>
+									<Image
+										src={infoSrc}
+										alt=''
+									/>
+								</div>
 							</span>
 							<FormRadioAccessories
 								value={values[sectionName]}

@@ -1,8 +1,0 @@
-1- Image 1: duplicated characteristics in available ... & prizes is come from api & loader should be on "Start editing" click immediately
-
-Configurator Page:
-2- editing real: photos/videos/3d should be from api
-3- Remove loader on navigating between options
-4- When clicking on non-bold options a modal with bad style appears
-5- Image 2: Add this photos from api
-6- Suggestions modal when clicking non-compatible options

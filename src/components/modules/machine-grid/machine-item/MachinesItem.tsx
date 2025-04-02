@@ -31,7 +31,7 @@ const MachinesItem = ({
 	// 	// 	onOk: () => closeAll(),
 	// 	// 	isValid: true,
 	// 	// 	children: (
-	// 	// 		<InfoModal
+	// 	// 		<CharacteristicCodeInfoModal
 	// 	// 			title={translations.request_result_modal.title}
 	// 	// 			description={translations.request_result_modal.description}
 	// 	// 			providedContact={clientInfo.phone}

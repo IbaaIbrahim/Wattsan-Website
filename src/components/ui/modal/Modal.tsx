@@ -40,6 +40,8 @@ import { useEffect, useMemo, useState } from 'react'
 import cn from './Modal.module.scss'
 
 import styles from '@components/ui/modal/new/styles.module.scss'
+import CharacteristicCodeInfoModal
+	from '@components/modules/common/characteristic-code-info-modal/CharacteristicCodeInfoModal'
 
 export const MODALS = {
 	login: 'login',
@@ -59,6 +61,7 @@ export const MODALS = {
 	rotate3d: 'rotate3d',
 	mediaModal: 'mediaModal',
 	infoModal: 'infoModal',
+	characteristicCodeInfoModal: 'characteristicCodeInfoModal',
 	configurationComparisonModal: 'configurationComparisonModal',
 	templateReadMoreModal: 'templateReadMoreModal',
 	duplicateConfigurationModal: 'duplicateConfigurationModal',
@@ -91,6 +94,7 @@ const MODAL_COMPONENTS = {
 	[MODALS.rotate3d]: Rotate3dModal,
 	[MODALS.mediaModal]: MediaModal,
 	[MODALS.infoModal]: InfoModal,
+	[MODALS.characteristicCodeInfoModal]: CharacteristicCodeInfoModal,
 	[MODALS.configurationComparisonModal]: ConfigurationComparisonModal,
 	[MODALS.templateReadMoreModal]: TemplateReadMoreModal,
 	[MODALS.duplicateConfigurationModal]: DuplicateConfigurationModal,
@@ -121,6 +125,7 @@ const MODAL_SIZES: any = {
 	[MODALS.rotate3d]: 'full',
 	[MODALS.mediaModal]: 'full',
 	[MODALS.infoModal]: 'm',
+	[MODALS.characteristicCodeInfoModal]: 'l',
 	[MODALS.configurationComparisonModal]: 'l',
 	[MODALS.templateReadMoreModal]: 'l',
 	[MODALS.duplicateConfigurationModal]: 'm',
@@ -198,7 +203,7 @@ export const Modal = () => {
 							alt=''
 						/>
 					</button>
-					<div className={cn.contentWrapper}>
+					<div className={cn.contentWrapper} style={modal?.props?.styles ?? {}}>
 						<ModalComponent {...modal.props} />
 					</div>
 				</DialogPanel>

@@ -1,0 +1,21 @@
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem;
+  background-color: #DEEBFA;
+  border-radius: 20px;
+  margin-top: 1rem;
+}
+.title{
+  width: 50%;
+}
+.content{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.image{
+  width: 40%;
+}

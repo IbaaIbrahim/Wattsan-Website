@@ -28,6 +28,7 @@ import { useEffect, useMemo, useState } from 'react'
 import ActionsPanel from '../actions-panel/ActionsPanel'
 
 import styles from './MachineView.module.scss'
+import { machineConfigurationForm } from '@store/forms'
 
 const MACHINE_IMAGES = {
 	default: defaultMachineImage,
@@ -53,9 +54,14 @@ const MachineView = ({
 	selectedSection?: any
 	onSelect?: (part: AccessoryParts) => void
 } & any) => {
+
 	const categoryInfo = configuratorStore.use.categoryInfoSelector()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
 	const modelName = configuratorStore.use.modelNameSelector()
+
+	const values = machineConfigurationForm.use.valuesSelector()
+
+	// console.log(values, machineInfo, modelName)
 
 	const { translations }: { translations: ILanguage } = useLang()
 
@@ -76,76 +82,24 @@ const MachineView = ({
 	}
 
 	const openRotateModal = () => {
-		modalsStore.set.open(MODALS.rotate3d)
+		modalsStore.set.open(MODALS.rotate3d, {
+			seriesId: machineInfo?.id,
+			modelId: values.workAreaCharacteristics
+		})
 	}
 
 	const openPhotosModal = () => {
 		modalsStore.set.open(MODALS.mediaModal, {
-			items: [
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				}
-			]
+			seriesId: machineInfo?.id,
+			modelId: values.workAreaCharacteristics
 		})
 	}
 
 	const openVideosModal = () => {
 		modalsStore.set.open(MODALS.mediaModal, {
 			isVideoModal: true,
-			items: [
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				}
-			]
+			seriesId: machineInfo?.id,
+			modelId: values.workAreaCharacteristics
 		})
 	}
 

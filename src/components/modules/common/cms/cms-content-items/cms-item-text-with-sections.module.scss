@@ -1,0 +1,29 @@
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.5rem 2rem;
+  border-radius: 20px;
+  margin-top: 1rem;
+}
+.title{
+  width: 50%;
+}
+.content{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.table{
+  width: 100%;
+  margin-top: 1rem;
+}
+.repeatedWrapper{
+  margin-top: 0.5rem;
+}
+.repeatedTitle{
+  border-bottom: 1px solid #92B0D2;
+}
+.repeatedText{
+}
