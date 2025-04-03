@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 2rem;
+  padding: 2rem 0;
   border-radius: 20px;
   margin-top: 1rem;
 }
@@ -24,6 +24,7 @@
   border-bottom: 1px solid #92B0D2;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  color: #939597;
 }
 .td{
   border-bottom: 1px solid #DEEBFA;

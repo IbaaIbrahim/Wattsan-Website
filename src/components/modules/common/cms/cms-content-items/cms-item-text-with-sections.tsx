@@ -18,11 +18,11 @@ const CmsItemTextWithSections: FC<{contentItemData: any}> = ({ contentItemData }
 			</div>
 			<div className={styles.table}>
 				{
-					_.map(contentItemData?.data?.data, tableItem =>{
+					_.map(contentItemData?.data?.data, (tableItem, tableItemIndex) =>{
 						return (
-							<div className={styles.repeatedWrapper} key={tableItem.uuid}>
-								<div className={styles.repeatedTitle}>{tableItem.title}</div>
-								<div className={styles.repeatedText}>{tableItem.text}</div>
+							<div style={{marginTop: tableItemIndex > 0 ? 20 : 0}} className={styles.repeatedWrapper} key={tableItem.uuid}>
+								<div style={{paddingBottom: 7, fontWeight: 500}} className={styles.repeatedTitle}>{tableItem.title}</div>
+								<div style={{paddingTop: 7}} className={styles.repeatedText}>{tableItem.text}</div>
 							</div>
 						)
 					})

@@ -4,12 +4,13 @@ import { FC, useState } from 'react'
 import _ from 'lodash'
 
 import styles from './index.module.scss'
+import './index.scss'
 import CmsItemsWrapper from '@components/modules/common/cms/cms-content-items'
 
 const CmsContent: FC<{content: any}> = ({ content }) => {
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={clsx(styles.wrapper, 'cms-wrapper')}>
 			{
 				_.map(content, contentItemData => {
 					return (

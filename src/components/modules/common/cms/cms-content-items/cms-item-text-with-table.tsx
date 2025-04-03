@@ -20,8 +20,8 @@ const CmsItemTextWithTable: FC<{contentItemData: any}> = ({ contentItemData }) =
 				<table>
 					<thead>
 					<tr>
-						<th className={styles.th}>{contentItemData?.data?.table?.c1_title}</th>
-						<th className={styles.th}>{contentItemData?.data?.table?.c2_title}</th>
+						<th style={{width: '30%'}} className={styles.th}>{contentItemData?.data?.table?.c1_title}</th>
+						<th style={{width: '70%'}} className={styles.th}>{contentItemData?.data?.table?.c2_title}</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -29,8 +29,10 @@ const CmsItemTextWithTable: FC<{contentItemData: any}> = ({ contentItemData }) =
 						_.map(contentItemData?.data?.table?.data, tableItem =>{
 							return (
 								<tr key={tableItem.uuid}>
-									<td className={styles.td}>{tableItem.title}</td>
-									<td className={styles.td}>{tableItem.value}</td>
+									<td style={{color: 'black', fontWeight: 'bolder'}} className={styles.td}>{tableItem.title}</td>
+									<td className={styles.td}>
+										<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(JSON.parse(tableItem.value ?? '')) }} />
+									</td>
 								</tr>
 							)
 						})

@@ -9,12 +9,12 @@ const CmsItemEditor: FC<{contentItemData: any}> = ({ contentItemData }) => {
 
 	return (
 		<div className={styles.wrapper}>
-			<h3 className={styles.title}>
+			<span style={{fontSize: 32, fontWeight: 500, marginBottom: '1rem'}} className={styles.title}>
 				{contentItemData?.data?.title}
-			</h3>
+			</span>
 			<div className={styles.content}>
-				<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentItemData?.data?.text) }} />
-				<Image className={styles.image} width={200} height={200} src={contentItemData?.data?.file?.url} alt={contentItemData?.data?.file?.alt} />
+				<div style={{paddingRight: 30}} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentItemData?.data?.text) }} />
+				<Image style={{borderRadius: 10}} className={styles.image} width={200} height={200} src={contentItemData?.data?.file?.url} alt={contentItemData?.data?.file?.alt} />
 			</div>
 		</div>
 	)
