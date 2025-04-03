@@ -11,12 +11,12 @@ const CmsItemTwoImages: FC<{contentItemData: any}> = ({ contentItemData }) => {
 		<div className={styles.wrapper}>
 			<div className={styles.content}>
 				<div className={styles.imageItemWrapper}>
-					<Image style={{width: '100%'}} width={300} height={300} src={_.get(contentItemData, 'data.file1.url')} alt='' />
-					<span>{_.get(contentItemData, 'data.text1')}</span>
+					<Image style={{width: '100%', height: 230}} width={300} height={300} src={_.get(contentItemData, 'data.file1.url')} alt='' />
+					<span style={{color: '#898989'}}>{_.get(contentItemData, 'data.text1')}</span>
 				</div>
 				<div className={styles.imageItemWrapper}>
-					<Image style={{width: '100%'}} width={300} height={300} src={_.get(contentItemData, 'data.file2.url')} alt='' />
-					<span>{_.get(contentItemData, 'data.text2')}</span>
+					<Image style={{width: '100%', height: 230}} width={300} height={300} src={_.get(contentItemData, 'data.file2.url')} alt='' />
+					<span style={{color: '#898989'}}>{_.get(contentItemData, 'data.text2')}</span>
 				</div>
 			</div>
 		</div>
