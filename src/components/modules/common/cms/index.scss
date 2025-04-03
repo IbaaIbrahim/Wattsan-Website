@@ -3,4 +3,21 @@
     margin-top: 2px;
     margin-bottom: 2px;
   }
+
+  @media (max-width: 600px) {
+    .cms-item-text-with-image-content-wrapper{
+      flex-direction: column;
+    }
+    .cms-item-text-with-image-content-image{
+      width: 100%;
+    }
+    .cms-item-two-images-content{
+      flex-direction: column;
+    }
+    .cms-item-two-images-image-wrapper{
+      width: 100%;
+      max-width: 400px;
+      margin-top: 5px;
+    }
+  }
 }
