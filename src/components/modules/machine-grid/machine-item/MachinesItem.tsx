@@ -41,7 +41,6 @@ const MachinesItem = ({
 	// }
 
 	const handleOnEdit = async () => {
-		await getInitialSeriesConfiguration(machineData.id)
 
 		if (!machineData.isActive) {
 			let clientInfo: SupportCallback = { fullname: '', phone: '' }

@@ -17,7 +17,7 @@ import { useLang } from '@hooks/useLang'
 import { ILanguage } from '@my-types/languages'
 import arrowSrc from '@public/img/icons/arrow-left.svg'
 import { configuratorStore } from '@store/configurator'
-import { getConfigurationImages } from '@store/configurator/actions'
+import { getConfigurationImages, getInitialSeriesConfiguration } from '@store/configurator/actions'
 import { machineConfigurationForm } from '@store/forms'
 import { requestsStore } from '@store/requests'
 import clsx from 'clsx'
@@ -48,7 +48,7 @@ const SECTION_LABELS = {
 const REQUESTS = [
 	'getStartParametersByCategory',
 	'getStartParameters',
-	API_GET_CONFIGURATION_IMAGES,
+	// API_GET_CONFIGURATION_IMAGES,
 	API_CONFIGURATION_BY_SERIES,
 	API_CONFIGURATION_BY_SERIES_AND_MODEL
 ]
@@ -71,13 +71,17 @@ const MachineId = () => {
 
 	const values = machineConfigurationForm.use.valuesSelector()
 
-	useEffect(() => {
-		const motorId = values?.motorCharacteristics
-		const spindleQuantityId = values?.spindleQuantityCharacteristics
-		const workAreaId = values?.workAreaCharacteristics
+	// useEffect(() => {
+	// 	getInitialSeriesConfiguration(machineId)
+	// }, [])
 
-		getConfigurationImages({ section, motorId, spindleQuantityId, workAreaId })
-	}, [section, values])
+	// useEffect(() => {
+	// 	const motorId = values?.motorCharacteristics
+	// 	const spindleQuantityId = values?.spindleQuantityCharacteristics
+	// 	const workAreaId = values?.workAreaCharacteristics
+	//
+	// 	getConfigurationImages({ section, motorId, spindleQuantityId, workAreaId })
+	// }, [section, values])
 
 	const { translations }: { translations: ILanguage } = useLang()
 
