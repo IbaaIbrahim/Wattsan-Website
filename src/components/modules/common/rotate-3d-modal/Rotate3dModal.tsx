@@ -9,20 +9,21 @@ import ModelViewer from './model-viewer/ModelViewer'
 import { useEffect, useState } from 'react'
 import { configurationsService } from '@services/configurations.service'
 import { Loader } from '@components/modules/page-loader/components/loader'
+import { Typography } from '@components/ui/typography/Typography'
 
 const Rotate3dModal = ({seriesId, modelId}) => {
 	const { translations }: { translations: ILanguage } = useLang()
 	const [loading, setLoading] = useState(true)
 	const [item, setItem] = useState<any>({})
-	const [modelSrc, setModelSrc] = useState('');
+	const [encodedUrl, setEncodedUrl] = useState(null)
 
-	useEffect(() => {
-		// Encode the URL properly
-		const encodedUrl = encodeURIComponent(
-			'https://api.wattsancnc.com/Attachments/20250330141112072.glb'
-		);
-		setModelSrc(`/api/proxy?url=${encodedUrl}`);
-	}, []);
+	// useEffect(() => {
+	// 	// Encode the URL properly
+	// 	const encodedUrl = encodeURIComponent(
+	// 		'https://api.wattsancnc.com/Attachments/20250330141112072.glb'
+	// 	);
+	// 	setModelSrc(`/api/proxy?url=${encodedUrl}`);
+	// }, []);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -30,10 +31,12 @@ const Rotate3dModal = ({seriesId, modelId}) => {
 				seriesId,
 				modelId
 			)
-			const encodedUrl = encodeURIComponent(
-				data?.fileManger?.url
-			);
-			setModelSrc(`/api/proxy?url=${encodedUrl}`);
+			if(data?.fileManger?.url) {
+				const url = encodeURIComponent(
+					data?.fileManger?.url
+				);
+				setEncodedUrl(url)
+			}
 			setLoading(false)
 		}
 		getData().then(r => {})
@@ -53,6 +56,22 @@ const Rotate3dModal = ({seriesId, modelId}) => {
 		)
 	}
 
+	if (!encodedUrl) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
+			>
+				<Typography tag='h2'>
+					No Valid image
+				</Typography>
+			</div>
+		)
+	}
+
 	return (
 		<div className={styles.view}>
 			<div className={styles.header}>
@@ -64,7 +83,7 @@ const Rotate3dModal = ({seriesId, modelId}) => {
 			</div>
 			<ModelViewer
 				className={styles.modelViewer}
-				src={modelSrc}
+				src={`/api/proxy?url=${encodedUrl}`}
 				alt='3d wattsan model'
 				autoRotate
 				cameraControls

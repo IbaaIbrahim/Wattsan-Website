@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
+import { Typography } from '@components/ui/typography/Typography'
 
 interface ModelViewerProps {
 	className?: string
@@ -47,6 +48,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 	cameraControls
 }) => {
 	const [loading, setLoading] = useState(true)
+	const [renderError, setRenderError] = useState(false)
 	const modelViewerRef = useRef<HTMLElement>(null)
 
 	useEffect(() => {
@@ -72,6 +74,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 		const modelViewerElement = modelViewerRef.current;
 		if (modelViewerElement) {
 			const handleError = (error) => {
+				setRenderError(true)
+				setLoading(false)
 				console.error('Model loading error:', error);
 			};
 
@@ -81,6 +85,23 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 			};
 		}
 	}, []);
+
+	if(renderError) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
+			>
+				<Typography tag='h2'>
+					No Valid image
+				</Typography>
+			</div>
+		)
+	}
+
 	return (
 		<>
 			{loading && (
