@@ -4,7 +4,6 @@ import { MODALS } from '@components/ui/modal/Modal'
 import {
 	API_CONFIGURATION_BY_SERIES,
 	API_CONFIGURATION_BY_SERIES_AND_MODEL,
-	API_GET_CONFIGURATIONS,
 	API_GET_CONFIGURATION_IMAGES,
 	API_SAVE_CONFIGURATION,
 	API_START_PARAMETERS
@@ -247,11 +246,43 @@ export const savePersonalConfiguration = async (machineId, categoryId) => {
 }
 
 const STEP_CODE_MAP = {
-	mainPage: 1,
-	workArea: 2,
-	spindle: 3,
-	motor: 4,
-	controlSystem: 5
+	mainPage: 0,
+	workArea: 1,
+	spindle: 2,
+	motor: 3,
+	controlSystem: 4
+}
+
+export const getImagesFilterByValues = ({
+	section,
+	workAreaId,
+	spindleQuantityId,
+	motorId
+}) => {
+	let stepCode = STEP_CODE_MAP?.[section] ?? 0
+
+	if (stepCode === null && section !== '') return
+
+	if (section === '') {
+		stepCode = 0
+	}
+
+	let additionalFilter = ''
+
+	if (stepCode === 1) {
+		// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
+		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+	}
+
+	if (stepCode === 2) {
+		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
+	}
+
+	if (stepCode === 3) {
+		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	}
+
+	return `stepCode~eq~'${stepCode}'${additionalFilter}`
 }
 
 export const getConfigurationImages = async ({
@@ -261,31 +292,30 @@ export const getConfigurationImages = async ({
 	motorId
 }) => {
 	try {
-		let stepCode = STEP_CODE_MAP?.[section] ?? null
+		let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
 		if (stepCode === null && section !== '') return
 
 		if (section === '') {
-			stepCode = 1
+			stepCode = 0
 		}
 
 		let additionalFilter = ''
 
+		if (stepCode === 1) {
+			// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
+			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		}
+
 		if (stepCode === 2) {
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
+			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
 		}
 
 		if (stepCode === 3) {
-			additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'`
+			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 		}
 
-		if (stepCode === 4) {
-			additionalFilter += `~and~motorId~eq~'${motorId}'`
-		}
-
-		const filter = `stepCode~eq~'${stepCode}'${additionalFilter}`
-
-		console.log(configuratorStore.get.images()?.[filter])
+		const filter = getImagesFilterByValues({section, workAreaId, spindleQuantityId, motorId})
 
 		if (configuratorStore.get.images()?.[filter] !== undefined) return
 

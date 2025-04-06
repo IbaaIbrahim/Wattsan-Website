@@ -29,7 +29,7 @@ import ActionsPanel from '../actions-panel/ActionsPanel'
 
 import styles from './MachineView.module.scss'
 import { machineConfigurationForm } from '@store/forms'
-import { getConfigurationImages } from '@store/configurator/actions'
+import { getConfigurationImages, getImagesFilterByValues } from '@store/configurator/actions'
 import { requestsStore } from '@store/requests'
 import {
 	API_CONFIGURATION_BY_SERIES,
@@ -57,11 +57,11 @@ const SECTION_LABELS = {
 }
 
 const STEP_CODE_MAP = {
-	mainPage: 1,
-	workArea: 2,
-	spindle: 3,
-	motor: 4,
-	controlSystem: 5
+	mainPage: 0,
+	workArea: 1,
+	spindle: 2,
+	motor: 3,
+	controlSystem: 4
 }
 
 const REQUESTS = [
@@ -81,6 +81,7 @@ const MachineView = ({
 	const modelName = configuratorStore.use.modelNameSelector()
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
 	const images = configuratorStore.use.images()
+	console.log(getImagesFilterByValues({ section: selectedSection, motorId, spindleQuantityId, workAreaId }))
 
 	const values = machineConfigurationForm.use.valuesSelector()
 
