@@ -1,24 +1,18 @@
-'use client'
+'use client';
 
-import { MODALS } from '@components/ui/modal/Modal'
-import {
-	API_CONFIGURATION_BY_SERIES,
-	API_CONFIGURATION_BY_SERIES_AND_MODEL,
-	API_GET_CONFIGURATION_IMAGES,
-	API_SAVE_CONFIGURATION,
-	API_START_PARAMETERS
-} from '@constants/api'
-import { FORMS_FIELDS } from '@constants/forms'
-import { authStore } from '@store/auth'
-import { configuratorStore } from '@store/configurator/index'
-import {
-	basicMachineConfigurationForm,
-	machineConfigurationForm
-} from '@store/forms'
-import { modalsStore } from '@store/modals'
-import { requestsStore } from '@store/requests'
+import { MODALS } from '@components/ui/modal/Modal';
+import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS } from '@constants/api';
+import { FORMS_FIELDS } from '@constants/forms';
+import { authStore } from '@store/auth';
+import { configuratorStore } from '@store/configurator/index';
+import { basicMachineConfigurationForm, machineConfigurationForm } from '@store/forms';
+import { modalsStore } from '@store/modals';
+import { requestsStore } from '@store/requests';
 
-import { authorizedRequest } from '../../utils/request'
+
+
+import { authorizedRequest } from '../../utils/request';
+
 
 export const getStartParameters = async ({
 	init = false,
@@ -254,11 +248,12 @@ const STEP_CODE_MAP = {
 }
 
 export const getImagesFilterByValues = ({
-	section,
-	workAreaId,
-	spindleQuantityId,
-	motorId
-}) => {
+																					section,
+																					modelId,
+																					spindleQuantityId,
+																					motorId,
+																					seriesId
+																				}) => {
 	let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
 	if (stepCode === null && section !== '') return
@@ -271,51 +266,30 @@ export const getImagesFilterByValues = ({
 
 	if (stepCode === 1) {
 		// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
 	}
 
 	if (stepCode === 2) {
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
+		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'`
 	}
 
 	if (stepCode === 3) {
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
-	return `stepCode~eq~'${stepCode}'${additionalFilter}`
+	return `seriesId~eq~'${seriesId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
 }
 
 export const getConfigurationImages = async ({
-	section,
-	workAreaId,
-	spindleQuantityId,
-	motorId
-}) => {
+																							 section,
+																							 modelId,
+																							 spindleQuantityId,
+																							 motorId,
+																							 seriesId
+																						 }) => {
 	try {
-		let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
-		if (stepCode === null && section !== '') return
-
-		if (section === '') {
-			stepCode = 0
-		}
-
-		let additionalFilter = ''
-
-		if (stepCode === 1) {
-			// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
-		}
-
-		if (stepCode === 2) {
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
-		}
-
-		if (stepCode === 3) {
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
-		}
-
-		const filter = getImagesFilterByValues({section, workAreaId, spindleQuantityId, motorId})
+		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, motorId, seriesId})
 
 		if (configuratorStore.get.images()?.[filter] !== undefined) return
 

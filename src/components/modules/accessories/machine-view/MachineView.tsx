@@ -24,6 +24,7 @@ import { modalsStore } from '@store/modals'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
+import _ from 'lodash'
 
 import ActionsPanel from '../actions-panel/ActionsPanel'
 
@@ -79,9 +80,10 @@ const MachineView = ({
 	const categoryInfo = configuratorStore.use.categoryInfoSelector()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
 	const modelName = configuratorStore.use.modelNameSelector()
+	const modelId = configuratorStore.use.modelIdSelector()
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
+	const seriesId = configuratorStore.use.machineId()
 	const images = configuratorStore.use.images()
-	console.log(getImagesFilterByValues({ section: selectedSection, motorId, spindleQuantityId, workAreaId }))
 
 	const values = machineConfigurationForm.use.valuesSelector()
 
@@ -90,18 +92,23 @@ const MachineView = ({
 	const [hoveredSection, setHoveredSection] = useState<string | null>(null)
 
 	const machineImage = useMemo(() => {
-		return hoveredSection !== null
-			? MACHINE_IMAGES?.[hoveredSection]
-			: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
-	}, [selectedSection, hoveredSection])
+		const motorId = values?.motorCharacteristics
+		const spindleQuantityId = values?.spindleQuantityCharacteristics
+		const imageKey = getImagesFilterByValues({ section: selectedSection, motorId, spindleQuantityId, modelId, seriesId })
+		console.log(images[imageKey])
+		return _.get(images, `${imageKey}.0.fileManger.url`) ?? MACHINE_IMAGES.default
+		// return hoveredSection !== null
+		// 	? MACHINE_IMAGES?.[hoveredSection]
+		// 	: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
+	}, [selectedSection, hoveredSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId])
 
 	useEffect(() => {
 		const motorId = values?.motorCharacteristics
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
 		const workAreaId = values?.workAreaCharacteristics
 
-		getConfigurationImages({ section: selectedSection, motorId, spindleQuantityId, workAreaId })
-	}, [selectedSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, values?.workAreaCharacteristics])
+		getConfigurationImages({ section: selectedSection, motorId, spindleQuantityId, modelId, seriesId })
+	}, [selectedSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId])
 
 	const handleSectionHover = (section, hovered) => {
 		setHoveredSection(hovered ? section : null)

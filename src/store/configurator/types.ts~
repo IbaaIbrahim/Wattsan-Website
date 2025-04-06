@@ -81,7 +81,6 @@ export type TStandartCharacteristic = {
 	seriesId: number
 	series: any
 	characteristicId: number
-	modelId: string
 	modelName: string
 	staticCharacteristic: {
 		id: number
