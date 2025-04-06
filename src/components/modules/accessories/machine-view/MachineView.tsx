@@ -29,6 +29,15 @@ import ActionsPanel from '../actions-panel/ActionsPanel'
 
 import styles from './MachineView.module.scss'
 import { machineConfigurationForm } from '@store/forms'
+import { getConfigurationImages } from '@store/configurator/actions'
+import { requestsStore } from '@store/requests'
+import {
+	API_CONFIGURATION_BY_SERIES,
+	API_CONFIGURATION_BY_SERIES_AND_MODEL,
+	API_GET_CONFIGURATION_IMAGES
+} from '@constants/api'
+import { PageLoader } from '@components/modules/page-loader'
+import { Loader } from '@components/modules/page-loader/components/loader'
 
 const MACHINE_IMAGES = {
 	default: defaultMachineImage,
@@ -47,6 +56,18 @@ const SECTION_LABELS = {
 	additionalOptions: 'Additional options'
 }
 
+const STEP_CODE_MAP = {
+	mainPage: 1,
+	workArea: 2,
+	spindle: 3,
+	motor: 4,
+	controlSystem: 5
+}
+
+const REQUESTS = [
+	API_GET_CONFIGURATION_IMAGES
+]
+
 const MachineView = ({
 	selectedSection,
 	onSelect
@@ -58,10 +79,10 @@ const MachineView = ({
 	const categoryInfo = configuratorStore.use.categoryInfoSelector()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
 	const modelName = configuratorStore.use.modelNameSelector()
+	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
+	const images = configuratorStore.use.images()
 
 	const values = machineConfigurationForm.use.valuesSelector()
-
-	// console.log(values, machineInfo, modelName)
 
 	const { translations }: { translations: ILanguage } = useLang()
 
@@ -72,6 +93,14 @@ const MachineView = ({
 			? MACHINE_IMAGES?.[hoveredSection]
 			: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
 	}, [selectedSection, hoveredSection])
+
+	useEffect(() => {
+		const motorId = values?.motorCharacteristics
+		const spindleQuantityId = values?.spindleQuantityCharacteristics
+		const workAreaId = values?.workAreaCharacteristics
+
+		getConfigurationImages({ section: selectedSection, motorId, spindleQuantityId, workAreaId })
+	}, [selectedSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, values?.workAreaCharacteristics])
 
 	const handleSectionHover = (section, hovered) => {
 		setHoveredSection(hovered ? section : null)
@@ -101,6 +130,14 @@ const MachineView = ({
 			seriesId: machineInfo?.id,
 			modelId: values.workAreaCharacteristics
 		})
+	}
+
+	if(loading) {
+		return (
+			<div style={{position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+				<Loader size={40} />
+			</div>
+		)
 	}
 
 	return (

@@ -285,6 +285,8 @@ export const getConfigurationImages = async ({
 
 		const filter = `stepCode~eq~'${stepCode}'${additionalFilter}`
 
+		console.log(configuratorStore.get.images()?.[filter])
+
 		if (configuratorStore.get.images()?.[filter] !== undefined) return
 
 		const response = await authorizedRequest({

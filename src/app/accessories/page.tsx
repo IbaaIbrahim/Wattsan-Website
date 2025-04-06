@@ -50,7 +50,7 @@ const REQUESTS = [
 	'getStartParameters',
 	// API_GET_CONFIGURATION_IMAGES,
 	API_CONFIGURATION_BY_SERIES,
-	API_CONFIGURATION_BY_SERIES_AND_MODEL
+	// API_CONFIGURATION_BY_SERIES_AND_MODEL
 ]
 
 const MachineId = () => {
@@ -74,14 +74,6 @@ const MachineId = () => {
 	// useEffect(() => {
 	// 	getInitialSeriesConfiguration(machineId)
 	// }, [])
-
-	// useEffect(() => {
-	// 	const motorId = values?.motorCharacteristics
-	// 	const spindleQuantityId = values?.spindleQuantityCharacteristics
-	// 	const workAreaId = values?.workAreaCharacteristics
-	//
-	// 	getConfigurationImages({ section, motorId, spindleQuantityId, workAreaId })
-	// }, [section, values])
 
 	const { translations }: { translations: ILanguage } = useLang()
 
