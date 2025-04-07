@@ -36,7 +36,8 @@ export const SUBSECTIONS_TITLE = {
 	vaccumTableCharacteristics: {name: 'Vacuum table', code: 'VaccumTable'},
 	rotaryDeviceCharacteristics: {name: 'Rotary device', code: 'RotaryDevice'},
 	rotarySeparateCharacteristics: {name: 'Rotary separate', code: 'RotarySeparate'},
-	cabineCharacteristics: {name: 'Cabine', code: 'Cabine'}
+	cabineCharacteristics: {name: 'Cabine', code: 'Cabine'},
+	autoChangeToolsRelations: {name: 'Auto change tool', code: 'AutoChangeTools'},
 }
 
 export const PARAM_NAME_BY_CODE = {
@@ -248,7 +249,6 @@ export const Params = ({
 	// while (true){
 	// 	console.log('true')
 	// }
-
 	return (
 		<article
 			className={clsx(
@@ -261,11 +261,15 @@ export const Params = ({
 				<span className={styles.title}>{title}</span>
 				{miniatures && miniatures}
 				<div className={styles.options}>
-					{sections?.map(sectionName => (
-						<div
-							key={sectionName}
-							className={styles['options__block']}
-						>
+					{sections?.map(sectionName => {
+						if(enrichedSections?.[sectionName] && _.size(_.filter(enrichedSections?.[sectionName], x => x.isAvailable)) <= 0) {
+							return null
+						}
+						return (
+							<div
+								key={sectionName}
+								className={styles['options__block']}
+							>
 							<span className={styles.subtitle}>
 								<span className={styles['subtitle__text']}>
 									{_.get(SUBSECTIONS_TITLE, `${sectionName}.name`)}
@@ -281,55 +285,56 @@ export const Params = ({
 									/>
 								</div>
 							</span>
-							<FormRadioAccessories
-								value={values[sectionName]}
-								options={enrichedSections?.[sectionName]?.map(
-									({
-										isAvailable,
-										characteristicId,
-										staticCharacteristic
-									}) => ({
-										text: `${staticCharacteristic?.name} ${staticCharacteristic?.unit ?? ''}`,
-										additional: sectionName === 'rotaryDeviceCharacteristics' &&
-											staticCharacteristic?.name === 'Separate' &&
-											values[sectionName] === characteristicId && (
-												<FormRadioAccessories
-													withAdditional={true}
-													value={values['rotarySeparateCharacteristics']}
-													options={params?.rotarySeparateCharacteristics?.map(
-														char => {
-															return {
-																text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
-																price: additionalPrice(
-																	'rotarySeparateCharacteristics',
-																	char.staticCharacteristic
-																),
-																value: char.id,
-																isAvailable: char.isAvailable
+								<FormRadioAccessories
+									value={values[sectionName]}
+									options={_.orderBy(enrichedSections?.[sectionName], x => !x.isAvailable)?.map(
+										({
+											 isAvailable,
+											 characteristicId,
+											 staticCharacteristic
+										 }) => ({
+											text: `${staticCharacteristic?.name} ${staticCharacteristic?.unit ?? ''}`,
+											additional: sectionName === 'rotaryDeviceCharacteristics' &&
+												staticCharacteristic?.name === 'Separate' &&
+												values[sectionName] === characteristicId && (
+													<FormRadioAccessories
+														withAdditional={true}
+														value={values['rotarySeparateCharacteristics']}
+														options={params?.rotarySeparateCharacteristics?.map(
+															char => {
+																return {
+																	text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
+																	price: additionalPrice(
+																		'rotarySeparateCharacteristics',
+																		char.staticCharacteristic
+																	),
+																	value: char.id,
+																	isAvailable: char.isAvailable
+																}
 															}
+														)}
+														onChange={selected =>
+															handleChange(
+																'rotarySeparateCharacteristics',
+																selected
+															)
 														}
-													)}
-													onChange={selected =>
-														handleChange(
-															'rotarySeparateCharacteristics',
-															selected
-														)
-													}
-												/>
-											),
-										price: calculatedPrice(sectionName, staticCharacteristic),
-										value: characteristicId,
-										isAvailable: availableByAffected(
-											isAvailable,
-											sectionName,
-											staticCharacteristic
-										)
-									})
-								)}
-								onChange={selected => handleChange(sectionName, selected)}
-							/>
-						</div>
-					))}
+													/>
+												),
+											price: calculatedPrice(sectionName, staticCharacteristic),
+											value: characteristicId,
+											isAvailable: availableByAffected(
+												isAvailable,
+												sectionName,
+												staticCharacteristic
+											)
+										})
+									)}
+									onChange={selected => handleChange(sectionName, selected)}
+								/>
+							</div>
+						)
+					})}
 				</div>
 			</div>
 		</article>

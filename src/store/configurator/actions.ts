@@ -247,13 +247,7 @@ const STEP_CODE_MAP = {
 	controlSystem: 4
 }
 
-export const getImagesFilterByValues = ({
-																					section,
-																					modelId,
-																					spindleQuantityId,
-																					motorId,
-																					seriesId
-																				}) => {
+export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
 	let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
 	if (stepCode === null && section !== '') return
@@ -280,13 +274,7 @@ export const getImagesFilterByValues = ({
 	return `seriesId~eq~'${seriesId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
 }
 
-export const getConfigurationImages = async ({
-																							 section,
-																							 modelId,
-																							 spindleQuantityId,
-																							 motorId,
-																							 seriesId
-																						 }) => {
+export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
 	try {
 
 		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, motorId, seriesId})

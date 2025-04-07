@@ -3,6 +3,7 @@ import { Typography } from '@components/ui/typography/Typography'
 import { FlatConfiguratorSections } from '@constants/configurator'
 import { configuratorStore } from '@store/configurator'
 import { modalsStore } from '@store/modals'
+import _ from 'lodash'
 
 import cn from './ConfigurationInfo.module.scss'
 
@@ -22,11 +23,14 @@ export const ConfigurationInfo = ({
 }) => {
 	// TODO Заменить на актуальный айди машины
 	const params = configuratorStore.use.seriesConfigurationsSelector(4)
+	const params1 = configuratorStore.use.seriesConfigurations()
+	const machineId = configuratorStore.use.machineId()
 
 	const handleViewAllSpecification = () => {
+		console.log('asdasd')
 		modalsStore.set.open(MODALS.configurationModal, {
 			configuration: yourConfiguration,
-			params
+			params: _.get(params1, `${machineId}`)
 		})
 	}
 
@@ -61,17 +65,13 @@ export const ConfigurationInfo = ({
 			)}
 			{FlatConfiguratorSections.slice(0, 5).map(section => {
 				const basicAccessoriesId = basicConfiguration[section]
-				const basicInfo = params[section]?.find(
-					({ id }) => id === basicAccessoriesId
-				)?.staticCharacteristic
-				const basicValue = `${basicInfo?.name} ${basicInfo?.unit ?? ''}`
+				const basicInfo = _.get(_.find(_.get(params1, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === basicAccessoriesId), 'staticCharacteristic')
+				const basicValue = `${_.get(basicInfo, 'name')} ${_.get(basicInfo, 'unit') ?? ''}`
 
 				const yourAccessoriesId = yourConfiguration[section]
-				const yourInfo = params[section]?.find(
-					({ id }) => id === yourAccessoriesId
-				)?.staticCharacteristic
+				const yourInfo = _.get(_.find(_.get(params1, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === yourAccessoriesId), 'staticCharacteristic')
 
-				const yourValue = `${yourInfo?.name} ${yourInfo?.unit ?? ''}`
+				const yourValue = `${_.get(yourInfo, 'name')} ${_.get(yourInfo, 'unit') ?? ''}`
 
 				return (
 					<div
@@ -99,7 +99,7 @@ export const ConfigurationInfo = ({
 							weight={!compare ? 'semi-bold' : 'regular'}
 							align={compare ? 'left' : 'right'}
 						>
-							{compare ? basicValue : `$${yourInfo.price}`}
+							{compare ? basicValue : `$${_.get(yourInfo, 'price')}`}
 						</Typography>
 					</div>
 				)
@@ -135,7 +135,8 @@ export const ConfigurationInfo = ({
 			)}
 			<button
 				className={cn.all}
-				onClick={compare ? handleViewComparison : handleViewAllSpecification}
+				// onClick={compare ? handleViewComparison : handleViewAllSpecification}
+				onClick={handleViewAllSpecification}
 			>
 				<Typography
 					tag='p'

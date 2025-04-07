@@ -94,21 +94,20 @@ const MachineView = ({
 	const machineImage = useMemo(() => {
 		const motorId = values?.motorCharacteristics
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
-		const imageKey = getImagesFilterByValues({ section: selectedSection, motorId, spindleQuantityId, modelId, seriesId })
-		console.log(images[imageKey])
+		const imageKey = getImagesFilterByValues({ section: hoveredSection ?? selectedSection, motorId, spindleQuantityId, modelId, seriesId })
 		return _.get(images, `${imageKey}.0.fileManger.url`) ?? MACHINE_IMAGES.default
 		// return hoveredSection !== null
 		// 	? MACHINE_IMAGES?.[hoveredSection]
 		// 	: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
-	}, [selectedSection, hoveredSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId])
+	}, [selectedSection, hoveredSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId, _.size(images)])
 
 	useEffect(() => {
 		const motorId = values?.motorCharacteristics
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
 		const workAreaId = values?.workAreaCharacteristics
 
-		getConfigurationImages({ section: selectedSection, motorId, spindleQuantityId, modelId, seriesId })
-	}, [selectedSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId])
+		getConfigurationImages({ section: hoveredSection ?? selectedSection, motorId, spindleQuantityId, modelId, seriesId })
+	}, [selectedSection, hoveredSection, values.motorCharacteristics, values?.spindleQuantityCharacteristics, modelId])
 
 	const handleSectionHover = (section, hovered) => {
 		setHoveredSection(hovered ? section : null)

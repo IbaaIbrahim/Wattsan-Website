@@ -44,7 +44,7 @@ const OffersView: FC<{
 					size='l'
 					items={[
 						{ content: 'Promo codes', id: '0' },
-						{ content: 'Especially for you', id: '1' }
+						// { content: 'Especially for you', id: '1' }
 					]}
 					selected={[filter]}
 					onClick={setFilter}

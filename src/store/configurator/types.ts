@@ -7,6 +7,7 @@ export type TSeriesCharacteristic = {
 	isExisted: boolean
 	series: null
 	seriesId: number
+	fileManger: any
 	staticCharacteristic: {
 		affectedCharacteristicsList: any
 		category: any

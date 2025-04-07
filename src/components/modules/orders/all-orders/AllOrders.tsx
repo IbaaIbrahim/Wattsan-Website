@@ -10,21 +10,24 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import styles from './AllOrders.module.scss'
+import _ from 'lodash'
 
 const STATUS_MAP = {
+	Current: '1',
 	Completed: '2',
 	Canceled: '3',
-	Current: '1',
 	Returns: '4'
 }
 
 const AllOrders: FC<{ orders: IOrders }> = ({ orders }) => {
 	const filters = ordersStore(state => state.ordersFilter)
-	const changeFilters = ordersStore(state => state.changeOrdersFilter)
+	const changeFilters = ordersStore(state => {
+		return state.changeOrdersFilter
+	})
 
 	const filtered = filters.includes('0')
 		? orders
-		: orders.filter(({ status }) => filters.includes(STATUS_MAP[status]))
+		: orders.filter(({ orderProducts }) => orderProducts.some(orderProduct => filters.includes(`${orderProduct.statusCategory}`)))
 
 	const isEmpty = orders.length === 0
 
@@ -36,25 +39,25 @@ const AllOrders: FC<{ orders: IOrders }> = ({ orders }) => {
 				size='l'
 				disabled={isEmpty}
 				items={[
-					{ content: 'All orders', counter: '99', id: '0' },
+					{ content: 'All orders', counter: `${_.size(orders)}`, id: '0' },
 					{
 						content: 'Current',
-						counter: '0',
+						counter: `${_.size(orders.filter(({ orderProducts }) => orderProducts.some(orderProduct => ['1'].includes(`${orderProduct.statusCategory}`))))}`,
 						id: '1'
 					},
 					{
 						content: 'Completed',
-						counter: '0',
+						counter: `${_.size(orders.filter(({ orderProducts }) => orderProducts.some(orderProduct => ['2'].includes(`${orderProduct.statusCategory}`))))}`,
 						id: '2'
 					},
 					{
 						content: 'Canceled',
-						counter: '0',
+						counter: `${_.size(orders.filter(({ orderProducts }) => orderProducts.some(orderProduct => ['3'].includes(`${orderProduct.statusCategory}`))))}`,
 						id: '3'
 					},
 					{
 						content: 'Returns',
-						counter: '0',
+						counter: `${_.size(orders.filter(({ orderProducts }) => orderProducts.some(orderProduct => ['4'].includes(`${orderProduct.statusCategory}`))))}`,
 						id: '4'
 					}
 				]}

@@ -18,7 +18,7 @@ export const ConfigurationModal = ({ configuration, params }) => {
 				{FlatConfiguratorSections.map(section => {
 					const id = configuration[section]
 					const { name, unit, price } = params?.[section]?.find?.(
-						({ id: sectionId }) => sectionId === id
+						({ characteristicId }) => characteristicId === id
 					)?.staticCharacteristic ?? {
 						name: section,
 						value: 'Not included',
