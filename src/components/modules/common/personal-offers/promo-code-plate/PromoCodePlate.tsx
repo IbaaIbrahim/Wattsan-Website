@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import styles from './PromoCodePlate.module.scss'
-import DOMPurify from 'dompurify'
+// import DOMPurify from 'dompurify';
 
 const PromoCodePlate: FC<{
 	info: TPromoCode
@@ -19,7 +19,7 @@ const PromoCodePlate: FC<{
 			<div className={styles.header}>{info.couponTitle}</div>
 			<div className={styles.content}>
 				{/*<div className={styles.title}>{info.couponAmount}</div>*/}
-				<div className={styles.description} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(JSON.parse(info?.couponDesc)) }} />
+				<div className={styles.description} dangerouslySetInnerHTML={{__html: JSON.parse(info?.couponDesc ?? "") }} />
 				<button
 					className={styles.viewDetails}
 					onClick={() => onClick(info.id)}
