@@ -23,15 +23,20 @@ export const getStartParameters = async ({
 }) => {
 	let response
 	try {
+		const track = categoryId
+			? 'getStartParametersByCategory'
+			: 'getStartParameters'
+
 		if (init && configuratorStore.get.categories()?.length !== 0) return
 		if (configuratorStore.get.startParameters()?.[categoryId]) return
-		if (requestsStore.get.loadingSelector('getStartParameters')) return
+
+		if (requestsStore.get.loadingSelector(track)) return
 
 		response = await authorizedRequest({
 			url: API_START_PARAMETERS,
 			method: 'GET',
 			query: { categoryId },
-			track: true
+			track
 		})
 
 		if (init) {
