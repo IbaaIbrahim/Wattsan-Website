@@ -242,29 +242,29 @@ export const savePersonalConfiguration = async (machineId, categoryId) => {
 }
 
 const STEP_CODE_MAP = {
-	mainPage: 0,
-	workArea: 1,
-	spindle: 2,
-	motor: 3,
-	controlSystem: 4
+	mainPage: 1,
+	workArea: 2,
+	spindle: 3,
+	motor: 4,
+	controlSystem: 5
 }
 
 export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
-	let stepCode = STEP_CODE_MAP?.[section] ?? 0
+	let stepCode = STEP_CODE_MAP?.[section] ?? 1
 
 	if (stepCode === null && section !== '') return
 
 	let additionalFilter = ''
 
-	if (stepCode === 1) {
+	if (stepCode === 2) {
 		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
 	}
 
-	if (stepCode === 2) {
+	if (stepCode === 3) {
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
 	}
 
-	if (stepCode === 3) {
+	if (stepCode === 4) {
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
