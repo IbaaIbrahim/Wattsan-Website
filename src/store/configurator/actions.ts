@@ -21,21 +21,17 @@ export const getStartParameters = async ({
 	init?: boolean
 	categoryId?: any
 }) => {
+	let response
 	try {
-		const track = categoryId
-			? 'getStartParametersByCategory'
-			: 'getStartParameters'
-
 		if (init && configuratorStore.get.categories()?.length !== 0) return
 		if (configuratorStore.get.startParameters()?.[categoryId]) return
+		if (requestsStore.get.loadingSelector('getStartParameters')) return
 
-		if (requestsStore.get.loadingSelector(track)) return
-
-		const response = await authorizedRequest({
+		response = await authorizedRequest({
 			url: API_START_PARAMETERS,
 			method: 'GET',
 			query: { categoryId },
-			track
+			track: true
 		})
 
 		if (init) {
@@ -44,10 +40,11 @@ export const getStartParameters = async ({
 		} else {
 			configuratorStore.set.setStartParameters(categoryId, response?.content)
 		}
+		return response
 	} catch (error) {
 		console.error(error)
 	} finally {
-		return
+		return response
 	}
 }
 
@@ -252,26 +249,21 @@ export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, m
 
 	if (stepCode === null && section !== '') return
 
-	if (section === '') {
-		stepCode = 0
-	}
-
 	let additionalFilter = ''
 
 	if (stepCode === 1) {
-		// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
-		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
 	}
 
 	if (stepCode === 2) {
-		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
 	}
 
 	if (stepCode === 3) {
-		additionalFilter += `~and~workAreaId~eq~'${modelId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
-	return `seriesId~eq~'${seriesId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
+	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
 
 export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
@@ -279,7 +271,7 @@ export const getConfigurationImages = async ({ section, modelId, spindleQuantity
 
 		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, motorId, seriesId})
 
-		if (configuratorStore.get.images()?.[filter] !== undefined) return
+		if (configuratorStore.get.images()?.[filter] !== undefined || !modelId || !seriesId) return
 
 		const response = await authorizedRequest({
 			url: API_GET_CONFIGURATION_IMAGES,
@@ -291,10 +283,9 @@ export const getConfigurationImages = async ({ section, modelId, spindleQuantity
 
 		configuratorStore.set.setImages(filter, response?.data)
 
-		return
+		return response
 	} catch (error) {
 		console.error(error)
-
 		return
 	}
 }

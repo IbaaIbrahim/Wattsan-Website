@@ -11,6 +11,7 @@ import { useConfigurator } from '@hooks/use-configurator'
 import { requestsStore } from '@store/requests'
 
 import cn from './page.module.scss'
+import { useSummary } from '@hooks/use-summary'
 
 const REQUESTS = [
 	'getStartParametersByCategory',
@@ -20,7 +21,7 @@ const REQUESTS = [
 ]
 
 const Summary = () => {
-	useConfigurator()
+	useSummary()
 
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
 

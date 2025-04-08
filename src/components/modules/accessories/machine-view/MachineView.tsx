@@ -94,8 +94,8 @@ const MachineView = ({
 	const machineImage = useMemo(() => {
 		const motorId = values?.motorCharacteristics
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
-		const imageKey = getImagesFilterByValues({ section: hoveredSection ?? selectedSection, motorId, spindleQuantityId, modelId, seriesId })
-		return _.get(images, `${imageKey}.0.fileManger.url`) ?? MACHINE_IMAGES.default
+		const imageKey = getImagesFilterByValues({ section: hoveredSection ?? selectedSection ?? 'mainPage', motorId, spindleQuantityId, modelId, seriesId })
+		return _.get(images, `${imageKey}.0.fileManger.url`) ?? null
 		// return hoveredSection !== null
 		// 	? MACHINE_IMAGES?.[hoveredSection]
 		// 	: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
@@ -139,16 +139,15 @@ const MachineView = ({
 		})
 	}
 
-	if(loading) {
-		return (
-			<div style={{position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-				<Loader size={40} />
-			</div>
-		)
-	}
-
 	return (
 		<article className={styles.wrapper}>
+			{
+				(loading || !machineImage) && (
+					<div style={{position: 'absolute', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', zIndex: 4}}>
+						<Loader size={40} />
+					</div>
+				)
+			}
 			<div className={styles.header}>
 				<div className={styles.title}>
 					<span className={styles['title__name']}>{categoryInfo?.name}</span>

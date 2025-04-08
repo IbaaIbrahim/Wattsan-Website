@@ -7,9 +7,10 @@ import { useConfigurator } from '@hooks/use-configurator'
 import { requestsStore } from '@store/requests'
 
 import styles from './page.module.scss'
+import { useSeries } from '@hooks/use-series'
 
 const ConfiguratorPage = () => {
-	useConfigurator()
+	useSeries()
 
 	const loading = requestsStore.use.multipleLoadingSelector([
 		'getStartParametersByCategory',

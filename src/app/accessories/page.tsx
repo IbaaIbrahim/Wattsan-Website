@@ -55,7 +55,7 @@ const REQUESTS = [
 
 const MachineId = () => {
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
-	const notInitialized = requestsStore.use.multipleIdleSelector(REQUESTS)
+	// const notInitialized = requestsStore.use.multipleIdleSelector(REQUESTS)
 
 	useConfigurator()
 
@@ -79,9 +79,14 @@ const MachineId = () => {
 
 	const [openedBottomSheet, setOpenedBottomSheet] = useState<boolean>(false)
 
+	if(loading) {
+		return (
+			<PageLoader visible={loading} />
+		)
+	}
+
 	return (
 		<div className={styles.page}>
-			<PageLoader visible={loading || notInitialized} />
 			<article className={styles['wrapper']}>
 				<Link
 					className={styles['back-link']}

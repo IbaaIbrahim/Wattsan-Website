@@ -141,7 +141,7 @@ export const configuratorStore = createStore(
 			const categoryId = get.categoryId()
 			const categories = get.categories()
 
-			return categories.find(({ id }) => id == categoryId) ?? null
+			return categories?.find(({ id }) => id == categoryId) ?? null
 		},
 		machineInfoSelector: () => {
 			const machineId = get.machineId()
