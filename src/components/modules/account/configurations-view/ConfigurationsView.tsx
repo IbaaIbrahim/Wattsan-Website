@@ -64,9 +64,9 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 					).length > 0
 			)
 
-	const handleViewConfiguration = (id: string) => () => {}
+	const handleViewConfiguration = (id: string | number) => () => {}
 
-	const handleViewSpecification = (id: string) => () => {
+	const handleViewSpecification = (id: string | number) => () => {
 		modalsStore.set.open(MODALS.configurationComparisonModal, {
 			basicSpecification: configurations.basicSpecification,
 			params: configurations.configurations.find(
@@ -75,7 +75,7 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 		})
 	}
 
-	const handleReadMore = (id: string) => () => {
+	const handleReadMore = (id: string | number) => () => {
 		const template = configurations.popularTemplates.find(
 			template => template.id === id
 		)
@@ -109,10 +109,10 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 		}
 
 		modalsStore.set.open(MODALS.duplicateConfigurationModal, {
-			name: configuration.name,
+			name: configuration.configurationName,
 			price: configuration.price,
-			image: configuration.image,
-			code: configuration.code
+			image: configuration?.fileManger?.url,
+			code: configuration.modelName
 		})
 	}
 
@@ -124,10 +124,10 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 		if (configuration === undefined) return
 
 		modalsStore.set.open(MODALS.deleteConfigurationModal, {
-			name: configuration.name,
+			name: configuration.configurationName,
 			price: configuration.price,
-			image: configuration.image,
-			code: configuration.code
+			image: configuration?.fileManger?.url,
+			code: configuration.modelName
 		})
 	}
 

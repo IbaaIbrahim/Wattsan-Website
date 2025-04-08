@@ -3,6 +3,7 @@ import { TGetConfigurations } from '@my-types/configurations'
 import configurationsMock from './mocks/configurations/configurations.json'
 import { authorizedRequest } from '../utils/request'
 import {
+	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
 	API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT,
 	API_GET_ORDERS,
 	API_GET_REAL_ATTACHMENTS
@@ -13,7 +14,7 @@ class ConfigurationsService {
 
 	async getConfigurations(clientId): Promise<TGetConfigurations> {
 		const response = await authorizedRequest({
-			url: API_GET_ORDERS,
+			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
 			method: 'GET',
 			query: { filter: `clientId~eq~'${clientId}'` }
 		});

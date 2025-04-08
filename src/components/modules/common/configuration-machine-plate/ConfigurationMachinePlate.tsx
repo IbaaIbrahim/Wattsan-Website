@@ -5,29 +5,23 @@ import Image from 'next/image'
 import { FC, useState } from 'react'
 
 import styles from './ConfigurationMachinePlate.module.scss'
+import _ from 'lodash'
+import { IConfiguration } from '@my-types/configurations'
 
-const STATUS_COLOR_MAP = {
-	Ordered: 'green',
-	'In process': 'yellow',
-	Deleted: 'red'
+const STATUS_MAP = {
+	1: {title: "In Process", color: 'yellow'},
+	2: {title: "Ordered", color: 'green'},
+	3: {title: "Deleted", color: 'red'}
 }
 
 const ConfigurationMachinePlate: FC<{
-	item: {
-		id: string
-		image: string
-		name: string
-		status: string
-		type: string
-		code: string
-		price: string
-	}
+	item: IConfiguration
 	onViewConfiguration: () => void
 	onViewSpecification: () => void
-	onEdit: (id: string) => void
-	onDownload: (id: string) => void
-	onDuplicate: (id: string) => void
-	onDelete: (id: string) => void
+	onEdit: (id: string | number) => void
+	onDownload: (id: string | number) => void
+	onDuplicate: (id: string | number) => void
+	onDelete: (id: string | number) => void
 }> = ({
 	item,
 	onViewConfiguration,
@@ -43,7 +37,7 @@ const ConfigurationMachinePlate: FC<{
 		<div className={styles.wrapper}>
 			<div className={styles.image}>
 				<Image
-					src={item.image}
+					src={_.get(item, `fileManger.url`)}
 					fill={true}
 					alt=''
 				/>
@@ -92,15 +86,16 @@ const ConfigurationMachinePlate: FC<{
 					</Tooltip>
 				</div>
 				<div
-					className={clsx(styles.status, styles[STATUS_COLOR_MAP[item.status]])}
+					className={clsx(styles.status, _.get(styles, _.get(STATUS_MAP, `${item.status}.color`)))}
 				>
-					{item.status}
+					{_.get(STATUS_MAP, `${item.status}.title`)}
 				</div>
-				<div className={styles.name}>{item.name}</div>
+				<div className={styles.name}>{item.configurationName}</div>
 				<div className={styles.code}>
-					{item.code}&nbsp;<div className={styles.type}>{item.type}</div>
+					{/*{item?.workAreaChar?.name}&nbsp;<div className={styles.type}>{item.type}</div>*/}
+					{item?.workAreaChar?.name}&nbsp;
 				</div>
-				<div className={styles.price}>{item.price}</div>
+				<div className={styles.price}>${item.price}</div>
 				<div className={styles.actions}>
 					<Button
 						size='l'

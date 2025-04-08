@@ -1,5 +1,7 @@
 export type TPromoCode = {
 	id: string,
+	couponTitle: string,
+	couponDesc: string,
 	couponAmount: number,
 	couponType: number,
 	couponCode: string,
