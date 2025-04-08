@@ -7,15 +7,19 @@ import {
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-export const useConfigurator = () => {
+export const useSummary = () => {
 	const pathname = usePathname()
 	const searchParams = useSearchParams()
 
+	const categoryId = configuratorStore.use.categoryId()
 	const machineId = configuratorStore.use.machineId()
 	const series = configuratorStore.use.seriesConfigurations()
 
 	const initialize = async () => {
+		await getStartParameters({ init: true })
+
 		const categoryId = searchParams.get('categoryId') ?? null
+		console.log(categoryId)
 
 		if (categoryId !== null) {
 			configuratorStore.set.categoryId(categoryId)
@@ -26,16 +30,22 @@ export const useConfigurator = () => {
 		if (categoryId !== null) {
 			configuratorStore.set.machineId(machineId)
 		}
-		const response = await getStartParameters({ categoryId })
-		if(response){
-			configuratorStore.set.categories(response?.content?.category as any)
-			configuratorStore.set.categoryId(response?.content?.category?.[1].id)
+
+		if (pathname.includes('summary')) {
+			// TODO Добавить обработку
+			await getPersonalConfiguration()
 		}
 	}
 
 	useEffect(() => {
 		initialize()
-	}, [])
+	}, [pathname])
+
+	useEffect(() => {
+		if (categoryId !== null) {
+			getStartParameters({ categoryId })
+		}
+	}, [categoryId])
 
 	/** Запрос настроек для конфигуратора оборудования */
 	useEffect(() => {

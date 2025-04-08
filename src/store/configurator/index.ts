@@ -141,7 +141,7 @@ export const configuratorStore = createStore(
 			const categoryId = get.categoryId()
 			const categories = get.categories()
 
-			return categories.find(({ id }) => id == categoryId) ?? null
+			return categories?.find(({ id }) => id == categoryId) ?? null
 		},
 		machineInfoSelector: () => {
 			const machineId = get.machineId()
@@ -165,6 +165,18 @@ export const configuratorStore = createStore(
 			)
 
 			return model?.modelName ?? ''
+		},
+		modelIdSelector: () => {
+			const machineId = get.machineId()
+			const seriesConfigurations = get.seriesConfigurations()?.[machineId]
+			const values = machineConfigurationForm.get.valuesSelector()
+
+			const model = seriesConfigurations?.workAreaCharacteristics?.find(
+				({ characteristicId }) =>
+					characteristicId === values?.workAreaCharacteristics
+			)
+
+			return model?.modelId ?? ''
 		},
 		configurationNameSelector: () => {
 			const machineId = get.machineId()

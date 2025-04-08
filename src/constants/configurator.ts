@@ -3,7 +3,8 @@ export const ConfiguratorSubSections = {
 	spindle: [
 		'toolswithchCharacteristics',
 		'spindleCharacteristics',
-		'spindleQuantityCharacteristics'
+		'spindleQuantityCharacteristics',
+		'autoChangeToolsRelations'
 	],
 	motor: ['motorCharacteristics'],
 	controlSystem: ['controlSystemCharacteristics'],
@@ -34,5 +35,6 @@ export const FlatConfiguratorSections = [
 	'vaccumTableCharacteristics',
 	'lubricationSystemCharacteristics',
 	'cabineCharacteristics',
-	'rotaryDeviceCharacteristics'
+	'rotaryDeviceCharacteristics',
+	'autoChangeToolsRelations'
 ]

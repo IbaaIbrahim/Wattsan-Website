@@ -17,6 +17,8 @@ export const requestsStore = createStore('requests')<{
 			set.requests({ ...get.requests(), [request]: status })
 	}))
 	.extendSelectors((set, get) => ({
+		requestsSelector: () =>
+			get.requests(),
 		loadingSelector: (request: string) =>
 			(get.requests()?.[request] ?? false) === STATUSES.loading,
 		statusSelector: (request: string) =>

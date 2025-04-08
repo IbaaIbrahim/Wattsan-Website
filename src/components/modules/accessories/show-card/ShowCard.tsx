@@ -12,6 +12,8 @@ import Image from 'next/image'
 import {useMemo} from 'react'
 
 import styles from './ShowCard.module.scss'
+import { configuratorStore } from '@store/configurator'
+import _ from 'lodash'
 
 const TEXTS = {
 	controlSystem: 'Control System',
@@ -22,7 +24,7 @@ const TEXTS = {
 	aspirationCharacteristics: 'Aspiration',
 	vaccumTableCharacteristics: 'Vacuum table',
 	rotaryDeviceCharacteristics: 'Rotary device',
-	cabineCharacteristics: 'Cabine'
+	// cabineCharacteristics: 'Cabine'
 }
 
 const ADDITIONAL_OPTIONS_IMAGES = {
@@ -32,14 +34,31 @@ const ADDITIONAL_OPTIONS_IMAGES = {
 	builtInSensorCharacteristics: controlSysSrc,
 	vaccumTableCharacteristics: vacuumSrc,
 	lubricationSystemCharacteristics: controlSysSrc,
-	cabineCharacteristics: controlSysSrc,
+	// cabineCharacteristics: controlSysSrc,
 	rotaryDeviceCharacteristics: rotarySrc
 }
 
 const SECTIONS = {
-	controlSystem: {controlSystem: controlSysSrc},
+	controlSystem: {controlSystemCharacteristics: controlSysSrc},
 	additionalOptions: ADDITIONAL_OPTIONS_IMAGES
 }
+
+
+// const ADDITIONAL_OPTIONS = {
+// 	liquidCoolingSystemCharacteristics: 'LiquidCoolingSystem',
+// 	aspirationCharacteristics: "Aspiration",
+// 	removableSensorCharacteristics: "RemovableSensor",
+// 	builtInSensorCharacteristics: "BuildInSensor",
+// 	vaccumTableCharacteristics: "VaccumTable",
+// 	lubricationSystemCharacteristics: "LubricationSystem",
+// 	// cabineCharacteristics: controlSysSrc,
+// 	rotaryDeviceCharacteristics: "RotaryDevice"
+// }
+
+// const SECTIONS = {
+// 	controlSystem: {controlSystemCharacteristics: 'ControlSystem'},
+// 	additionalOptions: ADDITIONAL_OPTIONS
+// }
 
 const ShowCard = ({
 					  className,
@@ -52,6 +71,7 @@ const ShowCard = ({
 }) => {
 	const values = machineConfigurationForm.use.valuesSelector()
 	const basicValues = basicMachineConfigurationForm.use.valuesSelector()
+	const machineInfo = configuratorStore.use.machineInfoSelector()
 
 	const images = useMemo(() => {
 		if (selectedSection === 'controlSystem') {
@@ -80,29 +100,38 @@ const ShowCard = ({
 				)}
 			>
 				<div className={styles.contentInner}>
-					{Object.keys(images).map(code => (
-						<div
-							key={code}
-							className={styles['image-wrapper']}
-						>
-							<>
-								<Image
-									className={styles['mini-image']}
-									src={images[code]}
-									alt=''
-								/>
-								<span className={styles.label}>{TEXTS[code]}</span>
+					{Object.keys(images).map(code => {
+						const seriesCharacteristic = _.find(machineInfo?.seriesCharacteristics, x => x.characteristicId === values[code])
+						const imageSrc = seriesCharacteristic?.fileManger?.url
+						return (
+							<div
+								key={code}
+								className={styles['image-wrapper']}
+							>
+								<>
+									{/*<Image*/}
+									{/*	className={styles['mini-image']}*/}
+									{/*	src={imageSrc}*/}
+									{/*	alt=''*/}
+									{/*/>*/}
+									<Image
+										className={styles['mini-image']}
+										src={images[code]}
+										alt=''
+									/>
+									<span className={styles.label}>{TEXTS[code]}</span>
 
-								{isDefaultSelected(code) && (
-									<div className={styles['not-chosen-placeholder']}>
+									{isDefaultSelected(code) && (
+										<div className={styles['not-chosen-placeholder']}>
 										<span className={styles['not-chosen-placeholder__text']}>
 											Not chosen
 										</span>
-									</div>
-								)}
-							</>
-						</div>
-					))}
+										</div>
+									)}
+								</>
+							</div>
+						)
+					})}
 				</div>
 			</div>
 		</div>

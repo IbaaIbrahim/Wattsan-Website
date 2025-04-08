@@ -1,24 +1,18 @@
-'use client'
+'use client';
 
-import { MODALS } from '@components/ui/modal/Modal'
-import {
-	API_CONFIGURATION_BY_SERIES,
-	API_CONFIGURATION_BY_SERIES_AND_MODEL,
-	API_GET_CONFIGURATION_IMAGES,
-	API_SAVE_CONFIGURATION,
-	API_START_PARAMETERS
-} from '@constants/api'
-import { FORMS_FIELDS } from '@constants/forms'
-import { authStore } from '@store/auth'
-import { configuratorStore } from '@store/configurator/index'
-import {
-	basicMachineConfigurationForm,
-	machineConfigurationForm
-} from '@store/forms'
-import { modalsStore } from '@store/modals'
-import { requestsStore } from '@store/requests'
+import { MODALS } from '@components/ui/modal/Modal';
+import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS } from '@constants/api';
+import { FORMS_FIELDS } from '@constants/forms';
+import { authStore } from '@store/auth';
+import { configuratorStore } from '@store/configurator/index';
+import { basicMachineConfigurationForm, machineConfigurationForm } from '@store/forms';
+import { modalsStore } from '@store/modals';
+import { requestsStore } from '@store/requests';
 
-import { authorizedRequest } from '../../utils/request'
+
+
+import { authorizedRequest } from '../../utils/request';
+
 
 export const getStartParameters = async ({
 	init = false,
@@ -27,6 +21,7 @@ export const getStartParameters = async ({
 	init?: boolean
 	categoryId?: any
 }) => {
+	let response
 	try {
 		const track = categoryId
 			? 'getStartParametersByCategory'
@@ -37,7 +32,7 @@ export const getStartParameters = async ({
 
 		if (requestsStore.get.loadingSelector(track)) return
 
-		const response = await authorizedRequest({
+		response = await authorizedRequest({
 			url: API_START_PARAMETERS,
 			method: 'GET',
 			query: { categoryId },
@@ -50,10 +45,11 @@ export const getStartParameters = async ({
 		} else {
 			configuratorStore.set.setStartParameters(categoryId, response?.content)
 		}
+		return response
 	} catch (error) {
 		console.error(error)
 	} finally {
-		return
+		return response
 	}
 }
 
@@ -253,71 +249,34 @@ const STEP_CODE_MAP = {
 	controlSystem: 4
 }
 
-export const getImagesFilterByValues = ({
-	section,
-	workAreaId,
-	spindleQuantityId,
-	motorId
-}) => {
+export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
 	let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
 	if (stepCode === null && section !== '') return
 
-	if (section === '') {
-		stepCode = 0
-	}
-
 	let additionalFilter = ''
 
 	if (stepCode === 1) {
-		// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
 	}
 
 	if (stepCode === 2) {
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
 	}
 
 	if (stepCode === 3) {
-		additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
-	return `stepCode~eq~'${stepCode}'${additionalFilter}`
+	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
 
-export const getConfigurationImages = async ({
-	section,
-	workAreaId,
-	spindleQuantityId,
-	motorId
-}) => {
+export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
 	try {
-		let stepCode = STEP_CODE_MAP?.[section] ?? 0
 
-		if (stepCode === null && section !== '') return
+		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, motorId, seriesId})
 
-		if (section === '') {
-			stepCode = 0
-		}
-
-		let additionalFilter = ''
-
-		if (stepCode === 1) {
-			// additionalFilter += `~and~workAreaId~eq~'${workAreaId}'`
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~null~and~motorId~eq~null`
-		}
-
-		if (stepCode === 2) {
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~workAreaId~eq~null`
-		}
-
-		if (stepCode === 3) {
-			additionalFilter += `~and~workAreaId~eq~'${workAreaId}'~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
-		}
-
-		const filter = getImagesFilterByValues({section, workAreaId, spindleQuantityId, motorId})
-
-		if (configuratorStore.get.images()?.[filter] !== undefined) return
+		if (configuratorStore.get.images()?.[filter] !== undefined || !modelId || !seriesId) return
 
 		const response = await authorizedRequest({
 			url: API_GET_CONFIGURATION_IMAGES,
@@ -329,10 +288,9 @@ export const getConfigurationImages = async ({
 
 		configuratorStore.set.setImages(filter, response?.data)
 
-		return
+		return response
 	} catch (error) {
 		console.error(error)
-
 		return
 	}
 }

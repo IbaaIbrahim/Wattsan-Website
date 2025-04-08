@@ -1,5 +1,6 @@
 import { basketForm } from '@store/forms'
 import { createStore } from 'zustand-x'
+import { IOrder } from '@my-types/orders'
 
 export type TCountry = {
 	id: number
@@ -89,27 +90,27 @@ export type TOrderProduct = {
 	}
 }
 
-export type TOrder = Partial<{
-	id: number
-	serial: number
-	number: string
-	fromDate: string
-	deliveryMethodId: number
-	deliveryMethod: {
-		id: number
-		name: string
-		countryId: number
-		order: number
-		details: string
-		cost: string
-		isActive: boolean
-	}
-	deliveryDate: string
-	isActive: boolean
-	clientId: string
-	user: any
-	orderProducts: Partial<TOrderProduct>[]
-}>
+// export type TOrder = Partial<{
+// 	id: number
+// 	serial: number
+// 	number: string
+// 	fromDate: string
+// 	deliveryMethodId: number
+// 	deliveryMethod: {
+// 		id: number
+// 		name: string
+// 		countryId: number
+// 		order: number
+// 		details: string
+// 		cost: string
+// 		isActive: boolean
+// 	}
+// 	deliveryDate: string
+// 	isActive: boolean
+// 	clientId: string
+// 	user: any
+// 	orderProducts: Partial<TOrderProduct>[]
+// }>
 
 export type TUseBasketStore = {
 	countries: TCountry[]
@@ -117,8 +118,8 @@ export type TUseBasketStore = {
 	positions: TPosition[]
 	appliedPromoCode: string
 	promoDiscount: number
-	orders: TOrder[]
-	order: TOrder
+	orders: IOrder[]
+	order: IOrder
 }
 
 export const basketStore = createStore('basket')<TUseBasketStore>({

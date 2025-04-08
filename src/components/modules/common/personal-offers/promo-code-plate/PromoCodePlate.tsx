@@ -4,21 +4,22 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import styles from './PromoCodePlate.module.scss'
+// import DOMPurify from 'dompurify';
 
 const PromoCodePlate: FC<{
 	info: TPromoCode
 	onClick: (id: string) => void
 }> = ({ info, onClick }) => {
 	const handleCopy = () => {
-		navigator?.clipboard?.writeText(info.promoCode)
+		navigator?.clipboard?.writeText(info.couponCode)
 	}
 
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.header}>{info.header}</div>
+			<div className={styles.header}>{info.couponTitle}</div>
 			<div className={styles.content}>
-				<div className={styles.title}>{info.title}</div>
-				<div className={styles.description}>{info.description}</div>
+				{/*<div className={styles.title}>{info.couponAmount}</div>*/}
+				<div className={styles.description} dangerouslySetInnerHTML={{__html: JSON.parse(info?.couponDesc ?? "") }} />
 				<button
 					className={styles.viewDetails}
 					onClick={() => onClick(info.id)}
@@ -26,13 +27,13 @@ const PromoCodePlate: FC<{
 					View details
 				</button>
 				<div className={styles.expirationDate}>
-					Valid until&nbsp;{info.expirationDate}
+					Valid until&nbsp;{info.validToDate}
 				</div>
 				<button
 					className={styles.copyCode}
 					onClick={handleCopy}
 				>
-					<div className={styles.copyCodeContent}>{info.promoCode}</div>
+					<div className={styles.copyCodeContent}>{info.couponCode}</div>
 					<Image
 						src={copyIcon}
 						alt=''

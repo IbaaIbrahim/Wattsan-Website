@@ -6,7 +6,7 @@ import Button from '@components/ui/button/Button'
 import IconBadge from '@components/ui/icon-badge/IconBadge'
 import { MODALS } from '@components/ui/modal/Modal'
 import Status from '@components/ui/status/Status'
-import { IOrderInfo, OrdersStore } from '@my-types/orders'
+import { IOrder, IOrderInfo, OrdersStore } from '@my-types/orders'
 import arrowSrc from '@public/img/icons/arrow-left.svg'
 import bellIcon from '@public/img/icons/bell.svg'
 import orderDownloadIcon from '@public/img/icons/order-download.svg'
@@ -16,6 +16,7 @@ import { modalsStore } from '@store/modals'
 import { ordersStore } from '@store/ordersStore'
 import Image from 'next/image'
 import { FC, useState } from 'react'
+import _ from 'lodash'
 
 import styles from './OrderView.module.scss'
 
@@ -57,7 +58,7 @@ const PAYMENT_STATUS = 'Processing'
 const ACTIONS_AVAILABLE_STATUS = 'Completed'
 
 const OrderView: FC<{
-	order: IOrderInfo
+	order: IOrder
 }> = ({ order }) => {
 	const notificationFilter = ordersStore(
 		(state: OrdersStore) => state.notificationFilter
@@ -113,18 +114,18 @@ const OrderView: FC<{
 				<div className={styles.header}>
 					<div className={styles.info}>
 						<div className={styles.id}>№&nbsp;{order.id}</div>
-						<div className={styles.createDate}>
-							from:&nbsp;{order.createDate}
-						</div>
-						<div className={styles.statusWrapper}>
-							<Status
-								text={order.status}
-								view={STATUS_MAP[order.status]}
-							/>
-							<div className={styles.statusDescription}>
-								{order.statusDescription}
-							</div>
-						</div>
+						{/*<div className={styles.createDate}>*/}
+						{/*	from:&nbsp;{order.createDate}*/}
+						{/*</div>*/}
+						{/*<div className={styles.statusWrapper}>*/}
+						{/*	<Status*/}
+						{/*		text={order.status}*/}
+						{/*		view={STATUS_MAP[order.status]}*/}
+						{/*	/>*/}
+						{/*	<div className={styles.statusDescription}>*/}
+						{/*		{order.status}*/}
+						{/*	</div>*/}
+						{/*</div>*/}
 					</div>
 					<div className={styles.actions}>
 						<Button
@@ -137,7 +138,7 @@ const OrderView: FC<{
 							size='s'
 							view='accent'
 							withoutBorder={true}
-							disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
+							// disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
 							onClick={() => {
 								modalsStore.set.open(MODALS.downloadReceipt, {
 									file: {
@@ -159,7 +160,7 @@ const OrderView: FC<{
 							size='s'
 							view='accent'
 							withoutBorder={true}
-							disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
+							// disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
 							onClick={() => {
 								modalsStore.set.open(MODALS.orderRepeat, {
 									items: MOCK_ITEMS,
@@ -179,7 +180,7 @@ const OrderView: FC<{
 							size='s'
 							view='accent'
 							withoutBorder={true}
-							disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
+							// disabled={order.status !== ACTIONS_AVAILABLE_STATUS}
 							onClick={() => {
 								modalsStore.set.open(MODALS.returnOrder, {
 									items: MOCK_ITEMS,
@@ -203,29 +204,29 @@ const OrderView: FC<{
 					<div className={styles.priceWrapper}>
 						<div className={styles.price}>
 							<span className={styles.priceTitle}>Total</span>
-							{order.price}
+							{_.sumBy(order.orderProducts, x => x.price)}
 						</div>
 						<div className={styles.deliveryPrice}>
-							{order?.deliveryMethod.price ?? 'Delivery not included'}
+							{order?.deliveryMethod.cost ?? 'Delivery not included'}
 						</div>
-						{order.status === PAYMENT_STATUS && (
-							<Button
-								className={styles.paymentAction}
-								view='black'
-								size='l'
-								onClick={handlePayOrder}
-							>
-								Pay order
-							</Button>
-						)}
+						{/*{order.status === PAYMENT_STATUS && (*/}
+						{/*	<Button*/}
+						{/*		className={styles.paymentAction}*/}
+						{/*		view='black'*/}
+						{/*		size='l'*/}
+						{/*		onClick={handlePayOrder}*/}
+						{/*	>*/}
+						{/*		Pay order*/}
+						{/*	</Button>*/}
+						{/*)}*/}
 					</div>
 				</div>
 				<div className={styles.itemsWrapper}>
 					<div className={styles.itemsTitle}>Items</div>
-					{order.items.map(item => {
+					{order.orderProducts.map(item => {
 						return (
 							<OrderItemPlate
-								key={item.name}
+								key={item.id}
 								item={item}
 							/>
 						)

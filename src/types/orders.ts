@@ -1,24 +1,41 @@
 export interface IOrder {
-	id: string | number
-	createDate: string
-	price: string | number
-	status: string | number
-	deliveryDate: string
+	"id"?: string | number,
+	"serial"?: string | number,
+	"number"?: string | number
+	"fromDate"?: string
+	"deliveryMethodId"?: string | number
+	"deliveryMethod"?: {
+		"id": string | number
+		"name": string
+		"countryId": number
+		"order": number
+		"details": string
+		"cost": string
+	},
+	"deliveryDate"?: string
+	"isActive"?: boolean
+	"couponId"?: string | number
+	"coupon"?: any
+	"clientId"?: string
+	orderProducts?: IOrderInfo[]
 }
 
 export interface IOrderInfo {
-	id: string
-	createDate: string
-	status: string
-	statusDescription: string
-	deliveryMethod: {
-		company: string
-		country: string
-		price: string
+	id: number
+	"price": number
+	"quantity": number
+	"referenceId": number
+	"itemtype": number
+	"orderId": number
+	"statusCategory": number
+	"status": number
+	"referenceObject":{
+		"id": number
+		fileManger: {
+			id: number
+			url: string
+		}
 	}
-	receiptDocument: string
-	price: string
-	items: { imgSrc: string; name: string; code: string; price: string }[]
 }
 
 export type IOrders = IOrder[]

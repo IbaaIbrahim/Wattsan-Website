@@ -1,11 +1,16 @@
 export type TPromoCode = {
-	id: string
-	header: string
-	title: string
-	description: string
-	expirationDate: string
-	promoCode: string
-	terms: string[]
+	id: string,
+	couponTitle: string,
+	couponDesc: string,
+	couponAmount: number,
+	couponType: number,
+	couponCode: string,
+	minPurchaseAmount: number,
+	maxPurchaseDiscount: number,
+	insertDate: string,
+	validFromDate: string,
+	validToDate: string,
+	couponStatus: boolean
 }
 
 export type TPromoCodes = TPromoCode[]

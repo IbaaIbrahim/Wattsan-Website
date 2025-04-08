@@ -40,12 +40,12 @@ const Page = props => {
 				onChange={changeSearch}
 			/>
 			<div className={styles.results}>
-				{RESULTS.map((item, index) => (
-					<OrderItemPlate
-						key={index}
-						item={item}
-					/>
-				))}
+				{/*{RESULTS.map((item, index) => (*/}
+				{/*	<OrderItemPlate*/}
+				{/*		key={index}*/}
+				{/*		item={item}*/}
+				{/*	/>*/}
+				{/*))}*/}
 			</div>
 		</div>
 	)

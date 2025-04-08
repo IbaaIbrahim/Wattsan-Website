@@ -2,21 +2,30 @@ import { TGetConfigurations } from '@my-types/configurations'
 
 import configurationsMock from './mocks/configurations/configurations.json'
 import { authorizedRequest } from '../utils/request'
-import { API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT, API_GET_REAL_ATTACHMENTS } from '@constants/api'
+import {
+	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
+	API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT,
+	API_GET_ORDERS,
+	API_GET_REAL_ATTACHMENTS
+} from '@constants/api'
 
 class ConfigurationsService {
 	private BASE_URL = ''
 
-	async getConfigurations(): Promise<TGetConfigurations> {
-		const response = await Promise.resolve(configurationsMock)
+	async getConfigurations(clientId): Promise<TGetConfigurations> {
+		const response = await authorizedRequest({
+			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
+			method: 'GET',
+			query: { filter: `clientId~eq~'${clientId}'` }
+		});
 
 		return {
 			// TODO Заглушка для демонстрации
 			// configurations: [],
-			configurations: response.configurations,
-			myTemplates: response.myTemplates,
-			popularTemplates: response.popularTemplates,
-			basicSpecification: response.basicSpecification
+			configurations: response.data,
+			myTemplates: response.myTemplates ?? [],
+			popularTemplates: response.popularTemplates ?? [],
+			basicSpecification: response.basicSpecification ?? {}
 		}
 	}
 

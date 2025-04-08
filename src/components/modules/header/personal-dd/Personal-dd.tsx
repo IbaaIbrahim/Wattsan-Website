@@ -192,7 +192,14 @@ const PersonalDd: FC<{
 					onClick={() =>
 						modalsStore.set.open(MODALS.login, {
 							initialScreen: 'SIGN_UP',
-							closeOnEscape: false
+							closeOnEscape: false,
+							onComplete: ({ type }) => {
+								if (type === 'register') {
+									modalsStore.set.open(MODALS.registerSuccessModal)
+								} else {
+									modalsStore.set.close()
+								}
+							}
 						})
 					}
 				>

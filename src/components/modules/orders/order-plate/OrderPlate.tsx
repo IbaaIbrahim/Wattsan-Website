@@ -4,6 +4,7 @@ import Status from '@components/ui/status/Status'
 import { useMatchMedia } from '@hooks/useMatchMedia'
 import { IOrder } from '@my-types/orders'
 import { FC } from 'react'
+import _ from 'lodash'
 
 import { PAGES } from '../../../../config/pages.url.config'
 import { getOrderDate } from '../../../../utils/time'
@@ -31,19 +32,19 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 				<div>
 					<div>№&nbsp;{order.id}</div>
 					<div className={styles.createDate}>
-						from&nbsp;{getOrderDate(order.createDate)}
+						from&nbsp;{getOrderDate(order.fromDate)}
 					</div>
 				</div>
-				<div className={styles.price}>$ {order.price}</div>
+				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price)}</div>
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.footer}>
 				<div>
 					<div className={styles.statusWrapper}>
-						<Status
-							text={order.status}
-							view={colorMap[order.status]}
-						/>
+						{/*<Status*/}
+						{/*	text={order.status}*/}
+						{/*	view={colorMap[order.status]}*/}
+						{/*/>*/}
 						<span>Delivery date&nbsp;{getOrderDate(order.deliveryDate)}</span>
 					</div>
 					{!isMobile && (
@@ -57,12 +58,8 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 				</div>
 				<EquipmentPreview
 					show={isMobile ? 3 : isTablet ? 1 : 3}
-					total={4}
-					items={[
-						'/img/grid-machines/A1.png',
-						'/img/grid-machines/A1.png',
-						'/img/grid-machines/A1.png'
-					]}
+					total={_.size(_.map(order.orderProducts, x => x?.referenceObject?.fileManger?.url))}
+					items={_.map(order.orderProducts, x => x?.referenceObject?.fileManger?.url)}
 				/>
 				{isMobile && (
 					<Button
