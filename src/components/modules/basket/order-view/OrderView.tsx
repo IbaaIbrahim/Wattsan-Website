@@ -9,6 +9,7 @@ import { getOrder } from '@store/basket/actions'
 import { FC, useEffect } from 'react'
 
 import styles from './OrderView.module.scss'
+import { IOrder } from '@my-types/orders'
 
 const OrderView: FC<{ clientId: string; orderId: string }> = ({
 	clientId,
@@ -18,20 +19,14 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 		getOrder({ clientId, id: orderId })
 	}, [clientId, orderId])
 
-	const order = basketStore.use.order()
+	const order: IOrder = basketStore.use.order()
 	const totalPrice = basketStore.use.orderTotalPriceSelector()
 
 	return (
 		<div className={styles.page}>
 			<div className={styles.title}>Order has been placed</div>
 			<OrderPlate
-				order={{
-					id: order?.id,
-					price: totalPrice,
-					status: '1',
-					deliveryDate: order?.deliveryDate,
-					createDate: order?.fromDate
-				}}
+				order={order}
 			/>
 			<div className={styles.sectionTitle}>Start learning the equipment</div>
 			<div className={styles.sectionParagraph}>

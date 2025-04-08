@@ -1,12 +1,8 @@
+import { IOrder } from '@my-types/orders'
+
 export interface IDashboard {
 	userName: string
-	lastOrder: {
-		id: string
-		status: string
-		price: string
-		createDate: string
-		deliveryDate: string
-	}
+	lastOrder: IOrder
 	otherOrders: {
 		all: string
 		current: string

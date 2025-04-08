@@ -1,10 +1,10 @@
 export interface IOrder {
-	"id": string | number,
-	"serial": string | number,
-	"number": string | number
-	"fromDate": string
-	"deliveryMethodId": string | number
-	"deliveryMethod": {
+	"id"?: string | number,
+	"serial"?: string | number,
+	"number"?: string | number
+	"fromDate"?: string
+	"deliveryMethodId"?: string | number
+	"deliveryMethod"?: {
 		"id": string | number
 		"name": string
 		"countryId": number
@@ -12,12 +12,12 @@ export interface IOrder {
 		"details": string
 		"cost": string
 	},
-	"deliveryDate": string
-	"isActive": boolean
-	"couponId": string | number
-	"coupon": any
-	"clientId": string
-	orderProducts: IOrderInfo[]
+	"deliveryDate"?: string
+	"isActive"?: boolean
+	"couponId"?: string | number
+	"coupon"?: any
+	"clientId"?: string
+	orderProducts?: IOrderInfo[]
 }
 
 export interface IOrderInfo {
