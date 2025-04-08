@@ -14,7 +14,7 @@ import cn from './page.module.scss'
 
 const REQUESTS = [
 	'getStartParametersByCategory',
-	'getStartParameters',
+	// 'getStartParameters',
 	API_CONFIGURATION_BY_SERIES,
 	API_CONFIGURATION_BY_SERIES_AND_MODEL
 ]
