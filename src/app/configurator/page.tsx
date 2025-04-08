@@ -13,12 +13,12 @@ const ConfiguratorPage = () => {
 	useSeries()
 
 	const loading = requestsStore.use.multipleLoadingSelector([
-		'getStartParametersByCategory',
+		// 'getStartParametersByCategory',
 		'getStartParameters'
 	])
 
 	const notInitialized = requestsStore.use.multipleIdleSelector([
-		'getStartParametersByCategory',
+		// 'getStartParametersByCategory',
 		'getStartParameters'
 	])
 
