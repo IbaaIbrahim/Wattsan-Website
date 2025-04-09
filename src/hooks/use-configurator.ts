@@ -1,5 +1,6 @@
 import { configuratorStore } from '@store/configurator'
 import {
+	getConfiguratorById,
 	getInitialSeriesConfiguration,
 	getPersonalConfiguration, getSeriesConfiguration, getSeriesConfigurationForConfigurator,
 	getStartParameters
@@ -8,14 +9,14 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import _ from 'lodash'
 import { requestsStore } from '@store/requests'
+import { authStore } from '@store/auth'
 
 export const useConfigurator = () => {
 	const searchParams = useSearchParams()
-
-	const machineId = configuratorStore.use.machineId()
-	const series = configuratorStore.use.seriesConfigurations()
+	const clientId = authStore.useStore((state) => state.clientId)
 
 	const initialize = async () => {
+
 		const categoryId = searchParams.get('categoryId') ?? null
 
 		if (categoryId !== null) {
@@ -24,9 +25,21 @@ export const useConfigurator = () => {
 
 		const machineId = searchParams.get('machineId') ?? null
 
-		if (categoryId !== null) {
+		if (machineId !== null) {
 			configuratorStore.set.machineId(machineId)
 		}
+
+		const configuratorId = searchParams.get('configuratorId') ?? null
+
+		if (configuratorId !== null) {
+			if (clientId) {
+				configuratorStore.set.configuratorId(configuratorId)
+				await getConfiguratorById(configuratorId)
+			} else {
+				return
+			}
+		}
+
 		const response = await getStartParameters({ categoryId })
 		if(response){
 			configuratorStore.set.categories(response?.content?.category as any)
@@ -42,5 +55,5 @@ export const useConfigurator = () => {
 
 	useEffect(() => {
 		initialize()
-	}, [])
+	}, [clientId])
 }

@@ -1,7 +1,14 @@
 'use client';
 
 import { MODALS } from '@components/ui/modal/Modal';
-import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS } from '@constants/api';
+import {
+	API_CONFIGURATION_BY_SERIES,
+	API_CONFIGURATION_BY_SERIES_AND_MODEL,
+	API_GET_CONFIGURATION_IMAGES,
+	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
+	API_SAVE_CONFIGURATION,
+	API_START_PARAMETERS
+} from '@constants/api'
 import { FORMS_FIELDS } from '@constants/forms';
 import { authStore } from '@store/auth';
 import { configuratorStore } from '@store/configurator/index';
@@ -194,6 +201,19 @@ export const getPersonalConfiguration = async () => {
 		// 	method: 'GET',
 		// 	query: { filter: `clientId~eq~'${clientId}'` }
 		// })
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const getConfiguratorById = async (configuratorId) => {
+	try {
+		const clientId = authStore.get.clientId()
+		const response = await authorizedRequest({
+			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
+			method: 'GET',
+			query: { filter: `id~eq~'${configuratorId}'~and~clientId~eq~'${clientId}'` }
+		})
 	} catch (error) {
 		console.error(error)
 	}

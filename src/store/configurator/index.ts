@@ -23,6 +23,7 @@ export type TConfiguratorStartParameters = {
 
 export type TUseConfiguratorStore = {
 	customName: string
+	configuratorId: any
 	categoryId: any
 	machineId: any
 	initializePage: null | 'configurator' | 'accessories' | 'summary'
@@ -48,6 +49,7 @@ export const configuratorStore = createStore(
 	'configurator'
 )<TUseConfiguratorStore>({
 	customName: '',
+	configuratorId: null,
 	categoryId: null,
 	machineId: null,
 	initializePage: null,
