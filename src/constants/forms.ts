@@ -1,3 +1,6 @@
+import { IConfiguration } from '@my-types/configurations'
+import _ from 'lodash'
+
 export enum FORMS {
 	login = 'login',
 	signUp = 'signUp',
@@ -6,6 +9,35 @@ export enum FORMS {
 	machineConfiguration = 'machineConfiguration',
 	basicMachineConfiguration = 'basicMachineConfiguration',
 	basket = 'basket'
+}
+
+const mappedKeys = {
+	'workAreaCharacteristics': 'workArea',
+	'zAxisCharacteristics': 'zAxis',
+	'toolswithchCharacteristics': 'toolSwitch',
+	'spindleCharacteristics': 'spindle',
+	'spindleQuantityCharacteristics': 'spindleQuantity',
+	'motorCharacteristics': 'motor',
+	'controlSystemCharacteristics': 'controlSystem',
+	'liquidCoolingSystemCharacteristics': 'liquidCoolingSystem',
+	'removableSensorCharacteristics': 'removableSensor',
+	'builtInSensorCharacteristics': 'buildInSensor',
+	'lubricationSystemCharacteristics': 'lubrucationSystem',
+	'aspirationCharacteristics': 'aspiration',
+	'vaccumTableCharacteristics': 'vaccumTable',
+	'rotaryDeviceCharacteristics': 'rotaryDevice',
+	'cabineCharacteristics': 'cabine',
+	'rotarySeparateCharacteristics': 'rotarySeparate',
+	'autoChangeToolsRelations': 'autoChangeTools'
+}
+
+export const mapConfiguratorWithForm = (configurator: IConfiguration) => {
+	const mappedData = {}
+	_.forEach(FORMS_FIELDS.machineConfiguration, (key) => {
+		const mappedItem = []
+		mappedData[key] = {value: configurator[mappedKeys[key]]}
+	})
+	return mappedData
 }
 
 export const FORMS_FIELDS = {
@@ -25,7 +57,8 @@ export const FORMS_FIELDS = {
 		'vaccumTableCharacteristics',
 		'rotaryDeviceCharacteristics',
 		'cabineCharacteristics',
-		'rotarySeparateCharacteristics'
+		'rotarySeparateCharacteristics',
+		'autoChangeToolsRelations'
 	],
 	basicMachineConfiguration: [
 		'workAreaCharacteristics',
@@ -43,6 +76,7 @@ export const FORMS_FIELDS = {
 		'vaccumTableCharacteristics',
 		'rotaryDeviceCharacteristics',
 		'cabineCharacteristics',
-		'rotarySeparateCharacteristics'
+		'rotarySeparateCharacteristics',
+		'autoChangeToolsRelations'
 	]
 }

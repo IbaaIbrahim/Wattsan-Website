@@ -17,13 +17,13 @@ export const useConfigurator = () => {
 
 	const initialize = async () => {
 
-		const categoryId = searchParams.get('categoryId') ?? null
+		let categoryId = searchParams.get('categoryId') ?? null
 
 		if (categoryId !== null) {
 			configuratorStore.set.categoryId(categoryId)
 		}
 
-		const machineId = searchParams.get('machineId') ?? null
+		let machineId = searchParams.get('machineId') ?? null
 
 		if (machineId !== null) {
 			configuratorStore.set.machineId(machineId)
@@ -34,7 +34,7 @@ export const useConfigurator = () => {
 		if (configuratorId !== null) {
 			if (clientId) {
 				configuratorStore.set.configuratorId(configuratorId)
-				await getConfiguratorById(configuratorId)
+				const configurator = await getConfiguratorById(configuratorId)
 			} else {
 				return
 			}
@@ -46,7 +46,7 @@ export const useConfigurator = () => {
 			configuratorStore.set.categoryId(response?.content?.category?.[1].id)
 			const seriesInfo = response?.content?.series.find(x => x.id == machineId)
 			const workAreaInfo = _.first(_.filter(seriesInfo.seriesCharacteristics, x => x.staticCharacteristic.code === 'WorkArea' && x.isAvailable && x.isDefault))
-			getSeriesConfigurationForConfigurator(machineId, _.get(workAreaInfo, 'characteristicId'))
+			getSeriesConfigurationForConfigurator(machineId, _.get(workAreaInfo, 'characteristicId'), configuratorId)
 			// const seriesItem = _.find(response?.content?.series, x => x.id == machineId)
 			// console.log(response, machineId, seriesItem)
 			// configuratorStore.set.seriesConfigurations(seriesItem.seriesCharacteristics)

@@ -9,7 +9,7 @@ import {
 	API_SAVE_CONFIGURATION,
 	API_START_PARAMETERS
 } from '@constants/api'
-import { FORMS_FIELDS } from '@constants/forms';
+import { FORMS_FIELDS, mapConfiguratorWithForm } from '@constants/forms'
 import { authStore } from '@store/auth';
 import { configuratorStore } from '@store/configurator/index';
 import { basicMachineConfigurationForm, machineConfigurationForm } from '@store/forms';
@@ -19,6 +19,7 @@ import { requestsStore } from '@store/requests';
 import _ from 'lodash';
 
 import { authorizedRequest } from '../../utils/request';
+import { IConfiguration } from '@my-types/configurations'
 
 
 export const getStartParameters = async ({
@@ -84,6 +85,8 @@ export const updateCurrentFields = (seriesId, outerParams = null) => {
 		outerParams !== null
 			? outerParams
 			: configuratorStore.get.seriesConfigurationsSelector(seriesId)
+
+	console.log(params)
 
 	const fields = FORMS_FIELDS.machineConfiguration.reduce((acc, name) => {
 		return {
@@ -166,7 +169,8 @@ export const getSeriesConfiguration = async (
 
 export const getSeriesConfigurationForConfigurator = async (
 	machineId: any,
-	workAreaId
+	workAreaId,
+	configuratorId
 ) => {
 	try {
 		const response = await authorizedRequest({
@@ -181,7 +185,9 @@ export const getSeriesConfigurationForConfigurator = async (
 
 		configuratorStore.set.setSeriesConfigurations(machineId, response?.content)
 
-		updateCurrentFields(machineId)
+		if(!configuratorId) {
+			updateCurrentFields(machineId)
+		}
 		updateBasicFields(machineId)
 
 		return
@@ -214,6 +220,13 @@ export const getConfiguratorById = async (configuratorId) => {
 			method: 'GET',
 			query: { filter: `id~eq~'${configuratorId}'~and~clientId~eq~'${clientId}'` }
 		})
+		if(_.size(response.data) > 0){
+			const configurator: IConfiguration = response.data[0]
+			const fields = mapConfiguratorWithForm(configurator)
+			machineConfigurationForm.set.multiple(fields)
+			return configurator
+		}
+		return {}
 	} catch (error) {
 		console.error(error)
 	}
