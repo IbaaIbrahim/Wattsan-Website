@@ -9,7 +9,7 @@ import { basicMachineConfigurationForm, machineConfigurationForm } from '@store/
 import { modalsStore } from '@store/modals';
 import { requestsStore } from '@store/requests';
 
-
+import _ from 'lodash';
 
 import { authorizedRequest } from '../../utils/request';
 
@@ -143,6 +143,33 @@ export const getSeriesConfiguration = async (
 				workAreaId:
 					machineConfigurationForm.get.valuesSelector()?.workAreaCharacteristics
 			}
+		})
+
+		configuratorStore.set.setSeriesConfigurations(machineId, response?.content)
+
+		updateCurrentFields(machineId)
+		updateBasicFields(machineId)
+
+		return
+	} catch (error) {
+		console.error(error)
+		return
+	}
+}
+
+export const getSeriesConfigurationForConfigurator = async (
+	machineId: any,
+	workAreaId
+) => {
+	try {
+		const response = await authorizedRequest({
+			url: API_CONFIGURATION_BY_SERIES_AND_MODEL,
+			method: 'GET',
+			query: {
+				seriesId: machineId,
+				workAreaId
+			},
+			track: 'InitSeriesConfigurationForConfigurator'
 		})
 
 		configuratorStore.set.setSeriesConfigurations(machineId, response?.content)

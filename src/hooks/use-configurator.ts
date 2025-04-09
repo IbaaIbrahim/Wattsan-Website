@@ -1,14 +1,15 @@
 import { configuratorStore } from '@store/configurator'
 import {
 	getInitialSeriesConfiguration,
-	getPersonalConfiguration,
+	getPersonalConfiguration, getSeriesConfiguration, getSeriesConfigurationForConfigurator,
 	getStartParameters
 } from '@store/configurator/actions'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import _ from 'lodash'
+import { requestsStore } from '@store/requests'
 
 export const useConfigurator = () => {
-	const pathname = usePathname()
 	const searchParams = useSearchParams()
 
 	const machineId = configuratorStore.use.machineId()
@@ -30,17 +31,16 @@ export const useConfigurator = () => {
 		if(response){
 			configuratorStore.set.categories(response?.content?.category as any)
 			configuratorStore.set.categoryId(response?.content?.category?.[1].id)
+			const seriesInfo = response?.content?.series.find(x => x.id == machineId)
+			const workAreaInfo = _.first(_.filter(seriesInfo.seriesCharacteristics, x => x.staticCharacteristic.code === 'WorkArea' && x.isAvailable && x.isDefault))
+			getSeriesConfigurationForConfigurator(machineId, _.get(workAreaInfo, 'characteristicId'))
+			// const seriesItem = _.find(response?.content?.series, x => x.id == machineId)
+			// console.log(response, machineId, seriesItem)
+			// configuratorStore.set.seriesConfigurations(seriesItem.seriesCharacteristics)
 		}
 	}
 
 	useEffect(() => {
 		initialize()
 	}, [])
-
-	/** Запрос настроек для конфигуратора оборудования */
-	useEffect(() => {
-		if (machineId !== null && Object.values(series).length === 0) {
-			getInitialSeriesConfiguration(machineId)
-		}
-	}, [machineId, series])
 }

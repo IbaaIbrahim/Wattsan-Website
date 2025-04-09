@@ -95,7 +95,8 @@ const MachineView = ({
 		const motorId = values?.motorCharacteristics
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
 		const imageKey = getImagesFilterByValues({ section: hoveredSection ?? selectedSection ?? 'mainPage', motorId, spindleQuantityId, modelId, seriesId })
-		return _.get(images, `${imageKey}.0.fileManger.url`) ?? null
+		const defaultImageKey = getImagesFilterByValues({ section: 'mainPage', motorId, spindleQuantityId, modelId, seriesId })
+		return _.get(images, `${imageKey}.0.fileManger.url`) ?? _.get(images, `${defaultImageKey}.0.fileManger.url`)
 		// return hoveredSection !== null
 		// 	? MACHINE_IMAGES?.[hoveredSection]
 		// 	: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
