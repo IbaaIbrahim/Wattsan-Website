@@ -28,7 +28,7 @@ export const authorizedRequest = async ({
 	track = true
 }: {
 	url: string
-	method: 'POST' | 'GET'
+	method: 'POST' | 'GET' | 'PUT'
 	data?: any
 	query?: object
 	track?: boolean | string

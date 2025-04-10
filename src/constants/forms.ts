@@ -28,7 +28,8 @@ const mappedKeys = {
 	'rotaryDeviceCharacteristics': 'rotaryDevice',
 	'cabineCharacteristics': 'cabine',
 	'rotarySeparateCharacteristics': 'rotarySeparate',
-	'autoChangeToolsRelations': 'autoChangeTools'
+	'autoChangeToolsRelations': 'autoChangeTools',
+	'configurationName': 'configurationName'
 }
 
 export const mapConfiguratorWithForm = (configurator: IConfiguration) => {
@@ -58,7 +59,8 @@ export const FORMS_FIELDS = {
 		'rotaryDeviceCharacteristics',
 		'cabineCharacteristics',
 		'rotarySeparateCharacteristics',
-		'autoChangeToolsRelations'
+		'autoChangeToolsRelations',
+		'configurationName'
 	],
 	basicMachineConfiguration: [
 		'workAreaCharacteristics',
@@ -77,6 +79,7 @@ export const FORMS_FIELDS = {
 		'rotaryDeviceCharacteristics',
 		'cabineCharacteristics',
 		'rotarySeparateCharacteristics',
-		'autoChangeToolsRelations'
+		'autoChangeToolsRelations',
+		'configurationName'
 	]
 }

@@ -7,6 +7,7 @@ import { FC, useState } from 'react'
 import styles from './ConfigurationMachinePlate.module.scss'
 import _ from 'lodash'
 import { IConfiguration } from '@my-types/configurations'
+import { PAGES } from '../../../../config/pages.url.config'
 
 const STATUS_MAP = {
 	1: {title: "In Process", color: 'yellow'},
@@ -100,7 +101,7 @@ const ConfigurationMachinePlate: FC<{
 					<Button
 						size='l'
 						view='black'
-						onClick={onViewConfiguration}
+						href={PAGES.accessoriesId(`?configuratorId=${item.id}`)}
 					>
 						View configuration
 					</Button>

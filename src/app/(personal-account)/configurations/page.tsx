@@ -29,6 +29,7 @@ const ConfigurationsPage = () => {
 			<div
 				style={{
 					display: 'flex',
+					height: '100%',
 					justifyContent: 'center',
 					alignItems: 'center'
 				}}

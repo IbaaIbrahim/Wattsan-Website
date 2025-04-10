@@ -7,7 +7,7 @@ import {
 	API_GET_CONFIGURATION_IMAGES,
 	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
 	API_SAVE_CONFIGURATION,
-	API_START_PARAMETERS
+	API_START_PARAMETERS, API_UPDATE_CONFIGURATION
 } from '@constants/api'
 import { FORMS_FIELDS, mapConfiguratorWithForm } from '@constants/forms'
 import { authStore } from '@store/auth';
@@ -36,7 +36,7 @@ export const getStartParameters = async ({
 			: 'getStartParameters'
 
 		if (init && configuratorStore.get.categories()?.length !== 0) return
-		if (configuratorStore.get.startParameters()?.[categoryId]) return
+		// if (configuratorStore.get.startParameters()?.[categoryId]) return
 
 		if (requestsStore.get.loadingSelector(track)) return
 
@@ -179,8 +179,7 @@ export const getSeriesConfigurationForConfigurator = async (
 			query: {
 				seriesId: machineId,
 				workAreaId
-			},
-			track: 'InitSeriesConfigurationForConfigurator'
+			}
 		})
 
 		configuratorStore.set.setSeriesConfigurations(machineId, response?.content)
@@ -218,7 +217,8 @@ export const getConfiguratorById = async (configuratorId) => {
 		const response = await authorizedRequest({
 			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
 			method: 'GET',
-			query: { filter: `id~eq~'${configuratorId}'~and~clientId~eq~'${clientId}'` }
+			query: { filter: `id~eq~'${configuratorId}'~and~clientId~eq~'${clientId}'` },
+			track: 'GetConfiguratorById'
 		})
 		if(_.size(response.data) > 0){
 			const configurator: IConfiguration = response.data[0]
@@ -232,7 +232,7 @@ export const getConfiguratorById = async (configuratorId) => {
 	}
 }
 
-export const savePersonalConfiguration = async (machineId, categoryId) => {
+export const savePersonalConfiguration = async (machineId, categoryId, configuratorId) => {
 	try {
 		const clientId = authStore.get.clientId()
 		const {
@@ -250,43 +250,62 @@ export const savePersonalConfiguration = async (machineId, categoryId) => {
 			toolswithchCharacteristics,
 			vaccumTableCharacteristics,
 			workAreaCharacteristics,
-			zAxisCharacteristics
+			zAxisCharacteristics,
+			autoChangeToolsRelations,
+			configurationName
 		} = machineConfigurationForm.get.valuesSelector()
-		const configurationName = configuratorStore.get.configurationNameSelector()
+		const configurationNameSelector = configuratorStore.get.configurationNameSelector()
 		const customName = configuratorStore.get.customName()
 		const price = configuratorStore.get.summarySelector(machineId)
 
-		const response = await authorizedRequest({
-			url: API_SAVE_CONFIGURATION,
-			method: 'POST',
-			data: {
-				configurationName: `${configurationName} ${customName}`,
-				clientId,
-				seriesId: +machineId,
-				workArea: workAreaCharacteristics,
-				zAxis: zAxisCharacteristics,
-				toolSwitch: toolswithchCharacteristics,
-				spindle: spindleCharacteristics,
-				spindleQuantity: spindleQuantityCharacteristics,
-				motor: motorCharacteristics,
-				controlSystem: controlSystemCharacteristics,
-				liquidCoolingSystem: liquidCoolingSystemCharacteristics,
-				removableSensor: removableSensorCharacteristics,
-				buildInSensor: builtInSensorCharacteristics,
-				lubrucationSystem: lubricationSystemCharacteristics,
-				aspiration: aspirationCharacteristics,
-				vaccumTable: vaccumTableCharacteristics,
-				rotaryDevice: rotaryDeviceCharacteristics,
-				cabine: cabineCharacteristics,
-				rotarySeparate: 66,
-				status: 1,
-				price: price.replace(/\D/g, '')
-			}
-		})
+		const data = {
+			configurationName: `${configurationNameSelector} ${customName}`,
+			clientId,
+			seriesId: +machineId,
+			workArea: workAreaCharacteristics,
+			zAxis: zAxisCharacteristics,
+			toolSwitch: toolswithchCharacteristics,
+			spindle: spindleCharacteristics,
+			spindleQuantity: spindleQuantityCharacteristics,
+			motor: motorCharacteristics,
+			controlSystem: controlSystemCharacteristics,
+			liquidCoolingSystem: liquidCoolingSystemCharacteristics,
+			removableSensor: removableSensorCharacteristics,
+			buildInSensor: builtInSensorCharacteristics,
+			lubrucationSystem: lubricationSystemCharacteristics,
+			aspiration: aspirationCharacteristics,
+			vaccumTable: vaccumTableCharacteristics,
+			rotaryDevice: rotaryDeviceCharacteristics,
+			cabine: cabineCharacteristics,
+			autoChangeTool: autoChangeToolsRelations,
+			rotarySeparate: 66,
+			status: 1,
+			price: price.replace(/\D/g, '')
+		}
+
+		let response = null
+
+		if(configuratorId) {
+			response = await authorizedRequest({
+				url: API_UPDATE_CONFIGURATION,
+				method: 'PUT',
+				data: {
+					...data,
+					id: configuratorId
+				}
+			})
+		} else {
+			response = await authorizedRequest({
+				url: API_SAVE_CONFIGURATION,
+				method: 'POST',
+				data
+			})
+		}
 
 		const referenceId = response?.data?.[0]?.id
 
 		configuratorStore.set.savedReferenceId(referenceId)
+		configuratorStore.set.configuratorId(response?.data?.[0]?.id)
 
 		modalsStore.set.open(MODALS.saveResultModal, {
 			machineId,

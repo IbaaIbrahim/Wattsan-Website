@@ -64,7 +64,9 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 					).length > 0
 			)
 
-	const handleViewConfiguration = (id: string | number) => () => {}
+	const handleViewConfiguration = (id: string | number) => () => {
+
+	}
 
 	const handleViewSpecification = (id: string | number) => () => {
 		modalsStore.set.open(MODALS.configurationComparisonModal, {

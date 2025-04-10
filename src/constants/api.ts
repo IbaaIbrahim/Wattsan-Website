@@ -9,6 +9,7 @@ export const API_START_PARAMETERS = `${API_URL}/ClientConfiguration/ReadStartPar
 export const API_CONFIGURATION_BY_SERIES = `${API_URL}/ClientConfiguration/ReadConfiguationParametersBySeries`
 export const API_CONFIGURATION_BY_SERIES_AND_MODEL = `${API_URL}/ClientConfiguration/ReadConfiguationParametersBySeriesAndModel`
 export const API_SAVE_CONFIGURATION = `${API_URL}/ClientConfiguration/Create`
+export const API_UPDATE_CONFIGURATION = `${API_URL}/ClientConfiguration/Update`
 export const API_GET_CONFIGURATIONS = `${API_URL}/ClientConfiguration/Read`
 export const API_GET_CONFIGURATIONS_WITH_DETAILS = `${API_URL}/ClientConfiguration/ReadWithDetails`
 export const API_GET_CONFIGURATION_IMAGES = `${API_URL}/ConfiguratorImages/Read`

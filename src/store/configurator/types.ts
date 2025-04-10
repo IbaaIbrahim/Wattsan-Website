@@ -157,7 +157,7 @@ export type TSeriesConfiguration = {
 	rotaryDeviceCharacteristics: TStandartCharacteristic[]
 	rotarySeparateCharacteristics: TStandartCharacteristic[]
 	rotarySeparateRelations: TStandartCharacteristic[]
-	autoChangeToolsRelations: any[]
+	autoChangeToolsRelations: TStandartCharacteristic[]
 	configurationSuggestionsSeries: TConfigurationSuggestionsSeries[]
 	configurationSuggestionsCharacteristics: TConfigurationSuggestionsCharacteristics[]
 }

@@ -19,7 +19,7 @@ import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './SummaryView.module.scss'
 
-const SummaryView = () => {
+const SummaryView = ({setIsSummary}) => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
 
@@ -106,7 +106,13 @@ const SummaryView = () => {
 		<article className={styles.wrapper}>
 			<Link
 				className={styles['back-link']}
-				href={`${CONFIGURATOR_PAGES.ACCESSORIES}?machineId=${machineId}&categoryId=${categoryId}`}
+				// href={`${CONFIGURATOR_PAGES.ACCESSORIES}?machineId=${machineId}&categoryId=${categoryId}`}
+				onClick={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
+					setIsSummary(false)
+				}}
+				href={'#'}
 			>
 				<Image
 					src={arrowSrc}

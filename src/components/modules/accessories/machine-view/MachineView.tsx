@@ -69,10 +69,7 @@ const REQUESTS = [
 	API_GET_CONFIGURATION_IMAGES
 ]
 
-const MachineView = ({
-	selectedSection,
-	onSelect
-}: {
+const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 	selectedSection?: any
 	onSelect?: (part: AccessoryParts) => void
 } & any) => {
@@ -96,7 +93,7 @@ const MachineView = ({
 		const spindleQuantityId = values?.spindleQuantityCharacteristics
 		const imageKey = getImagesFilterByValues({ section: hoveredSection ?? selectedSection ?? 'mainPage', motorId, spindleQuantityId, modelId, seriesId })
 		const defaultImageKey = getImagesFilterByValues({ section: 'mainPage', motorId, spindleQuantityId, modelId, seriesId })
-		return _.get(images, `${imageKey}.0.fileManger.url`) ?? _.get(images, `${defaultImageKey}.0.fileManger.url`)
+		return _.get(images, `${imageKey}.0.fileManger.url`) ?? _.get(images, `${defaultImageKey}.0.fileManger.url`) ?? MACHINE_IMAGES.default
 		// return hoveredSection !== null
 		// 	? MACHINE_IMAGES?.[hoveredSection]
 		// 	: MACHINE_IMAGES?.[selectedSection] ?? MACHINE_IMAGES.default
@@ -151,7 +148,7 @@ const MachineView = ({
 			}
 			<div className={styles.header}>
 				<div className={styles.title}>
-					<span className={styles['title__name']}>{categoryInfo?.name}</span>
+					<span className={styles['title__name']}>{values.configurationName ? <span>{categoryInfo?.name}<span>({values.configurationName})</span></span> : categoryInfo?.name}</span>
 					<span className={styles['title__serie']}>
 						{machineInfo?.name} {modelName}
 					</span>
@@ -306,7 +303,7 @@ const MachineView = ({
 					<div className={styles.hideTablet}>View videos</div>
 				</Button>
 			</div>
-			<ActionsPanel />
+			<ActionsPanel setIsSummary={setIsSummary} />
 		</article>
 	)
 }

@@ -197,7 +197,8 @@ export const machineConfigurationForm = createFormStore(
 		rotaryDeviceCharacteristics: { value: '' },
 		rotarySeparateCharacteristics: { value: '' },
 		cabineCharacteristics: { value: '' },
-		autoChangeToolsRelations: {value: ''}
+		autoChangeToolsRelations: {value: ''},
+		configurationName: {value: ''}
 	}
 )
 
@@ -219,7 +220,8 @@ export const basicMachineConfigurationForm = createFormStore(
 		vaccumTableCharacteristics: { value: '' },
 		rotaryDeviceCharacteristics: { value: '' },
 		cabineCharacteristics: { value: '' },
-		autoChangeToolsRelations: {value: ''}
+		autoChangeToolsRelations: {value: ''},
+		configurationName: {value: ''}
 	}
 )
 

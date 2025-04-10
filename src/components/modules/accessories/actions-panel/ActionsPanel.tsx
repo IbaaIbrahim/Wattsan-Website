@@ -23,9 +23,10 @@ import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './ActionsPanel.module.scss'
 
-const ActionsPanel = () => {
+const ActionsPanel = ({setIsSummary}) => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
+	const configuratorId = configuratorStore.use.configuratorId()
 
 	const { translations }: { translations: ILanguage } = useLang()
 
@@ -35,7 +36,7 @@ const ActionsPanel = () => {
 	const [showButtons, setShowButtons] = useState(false)
 
 	const handleSave = () => {
-		savePersonalConfiguration(machineId, categoryId)
+		savePersonalConfiguration(machineId, categoryId, configuratorId)
 	}
 
 	const handleLogin = () => {
@@ -177,7 +178,8 @@ const ActionsPanel = () => {
 					className={clsx(styles.rightSummaryBtn, styles.hideMobile)}
 					size='l'
 					view='red'
-					href={`${CONFIGURATOR_PAGES.SUMMARY}?machineId=${machineId}&categoryId=${categoryId}`}
+					onClick={() => setIsSummary(true)}
+					// href={`${CONFIGURATOR_PAGES.SUMMARY}?machineId=${machineId}&categoryId=${categoryId}`}
 				>
 					{translations.accessories.actions_bar.summary}
 				</Button>
