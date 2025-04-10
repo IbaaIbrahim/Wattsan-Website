@@ -85,6 +85,8 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 
 	const values = machineConfigurationForm.use.valuesSelector()
 
+	console.log('MachineView', values)
+
 	const { translations }: { translations: ILanguage } = useLang()
 
 	const [hoveredSection, setHoveredSection] = useState<string | null>(null)

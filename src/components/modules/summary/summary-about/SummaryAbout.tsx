@@ -31,6 +31,7 @@ import styles from './SummaryAbout.module.scss'
 const SummaryAbout = () => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
+	const configuratorId = configuratorStore.use.configuratorId()
 	const summary = configuratorStore.use.summarySelector(machineId)
 	const machineName = configuratorStore.use.configurationNameSelector()
 	const customConfiguration = configuratorStore.use.isCustomConfiguration()
@@ -76,7 +77,7 @@ const SummaryAbout = () => {
 	const authorized = authStore.use.authorized()
 
 	const handleSave = async () => {
-		savePersonalConfiguration(machineId, categoryId)
+		savePersonalConfiguration(machineId, categoryId, configuratorId)
 	}
 
 	const handleLogin = nextAction => () => {
@@ -163,9 +164,7 @@ const SummaryAbout = () => {
 					differentCounter={differentCounter}
 					compare={compare}
 					basicConfiguration={basicConfiguration}
-					yourConfiguration={
-						customConfiguration ? yourConfiguration : basicConfiguration
-					}
+					yourConfiguration={yourConfiguration}
 				/>
 				<div className={styles['main-data__configs']}>
 					{/*<CharacteristicOverview*/}
