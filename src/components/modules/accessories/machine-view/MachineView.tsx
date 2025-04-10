@@ -71,7 +71,8 @@ const REQUESTS = [
 
 const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 	selectedSection?: any
-	onSelect?: (part: AccessoryParts) => void
+	onSelect?: (part: AccessoryParts) => void,
+	setIsSummary: any
 } & any) => {
 
 	const categoryInfo = configuratorStore.use.categoryInfoSelector()

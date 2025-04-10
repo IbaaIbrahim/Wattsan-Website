@@ -232,7 +232,7 @@ export const getConfiguratorById = async (configuratorId) => {
 	}
 }
 
-export const savePersonalConfiguration = async (machineId, categoryId, configuratorId) => {
+export const savePersonalConfiguration = async (machineId, categoryId, configuratorId = null) => {
 	try {
 		const clientId = authStore.get.clientId()
 		const {

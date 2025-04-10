@@ -54,7 +54,7 @@ const REQUESTS = [
 	API_CONFIGURATION_BY_SERIES_AND_MODEL
 ]
 
-const Accessories = ({setIsSummary}) => {
+const Accessories: ({ setIsSummary }: { setIsSummary: any }) => (JSX.Element) = ({setIsSummary}) => {
 	const searchParams = useSearchParams()
 	const configuratorId = searchParams.get('configuratorId') ?? null
 	if(configuratorId) {

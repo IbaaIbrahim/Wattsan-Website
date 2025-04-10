@@ -12,7 +12,7 @@ import { requestsStore } from '@store/requests'
 
 import cn from './summary.module.scss'
 import { useSummary } from '@hooks/use-summary'
-const Summary = ({setIsSummary}) => {
+const Summary: ({ setIsSummary }: { setIsSummary: any }) => JSX.Element = ({setIsSummary}) => {
 
 	return (
 		<div className={cn.page}>

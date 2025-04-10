@@ -29,7 +29,7 @@ const Summary = () => {
 
 	return (
 		<div className={cn.page}>
-			<SummaryView />
+			<SummaryView setIsSummary={() => {}} />
 			<SummaryAbout />
 			<PageLoader visible={loading || notInitialized} />
 		</div>

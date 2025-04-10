@@ -19,7 +19,7 @@ import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './SummaryView.module.scss'
 
-const SummaryView = ({setIsSummary}) => {
+const SummaryView: ({ setIsSummary }: { setIsSummary: any }) => (null | JSX.Element) = ({setIsSummary = () => {}}) => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
 
