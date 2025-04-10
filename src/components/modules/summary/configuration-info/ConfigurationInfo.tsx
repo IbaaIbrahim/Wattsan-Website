@@ -53,13 +53,13 @@ export const ConfigurationInfo = ({
 						tag='p'
 						size='s'
 					>
-						Basic
+						Your configuration
 					</Typography>
 					<Typography
 						tag='p'
 						size='s'
 					>
-						Your configuration
+						Basic
 					</Typography>
 				</div>
 			)}
