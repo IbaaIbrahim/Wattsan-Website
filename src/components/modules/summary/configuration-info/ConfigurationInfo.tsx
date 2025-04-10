@@ -73,8 +73,6 @@ export const ConfigurationInfo = ({
 
 				const yourValue = `${_.get(yourInfo, 'name')} ${_.get(yourInfo, 'unit') ?? ''}`
 
-				console.log(section, yourAccessoriesId, basicAccessoriesId)
-
 				return (
 					<div
 						className={cn.row}

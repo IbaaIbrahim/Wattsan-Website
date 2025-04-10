@@ -15,7 +15,7 @@ export const useSeries = () => {
 
 	useEffect(() => {
 		getStartParameters({ init: true })
-	}, [pathname])
+	}, [])
 
 	useEffect(() => {
 		if (categoryId !== null) {

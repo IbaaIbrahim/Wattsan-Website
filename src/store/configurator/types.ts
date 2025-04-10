@@ -137,6 +137,18 @@ export type TConfigurationSuggestionsCharacteristics = {
 	suggestionDetails: string
 }
 
+export type TConfigurationComplexRelations = {
+	id: string | number
+	seriesId: number
+	workAreaId: number
+	zAxisId: number
+	toolSwitchId: number
+	autoChangeToolsId: number
+	rotaryDeviceId: number
+	rotarySeparateId: number
+	relatedId: number
+}
+
 export type TSeriesConfiguration = {
 	workAreaCharacteristics: TStandartCharacteristic[]
 	zAxisCharacteristics: TStandartCharacteristic[]
@@ -160,6 +172,7 @@ export type TSeriesConfiguration = {
 	autoChangeToolsRelations: TStandartCharacteristic[]
 	configurationSuggestionsSeries: TConfigurationSuggestionsSeries[]
 	configurationSuggestionsCharacteristics: TConfigurationSuggestionsCharacteristics[]
+	characteristicComplex: TConfigurationComplexRelations
 }
 
 export type TSeriesConfigurations = {

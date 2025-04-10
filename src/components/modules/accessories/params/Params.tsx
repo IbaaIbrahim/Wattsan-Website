@@ -292,43 +292,69 @@ export const Params = ({
 											 isAvailable,
 											 characteristicId,
 											 staticCharacteristic
-										 }) => ({
-											text: `${staticCharacteristic?.name} ${staticCharacteristic?.unit ?? ''}`,
-											additional: sectionName === 'rotaryDeviceCharacteristics' &&
-												staticCharacteristic?.name === 'Separate' &&
-												values[sectionName] === characteristicId && (
-													<FormRadioAccessories
-														withAdditional={true}
-														value={values['rotarySeparateCharacteristics']}
-														options={params?.rotarySeparateCharacteristics?.map(
-															char => {
-																return {
-																	text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
-																	price: additionalPrice(
-																		'rotarySeparateCharacteristics',
-																		char.staticCharacteristic
-																	),
-																	value: char.id,
-																	isAvailable: char.isAvailable
+										 }) => {
+											return {
+												text: `${staticCharacteristic?.name} ${staticCharacteristic?.unit ?? ''}`,
+												additional: sectionName === 'rotaryDeviceCharacteristics' &&
+													staticCharacteristic?.name === 'Separate' &&
+													values[sectionName] === characteristicId && (
+														<FormRadioAccessories
+															withAdditional={true}
+															value={values['rotarySeparateCharacteristics']}
+															options={params?.rotarySeparateCharacteristics?.map(
+																char => {
+																	return {
+																		text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
+																		price: additionalPrice(
+																			'rotarySeparateCharacteristics',
+																			char.staticCharacteristic
+																		),
+																		value: char.characteristicId,
+																		isAvailable: _.find(params.characteristicComplex, complexRelation => {
+																			if(char?.characteristicId === 67 && complexRelation.rotarySeparateId === 67) {
+																				console.log(char, values, complexRelation)
+																			}
+																			let cond = char.characteristicId == complexRelation.relatedId
+																			if (complexRelation.workAreaId) {
+																				cond = cond && (complexRelation.workAreaId === values.workAreaCharacteristics)
+																			}
+																			if (complexRelation.zAxisId) {
+																				cond = cond && (complexRelation.zAxisId === values.zAxisCharacteristics)
+																			}
+																			if (complexRelation.toolSwitchId) {
+																				cond = cond && (complexRelation.toolSwitchId === values.toolswithchCharacteristics)
+																			}
+																			if (complexRelation.autoChangeToolsId) {
+																				cond = cond && (complexRelation.autoChangeToolsId === values.autoChangeToolsRelations)
+																			}
+																			if (complexRelation.rotaryDeviceId) {
+																				cond = cond && (complexRelation.rotaryDeviceId === values.rotaryDeviceCharacteristics)
+																			}
+																			if (complexRelation.rotarySeparateId) {
+																				cond = cond && (complexRelation.rotarySeparateId === values.rotarySeparateCharacteristics)
+																			}
+																			return cond
+																		})
+																	}
 																}
+															)}
+															onChange={selected =>
+																handleChange(
+																	'rotarySeparateCharacteristics',
+																	selected
+																)
 															}
-														)}
-														onChange={selected =>
-															handleChange(
-																'rotarySeparateCharacteristics',
-																selected
-															)
-														}
-													/>
-												),
-											price: calculatedPrice(sectionName, staticCharacteristic),
-											value: characteristicId,
-											isAvailable: availableByAffected(
-												isAvailable,
-												sectionName,
-												staticCharacteristic
-											)
-										})
+														/>
+													),
+												price: calculatedPrice(sectionName, staticCharacteristic),
+												value: characteristicId,
+												isAvailable: availableByAffected(
+													isAvailable,
+													sectionName,
+													staticCharacteristic
+												)
+											}
+										}
 									)}
 									onChange={selected => handleChange(sectionName, selected)}
 								/>

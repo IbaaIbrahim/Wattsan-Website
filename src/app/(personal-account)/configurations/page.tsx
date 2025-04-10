@@ -15,7 +15,6 @@ const ConfigurationsPage = () => {
 	const [loadingApi, setLoadingApi] = useState(true)
 
 	useEffect(() => {
-		console.log(clientId)
 		if(clientId) {
 			configurationsService.getConfigurations(clientId).then(data => {
 				setConfigurations(data)

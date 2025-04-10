@@ -35,7 +35,7 @@ export const getStartParameters = async ({
 			? 'getStartParametersByCategory'
 			: 'getStartParameters'
 
-		if (init && configuratorStore.get.categories()?.length !== 0) return
+		// if (init && configuratorStore.get.categories()?.length !== 0) return
 		// if (configuratorStore.get.startParameters()?.[categoryId]) return
 
 		if (requestsStore.get.loadingSelector(track)) return
@@ -85,8 +85,6 @@ export const updateCurrentFields = (seriesId, outerParams = null) => {
 		outerParams !== null
 			? outerParams
 			: configuratorStore.get.seriesConfigurationsSelector(seriesId)
-
-	console.log(params)
 
 	const fields = FORMS_FIELDS.machineConfiguration.reduce((acc, name) => {
 		return {

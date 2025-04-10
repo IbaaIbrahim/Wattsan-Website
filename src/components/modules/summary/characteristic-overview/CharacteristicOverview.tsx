@@ -138,7 +138,7 @@ const CharacteristicOverview = ({
 
 const getWithUnitIfExist = (characteristic: IAccessoryNode): string => {
 	return (
-		characteristic.staticCharacteristic.val +
+		characteristic.staticCharacteristic.name +
 		(!!characteristic.staticCharacteristic.unit
 			? ' ' + characteristic.staticCharacteristic.unit
 			: '')
