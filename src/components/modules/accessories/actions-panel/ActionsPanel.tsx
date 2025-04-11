@@ -30,7 +30,9 @@ const ActionsPanel = ({setIsSummary}) => {
 
 	const { translations }: { translations: ILanguage } = useLang()
 
-	const summary = configuratorStore.use.summarySelector(machineId)
+	const price = configuratorStore.use.summarySelector(machineId)
+	const power = configuratorStore.use.powerSelector(machineId)
+	const voltage = configuratorStore.use.voltageSelector(machineId)
 	const authorized = authStore.use.authorized()
 
 	const [showButtons, setShowButtons] = useState(false)
@@ -165,13 +167,13 @@ const ActionsPanel = ({setIsSummary}) => {
 						<span className={styles.totalLabel}>
 							{translations.accessories.actions_bar.total}
 						</span>
-						<span className={styles.totalValue}>${summary}</span>
+						<span className={styles.totalValue}>${price}</span>
 					</span>
 					<span className={styles.power}>
 						<span className={styles.powerLabel}>
 							{translations.accessories.actions_bar.power}
 						</span>
-						<span className={styles.powerValue}>6500W (220 or 380V)</span>
+						<span className={styles.powerValue}>{power}W ({voltage})</span>
 					</span>
 				</div>
 				<Button

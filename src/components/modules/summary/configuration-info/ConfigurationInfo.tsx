@@ -22,15 +22,13 @@ export const ConfigurationInfo = ({
 	basicConfiguration
 }) => {
 	// TODO Заменить на актуальный айди машины
-	const params = configuratorStore.use.seriesConfigurationsSelector(4)
-	const params1 = configuratorStore.use.seriesConfigurations()
+	const params = configuratorStore.use.seriesConfigurations()
 	const machineId = configuratorStore.use.machineId()
 
 	const handleViewAllSpecification = () => {
-		console.log('asdasd')
 		modalsStore.set.open(MODALS.configurationModal, {
 			configuration: yourConfiguration,
-			params: _.get(params1, `${machineId}`)
+			params: _.get(params, `${machineId}`)
 		})
 	}
 
@@ -38,7 +36,7 @@ export const ConfigurationInfo = ({
 		modalsStore.set.open(MODALS.comparisonModal, {
 			basicConfiguration,
 			yourConfiguration,
-			params
+			params: _.get(params, `${machineId}`)
 		})
 	}
 
@@ -65,12 +63,11 @@ export const ConfigurationInfo = ({
 			)}
 			{FlatConfiguratorSections.slice(0, 5).map(section => {
 				const basicAccessoriesId = basicConfiguration[section]
-				const basicInfo = _.get(_.find(_.get(params1, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === basicAccessoriesId), 'staticCharacteristic')
+				const basicInfo = _.get(_.find(_.get(params, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === basicAccessoriesId), 'staticCharacteristic')
 				const basicValue = `${_.get(basicInfo, 'name')} ${_.get(basicInfo, 'unit') ?? ''}`
 
 				const yourAccessoriesId = yourConfiguration[section]
-				const yourInfo = _.get(_.find(_.get(params1, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === yourAccessoriesId), 'staticCharacteristic')
-
+				const yourInfo = _.get(_.find(_.get(params, `${machineId}.${section}`), ({ characteristicId }) => characteristicId === yourAccessoriesId), 'staticCharacteristic')
 				const yourValue = `${_.get(yourInfo, 'name')} ${_.get(yourInfo, 'unit') ?? ''}`
 
 				return (

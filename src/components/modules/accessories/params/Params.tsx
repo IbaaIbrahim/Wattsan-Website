@@ -64,6 +64,17 @@ export const Params = ({
 	const categoryId = configuratorStore.use.categoryId()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
 
+	const complexRelationsWithInfo = useMemo(() => {
+		const allParams = _.filter(_.flatMap(params, x => x), x => x.staticCharacteristic)
+		return _.map(params.characteristicComplex, complexRelation => {
+			// const
+			return {
+				...complexRelation,
+				relatedItemInfo: _.find(allParams, x => x.characteristicId === complexRelation.relatedId)
+			}
+		})
+	}, [params])
+
 	const enrichedSections = useMemo(() => {
 		return sections.reduce((acc, name) => {
 			return {
@@ -229,21 +240,39 @@ export const Params = ({
 		}
 	}
 
-	const affected = configuratorStore.use.workAreaAffectedSelector()
-
-	const availableByAffected = (
-		defaultAvailable,
-		sectionName,
+	const checkIsAvailable = (
+		isAvailable,
 		staticCharacteristic
 	) => {
-		const code = staticCharacteristic?.code
-		const affectedList = affected?.filter(params => params.code === code)
-
-		if (affectedList.length === 0) return defaultAvailable
-
-		const affectedIds = new Set(affectedList.map(item => item.id))
-
-		return affectedIds.has(staticCharacteristic.id)
+		const groupedRelationsBySections = _.groupBy(complexRelationsWithInfo, x => x?.relatedItemInfo?.staticCharacteristic?.code)
+		if(_.indexOf(_.keys(groupedRelationsBySections), staticCharacteristic.code) < 0) {
+			return isAvailable
+		}
+		return _.find(complexRelationsWithInfo, complexRelation => {
+			let cond = staticCharacteristic.id == complexRelation.relatedId
+			if (complexRelation.workAreaId) {
+				cond = cond && (complexRelation.workAreaId === values.workAreaCharacteristics)
+			}
+			if (complexRelation.zAxisId) {
+				cond = cond && (complexRelation.zAxisId === values.zAxisCharacteristics)
+			}
+			if (complexRelation.toolSwitchId) {
+				cond = cond && (complexRelation.toolSwitchId === values.toolswithchCharacteristics)
+			}
+			if (complexRelation.autoChangeToolsId) {
+				cond = cond && (complexRelation.autoChangeToolsId === values.autoChangeToolsRelations)
+			}
+			if (complexRelation.rotaryDeviceId) {
+				cond = cond && (complexRelation.rotaryDeviceId === values.rotaryDeviceCharacteristics)
+			}
+			if (complexRelation.rotarySeparateId) {
+				cond = cond && (complexRelation.rotarySeparateId === values.rotarySeparateCharacteristics)
+			}
+			if(!_.find(complexRelationsWithInfo, x => x?.relatedId === staticCharacteristic?.id)) {
+				cond = false
+			}
+			return cond
+		})
 	}
 
 	// while (true){
@@ -295,62 +324,38 @@ export const Params = ({
 										 }) => {
 											return {
 												text: `${staticCharacteristic?.name} ${staticCharacteristic?.unit ?? ''}`,
-												additional: sectionName === 'rotaryDeviceCharacteristics' &&
-													staticCharacteristic?.name === 'Separate' &&
-													values[sectionName] === characteristicId && (
-														<FormRadioAccessories
-															withAdditional={true}
-															value={values['rotarySeparateCharacteristics']}
-															options={params?.rotarySeparateCharacteristics?.map(
-																char => {
-																	return {
-																		text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
-																		price: additionalPrice(
-																			'rotarySeparateCharacteristics',
-																			char.staticCharacteristic
-																		),
-																		value: char.characteristicId,
-																		isAvailable: _.find(params.characteristicComplex, complexRelation => {
-																			if(char?.characteristicId === 67 && complexRelation.rotarySeparateId === 67) {
-																				console.log(char, values, complexRelation)
-																			}
-																			let cond = char.characteristicId == complexRelation.relatedId
-																			if (complexRelation.workAreaId) {
-																				cond = cond && (complexRelation.workAreaId === values.workAreaCharacteristics)
-																			}
-																			if (complexRelation.zAxisId) {
-																				cond = cond && (complexRelation.zAxisId === values.zAxisCharacteristics)
-																			}
-																			if (complexRelation.toolSwitchId) {
-																				cond = cond && (complexRelation.toolSwitchId === values.toolswithchCharacteristics)
-																			}
-																			if (complexRelation.autoChangeToolsId) {
-																				cond = cond && (complexRelation.autoChangeToolsId === values.autoChangeToolsRelations)
-																			}
-																			if (complexRelation.rotaryDeviceId) {
-																				cond = cond && (complexRelation.rotaryDeviceId === values.rotaryDeviceCharacteristics)
-																			}
-																			if (complexRelation.rotarySeparateId) {
-																				cond = cond && (complexRelation.rotarySeparateId === values.rotarySeparateCharacteristics)
-																			}
-																			return cond
-																		})
-																	}
+												additional: (sectionName === 'rotaryDeviceCharacteristics' && staticCharacteristic?.name === 'Separate' && values[sectionName] === characteristicId) && (
+													<FormRadioAccessories
+														withAdditional={true}
+														value={values['rotarySeparateCharacteristics']}
+														options={params?.rotarySeparateCharacteristics?.map(
+															char => {
+																return {
+																	text: `${char?.staticCharacteristic?.name} ${char?.staticCharacteristic?.unit ?? ''}`,
+																	price: additionalPrice(
+																		'rotarySeparateCharacteristics',
+																		char.staticCharacteristic
+																	),
+																	value: char.characteristicId,
+																	isAvailable: checkIsAvailable(
+																		char.isAvailable,
+																		char.staticCharacteristic
+																	)
 																}
-															)}
-															onChange={selected =>
-																handleChange(
-																	'rotarySeparateCharacteristics',
-																	selected
-																)
 															}
-														/>
-													),
+														)}
+														onChange={selected =>
+															handleChange(
+																'rotarySeparateCharacteristics',
+																selected
+															)
+														}
+													/>
+												),
 												price: calculatedPrice(sectionName, staticCharacteristic),
 												value: characteristicId,
-												isAvailable: availableByAffected(
+												isAvailable: checkIsAvailable(
 													isAvailable,
-													sectionName,
 													staticCharacteristic
 												)
 											}

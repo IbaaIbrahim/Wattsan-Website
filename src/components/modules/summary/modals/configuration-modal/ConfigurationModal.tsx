@@ -4,8 +4,6 @@ import { FlatConfiguratorSections } from '@constants/configurator'
 import cn from './ConfigurationModal.module.scss'
 
 export const ConfigurationModal = ({ configuration, params }) => {
-	console.log(params, 'params')
-
 	return (
 		<div>
 			<Typography

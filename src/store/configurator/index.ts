@@ -139,6 +139,38 @@ export const configuratorStore = createStore(
 
 			return formatter.format(summary)
 		},
+		powerSelector: machineId => {
+			const params = get.seriesConfigurations()?.[machineId] ?? {}
+			const values = machineConfigurationForm.get.valuesSelector()
+
+			const summary = Object.entries(values)
+				.map(([fieldName, fieldValue]) => {
+					return (
+						params?.[fieldName]?.find(
+							({ characteristicId }) => characteristicId === fieldValue
+						)?.staticCharacteristic?.power ?? 0
+					)
+				})
+				.reduce((acc, power) => acc + parseInt(power), 0)
+
+			return summary
+		},
+		voltageSelector: machineId => {
+			const params = get.seriesConfigurations()?.[machineId] ?? {}
+			const values = machineConfigurationForm.get.valuesSelector()
+
+			const summary = Object.entries(values)
+				.map(([fieldName, fieldValue]) => {
+					return (
+						params?.[fieldName]?.find(
+							({ characteristicId }) => characteristicId === fieldValue
+						)?.staticCharacteristic?.voltage ?? ''
+					)
+				})
+				.reduce((acc, voltage) => (!voltage || parseInt(voltage) <= 0) ? `${acc}` : `${acc} or ${voltage}v`, '')
+
+			return summary.replace(' or ', '')
+		},
 		categoryInfoSelector: () => {
 			const categoryId = get.categoryId()
 			const categories = get.categories()

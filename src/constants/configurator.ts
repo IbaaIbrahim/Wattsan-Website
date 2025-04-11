@@ -36,5 +36,6 @@ export const FlatConfiguratorSections = [
 	'lubricationSystemCharacteristics',
 	'cabineCharacteristics',
 	'rotaryDeviceCharacteristics',
+	'rotarySeparateCharacteristics',
 	'autoChangeToolsRelations'
 ]
