@@ -125,6 +125,7 @@ const SignUp = () => {
 				label='Agree to privacy policy and personal data processing'
 				onChange={value => signUpForm.set.change('agreePolicy', value)}
 			/>
+			<div style={{width: '100%', marginBottom: 10}}></div>
 		</Form>
 	)
 }

@@ -173,6 +173,7 @@ export type TSeriesConfiguration = {
 	configurationSuggestionsSeries: TConfigurationSuggestionsSeries[]
 	configurationSuggestionsCharacteristics: TConfigurationSuggestionsCharacteristics[]
 	characteristicComplex: TConfigurationComplexRelations
+	configuratorImages: any
 }
 
 export type TSeriesConfigurations = {

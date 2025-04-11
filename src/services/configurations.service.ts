@@ -29,11 +29,11 @@ class ConfigurationsService {
 		}
 	}
 
-	async get3dModel(seriesId,modelId ): Promise<any> {
+	async get3dModel(seriesId,modelId, autoChangeToolsId ): Promise<any> {
 		const response = await authorizedRequest({
 			url: API_GET_REAL_ATTACHMENTS,
 			method: 'GET',
-			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'1'` }
+			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~autoChangeToolsId~eq~'${autoChangeToolsId}'~and~attachmentType~eq~'1'` }
 		});
 
 		return {

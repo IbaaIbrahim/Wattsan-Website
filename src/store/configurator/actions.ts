@@ -348,6 +348,26 @@ export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, m
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
 
+export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindleQuantityId, motorId, seriesId }) => {
+	stepCode = stepCode ?? 1
+
+	let additionalFilter = ''
+
+	if (stepCode === 2) {
+		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+	}
+
+	if (stepCode === 3) {
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
+	}
+
+	if (stepCode === 4) {
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	}
+
+	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
+}
+
 export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
 	try {
 

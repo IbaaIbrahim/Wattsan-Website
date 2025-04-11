@@ -11,7 +11,7 @@ import { configurationsService } from '@services/configurations.service'
 import { Loader } from '@components/modules/page-loader/components/loader'
 import { Typography } from '@components/ui/typography/Typography'
 
-const Rotate3dModal = ({seriesId, modelId}) => {
+const Rotate3dModal = ({seriesId, modelId, autoChangeToolsId}) => {
 	const { translations }: { translations: ILanguage } = useLang()
 	const [loading, setLoading] = useState(true)
 	const [item, setItem] = useState<any>({})
@@ -29,7 +29,8 @@ const Rotate3dModal = ({seriesId, modelId}) => {
 		const getData = async () => {
 			const { data } = await configurationsService.get3dModel(
 				seriesId,
-				modelId
+				modelId,
+				autoChangeToolsId
 			)
 			if(data?.fileManger?.url) {
 				const url = encodeURIComponent(

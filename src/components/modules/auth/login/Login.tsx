@@ -73,6 +73,7 @@ const Login = () => {
 				error={errors?.rememberMe}
 				onChange={value => loginForm.set.change('rememberMe', value)}
 			/>
+			<div style={{width: '100%', marginBottom: 10}}></div>
 		</Form>
 	)
 }

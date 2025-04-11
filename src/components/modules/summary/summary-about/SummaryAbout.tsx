@@ -41,6 +41,9 @@ const SummaryAbout = () => {
 	const basicConfiguration = basicMachineConfigurationForm.use.valuesSelector()
 	const yourConfiguration = machineConfigurationForm.use.valuesSelector()
 
+	const power = configuratorStore.use.powerSelector(machineId)
+	const voltage = configuratorStore.use.voltageSelector(machineId)
+
 	const differentCounter = countKeysDiff(basicConfiguration, yourConfiguration)
 
 	const { translations }: { translations: ILanguage } = useLang()
@@ -211,7 +214,7 @@ const SummaryAbout = () => {
 						<span className={styles['power__label']}>
 							{translations.accessories.actions_bar.power}
 						</span>
-						<span className={styles['power__value']}>6500W (220 or 380V)</span>
+						<span className={styles.powerValue}>{power}W ({voltage})</span>
 					</span>
 				</div>
 				<div className={styles['main-btns']}>
