@@ -167,6 +167,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 										src={`${_.get(configuratorImage, 'fileManger.url')}`}
 										fill={true}
 										alt=""
+										priority
 									/>
 								)
 							})
