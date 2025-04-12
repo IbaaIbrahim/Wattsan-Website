@@ -183,15 +183,15 @@ export const Params = ({
 							const firstAvailableItemForSameSection = _.find(affectedGroups[SUBSECTIONS_TITLE[section.formKey].code], affectedItem => {
 
 								// Get previous sections keys to find the available item (item affected by the previous item of it)
-								const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && x?.complexRelationCode)
+								const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && _.get(x, 'complexRelationCode'))
 								// const commonKeys = _.intersection(_.keys(obj1), _.keys(obj2));
 
 								// Get the differences between current relation item node and the form values to get the item that valid with form values (Item that achieves the correct relation with form values)
 								const differences = lessSectionsFormKeys.filter(lessSectionForm => {
 
 									// if less section equals to the mainly changed section then the value should be the new one
-									const comparedValueFromForm = name === lessSectionForm.formKey ? characteristicId : values[lessSectionForm.formKey]
-									return !(_.isEqual(affectedItem[lessSectionForm.complexRelationCode], comparedValueFromForm) || affectedItem[lessSectionForm.complexRelationCode] === null || affectedItem[lessSectionForm.complexRelationCode] === undefined)
+									const comparedValueFromForm = name === _.get(lessSectionForm, 'formKey') ? characteristicId : values[_.get(lessSectionForm, 'formKey')]
+									return !(_.isEqual(affectedItem[_.get(lessSectionForm, 'complexRelationCode')], comparedValueFromForm) || affectedItem[_.get(lessSectionForm, 'complexRelationCode')] === null || affectedItem[_.get(lessSectionForm, 'complexRelationCode')] === undefined)
 								});
 
 								// If no differences then the item achieves the relation
@@ -199,20 +199,20 @@ export const Params = ({
 							})
 							machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
 						}
-					} else if (affectedGroups[section.complexRelationCode]) {
+					} else if (affectedGroups[_.get(section, 'complexRelationCode')]) {
 						// Find the first available item for unavailable checked form value from relations node
 						const firstAvailableItemForSameSection = _.find(affectedGroups[SUBSECTIONS_TITLE[section.formKey].code], affectedItem => {
 
 							// Get previous sections keys to find the available item (item affected by the previous item of it)
-							const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && x?.complexRelationCode)
+							const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && _.get(x, 'complexRelationCode'))
 							// const commonKeys = _.intersection(_.keys(obj1), _.keys(obj2));
 
 							// Get the differences between current relation item node and the form values to get the item that valid with form values (Item that achieves the correct relation with form values)
 							const differences = lessSectionsFormKeys.filter(lessSectionForm => {
 
 								// if less section equals to the mainly changed section then the value should be the new one
-								const comparedValueFromForm = name === lessSectionForm.formKey ? characteristicId : values[lessSectionForm.formKey]
-								return !(_.isEqual(affectedItem[lessSectionForm.complexRelationCode], comparedValueFromForm) || affectedItem[lessSectionForm.complexRelationCode] === null || affectedItem[lessSectionForm.complexRelationCode] === undefined)
+								const comparedValueFromForm = name === _.get(lessSectionForm, 'formKey') ? characteristicId : values[_.get(lessSectionForm, 'formKey')]
+								return !(_.isEqual(affectedItem[_.get(lessSectionForm, 'complexRelationCode')], comparedValueFromForm) || affectedItem[_.get(lessSectionForm, 'complexRelationCode')] === null || affectedItem[_.get(lessSectionForm, 'complexRelationCode')] === undefined)
 							});
 
 							// If no differences then the item achieves the relation
