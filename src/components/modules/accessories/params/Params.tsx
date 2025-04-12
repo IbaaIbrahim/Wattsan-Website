@@ -19,30 +19,11 @@ import _ from 'lodash'
 import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './Params.module.scss'
-
-export const SUBSECTIONS_TITLE = {
-	workAreaCharacteristics: {name: 'Work area size', code: 'WorkArea'},
-	zAxisCharacteristics: {name: 'Tool lift height (Z axis)', code: 'ZAxis'},
-	toolswithchCharacteristics: {name: 'Tool switch', code: 'ToolSwitch'},
-	spindleCharacteristics: {name: 'Spindle (power, cooling, collet)', code: 'Spindle'},
-	spindleQuantityCharacteristics: {name: 'Spindle quantity', code: 'SpindleQuantity'},
-	motorCharacteristics: {name: 'Motor', code: 'Motor'},
-	controlSystemCharacteristics: {name: 'Control System', code: 'ControlSystem'},
-	liquidCoolingSystemCharacteristics: {name: 'Liquid cooling system', code: 'LiquidCoolingSystem'},
-	removableSensorCharacteristics: {name: 'Removable instrument sensor', code: 'RemovableSensor'},
-	builtInSensorCharacteristics: {name: 'Built-in instrument sensor', code: 'BuildInSensor'},
-	lubricationSystemCharacteristics: {name: 'Lubrication system', code: 'LubricationSystem'},
-	aspirationCharacteristics: {name: 'Removable instrument sensor', code: 'Aspiration'},
-	vaccumTableCharacteristics: {name: 'Vacuum table', code: 'VaccumTable'},
-	rotaryDeviceCharacteristics: {name: 'Rotary device', code: 'RotaryDevice'},
-	rotarySeparateCharacteristics: {name: 'Rotary separate', code: 'RotarySeparate'},
-	cabineCharacteristics: {name: 'Cabine', code: 'Cabine'},
-	autoChangeToolsRelations: {name: 'Auto change tool', code: 'AutoChangeTools'},
-}
+import { SUBSECTIONS_TITLE } from '@constants/configurator'
 
 export const PARAM_NAME_BY_CODE = {
+	SpindleQuantity: 'spindleQuantityCharacteristics',
 	RotarySeparate: 'rotarySeparateCharacteristics',
-	SpindleQuantity: 'spindleQuantityCharacteristics'
 }
 
 export const Params = ({
@@ -84,7 +65,7 @@ export const Params = ({
 		}, {})
 	}, [sections, params])
 
-	const handleChange = async (name, characteristicId) => {
+	const handleChange = (name, characteristicId) => {
 		const isAvailable = params?.[name]?.find(
 			param => param?.characteristicId === characteristicId
 		)?.isAvailable
@@ -177,25 +158,76 @@ export const Params = ({
 				}
 			}
 		} else {
-			const affected =
-				params?.[name]?.find(({ id }) => id === characteristicId)
-					?.staticCharacteristic?.affectedCharacteristicsList ?? null
+			const affectedGroups = _.groupBy(complexRelationsWithInfo, x => x?.relatedItemInfo?.staticCharacteristic?.code)
+			const sections = _.map(SUBSECTIONS_TITLE, (x, formKey) => ({...x, formKey}))
 
-			if (Array.isArray(affected)) {
-				affected.forEach(({ code, id }) => {
-					const name = PARAM_NAME_BY_CODE?.[code] ?? null
+			// Iterate all sections to check if all next selected items are available
+			_.forEach(sections, (section) => {
 
-					if (!!name) {
-						machineConfigurationForm.set.change(name, id)
+				// Choose only next sections
+				// if(section.order > SUBSECTIONS_TITLE[name].order) {
+				if(section.order > 15) {
+
+					// If Already there is a value check it else Init new one
+					if(values[section.formKey]) {
+
+						// Get next section value from form
+						const checkSelectedFormItem = params?.[section.formKey]?.find(
+							param => param?.characteristicId === values[section.formKey]
+						)
+
+						// Check if not available
+						if(!checkIsAvailable(checkSelectedFormItem?.isAvailable, checkSelectedFormItem?.staticCharacteristic, {...values, [name]: characteristicId})) {
+
+							// Find the first available item for unavailable checked form value from relations node
+							const firstAvailableItemForSameSection = _.find(affectedGroups[SUBSECTIONS_TITLE[section.formKey].code], affectedItem => {
+
+								// Get previous sections keys to find the available item (item affected by the previous item of it)
+								const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && x?.complexRelationCode)
+								// const commonKeys = _.intersection(_.keys(obj1), _.keys(obj2));
+
+								// Get the differences between current relation item node and the form values to get the item that valid with form values (Item that achieves the correct relation with form values)
+								const differences = lessSectionsFormKeys.filter(lessSectionForm => {
+
+									// if less section equals to the mainly changed section then the value should be the new one
+									const comparedValueFromForm = name === lessSectionForm.formKey ? characteristicId : values[lessSectionForm.formKey]
+									return !(_.isEqual(affectedItem[lessSectionForm.complexRelationCode], comparedValueFromForm) || affectedItem[lessSectionForm.complexRelationCode] === null || affectedItem[lessSectionForm.complexRelationCode] === undefined)
+								});
+
+								// If no differences then the item achieves the relation
+								return _.size(differences) === 0;
+							})
+							machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
+						}
+					} else if (affectedGroups[section.complexRelationCode]) {
+						// Find the first available item for unavailable checked form value from relations node
+						const firstAvailableItemForSameSection = _.find(affectedGroups[SUBSECTIONS_TITLE[section.formKey].code], affectedItem => {
+
+							// Get previous sections keys to find the available item (item affected by the previous item of it)
+							const lessSectionsFormKeys = _.filter(sections, x => x.order <= SUBSECTIONS_TITLE[name].order && x?.complexRelationCode)
+							// const commonKeys = _.intersection(_.keys(obj1), _.keys(obj2));
+
+							// Get the differences between current relation item node and the form values to get the item that valid with form values (Item that achieves the correct relation with form values)
+							const differences = lessSectionsFormKeys.filter(lessSectionForm => {
+
+								// if less section equals to the mainly changed section then the value should be the new one
+								const comparedValueFromForm = name === lessSectionForm.formKey ? characteristicId : values[lessSectionForm.formKey]
+								return !(_.isEqual(affectedItem[lessSectionForm.complexRelationCode], comparedValueFromForm) || affectedItem[lessSectionForm.complexRelationCode] === null || affectedItem[lessSectionForm.complexRelationCode] === undefined)
+							});
+
+							// If no differences then the item achieves the relation
+							return _.size(differences) === 0;
+						})
+						machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
 					}
-				})
-			}
+				}
+			})
 
 			machineConfigurationForm.set.change(name, characteristicId)
 			configuratorStore.set.isCustomConfiguration(true)
 
 			if (name === 'workAreaCharacteristics') {
-				await getSeriesConfiguration(machineId, true)
+				getSeriesConfiguration(machineId, true)
 			}
 		}
 	}
@@ -242,7 +274,8 @@ export const Params = ({
 
 	const checkIsAvailable = (
 		isAvailable,
-		staticCharacteristic
+		staticCharacteristic,
+		formValues = values
 	) => {
 		const groupedRelationsBySections = _.groupBy(complexRelationsWithInfo, x => x?.relatedItemInfo?.staticCharacteristic?.code)
 		if(_.indexOf(_.keys(groupedRelationsBySections), staticCharacteristic.code) < 0) {
@@ -250,23 +283,23 @@ export const Params = ({
 		}
 		return _.find(complexRelationsWithInfo, complexRelation => {
 			let cond = staticCharacteristic.id == complexRelation.relatedId
-			if (complexRelation.workAreaId) {
-				cond = cond && (complexRelation.workAreaId === values.workAreaCharacteristics)
+			if (!_.isNull(complexRelation.workAreaId)) {
+				cond = cond && (complexRelation.workAreaId === formValues.workAreaCharacteristics)
 			}
-			if (complexRelation.zAxisId) {
-				cond = cond && (complexRelation.zAxisId === values.zAxisCharacteristics)
+			if (!_.isNull(complexRelation.zAxisId)) {
+				cond = cond && (complexRelation.zAxisId === formValues.zAxisCharacteristics)
 			}
-			if (complexRelation.toolSwitchId) {
-				cond = cond && (complexRelation.toolSwitchId === values.toolswithchCharacteristics)
+			if (!_.isNull(complexRelation.toolSwitchId)) {
+				cond = cond && (complexRelation.toolSwitchId === formValues.toolswithchCharacteristics)
 			}
-			if (complexRelation.autoChangeToolsId) {
-				cond = cond && (complexRelation.autoChangeToolsId === values.autoChangeToolsRelations)
+			if (!_.isNull(complexRelation.autoChangeToolsId)) {
+				cond = cond && (complexRelation.autoChangeToolsId === formValues.autoChangeToolsRelations)
 			}
-			if (complexRelation.rotaryDeviceId) {
-				cond = cond && (complexRelation.rotaryDeviceId === values.rotaryDeviceCharacteristics)
+			if (!_.isNull(complexRelation.rotaryDeviceId)) {
+				cond = cond && (complexRelation.rotaryDeviceId === formValues.rotaryDeviceCharacteristics)
 			}
-			if (complexRelation.rotarySeparateId) {
-				cond = cond && (complexRelation.rotarySeparateId === values.rotarySeparateCharacteristics)
+			if (!_.isNull(complexRelation.rotarySeparateId)) {
+				cond = cond && (complexRelation.rotarySeparateId === formValues.rotarySeparateCharacteristics)
 			}
 			if(!_.find(complexRelationsWithInfo, x => x?.relatedId === staticCharacteristic?.id)) {
 				cond = false
