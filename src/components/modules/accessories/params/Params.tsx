@@ -165,8 +165,8 @@ export const Params = ({
 			_.forEach(sections, (section) => {
 
 				// Choose only next sections
-				// if(section.order > SUBSECTIONS_TITLE[name].order) {
-				if(section.order > 15) {
+				if(section.order > SUBSECTIONS_TITLE[name].order) {
+				// if(section.order > 15) {
 
 					// If Already there is a value check it else Init new one
 					if(values[section.formKey]) {
