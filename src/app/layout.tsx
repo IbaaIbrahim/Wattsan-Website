@@ -24,9 +24,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html>
-			<body className={`${roboto_init.variable} roboto`}>
-				<AuthProvider>
-					<Layout>{children}</Layout>
+		<head>
+			<meta name="robots" content="noindex, nofollow" />
+			<meta name="googlebot" content="noindex, nofollow" />
+			<title>Wattsan-cnc</title>
+		</head>
+		<body className={`${roboto_init.variable} roboto`}>
+		<AuthProvider>
+			<Layout>{children}</Layout>
 					<Modal />
 				</AuthProvider>
 			</body>
