@@ -1,26 +1,20 @@
 'use client';
 
 import { MODALS } from '@components/ui/modal/Modal';
-import {
-	API_CONFIGURATION_BY_SERIES,
-	API_CONFIGURATION_BY_SERIES_AND_MODEL,
-	API_GET_CONFIGURATION_IMAGES,
-	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
-	API_SAVE_CONFIGURATION,
-	API_START_PARAMETERS, API_UPDATE_CONFIGURATION
-} from '@constants/api'
-import { FORMS_FIELDS, mapConfiguratorWithForm } from '@constants/forms'
+import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS, API_UPDATE_CONFIGURATION } from '@constants/api';
+import { FORMS_FIELDS, mapConfiguratorWithForm } from '@constants/forms';
+import { IConfiguration } from '@my-types/configurations';
 import { authStore } from '@store/auth';
 import { configuratorStore } from '@store/configurator/index';
 import { basicMachineConfigurationForm, machineConfigurationForm } from '@store/forms';
 import { modalsStore } from '@store/modals';
 import { requestsStore } from '@store/requests';
-
 import _ from 'lodash';
 
+
+
+import { setUrlParamSilently } from '../../utils/helpers';
 import { authorizedRequest } from '../../utils/request';
-import { IConfiguration } from '@my-types/configurations'
-import { setUrlParamSilently } from '../../utils/helpers'
 
 
 export const getStartParameters = async ({
@@ -220,7 +214,9 @@ export const getConfiguratorById = async (configuratorId) => {
 			const configurator: IConfiguration = response.data[0]
 			const fields = mapConfiguratorWithForm(configurator)
 			machineConfigurationForm.set.multiple(fields)
-			configuratorStore.set.customName(configurator.configurationName.replace(`${_.get(configurator, 'series.category.name')} `, ''))
+			const seriesName = _.get(configurator, 'series.name')
+			const replacedName = configurator.configurationName.replace(`${seriesName ?? ''} `, '')
+			configuratorStore.set.customName(replacedName)
 			return configurator
 		}
 		return {}
@@ -249,8 +245,7 @@ export const savePersonalConfiguration = async (machineId, categoryId, configura
 			vaccumTableCharacteristics,
 			workAreaCharacteristics,
 			zAxisCharacteristics,
-			autoChangeToolsRelations,
-			configurationName
+			autoChangeToolsRelations
 		} = machineConfigurationForm.get.valuesSelector()
 		const configurationNameSelector = configuratorStore.get.configurationNameSelector()
 		const customName = configuratorStore.get.customName()

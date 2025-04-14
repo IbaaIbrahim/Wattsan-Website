@@ -83,6 +83,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 	const categoryInfo = configuratorStore.use.categoryInfoSelector()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
 	const modelName = configuratorStore.use.modelNameSelector()
+	const customName = configuratorStore.use.customName()
 	const modelId = configuratorStore.use.modelIdSelector()
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
 	const seriesId = configuratorStore.use.machineId()
@@ -137,9 +138,9 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 			}
 			<div className={styles.header}>
 				<div className={styles.title}>
-					<span className={styles['title__name']}>{values.configurationName ? <span>{categoryInfo?.name}<span>({values.configurationName})</span></span> : categoryInfo?.name}</span>
+					<span className={styles['title__name']}>{categoryInfo?.name}</span>
 					<span className={styles['title__serie']}>
-						{machineInfo?.name} {modelName}
+						{machineInfo?.name}{customName && (<span style={{fontWeight: 'lighter', fontSize: 13}}> ({customName})</span>)} {modelName}
 					</span>
 				</div>
 			</div>
