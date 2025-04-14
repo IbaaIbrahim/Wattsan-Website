@@ -13,6 +13,8 @@ import * as R from 'ramda'
 import { FC } from 'react'
 
 import styles from './ConfigurationsView.module.scss'
+import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
+import { useRouter } from 'next/navigation'
 
 const STATUS_MAP = {
 	All: '0',
@@ -35,6 +37,8 @@ const TEMPLATES_MAP = {
 const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 	configurations
 }) => {
+	const router = useRouter()
+
 	const { configurationFilter, changeConfigurationFilter } =
 		configurationsStore(state => ({
 			configurationFilter: state.configurationsFilter,
@@ -95,6 +99,12 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 			code: template.code,
 			name: template.name
 		})
+	}
+
+	const handleGoToNewConfigurator = () => {
+		router.push(
+			`${CONFIGURATOR_PAGES.HOME}`
+		)
 	}
 
 	const handleEdit = (id: string) => {}
@@ -161,6 +171,7 @@ const ConfigurationsView: FC<{ configurations: TGetConfigurations }> = ({
 						</>
 					}
 					action='New configuration'
+					onClick={handleGoToNewConfigurator}
 				/>
 			) : (
 				<div className={styles.popularTemplates}>

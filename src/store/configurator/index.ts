@@ -3,6 +3,7 @@ import m1Image from '@public/img/grid-machines/M1.png'
 import miniCabineImage from '@public/img/grid-machines/Mini-Cabine.png'
 import miniImage from '@public/img/grid-machines/Mini.png'
 import {
+	TSeriesConfiguration,
 	TSeriesConfigurations,
 	TStartParameters
 } from '@store/configurator/types'
@@ -119,8 +120,7 @@ export const configuratorStore = createStore(
 					) ?? []
 			)
 		},
-		seriesConfigurationsSelector: seriesId =>
-			get.seriesConfigurations()?.[seriesId] ?? {},
+		seriesConfigurationsSelector: (seriesId): (TSeriesConfiguration | null) => get.seriesConfigurations()?.[seriesId],
 		summarySelector: machineId => {
 			const params = get.seriesConfigurations()?.[machineId] ?? {}
 			const values = machineConfigurationForm.get.valuesSelector()

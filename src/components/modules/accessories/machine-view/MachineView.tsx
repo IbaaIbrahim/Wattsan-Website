@@ -145,33 +145,45 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 			</div>
 			<div className={styles.mainView}>
 				<div className={styles['image-wrapper']}>
-					{
-						_.map(
-							_.get(seriesConfigurations, 'configuratorImages'),
-							(configuratorImage, index) => {
-								return (
-									<Image
-										key={index}
-										className={styles['main-view__image']}
-										style={{
-											display: getImagesFilterByValues({
-												section: hoveredSection ?? selectedSection ?? 'mainPage',
-												motorId: values?.motorCharacteristics,
-												spindleQuantityId: values?.spindleQuantityCharacteristics,
-												modelId,
-												seriesId
-												// @ts-ignore
-											}) === getImagesFilterByValuesWithStepCode({...configuratorImage, modelId: configuratorImage.workAreaId }) ? 'block' : 'none'
-										}}
-										// src={`https://api.wattsancnc.com/${_.get(configuratorImage, 'fileManger.url')}`}
-										src={`${_.get(configuratorImage, 'fileManger.url')}`}
-										fill={true}
-										alt=""
-										priority
-									/>
-								)
-							})
-					}
+					<div style={{
+						position: 'absolute',
+						width: '100%',
+						height: '100%',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}>
+						{
+							_.map(
+								_.get(seriesConfigurations, 'configuratorImages'),
+								(configuratorImage, index) => {
+									const currentFilter = getImagesFilterByValues({
+										section: hoveredSection ?? selectedSection ?? 'mainPage',
+										motorId: values?.motorCharacteristics,
+										spindleQuantityId: values?.spindleQuantityCharacteristics,
+										modelId,
+										seriesId
+									})
+									// @ts-ignore
+									const configuratorImageFilter = getImagesFilterByValuesWithStepCode({...configuratorImage, modelId: configuratorImage.workAreaId })
+									return (
+										<img
+											key={index}
+											className={styles['main-view__image']}
+											style={{
+												display: currentFilter === configuratorImageFilter ? 'block' : 'none',
+												height: '100%',
+											}}
+											// src={`https://api.wattsancnc.com/${_.get(configuratorImage, 'fileManger.url')}`}
+											src={`${_.get(configuratorImage, 'fileManger.url')}`}
+											// fill={true}
+											alt=""
+											// priority
+										/>
+									)
+								})
+						}
+					</div>
 					{Object.keys(m1PartsToCoordinatesMap).map(section =>
 						isSelectionShowCard(section) ? (
 							<Tooltip

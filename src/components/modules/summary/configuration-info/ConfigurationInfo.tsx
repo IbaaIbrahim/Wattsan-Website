@@ -1,19 +1,11 @@
 import { MODALS } from '@components/ui/modal/Modal'
 import { Typography } from '@components/ui/typography/Typography'
-import { FlatConfiguratorSections } from '@constants/configurator'
+import { FlatConfiguratorSections, SUBSECTIONS_TITLE } from '@constants/configurator'
 import { configuratorStore } from '@store/configurator'
 import { modalsStore } from '@store/modals'
 import _ from 'lodash'
 
 import cn from './ConfigurationInfo.module.scss'
-
-const NAMES = {
-	workAreaCharacteristics: 'Work area',
-	zAxisCharacteristics: 'Tool lift height (Z axis)',
-	toolswithchCharacteristics: 'Tool switch',
-	spindleCharacteristics: 'Spindle',
-	spindleQuantityCharacteristics: 'Motor'
-}
 
 export const ConfigurationInfo = ({
 	differentCounter,
@@ -81,7 +73,7 @@ export const ConfigurationInfo = ({
 							weight='regular'
 							discolored={true}
 						>
-							{NAMES[section]}
+							{SUBSECTIONS_TITLE[section]?.name}
 						</Typography>
 						<Typography
 							tag='p'
@@ -101,35 +93,18 @@ export const ConfigurationInfo = ({
 					</div>
 				)
 			})}
-			{compare && differentCounter === 0 ? null : (
-				<div className={cn.lastRow}>
-					<div></div>
-					{compare ? (
-						<div></div>
-					) : (
-						<Typography
-							tag='p'
-							size='s'
-							weight='regular'
-							discolored={true}
-						>
-							+{FlatConfiguratorSections.length - 5} parameters
-						</Typography>
-					)}
-					{compare ? (
-						<Typography
-							tag='p'
-							size='s'
-							weight='regular'
-							discolored={true}
-						>
-							+{FlatConfiguratorSections.length - 5} changes
-						</Typography>
-					) : (
-						<div></div>
-					)}
-				</div>
-			)}
+			<div className={cn.lastRow}>
+				<div></div>
+				<div></div>
+				<Typography
+					tag='p'
+					size='s'
+					weight='regular'
+					discolored={true}
+				>
+					+{FlatConfiguratorSections.length - 5} more
+				</Typography>
+			</div>
 			<button
 				className={cn.all}
 				// onClick={compare ? handleViewComparison : handleViewAllSpecification}

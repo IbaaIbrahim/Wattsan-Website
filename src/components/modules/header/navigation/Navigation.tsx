@@ -11,54 +11,57 @@ import Link from 'next/link'
 import { PAGES } from '../../../../config/pages.url.config'
 
 import styles from './Navigation.module.scss'
+import CanCall from '@components/modules/auth/can-call'
 
 const Navigation = () => {
 	const { translations }: { translations: ILanguage } = useLang()
 
 	return (
 		<div className={styles.wrapper}>
-			<Link
-				href={PAGES.comparison}
-				className={styles.link}
-			>
-				<div className={styles.icon}>
-					<Image
-						src={comparison}
-						alt=''
-					/>
-				</div>
-				<div className={styles.text}>
-					{translations.header.navigation.comparision}
-				</div>
-			</Link>
-			<Link
-				href={PAGES.favorites}
-				className={styles.link}
-			>
-				<div className={styles.icon}>
-					<Image
-						src={favorites}
-						alt=''
-					/>
-				</div>
-				<div className={styles.text}>
-					{translations.header.navigation.favorites}
-				</div>
-			</Link>
-			<Link
-				href={PAGES.basket}
-				className={styles.link}
-			>
-				<div className={styles.icon}>
-					<Image
-						src={basket}
-						alt=''
-					/>
-				</div>
-				<div className={styles.text}>
-					{translations.header.navigation.basket}
-				</div>
-			</Link>
+			{/*<Link*/}
+			{/*	href={PAGES.comparison}*/}
+			{/*	className={styles.link}*/}
+			{/*>*/}
+			{/*	<div className={styles.icon}>*/}
+			{/*		<Image*/}
+			{/*			src={comparison}*/}
+			{/*			alt=''*/}
+			{/*		/>*/}
+			{/*	</div>*/}
+			{/*	<div className={styles.text}>*/}
+			{/*		{translations.header.navigation.comparision}*/}
+			{/*	</div>*/}
+			{/*</Link>*/}
+			{/*<Link*/}
+			{/*	href={PAGES.favorites}*/}
+			{/*	className={styles.link}*/}
+			{/*>*/}
+			{/*	<div className={styles.icon}>*/}
+			{/*		<Image*/}
+			{/*			src={favorites}*/}
+			{/*			alt=''*/}
+			{/*		/>*/}
+			{/*	</div>*/}
+			{/*	<div className={styles.text}>*/}
+			{/*		{translations.header.navigation.favorites}*/}
+			{/*	</div>*/}
+			{/*</Link>*/}
+			<CanCall>
+				<Link
+					href={PAGES.basket}
+					className={styles.link}
+				>
+					<div className={styles.icon}>
+						<Image
+							src={basket}
+							alt=''
+						/>
+					</div>
+					<div className={styles.text}>
+						{translations.header.navigation.basket}
+					</div>
+				</Link>
+			</CanCall>
 		</div>
 	)
 }

@@ -47,7 +47,7 @@ export const Params = ({
 
 	const complexRelationsWithInfo = useMemo(() => {
 		const allParams = _.filter(_.flatMap(params, x => x), x => x.staticCharacteristic)
-		return _.map(params.characteristicComplex, complexRelation => {
+		return _.map(params?.characteristicComplex, complexRelation => {
 			// const
 			return {
 				...complexRelation,
@@ -159,7 +159,7 @@ export const Params = ({
 			}
 		} else {
 			const affectedGroups = _.groupBy(complexRelationsWithInfo, x => x?.relatedItemInfo?.staticCharacteristic?.code)
-			const sections = _.map(SUBSECTIONS_TITLE, (x, formKey) => ({...x, formKey}))
+			const sections = _.map(SUBSECTIONS_TITLE, (x) => x)
 
 			// Iterate all sections to check if all next selected items are available
 			_.forEach(sections, (section) => {
@@ -218,7 +218,16 @@ export const Params = ({
 							// If no differences then the item achieves the relation
 							return _.size(differences) === 0;
 						})
-						machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
+						if(section.formKey === SUBSECTIONS_TITLE.rotarySeparateCharacteristics.formKey && name !== SUBSECTIONS_TITLE.rotaryDeviceCharacteristics.formKey) {
+							const rotaryDeviceCharacteristic = params?.[SUBSECTIONS_TITLE.rotaryDeviceCharacteristics.formKey]?.find(
+								characteristic => characteristic.characteristicId === values[SUBSECTIONS_TITLE.rotaryDeviceCharacteristics.formKey]
+							)?.staticCharacteristic
+							if (rotaryDeviceCharacteristic.name === 'Separate') {
+								machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
+							}
+						} else {
+							machineConfigurationForm.set.change(section.formKey, firstAvailableItemForSameSection?.relatedId ?? null)
+						}
 					}
 				}
 			})

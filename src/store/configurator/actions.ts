@@ -20,6 +20,7 @@ import _ from 'lodash';
 
 import { authorizedRequest } from '../../utils/request';
 import { IConfiguration } from '@my-types/configurations'
+import { setUrlParamSilently } from '../../utils/helpers'
 
 
 export const getStartParameters = async ({
@@ -71,8 +72,7 @@ export const updateBasicFields = (seriesId, outerParams = null) => {
 		return {
 			...acc,
 			[name]: {
-				value: params?.[name]?.find(({ isDefault }) => isDefault)
-					?.characteristicId
+				value: params?.[name]?.find(({ isDefault }) => isDefault)?.characteristicId
 			}
 		}
 	}, {})
@@ -90,10 +90,8 @@ export const updateCurrentFields = (seriesId, outerParams = null) => {
 		return {
 			...acc,
 			[name]: {
-				value: (
-					params?.[name]?.find(({ isDefault }) => isDefault) ??
-					params?.[name]?.[0]
-				)?.characteristicId
+				// value: params?.[name]?.find(({ isDefault }) => isDefault) ?? params?.[name]?.[0]
+				value: params?.[name]?.find(({ isDefault }) => isDefault)?.characteristicId
 			}
 		}
 	}, {})
@@ -222,6 +220,7 @@ export const getConfiguratorById = async (configuratorId) => {
 			const configurator: IConfiguration = response.data[0]
 			const fields = mapConfiguratorWithForm(configurator)
 			machineConfigurationForm.set.multiple(fields)
+			configuratorStore.set.customName(configurator.configurationName.replace(`${_.get(configurator, 'series.category.name')} `, ''))
 			return configurator
 		}
 		return {}
@@ -243,6 +242,7 @@ export const savePersonalConfiguration = async (machineId, categoryId, configura
 			motorCharacteristics,
 			removableSensorCharacteristics,
 			rotaryDeviceCharacteristics,
+			rotarySeparateCharacteristics,
 			spindleCharacteristics,
 			spindleQuantityCharacteristics,
 			toolswithchCharacteristics,
@@ -254,7 +254,10 @@ export const savePersonalConfiguration = async (machineId, categoryId, configura
 		} = machineConfigurationForm.get.valuesSelector()
 		const configurationNameSelector = configuratorStore.get.configurationNameSelector()
 		const customName = configuratorStore.get.customName()
+		const modelName = configuratorStore.get.modelNameSelector()
 		const price = configuratorStore.get.summarySelector(machineId)
+		const seriesConfigurationsSelector = configuratorStore.get.seriesConfigurationsSelector(machineId)
+		const image = _.find(seriesConfigurationsSelector?.configuratorImages, x => x.seriesId == machineId && x.stepCode == 1)
 
 		const data = {
 			configurationName: `${configurationNameSelector} ${customName}`,
@@ -275,10 +278,12 @@ export const savePersonalConfiguration = async (machineId, categoryId, configura
 			vaccumTable: vaccumTableCharacteristics,
 			rotaryDevice: rotaryDeviceCharacteristics,
 			cabine: cabineCharacteristics,
-			autoChangeTool: autoChangeToolsRelations,
-			rotarySeparate: 66,
+			autoChangeTools: autoChangeToolsRelations,
+			rotarySeparate: rotarySeparateCharacteristics,
 			status: 1,
-			price: price.replace(/\D/g, '')
+			price: price.replace(/\D/g, ''),
+			modelName,
+			fileMangerId: image.fileMangerId
 		}
 
 		let response = null
@@ -303,7 +308,8 @@ export const savePersonalConfiguration = async (machineId, categoryId, configura
 		const referenceId = response?.data?.[0]?.id
 
 		configuratorStore.set.savedReferenceId(referenceId)
-		configuratorStore.set.configuratorId(response?.data?.[0]?.id)
+		configuratorStore.set.configuratorId(referenceId)
+		setUrlParamSilently('configuratorId', referenceId)
 
 		modalsStore.set.open(MODALS.saveResultModal, {
 			machineId,
@@ -345,6 +351,10 @@ export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, m
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
+	if (stepCode === 5) {
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	}
+
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
 
@@ -362,6 +372,10 @@ export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindle
 	}
 
 	if (stepCode === 4) {
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	}
+
+	if (stepCode === 5) {
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 

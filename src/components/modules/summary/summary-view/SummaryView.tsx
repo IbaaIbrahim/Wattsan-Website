@@ -18,85 +18,39 @@ import Link from 'next/link'
 import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
 import styles from './SummaryView.module.scss'
+import { machineConfigurationForm } from '@store/forms'
+import _ from 'lodash'
 
 const SummaryView: ({ setIsSummary }: { setIsSummary: any }) => (null | JSX.Element) = ({setIsSummary = () => {}}) => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
+	const seriesConfigurationsSelector = configuratorStore.get.seriesConfigurationsSelector(machineId)
+	const image = _.find(seriesConfigurationsSelector?.configuratorImages, x => x.seriesId == machineId && x.stepCode == 1)
+
+	const values = machineConfigurationForm.use.valuesSelector()
 
 	const { translations }: { translations: ILanguage } = useLang()
 
 	const openRotateModal = () => {
-		modalsStore.set.open(MODALS.rotate3d)
+		modalsStore.set.open(MODALS.rotate3d, {
+			seriesId: machineId,
+			modelId: values.workAreaCharacteristics,
+			autoChangeToolsId: values.autoChangeToolsRelations ?? null
+		})
 	}
 
 	const openPhotosModal = () => {
 		modalsStore.set.open(MODALS.mediaModal, {
-			isVideoModal: false,
-			items: [
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				},
-				{
-					url: '/img/spindle-info/slider/spindle.png',
-					isVideo: false,
-					placeholder: '/img/spindle-info/slider/spindle.png'
-				}
-			]
+			seriesId: machineId,
+			modelId: values.workAreaCharacteristics
 		})
 	}
 
 	const openVideosModal = () => {
 		modalsStore.set.open(MODALS.mediaModal, {
 			isVideoModal: true,
-			items: [
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				},
-				{
-					url: '/videos/sample.mp4',
-					isVideo: true,
-					placeholder: '/videos/sample.mp4',
-					videoPoster: '/img/spindle-info/video-poster/spindle-poster.svg'
-				}
-			]
+			seriesId: machineId,
+			modelId: values.workAreaCharacteristics
 		})
 	}
 
@@ -124,13 +78,22 @@ const SummaryView: ({ setIsSummary }: { setIsSummary: any }) => (null | JSX.Elem
 				</span>
 			</Link>
 			<div className={styles['main-view']}>
-				<Image
-					className={styles['main-view__image']}
-					src={machineSummaryM1Src}
-					alt=''
-					width='100'
-					height='100'
-				/>
+				<div style={{
+					position: 'absolute',
+					height: '100%',
+					width: '100%',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}>
+					<img
+						// className={styles['main-view__image']}
+						src={image?.fileManger?.url}
+						alt=''
+						// fill={true}
+						style={{height: '100%'}}
+					/>
+				</div>
 			</div>
 			<div className={styles.actions}>
 				<Button

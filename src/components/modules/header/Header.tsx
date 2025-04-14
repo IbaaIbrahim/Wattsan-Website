@@ -94,42 +94,42 @@ const Header = () => {
 					</div>
 				) : (
 					<article className={clsx(styles.content, styles.navigation)}>
-						<Tooltip
-							trigger={false}
-							opened={openCompanyMenu}
-							placement='bottom-start'
-							offset={[-24, 8]}
-							content={
-								<div className={styles.navigationMenuList}>
-									<button className={styles.navigationMenuLink}>
-										Production process
-									</button>
-									<button className={styles.navigationMenuLink}>
-										Dealership
-									</button>
-									<button className={styles.navigationMenuLink}>Blog</button>
-								</div>
-							}
-							onToggle={open => setOpenCompanyMenu(open)}
-						>
-							<button
-								className={styles.navigationButton}
-								onClick={() => setOpenCompanyMenu(!openCompanyMenu)}
-							>
-								Company
-								<div
-									className={clsx(
-										styles.navigationButtonIcon,
-										openCompanyMenu && styles.navigationButtonIconRotate
-									)}
-								>
-									<Image
-										src={rightArrow}
-										alt=''
-									/>
-								</div>
-							</button>
-						</Tooltip>
+						{/*<Tooltip*/}
+						{/*	trigger={false}*/}
+						{/*	opened={openCompanyMenu}*/}
+						{/*	placement='bottom-start'*/}
+						{/*	offset={[-24, 8]}*/}
+						{/*	content={*/}
+						{/*		<div className={styles.navigationMenuList}>*/}
+						{/*			<button className={styles.navigationMenuLink}>*/}
+						{/*				Production process*/}
+						{/*			</button>*/}
+						{/*			<button className={styles.navigationMenuLink}>*/}
+						{/*				Dealership*/}
+						{/*			</button>*/}
+						{/*			<button className={styles.navigationMenuLink}>Blog</button>*/}
+						{/*		</div>*/}
+						{/*	}*/}
+						{/*	onToggle={open => setOpenCompanyMenu(open)}*/}
+						{/*>*/}
+						{/*	<button*/}
+						{/*		className={styles.navigationButton}*/}
+						{/*		onClick={() => setOpenCompanyMenu(!openCompanyMenu)}*/}
+						{/*	>*/}
+						{/*		Company*/}
+						{/*		<div*/}
+						{/*			className={clsx(*/}
+						{/*				styles.navigationButtonIcon,*/}
+						{/*				openCompanyMenu && styles.navigationButtonIconRotate*/}
+						{/*			)}*/}
+						{/*		>*/}
+						{/*			<Image*/}
+						{/*				src={rightArrow}*/}
+						{/*				alt=''*/}
+						{/*			/>*/}
+						{/*		</div>*/}
+						{/*	</button>*/}
+						{/*</Tooltip>*/}
 						<Tooltip
 							trigger={false}
 							opened={openSupportMenu}
@@ -149,12 +149,12 @@ const Header = () => {
 									>
 										Training, drivers, and files
 									</Link>
-									<Link
-										href={PAGES.faq}
-										className={styles.navigationMenuLink}
-									>
-										FAQ
-									</Link>
+									{/*<Link*/}
+									{/*	href={PAGES.faq}*/}
+									{/*	className={styles.navigationMenuLink}*/}
+									{/*>*/}
+									{/*	FAQ*/}
+									{/*</Link>*/}
 								</div>
 							}
 							onToggle={open => setSupportMenu(open)}
@@ -177,12 +177,12 @@ const Header = () => {
 								</div>
 							</button>
 						</Tooltip>
-						<Link
-							href={PAGES.checkEquipment}
-							className={styles.navigationButton}
-						>
-							Check equipment
-						</Link>
+						{/*<Link*/}
+						{/*	href={PAGES.checkEquipment}*/}
+						{/*	className={styles.navigationButton}*/}
+						{/*>*/}
+						{/*	Check equipment*/}
+						{/*</Link>*/}
 						<button className={styles.navigationButton}>Contacts</button>
 					</article>
 				)}

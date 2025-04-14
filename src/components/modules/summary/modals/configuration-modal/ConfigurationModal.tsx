@@ -1,5 +1,5 @@
 import { Typography } from '@components/ui/typography/Typography'
-import { FlatConfiguratorSections } from '@constants/configurator'
+import { FlatConfiguratorSections, SUBSECTIONS_TITLE } from '@constants/configurator'
 
 import cn from './ConfigurationModal.module.scss'
 
@@ -18,7 +18,7 @@ export const ConfigurationModal = ({ configuration, params }) => {
 					const { name, unit, price } = params?.[section]?.find?.(
 						({ characteristicId }) => characteristicId === id
 					)?.staticCharacteristic ?? {
-						name: section,
+						name: '',
 						value: 'Not included',
 						price: '0'
 					}
@@ -35,7 +35,7 @@ export const ConfigurationModal = ({ configuration, params }) => {
 								weight='regular'
 								discolored={true}
 							>
-								{section}
+								{SUBSECTIONS_TITLE[section]?.name}
 							</Typography>
 							<Typography
 								tag='p'

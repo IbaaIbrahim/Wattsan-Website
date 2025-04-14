@@ -125,18 +125,18 @@ const SummaryAbout = () => {
 						>
 							{categoryInfo.name}
 						</Typography>
-						<div className={styles['overview-top__icons']}>
-							<Image
-								className={`${styles['overview-icon']} ${styles['compare-icon']}`}
-								src={twoCirclesIcon}
-								alt=''
-							/>
-							<Image
-								className={styles['overview-icon']}
-								src={bookmarkIcon}
-								alt=''
-							/>
-						</div>
+						{/*<div className={styles['overview-top__icons']}>*/}
+						{/*	<Image*/}
+						{/*		className={`${styles['overview-icon']} ${styles['compare-icon']}`}*/}
+						{/*		src={twoCirclesIcon}*/}
+						{/*		alt=''*/}
+						{/*	/>*/}
+						{/*	<Image*/}
+						{/*		className={styles['overview-icon']}*/}
+						{/*		src={bookmarkIcon}*/}
+						{/*		alt=''*/}
+						{/*	/>*/}
+						{/*</div>*/}
 					</div>
 					<div className={styles['overview-bottom']}>
 						<Typography
@@ -184,22 +184,22 @@ const SummaryAbout = () => {
 				{/*			: ''*/}
 				{/*		: `+${getConfParamsCount() - overviewParamsCount} parameters`}*/}
 				{/*</span>*/}
-				<div className={styles['main-data__pdf-and-links']}>
-					<Button
-						size='s'
-						view='bordered'
-						leftAddon={
-							<Image
-								className={styles['pdf-button__icon']}
-								src={downloadIcon}
-								alt=''
-							/>
-						}
-					>
-						{translations.summary.buttons.pdf_download}
-					</Button>
-					<ShareLinks />
-				</div>
+				{/*<div className={styles['main-data__pdf-and-links']}>*/}
+				{/*	<Button*/}
+				{/*		size='s'*/}
+				{/*		view='bordered'*/}
+				{/*		leftAddon={*/}
+				{/*			<Image*/}
+				{/*				className={styles['pdf-button__icon']}*/}
+				{/*				src={downloadIcon}*/}
+				{/*				alt=''*/}
+				{/*			/>*/}
+				{/*		}*/}
+				{/*	>*/}
+				{/*		{translations.summary.buttons.pdf_download}*/}
+				{/*	</Button>*/}
+				{/*	<ShareLinks />*/}
+				{/*</div>*/}
 			</section>
 
 			<div className={styles['results-and-btns']}>

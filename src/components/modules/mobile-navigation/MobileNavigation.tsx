@@ -37,28 +37,28 @@ const MobileNavigation: FC<{}> = () => {
 				/>
 				Catalog
 			</Link>
-			<Link
-				href={PAGES.comparison}
-				className={styles.button}
-			>
-				<Image
-					className={styles.icon}
-					src={comparisonIcon}
-					alt=''
-				/>
-				Comparison
-			</Link>
-			<Link
-				href={PAGES.favorites}
-				className={styles.button}
-			>
-				<Image
-					className={styles.icon}
-					src={favoritesIcon}
-					alt=''
-				/>
-				Favorites
-			</Link>
+			{/*<Link*/}
+			{/*	href={PAGES.comparison}*/}
+			{/*	className={styles.button}*/}
+			{/*>*/}
+			{/*	<Image*/}
+			{/*		className={styles.icon}*/}
+			{/*		src={comparisonIcon}*/}
+			{/*		alt=''*/}
+			{/*	/>*/}
+			{/*	Comparison*/}
+			{/*</Link>*/}
+			{/*<Link*/}
+			{/*	href={PAGES.favorites}*/}
+			{/*	className={styles.button}*/}
+			{/*>*/}
+			{/*	<Image*/}
+			{/*		className={styles.icon}*/}
+			{/*		src={favoritesIcon}*/}
+			{/*		alt=''*/}
+			{/*	/>*/}
+			{/*	Favorites*/}
+			{/*</Link>*/}
 			<Link
 				href={PAGES.basket}
 				className={styles.button}
