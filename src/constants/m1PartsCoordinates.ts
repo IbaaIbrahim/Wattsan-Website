@@ -6,7 +6,7 @@ export const m1PartsToCoordinatesMap = {
 	additionalOptions: { x: 37, y: 27 }
 }
 export const sectionsToRealPartsMap = {
-	workArea: "workAreaPage",
+	workArea: "workareaPage",
 	spindle: "spindlePage",
 	motor: "motorPage",
 	controlSystem: "controlAndOptions",

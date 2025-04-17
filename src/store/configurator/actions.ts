@@ -324,7 +324,7 @@ const STEP_CODE_MAP = {
 	workArea: 2,
 	spindle: 3,
 	motor: 4,
-	controlSystem: 5
+	// controlSystem: 5
 }
 
 export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
@@ -346,9 +346,9 @@ export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, m
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
-	if (stepCode === 5) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
-	}
+	// if (stepCode === 5) {
+	// 	additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	// }
 
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
@@ -370,9 +370,9 @@ export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindle
 		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
 	}
 
-	if (stepCode === 5) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
-	}
+	// if (stepCode === 5) {
+	// 	additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	// }
 
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
 }
