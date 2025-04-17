@@ -10,7 +10,7 @@ import Tooltip from '@components/ui/tooltip/Tooltip';
 import { Typography } from '@components/ui/typography/Typography';
 import { AccessoryParts } from '@constants/accessoryParts';
 import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATION_IMAGES } from '@constants/api';
-import { m1PartsToCoordinatesMap } from '@constants/m1PartsCoordinates';
+import { m1PartsToCoordinatesMap, sectionsToRealPartsMap } from '@constants/m1PartsCoordinates';
 import { useLang } from '@hooks/useLang';
 import { ILanguage } from '@my-types/languages';
 import photoSrc from '@public/img/icons/photo.svg';
@@ -23,11 +23,7 @@ import spindleImage from '@public/img/machine-details/m1/spindle_machine.svg';
 import systemControlImage from '@public/img/machine-details/m1/system_control_machine.svg';
 import workAreaAndZAxisImage from '@public/img/machine-details/m1/wa_za_machine.svg';
 import { configuratorStore } from '@store/configurator';
-import {
-	getConfigurationImages,
-	getImagesFilterByValues,
-	getImagesFilterByValuesWithStepCode
-} from '@store/configurator/actions'
+import { getConfigurationImages, getImagesFilterByValues, getImagesFilterByValuesWithStepCode } from '@store/configurator/actions';
 import { machineConfigurationForm } from '@store/forms';
 import { modalsStore } from '@store/modals';
 import { requestsStore } from '@store/requests';
@@ -184,89 +180,110 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 								})
 						}
 					</div>
-					{Object.keys(m1PartsToCoordinatesMap).map(section =>
-						isSelectionShowCard(section) ? (
-							<Tooltip
-								key={section}
-								opened={section === selectedSection}
-								placement='bottom'
-								offset={[0, 10]}
-								trigger={false}
-								targetClassName={styles.checkboxWrapper}
-								targetStyle={{
-									left: m1PartsToCoordinatesMap[section].x + '%',
-									top: m1PartsToCoordinatesMap[section].y + '%'
-								}}
-								content={
-									<ShowCard
-										selectedSection={section}
-										valueInsteadLabel={section === 'controlSystem'}
-									/>
-								}
-							>
-								<Tooltip
-									trigger='hover'
-									placement='top'
-									content={
-										<Typography
-											className={styles.accessoriesHint}
-											tag='p'
-											size='s'
-										>
-											{SECTION_LABELS[section]}
-										</Typography>
-									}
-								>
-									<div
-										className={styles.checkbox}
-										style={{
-											display: 'block'
-										}}
-									>
-										<Checkbox
-											onSelect={() => onSelect(section)}
-											type={Type.ACCESSORIE}
-											// TODO Добавить подсветку
-											highlighted={false}
-											selected={section === selectedSection}
-										/>
-									</div>
-								</Tooltip>
-							</Tooltip>
-						) : (
-							<div
-								key={section}
-								className={clsx(styles.checkbox, styles.checkboxWrapper)}
-								style={{
-									display: 'block',
-									left: m1PartsToCoordinatesMap[section].x + '%',
-									top: m1PartsToCoordinatesMap[section].y + '%'
-								}}
-							>
+					{
+						Object.keys(m1PartsToCoordinatesMap).map(section => {
+							const currentImage = _.find(_.get(seriesConfigurations, 'configuratorImages'), configuratorImage => {
+								const currentFilter = getImagesFilterByValues({
+									section: hoveredSection ?? selectedSection ?? 'mainPage',
+									motorId: values?.motorCharacteristics,
+									spindleQuantityId: values?.spindleQuantityCharacteristics,
+									modelId,
+									seriesId
+								})
+								// @ts-ignore
+								const configuratorImageFilter = getImagesFilterByValuesWithStepCode({...configuratorImage, modelId: configuratorImage.workAreaId })
+								return currentFilter === configuratorImageFilter
+								
+							})
+							let top = m1PartsToCoordinatesMap[section].y
+							let left = m1PartsToCoordinatesMap[section].x
+							if(currentImage && currentImage.mainPage_X && currentImage.mainPage_Y) {
+								top = _.get(currentImage, `${sectionsToRealPartsMap[section]}_Y`)
+								left = _.get(currentImage, `${sectionsToRealPartsMap[section]}_X`)
+							}
+							return isSelectionShowCard(section) ? (
 								<Tooltip
 									key={section}
-									trigger='hover'
-									placement='top'
+									opened={section === selectedSection}
+									placement='bottom'
+									offset={[0, 10]}
+									trigger={false}
+									targetClassName={styles.checkboxWrapper}
+									targetStyle={{
+										top: top + '%',
+										left: left + '%'
+									}}
 									content={
-										<Typography
-											className={styles.accessoriesHint}
-											tag='p'
-											size='s'
-										>
-											{SECTION_LABELS[section]}
-										</Typography>
+										<ShowCard
+											selectedSection={section}
+											valueInsteadLabel={section === 'controlSystem'}
+										/>
 									}
 								>
-									<Checkbox
-										type={Type.ACCESSORIE}
-										highlighted={false}
-										selected={section === selectedSection}
-										onHover={hovered => handleSectionHover(section, hovered)}
-										onSelect={() => onSelect(section)}
-									/>
+									<Tooltip
+										trigger='hover'
+										placement='top'
+										content={
+											<Typography
+												className={styles.accessoriesHint}
+												tag='p'
+												size='s'
+											>
+												{SECTION_LABELS[section]}
+											</Typography>
+										}
+									>
+										<div
+											className={styles.checkbox}
+											style={{
+												display: 'block'
+											}}
+										>
+											<Checkbox
+												onSelect={() => onSelect(section)}
+												type={Type.ACCESSORIE}
+												// TODO Добавить подсветку
+												highlighted={false}
+												selected={section === selectedSection}
+											/>
+										</div>
+									</Tooltip>
 								</Tooltip>
-							</div>
-						)
+							) : (
+								<div
+									key={section}
+									className={clsx(styles.checkbox, styles.checkboxWrapper)}
+									style={{
+										display: 'block',
+										left: m1PartsToCoordinatesMap[section].x + '%',
+										top: m1PartsToCoordinatesMap[section].y + '%'
+									}}
+								>
+									<Tooltip
+										key={section}
+										trigger='hover'
+										placement='top'
+										content={
+											<Typography
+												className={styles.accessoriesHint}
+												tag='p'
+												size='s'
+											>
+												{SECTION_LABELS[section]}
+											</Typography>
+										}
+									>
+										<Checkbox
+											type={Type.ACCESSORIE}
+											highlighted={false}
+											selected={section === selectedSection}
+											onHover={hovered => handleSectionHover(section, hovered)}
+											onSelect={() => onSelect(section)}
+										/>
+									</Tooltip>
+								</div>
+							)
+						}
 					)}
 				</div>
 			</div>

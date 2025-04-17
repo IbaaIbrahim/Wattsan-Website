@@ -5,3 +5,10 @@ export const m1PartsToCoordinatesMap = {
 	controlSystem: { x: 76, y: 44 },
 	additionalOptions: { x: 37, y: 27 }
 }
+export const sectionsToRealPartsMap = {
+	workArea: "workAreaPage",
+	spindle: "spindlePage",
+	motor: "motorPage",
+	controlSystem: "controlAndOptions",
+	additionalOptions: "mainPage",
+}
