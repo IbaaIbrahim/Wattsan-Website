@@ -17,8 +17,7 @@
 		}
 	},
 	"languages": {
-		"eng": "English",
-		"turk": "Turkey"
+		"eng": "English"
 	},
 	"equipment": {
 		"title": "Choose equipment",

@@ -48,7 +48,8 @@ class ConfigurationsService {
 			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'2'` }
 		});
 
-		const images = response.data.length < 2 ? [...response.data, ...response.data, ...response.data] : response.data
+		// const images = response.data.length < 2 ? [...response.data, ...response.data, ...response.data] : response.data
+		const images = response.data.length > 0 ?  response.data : []
 
 		return {
 			data: images.map(x => ({
@@ -66,7 +67,8 @@ class ConfigurationsService {
 			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'3'` }
 		});
 
-		const videos = response.data.length < 2 ? [...response.data, ...response.data, ...response.data] : response.data
+		// const videos = response.data.length < 2 ? [...response.data, ...response.data, ...response.data] : response.data
+		const videos = response.data.length > 0 ?  response.data : []
 
 		return {
 			data: videos.map(x => ({

@@ -106,6 +106,18 @@ const Carousel = ({
 					expand: false
 				}))
 			)
+		} else {
+			setCarouselItems(
+				[
+					...items.slice(items.length - Math.ceil(items.length / 2)),
+					...items.slice(0, -Math.ceil(items.length / 2))
+				].map((item, index) => ({
+					content: item,
+					order: index + 1,
+					collapse: false,
+					expand: false
+				}))
+			)
 		}
 	}, [items])
 
@@ -131,6 +143,8 @@ const Carousel = ({
 			resizeObserver.disconnect()
 		}
 	}, [carouselItems])
+
+	console.log('carouselItems', carouselItems)
 
 	return (
 		<div className={styles.carousel}>

@@ -22,10 +22,10 @@ export const useLang = (): {
 			break
 		}
 
-		case AllowedLangs.TUR: {
-			translations = turTranslations
-			break
-		}
+		// case AllowedLangs.TUR: {
+		// 	translations = turTranslations
+		// 	break
+		// }
 
 		default: {
 			translations = engTranslations
