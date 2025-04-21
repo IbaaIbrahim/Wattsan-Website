@@ -27,11 +27,19 @@ const CmsItemTextWithTable: FC<{contentItemData: any}> = ({ contentItemData }) =
 					<tbody>
 					{
 						_.map(contentItemData?.data?.table?.data, tableItem =>{
+							const value =tableItem.value === '' ? '<p></p>' : JSON.parse((() => {
+									try {
+										const tryParsing = JSON.parse(tableItem.value)
+										return tableItem.value
+									} catch (e) {
+										return  JSON.stringify(`<p>${tableItem.value ?? ''}</p>`)
+									}
+								})())
 							return (
 								<tr key={tableItem.uuid}>
 									<td style={{color: 'black', fontWeight: 'bolder'}} className={styles.td}>{tableItem.title}</td>
 									<td className={styles.td}>
-										<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(JSON.parse(tableItem.value ?? '')) }} />
+										<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value) }} />
 									</td>
 								</tr>
 							)

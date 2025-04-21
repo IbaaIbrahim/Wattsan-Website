@@ -2,7 +2,7 @@
 
 import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 
 import cn from './FormRadioAccessories.module.scss'
 
@@ -23,7 +23,7 @@ export const FormRadioAccessories: FC<{
 		<div className={clsx(className, withAdditional && cn.withAdditional)}>
 			<div className={cn.fields}>
 				{options.map(option => (
-					<>
+					<Fragment key={option.value}>
 						<label
 							className={clsx(
 								cn.field,
@@ -74,7 +74,7 @@ export const FormRadioAccessories: FC<{
 								{option.additional}
 							</div>
 						)}
-					</>
+					</Fragment>
 				))}
 			</div>
 		</div>

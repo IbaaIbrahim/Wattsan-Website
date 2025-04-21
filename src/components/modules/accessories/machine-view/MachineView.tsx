@@ -39,6 +39,7 @@ import ActionsPanel from '../actions-panel/ActionsPanel';
 
 
 import styles from './MachineView.module.scss';
+import ImageWithLoader from '@components/modules/accessories/machine-view/ImageWithLoader'
 
 
 const MACHINE_IMAGES = {
@@ -83,8 +84,17 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 	const modelId = configuratorStore.use.modelIdSelector()
 	const loading = requestsStore.use.multipleLoadingSelector(REQUESTS)
 	const seriesId = configuratorStore.use.machineId()
-	const images = configuratorStore.use.images()
 	const seriesConfigurations = configuratorStore.use.seriesConfigurationsSelector(seriesId)
+	const [loadingImages, setLoadingImages] = useState({})
+
+	useEffect(() => {
+		const images = _.map(_.get(seriesConfigurations, 'configuratorImages'), configuratorImage => configuratorImage.id)
+		const obj = {}
+		_.forEach(images, image => {
+			obj[image] = true
+		})
+		setLoadingImages(obj)
+	}, [modelId, seriesConfigurations])
 
 	const values = machineConfigurationForm.use.valuesSelector()
 
@@ -126,7 +136,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 	return (
 		<article className={styles.wrapper}>
 			{
-				(loading) && (
+				(loading || _.find(loadingImages, x => x)) && (
 					<div style={{position: 'absolute', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', zIndex: 4}}>
 						<Loader size={40} />
 					</div>
@@ -150,6 +160,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 						justifyContent: 'center',
 						alignItems: 'center'
 					}}>
+						{/*<ImageWithLoader loadingImageState={{loadingImage, setLoadingImage}} onSelect={onSelect} values={values} selectedSection={selectedSection} seriesId={seriesId} />*/}
 						<div style={{position: 'relative', height: '100%'}}>
 							{
 								_.map(
@@ -176,6 +187,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 												src={`${_.get(configuratorImage, 'fileManger.url')}`}
 												// fill={true}
 												alt=""
+												onLoad={() => {setLoadingImages(prevState => ({...prevState, [configuratorImage.id]: false}))}}
 												// priority
 											/>
 										)
