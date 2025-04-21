@@ -62,16 +62,15 @@ const SECTIONS = {
 
 const ShowCard = ({
 					  className,
-					  selectedSection,
-					  valueInsteadLabel
+					  selectedSection
 				  }: {
 	className?: string
 	selectedSection: any
-	valueInsteadLabel?: boolean
 }) => {
 	const values = machineConfigurationForm.use.valuesSelector()
 	const basicValues = basicMachineConfigurationForm.use.valuesSelector()
 	const machineInfo = configuratorStore.use.machineInfoSelector()
+	const seriesConfigurations = configuratorStore.use.seriesConfigurationsSelector(machineInfo.id)
 
 	const images = useMemo(() => {
 		if (selectedSection === 'controlSystem') {
@@ -101,7 +100,8 @@ const ShowCard = ({
 			>
 				<div className={styles.contentInner}>
 					{Object.keys(images).map(code => {
-						const seriesCharacteristic = _.find(machineInfo?.seriesCharacteristics, x => x.characteristicId === values[code])
+						const seriesCharacteristics = _.flatMap(seriesConfigurations, x => x)
+						const seriesCharacteristic = _.find(seriesCharacteristics, x => x.characteristicId === values[code])
 						const imageSrc = seriesCharacteristic?.fileManger?.url
 						return (
 							<div
@@ -109,25 +109,25 @@ const ShowCard = ({
 								className={styles['image-wrapper']}
 							>
 								<>
-									{/*<Image*/}
-									{/*	className={styles['mini-image']}*/}
-									{/*	src={imageSrc}*/}
-									{/*	alt=''*/}
-									{/*/>*/}
-									<Image
+									<img
 										className={styles['mini-image']}
-										src={images[code]}
+										src={imageSrc}
 										alt=''
 									/>
+									{/*<Image*/}
+									{/*	className={styles['mini-image']}*/}
+									{/*	src={images[code]}*/}
+									{/*	alt=''*/}
+									{/*/>*/}
 									<span className={styles.label}>{TEXTS[code]}</span>
 
-									{isDefaultSelected(code) && (
-										<div className={styles['not-chosen-placeholder']}>
-										<span className={styles['not-chosen-placeholder__text']}>
-											Not chosen
-										</span>
-										</div>
-									)}
+									{/*{isDefaultSelected(code) && (*/}
+									{/*	<div className={styles['not-chosen-placeholder']}>*/}
+									{/*	<span className={styles['not-chosen-placeholder__text']}>*/}
+									{/*		Not chosen*/}
+									{/*	</span>*/}
+									{/*	</div>*/}
+									{/*)}*/}
 								</>
 							</div>
 						)

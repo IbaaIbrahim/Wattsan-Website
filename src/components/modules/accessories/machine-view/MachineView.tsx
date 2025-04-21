@@ -229,7 +229,6 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 												content={
 													<ShowCard
 														selectedSection={section}
-														valueInsteadLabel={section === 'controlSystem'}
 													/>
 												}
 											>
