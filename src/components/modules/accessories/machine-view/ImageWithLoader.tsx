@@ -117,7 +117,6 @@ const ImageWithLoader = ({ seriesId, onSelect, selectedSection, values, loadingI
 								content={
 									<ShowCard
 										selectedSection={section}
-										valueInsteadLabel={section === 'controlSystem'}
 									/>
 								}
 							>
