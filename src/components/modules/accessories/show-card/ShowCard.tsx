@@ -102,32 +102,37 @@ const ShowCard = ({
 					{Object.keys(images).map(code => {
 						const seriesCharacteristics = _.flatMap(seriesConfigurations, x => x)
 						const seriesCharacteristic = _.find(seriesCharacteristics, x => x.characteristicId === values[code])
-						const imageSrc = seriesCharacteristic?.fileManger?.url
+						const imageSrc = seriesCharacteristic?.fileManger?.url ?? null
 						return (
 							<div
 								key={code}
 								className={styles['image-wrapper']}
 							>
 								<>
-									<img
-										className={styles['mini-image']}
-										src={imageSrc}
-										alt=''
-									/>
-									{/*<Image*/}
-									{/*	className={styles['mini-image']}*/}
-									{/*	src={images[code]}*/}
-									{/*	alt=''*/}
-									{/*/>*/}
+									{
+										imageSrc ? (
+											<img
+												className={styles['mini-image']}
+												src={imageSrc}
+												alt=''
+											/>
+										) : (
+											<Image
+												className={styles['mini-image']}
+												src={images[code]}
+												alt=''
+											/>
+										)
+									}
 									<span className={styles.label}>{TEXTS[code]}</span>
 
-									{/*{isDefaultSelected(code) && (*/}
-									{/*	<div className={styles['not-chosen-placeholder']}>*/}
-									{/*	<span className={styles['not-chosen-placeholder__text']}>*/}
-									{/*		Not chosen*/}
-									{/*	</span>*/}
-									{/*	</div>*/}
-									{/*)}*/}
+									{isDefaultSelected(code) && (
+										<div className={styles['not-chosen-placeholder']}>
+										<span className={styles['not-chosen-placeholder__text']}>
+											Not chosen
+										</span>
+										</div>
+									)}
 								</>
 							</div>
 						)
