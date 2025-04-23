@@ -51,7 +51,7 @@ const OffersView: FC<{
 				/>
 			</div>
 			{filter === '0' &&
-				(offersInfo.promoCodes.length === 0 ? (
+				(offersInfo?.promoCodes?.length === 0 ? (
 					<BlankContent
 						image={emptyPromoCodes}
 						title={
@@ -68,7 +68,7 @@ const OffersView: FC<{
 					/>
 				) : (
 					<div className={styles.items}>
-						{offersInfo.promoCodes.map(info => (
+						{offersInfo?.promoCodes?.map(info => (
 							<PromoCodePlate
 								key={info.id}
 								info={info}
@@ -78,7 +78,7 @@ const OffersView: FC<{
 					</div>
 				))}
 			{filter === '1' &&
-				(offersInfo.offers.length === 0 ? (
+				(offersInfo?.offers?.length === 0 ? (
 					<BlankContent
 						image={emptyOffers}
 						title={
@@ -97,7 +97,7 @@ const OffersView: FC<{
 					/>
 				) : (
 					<div className={styles.items}>
-						{offersInfo.offers.map(offer => (
+						{offersInfo?.offers?.map(offer => (
 							<OfferPlate
 								key={offer.id}
 								offer={offer}
