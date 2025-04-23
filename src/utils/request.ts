@@ -3,7 +3,11 @@ import { STATUSES, requestsStore } from '@store/requests'
 import axios from 'axios'
 import qs from 'query-string'
 
-export const request = async (url, method, data = undefined) => {
+export const request = async (
+	url,
+	method,
+	data = undefined
+) => {
 	try {
 		return await axios({
 			method,
