@@ -1,7 +1,14 @@
 export type TUserInfo = {
-	image: string
-	fullName: string
-	phone: string
+	id: string
 	email: string
-	authorized: boolean
+	userName: string // same as email
+	token: string
+	loginProvider: string // WattsanSite
+	callbackURL: string // https://wattsancnc.com
+	role: any
+
+	image: string // not exists
+	fullName: string // not exists
+	phone: string // not exists
+	authorized: boolean // not exists
 }

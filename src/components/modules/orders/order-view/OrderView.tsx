@@ -197,14 +197,14 @@ const OrderView: FC<{
 					<div className={styles.methodWrapper}>
 						<div className={styles.methodTitle}>Delivery method</div>
 						<div className={styles.method}>
-							<span>EXW</span>
+							<span>{order.deliveryMethod.name}</span>
 							<span>China</span>
 						</div>
 					</div>
 					<div className={styles.priceWrapper}>
 						<div className={styles.price}>
 							<span className={styles.priceTitle}>Total</span>
-							{_.sumBy(order.orderProducts, x => x.price)}
+							${_.sumBy(order.orderProducts, x => x.price * x.quantity)}
 						</div>
 						<div className={styles.deliveryPrice}>
 							{order?.deliveryMethod.cost ?? 'Delivery not included'}

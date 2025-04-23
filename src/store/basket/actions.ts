@@ -136,6 +136,7 @@ export const getOrder = async ({
 		)
 
 		basketStore.set.order(response?.data?.data?.[0])
+		return response.data?.data?.[0]
 	} catch (error) {
 		console.error(error)
 	}

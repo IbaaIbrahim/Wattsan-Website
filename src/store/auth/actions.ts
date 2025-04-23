@@ -12,6 +12,7 @@ import qs from 'query-string'
 import { request } from '../../utils/request'
 
 import { authStore } from './index'
+import { TUserInfo } from '@my-types/user'
 
 export const loginHandler = async (onComplete, onError) => {
 	const valid = loginForm.set.validate()
@@ -59,16 +60,20 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 			rememberMe: false
 		})
 
-		authStore.set.clientId(response.data.content.id)
-		authStore.set.token(response.data.content.token)
+		const responseData: TUserInfo = response?.data.content
+
+		authStore.set.clientId(responseData.id)
+		authStore.set.token(responseData.token)
 		authStore.set.authorized(true)
+		authStore.set.user(responseData)
 		signUpForm.set.reset()
 
 		Cookie.set(
 			'wattsan_data',
 			JSON.stringify({
-				clientId: response.data.content.id,
-				token: response?.data?.content?.token
+				clientId: responseData?.id,
+				token: responseData?.token,
+				user: responseData
 			})
 		)
 
@@ -140,7 +145,7 @@ export const verifyHandler = async (code, onComplete, onError) => {
 
 export const checkAuthorize = async () => {
 	try {
-		const { token = null, clientId = null } = Object(
+		const { token = null, clientId = null, user = {} } = Object(
 			JSON.parse(Cookie.get('wattsan_data') ?? '')
 		)
 
@@ -148,6 +153,7 @@ export const checkAuthorize = async () => {
 			authStore.set.token(token)
 			authStore.set.clientId(clientId)
 			authStore.set.authorized(true)
+			authStore.set.user(user)
 		}
 	} catch (error) {
 		console.error(error)
@@ -160,6 +166,7 @@ export const logOut = async () => {
 		authStore.set.token(null)
 		authStore.set.clientId(null)
 		authStore.set.authorized(null)
+		authStore.set.user(null)
 		window.location.reload()
 	} catch (error) {
 		console.error(error)

@@ -55,7 +55,7 @@ const SummaryAbout = () => {
 	}
 
 	const handleAddToBasket = async () => {
-		await savePersonalConfiguration(machineId, categoryId)
+		await savePersonalConfiguration(machineId, categoryId, configuratorId)
 		await createBasket()
 	}
 

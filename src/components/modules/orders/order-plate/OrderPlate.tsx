@@ -49,7 +49,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 					</div>
 					{!isMobile && (
 						<Button
-							// href={PAGES.orderId(order.id.replaceAll(' ', ''))}
+							href={PAGES.orderId(`${order.id}`.replaceAll(' ', ''))}
 							size='l'
 						>
 							View details
@@ -64,7 +64,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 				{isMobile && (
 					<Button
 						className={styles.action}
-						// href={PAGES.orderId(order.id.replaceAll(' ', ''))}
+						href={PAGES.orderId(`${order.id}`.replaceAll(' ', ''))}
 						size='l'
 					>
 						View details

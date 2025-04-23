@@ -13,7 +13,7 @@ const EquipmentPreview: FC<{
 		<div className={styles.wrapper}>
 			{show > 0 &&
 				!combinedPreview &&
-				items.slice(0, show).map((src, index) => (
+				items.slice(0, 3).map((src, index) => (
 					<div
 						key={index}
 						className={styles.image}
@@ -34,7 +34,11 @@ const EquipmentPreview: FC<{
 					/>
 				</div>
 			)}
-			<div className={styles.total}>+{total}</div>
+			{
+				items.length > 3 && (
+					<div className={styles.total}>+{items.length - 3}</div>
+				)
+			}
 		</div>
 	)
 }

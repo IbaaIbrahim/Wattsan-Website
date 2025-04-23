@@ -1,13 +1,17 @@
-import Quantity from '@components/modules/basket/quantity/Quantity'
-import basketIcon from '@public/img/icons/basket.svg'
-import bookmarkIcon from '@public/img/icons/bookmark.svg'
-import checkEmptyIcon from '@public/img/icons/check-empty.svg'
-import checkIcon from '@public/img/icons/check.svg'
-import clsx from 'clsx'
-import Image from 'next/image'
-import { FC } from 'react'
+import Quantity from '@components/modules/basket/quantity/Quantity';
+import { TBasketItem } from '@my-types/basket';
+import basketIcon from '@public/img/icons/basket.svg';
+import bookmarkIcon from '@public/img/icons/bookmark.svg';
+import checkEmptyIcon from '@public/img/icons/check-empty.svg';
+import checkIcon from '@public/img/icons/check.svg';
+import clsx from 'clsx';
+import Image from 'next/image';
+import { FC } from 'react';
 
-import styles from './ItemPlate.module.scss'
+
+
+import styles from './ItemPlate.module.scss';
+
 
 const ItemPlate: FC<{
 	className?: string
@@ -22,6 +26,7 @@ const ItemPlate: FC<{
 	price?: number
 	onSelect: (id: number, selected: boolean) => void
 	onChangeQuantity: (id: number, quantity: number) => void
+	basketItem?: TBasketItem
 }> = ({
 	className,
 	id,
@@ -34,7 +39,8 @@ const ItemPlate: FC<{
 	price,
 	limit,
 	onSelect,
-	onChangeQuantity
+	onChangeQuantity,
+	basketItem
 }) => {
 	return (
 		<div
@@ -58,7 +64,7 @@ const ItemPlate: FC<{
 				</div>
 				<div className={styles.image}>
 					<Image
-						src={image}
+						src={basketItem.referenceObject?.fileManger?.url}
 						alt=''
 						fill={true}
 					/>

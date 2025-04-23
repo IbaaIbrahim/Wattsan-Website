@@ -29,32 +29,36 @@ const SelectItems = () => {
 			<div className={styles.divider} />
 			<div className={styles.items}>
 				{(showAll ? positions : positions.slice(0, 3)).map(
-					({
-						selected = false,
-						quantity,
-						status = '',
-						id,
-						image = '',
-						referenceObject
-					}: any) => (
-						<ItemPlate
-							className={styles.item}
-							key={id}
-							id={id}
-							selected={selected}
-							name={referenceObject?.configurationName ?? ''}
-							status={status}
-							image={image}
-							quantity={quantity}
-							price={+(referenceObject?.price ?? 0)}
-							onSelect={(id, selected) =>
-								basketStore.set.changePosition({ id, selected })
-							}
-							onChangeQuantity={(id, quantity) =>
-								basketStore.set.changePosition({ id, quantity })
-							}
-						/>
-					)
+					(item: any) => {
+						const {
+							selected = false,
+							quantity,
+							status = '',
+							id,
+							image = '',
+							referenceObject
+						} = item
+						return (
+							<ItemPlate
+								className={styles.item}
+								key={id}
+								id={id}
+								selected={selected}
+								name={referenceObject?.configurationName ?? ''}
+								status={status}
+								image={image}
+								quantity={quantity}
+								price={+(referenceObject?.price ?? 0)}
+								onSelect={(id, selected) =>
+									basketStore.set.changePosition({ id, selected })
+								}
+								onChangeQuantity={(id, quantity) =>
+									basketStore.set.changePosition({ id, quantity })
+								}
+								basketItem={item}
+							/>
+						)
+					}
 				)}
 			</div>
 			{positions.length > 3 && (

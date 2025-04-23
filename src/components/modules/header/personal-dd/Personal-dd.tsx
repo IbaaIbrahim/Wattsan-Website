@@ -40,6 +40,8 @@ const PersonalDd: FC<{
 
 	const [open, setOpen] = useState(false)
 
+	const user = authStore.use.user()
+
 	const authorized = authStore.use.authorized()
 
 	return (
@@ -51,7 +53,7 @@ const PersonalDd: FC<{
 					content={
 						<div className={styles['dd-content']}>
 							<span className={styles['dd-content__fullname']}>
-								<span className={styles['user-fullname']}>Mark Markov</span>
+								<span className={styles['user-fullname']}>{user.userName}</span>
 								<Image
 									className={styles['notifications-icon']}
 									src={notifImg}
@@ -182,7 +184,7 @@ const PersonalDd: FC<{
 							</div>
 						}
 					>
-						Mark
+						{user.userName}
 					</Button>
 				</Tooltip>
 			) : (
@@ -196,7 +198,9 @@ const PersonalDd: FC<{
 							closeOnEscape: false,
 							onComplete: ({ type }) => {
 								if (type === 'register') {
-									modalsStore.set.open(MODALS.registerSuccessModal)
+									modalsStore.set.open(MODALS.registerSuccessModal, {
+										styles: {display: 'block'}
+									})
 								} else {
 									modalsStore.set.close()
 								}
@@ -240,7 +244,9 @@ const PersonalDd: FC<{
 							closeOnEscape: false,
 							onComplete: ({ type }) => {
 								if (type === 'register') {
-									modalsStore.set.open(MODALS.registerSuccessModal)
+									modalsStore.set.open(MODALS.registerSuccessModal, {
+										styles: {display: 'block'}
+									})
 								} else {
 									modalsStore.set.close()
 								}

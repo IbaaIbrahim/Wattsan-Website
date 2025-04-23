@@ -55,8 +55,10 @@ export const useConfigurator = () => {
 			configuratorStore.set.categories(response?.content?.category as any)
 			configuratorStore.set.categoryId(response?.content?.category?.[1].id)
 			const seriesInfo = response?.content?.series.find(x => x.id == machineId)
-			const workAreaInfo = _.first(_.filter(seriesInfo.seriesCharacteristics, x => x.staticCharacteristic.code === 'WorkArea' && x.isAvailable && x.isDefault))
-			getSeriesConfigurationForConfigurator(machineId, workAreaId ?? _.get(workAreaInfo, 'characteristicId'), configuratorId)
+			if(seriesInfo) {
+				const workAreaInfo = _.first(_.filter(seriesInfo?.seriesCharacteristics, x => x.staticCharacteristic.code === 'WorkArea' && x.isAvailable && x.isDefault))
+				getSeriesConfigurationForConfigurator(machineId, workAreaId ?? _.get(workAreaInfo, 'characteristicId'), configuratorId)
+			}
 		}
 	}
 

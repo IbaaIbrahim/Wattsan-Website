@@ -1,14 +1,24 @@
+import { IConfiguration } from '@my-types/configurations'
+
 export type TBasketItem = {
-	id: string
-	selected: boolean
-	image: string
-	name: string
-	code: string
-	status: string
-	quantity: number
-	limit: number
-	price: number
-	discount: number
+	selected: boolean // old from passing parameters to component
+	image: string // old from passing parameters to component
+	name: string // old from passing parameters to component
+	code: string // old from passing parameters to component
+	status: string // old from passing parameters to component
+	limit: number // old from passing parameters to component
+	price: number // old from passing parameters to component
+	discount: number // old from passing parameters to component
+
+	"id": string
+	"referenceId": number
+	"itemtype": number
+	"clientId": string
+	"quantity": number
+	"isActive": boolean
+	"addedTime": string
+	"user": any
+	"referenceObject": IConfiguration
 }
 
 export type TBasketItems = TBasketItem[]
