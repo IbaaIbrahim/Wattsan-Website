@@ -28,6 +28,7 @@ import { FC, useState } from 'react'
 import { PAGES } from '../../../../config/pages.url.config'
 
 import styles from './Personal.module.scss'
+import { logOut } from '@store/auth/actions'
 
 const PersonalDd: FC<{
 	configuratorMenuOpen: boolean
@@ -155,7 +156,7 @@ const PersonalDd: FC<{
 									</div>
 								</Link>
 							</div>
-							<span className={styles['dd-content__logout']}>
+							<span className={styles['dd-content__logout']} onClick={logOut}>
 								<Image
 									className={styles['dd-link__icon']}
 									src={logOutImg}

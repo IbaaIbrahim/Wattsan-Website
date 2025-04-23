@@ -153,3 +153,15 @@ export const checkAuthorize = async () => {
 		console.error(error)
 	}
 }
+
+export const logOut = async () => {
+	try {
+		Cookie.remove('wattsan_data')
+		authStore.set.token(null)
+		authStore.set.clientId(null)
+		authStore.set.authorized(null)
+		window.location.reload()
+	} catch (error) {
+		console.error(error)
+	}
+}

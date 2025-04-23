@@ -98,7 +98,7 @@ const SignUp = () => {
 				value={values?.activationType as number}
 				options={[
 					{ value: 1, text: 'Via e-mail' },
-					{ value: 2, text: 'Via phone' }
+					// { value: 2, text: 'Via phone' }
 				]}
 				onChange={value => signUpForm.set.change('activationType', value)}
 			/>

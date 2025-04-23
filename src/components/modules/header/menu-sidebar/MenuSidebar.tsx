@@ -101,7 +101,7 @@ const MenuSidebar: FC<{
 					>
 						Check equipment
 					</Link>
-					<div className={styles.menuTitle}>Contacts</div>
+					{/*<div className={styles.menuTitle}>Contacts</div>*/}
 				</div>
 				<FormToggle
 					value={lang}

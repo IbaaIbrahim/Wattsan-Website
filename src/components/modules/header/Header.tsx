@@ -183,7 +183,7 @@ const Header = () => {
 						{/*>*/}
 						{/*	Check equipment*/}
 						{/*</Link>*/}
-						<button className={styles.navigationButton}>Contacts</button>
+						{/*<button className={styles.navigationButton}>Contacts</button>*/}
 					</article>
 				)}
 				<article className={styles.content}>
