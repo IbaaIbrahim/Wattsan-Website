@@ -5,9 +5,9 @@ import userMock from './mocks/user/user.json'
 class UserService {
 	private BASE_URL = ''
 
-	async getUserInfo(): Promise<TUserInfo> {
-		return await Promise.resolve(userMock)
-	}
+	// async getUserInfo(): Promise<TUserInfo> {
+	// 	return await Promise.resolve(userMock)
+	// }
 }
 
 export const userService = new UserService()

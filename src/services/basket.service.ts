@@ -12,20 +12,20 @@ import orderInfoMock from './mocks/basket/order-info.json'
 class BasketService {
 	private BASE_URL = ''
 
-	async getBasket(): Promise<{
-		basketItems: TBasketItems
-		popularItems: TPopularItems
-	}> {
-		const response = await Promise.resolve(basketMock)
-
-		return {
-			// TODO Заглушка
-			// basketItems: [],
-			basketItems: response.items,
-			popularItems: response.popularItems
-		}
-		// return response.items
-	}
+	// async getBasket(): Promise<{
+	// 	basketItems: TBasketItems
+	// 	popularItems: TPopularItems
+	// }> {
+	// 	const response = await Promise.resolve(basketMock)
+	//
+	// 	return {
+	// 		// TODO Заглушка
+	// 		// basketItems: [],
+	// 		basketItems: response.items,
+	// 		popularItems: response.popularItems
+	// 	}
+	// 	// return response.items
+	// }
 
 	async getCheckout(): Promise<TCheckoutInfo> {
 		return await Promise.resolve(checkoutMock)
