@@ -6,6 +6,7 @@ export type TUserInfo = {
 	loginProvider: string // WattsanSite
 	callbackURL: string // https://wattsancnc.com
 	role: any
+	firstName: string
 
 	image: string // not exists
 	fullName: string // not exists

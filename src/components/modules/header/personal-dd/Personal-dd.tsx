@@ -53,7 +53,7 @@ const PersonalDd: FC<{
 					content={
 						<div className={styles['dd-content']}>
 							<span className={styles['dd-content__fullname']}>
-								<span className={styles['user-fullname']}>{user.userName}</span>
+								<span className={styles['user-fullname']}>{user.firstName ?? user.userName}</span>
 								<Image
 									className={styles['notifications-icon']}
 									src={notifImg}
@@ -184,7 +184,7 @@ const PersonalDd: FC<{
 							</div>
 						}
 					>
-						{user.userName}
+						{user.firstName ?? user.userName}
 					</Button>
 				</Tooltip>
 			) : (
