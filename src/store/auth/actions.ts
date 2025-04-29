@@ -24,16 +24,14 @@ export const loginHandler = async (onComplete, onError) => {
 	requestsStore.set.updateRequest('login', STATUSES.loading)
 
 	try {
-		const response = await request(
-			qs.stringifyUrl({
-				url: API_LOGIN_BY_CODE_URL,
-				query: {
-					email,
-					rememberMe
-				}
-			}),
-			'GET'
-		)
+		const response = await request({
+			url: API_LOGIN_BY_CODE_URL,
+			method: 'GET',
+			query: {
+				email,
+				rememberMe
+			}
+		})
 
 		// loginForm.set.reset()
 		// authStore.set.clientId(response.data.content.id)
@@ -54,10 +52,14 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 		const values = signUpForm.get.valuesSelector()
 		const loginValues = loginForm.get.valuesSelector()
 
-		const response = await request(API_LOGIN_URL, 'POST', {
-			email: values?.email || loginValues?.email,
-			password: code,
-			rememberMe: false
+		const response = await request({
+			url: API_LOGIN_URL,
+			method: 'POST',
+			data: {
+				email: values?.email || loginValues?.email,
+				password: code,
+				rememberMe: false
+			}
 		})
 
 		const responseData: TUserInfo = response?.data.content
@@ -96,12 +98,16 @@ export const signUpHandler = async (onComplete, onError) => {
 	requestsStore.set.updateRequest('register', STATUSES.loading)
 
 	try {
-		const response = await request(API_REGISTER_URL, 'POST', {
-			email,
-			phone,
-			fullName,
-			subscriptions,
-			activationType
+		const response = await request({
+			url: API_REGISTER_URL,
+			method: 'POST',
+			data: {
+				email,
+				phone,
+				fullName,
+				subscriptions,
+				activationType
+			}
 		})
 
 		authStore.set.sessionId(response?.data?.content?.id)
@@ -120,9 +126,13 @@ export const verifyHandler = async (code, onComplete, onError) => {
 	try {
 		const sessionId = authStore.get.sessionId()
 
-		const response = await request(API_VERIFY_URL, 'POST', {
-			id: sessionId,
-			verification_code: +code
+		const response = await request({
+			url: API_VERIFY_URL,
+			method: 'POST',
+			data: {
+				id: sessionId,
+				verification_code: +code
+			}
 		})
 
 		const error = response?.data?.error_code ?? null

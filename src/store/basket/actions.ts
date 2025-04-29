@@ -7,7 +7,7 @@ import {
 	API_GET_COUNTRIES,
 	API_GET_DELIVERY_METHODS,
 	API_GET_ORDERS,
-	API_ORDERS_CREATE
+	API_ORDERS_CREATE, API_VERIFY_URL
 } from '@constants/api'
 import { authStore } from '@store/auth'
 import { basketStore } from '@store/basket/index'
@@ -75,7 +75,10 @@ export const getCountries = async () => {
 
 		requestsStore.set.updateRequest(API_GET_COUNTRIES, STATUSES.loading)
 
-		const response = await request(API_GET_COUNTRIES, 'GET')
+		const response = await request({
+			url: API_GET_COUNTRIES,
+			method: 'GET'
+		})
 
 		basketStore.set.countries(response?.data?.data)
 
@@ -97,7 +100,10 @@ export const getDeliveryMethods = async () => {
 
 		requestsStore.set.updateRequest(API_GET_DELIVERY_METHODS, STATUSES.loading)
 
-		const response = await request(API_GET_DELIVERY_METHODS, 'GET')
+		const response = await request({
+			url: API_GET_DELIVERY_METHODS,
+			method: 'GET'
+		})
 
 		basketStore.set.deliveryMethods(response?.data?.data)
 
@@ -111,7 +117,10 @@ export const getDeliveryMethods = async () => {
 
 export const getOrders = async () => {
 	try {
-		const response = await request(API_GET_ORDERS, 'GET')
+		const response = await request({
+			url: API_GET_ORDERS,
+			method: 'GET'
+		})
 
 		basketStore.set.orders(response?.data)
 	} catch (error) {
@@ -127,13 +136,11 @@ export const getOrder = async ({
 	clientId: string
 }) => {
 	try {
-		const response = await request(
-			qs.stringifyUrl({
-				url: API_GET_ORDERS,
-				query: { filter: `clientId~eq~'${clientId}'~and~id~eq~'${id}'` }
-			} as any),
-			'GET'
-		)
+		const response = await request({
+			url: API_GET_ORDERS,
+			method: 'GET',
+			query: { filter: `clientId~eq~'${clientId}'~and~id~eq~'${id}'` }
+		})
 
 		basketStore.set.order(response?.data?.data?.[0])
 		return response.data?.data?.[0]
@@ -187,16 +194,14 @@ export const checkCoupon = async () => {
 		const { promoCode } = basketForm.get.valuesSelector()
 		const totalAmount = basketStore.get.totalPriceSelector()
 
-		const response = await request(
-			qs.stringifyUrl({
-				url: API_GET_CHECK_COUPON,
-				query: {
-					code: promoCode,
-					totalAmount
-				}
-			}),
-			'GET'
-		)
+		const response = await request({
+			url: API_GET_CHECK_COUPON,
+			method: 'GET',
+			query: {
+				code: promoCode,
+				totalAmount
+			}
+		})
 
 		if (response?.data?.content !== null) {
 			requestsStore.set.updateRequest(API_GET_CHECK_COUPON, STATUSES.success)

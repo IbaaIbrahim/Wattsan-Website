@@ -1,15 +1,15 @@
 import offersMock from './mocks/offers/offers.json'
 import { authorizedRequest, request } from '../utils/request'
-import { API_GET_PERSONAL_OFFERS } from '@constants/api'
+import { API_GET_BASKETS, API_GET_PERSONAL_OFFERS } from '@constants/api'
 
 class OffersService {
 	private BASE_URL = ''
 
 	async getOffers() {
-		const response = await request(
-			API_GET_PERSONAL_OFFERS,
-			'GET'
-		);
+		const response = await request({
+			url: API_GET_PERSONAL_OFFERS,
+			method: 'GET'
+		})
 		// const response = await Promise.resolve(offersMock)
 
 		return {
