@@ -5,11 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from './page.module.scss'
-import { authorizedRequest } from '../../utils/request'
+import { authorizedRequest, request } from '../../utils/request'
 import { API_GET_SUPPORT_ABOUT_US } from '@constants/api'
 
 const Page = async () => {
-	const data = await authorizedRequest({
+	const data = await request({
 		url: API_GET_SUPPORT_ABOUT_US,
 		method: 'GET'
 	});

@@ -14,7 +14,7 @@ import _ from 'lodash';
 
 
 import { setUrlParamSilently } from '../../utils/helpers';
-import { authorizedRequest } from '../../utils/request';
+import { authorizedRequest, request } from '../../utils/request'
 
 
 export const getStartParameters = async ({
@@ -35,7 +35,7 @@ export const getStartParameters = async ({
 
 		if (requestsStore.get.loadingSelector(track)) return
 
-		response = await authorizedRequest({
+		response = await request({
 			url: API_START_PARAMETERS,
 			method: 'GET',
 			query: { categoryId },
@@ -95,7 +95,7 @@ export const updateCurrentFields = (seriesId, outerParams = null) => {
 
 export const getInitialSeriesConfiguration = async machineId => {
 	try {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_CONFIGURATION_BY_SERIES,
 			method: 'GET',
 			query: {
@@ -135,7 +135,7 @@ export const getSeriesConfiguration = async (
 			return
 		}
 
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_CONFIGURATION_BY_SERIES_AND_MODEL,
 			method: 'GET',
 			query: {
@@ -163,7 +163,7 @@ export const getSeriesConfigurationForConfigurator = async (
 	configuratorId
 ) => {
 	try {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_CONFIGURATION_BY_SERIES_AND_MODEL,
 			method: 'GET',
 			query: {
@@ -204,7 +204,7 @@ export const getPersonalConfiguration = async () => {
 export const getConfiguratorById = async (configuratorId) => {
 	try {
 		const clientId = authStore.get.clientId()
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
 			method: 'GET',
 			query: { filter: `id~eq~'${configuratorId}'~and~clientId~eq~'${clientId}'` },
@@ -384,7 +384,7 @@ export const getConfigurationImages = async ({ section, modelId, spindleQuantity
 
 		if (configuratorStore.get.images()?.[filter] !== undefined || !modelId || !seriesId) return
 
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_CONFIGURATION_IMAGES,
 			method: 'GET',
 			query: {

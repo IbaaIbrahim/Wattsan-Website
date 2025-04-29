@@ -1,7 +1,7 @@
 import { TGetConfigurations } from '@my-types/configurations'
 
 import configurationsMock from './mocks/configurations/configurations.json'
-import { authorizedRequest } from '../utils/request'
+import { authorizedRequest, request } from '../utils/request'
 import {
 	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
 	API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT,
@@ -13,7 +13,7 @@ class ConfigurationsService {
 	private BASE_URL = ''
 
 	async getConfigurations(clientId): Promise<TGetConfigurations> {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_CONFIGURATIONS_WITH_DETAILS,
 			method: 'GET',
 			query: { filter: `clientId~eq~'${clientId}'` }
@@ -30,7 +30,7 @@ class ConfigurationsService {
 	}
 
 	async get3dModel(seriesId,modelId, autoChangeToolsId ): Promise<any> {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_REAL_ATTACHMENTS,
 			method: 'GET',
 			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~autoChangeToolsId~eq~'${autoChangeToolsId}'~and~attachmentType~eq~'1'` }
@@ -42,7 +42,7 @@ class ConfigurationsService {
 	}
 
 	async getRealPhotos(seriesId,modelId ): Promise<any> {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_REAL_ATTACHMENTS,
 			method: 'GET',
 			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'2'` }
@@ -61,7 +61,7 @@ class ConfigurationsService {
 	}
 
 	async getRealVideos(seriesId,modelId ): Promise<any> {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_REAL_ATTACHMENTS,
 			method: 'GET',
 			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'3'` }
@@ -81,7 +81,7 @@ class ConfigurationsService {
 	}
 
 	async getCharacteristicCodeContent(characteristicCode ): Promise<any> {
-		const response = await authorizedRequest({
+		const response = await request({
 			url: API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT,
 			method: 'GET',
 			query: { filter: `characteristicCode~eq~'${characteristicCode}'` }

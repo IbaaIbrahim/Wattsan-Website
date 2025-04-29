@@ -12,7 +12,7 @@ import videoIcon from '@public/img/support/video-icon.png'
 import { useEffect, useMemo, useState } from 'react'
 
 import styles from './page.module.scss'
-import { authorizedRequest } from '../../../utils/request'
+import { authorizedRequest, request } from '../../../utils/request'
 import { API_GET_SUPPORT_TRAINING_FILES } from '@constants/api'
 
 const MATERIALS = {
@@ -142,7 +142,7 @@ const Page = () => {
 
 	useEffect(() => {
 		const getData = async() => {
-			const response = await authorizedRequest({
+			const response = await request({
 				url: API_GET_SUPPORT_TRAINING_FILES,
 				method: 'GET'
 			})
@@ -160,7 +160,7 @@ const Page = () => {
 						size='m'
 						label='Choose equipment'
 						value={equipmentType}
-						options={data.map(equipment => ({
+						options={data?.map(equipment => ({
 							value: equipment.id,
 							text: equipment.name
 						}))}
@@ -173,7 +173,7 @@ const Page = () => {
 						label='Choose model'
 						value={equipment}
 						options={
-							data.find(
+							data?.find(
 								({ id }) => id === equipmentType
 							)?.supportAssets?.map?.(item => ({
 								value: item.id,

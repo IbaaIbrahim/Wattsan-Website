@@ -3,22 +3,49 @@ import { STATUSES, requestsStore } from '@store/requests'
 import axios from 'axios'
 import qs from 'query-string'
 
-export const request = async (
+export const request = async ({
 	url,
 	method,
-	data = undefined
-) => {
+	data = undefined,
+	query = undefined,
+	track = true
+}: {
+	url: string
+	method: 'POST' | 'GET' | 'PUT'
+	data?: any
+	query?: object
+	track?: boolean | string
+}) => {
 	try {
-		return await axios({
+
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.loading
+			)
+
+		const response = await axios({
 			method,
-			url,
+			url: method === 'GET' ? qs.stringifyUrl({ url, query } as any) : url,
 			data,
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		})
+
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.success
+			)
+
+		return response?.data ?? null
 	} catch (error) {
-		console.error(error)
+		if (track)
+			requestsStore.set.updateRequest(
+				typeof track === 'boolean' ? url : track,
+				STATUSES.failure
+			)
 
 		throw error
 	}

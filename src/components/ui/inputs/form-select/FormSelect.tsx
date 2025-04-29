@@ -36,7 +36,7 @@ const FormSelect: FC<{
 
 	const [open, setOpen] = useState<boolean>(false)
 
-	const mappedValue = options.find(option => option.value == value)?.text ?? ''
+	const mappedValue = options?.find(option => option.value == value)?.text ?? ''
 
 	const handleToggle = visible => {
 		setOpen(visible)
@@ -87,7 +87,7 @@ const FormSelect: FC<{
 					ref={listRef}
 					className={styles.options}
 				>
-					{options.map(option => (
+					{options?.map(option => (
 						<button
 							className={styles.option}
 							key={option.value}
