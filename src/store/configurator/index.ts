@@ -1,7 +1,9 @@
-import a1Image from '@public/img/grid-machines/A1.png'
-import m1Image from '@public/img/grid-machines/M1.png'
-import miniCabineImage from '@public/img/grid-machines/Mini-Cabine.png'
-import miniImage from '@public/img/grid-machines/Mini.png'
+import a1Image from '@public/img/grid-machines/icon-for-a1-equipment.png'
+import m1Image from '@public/img/grid-machines/icon-for-m1-equipment.png'
+import miniCabineImage from '@public/img/grid-machines/icon-for-mini-cabin-equipment.png'
+import miniImage from '@public/img/grid-machines/icon-for-mini-equipment.png'
+import m1RDImage from '@public/img/grid-machines/icon-for-m1-rd-equipment.png'
+import m3Image from '@public/img/grid-machines/icon-for-m3-equipment.png'
 import {
 	TSeriesConfiguration,
 	TSeriesConfigurations,
@@ -43,7 +45,9 @@ const IMAGES_PLACEHOLDER = {
 	M1: m1Image,
 	A1: a1Image,
 	Mini: miniImage,
-	'Mini Cabine': miniCabineImage
+	'Mini Cabine': miniCabineImage,
+	'M1 RD': m1RDImage,
+	'M3':m3Image
 }
 
 export const configuratorStore = createStore(
