@@ -1,5 +1,7 @@
 import aspirationSrc from '@public/img/mini-parts/aspiration.svg'
 import controlSysSrc from '@public/img/mini-parts/control-sys.svg'
+import builtInSrc from '@public/img/mini-parts/built-in.svg'
+import lubricationSystem from '@public/img/mini-parts/lubrication-system.svg'
 import liquidSrc from '@public/img/mini-parts/liquid-cool.svg'
 import rotarySrc from '@public/img/mini-parts/rotary.svg'
 import vacuumSrc from '@public/img/mini-parts/vacuum.svg'
@@ -18,23 +20,23 @@ import _ from 'lodash'
 const TEXTS = {
 	controlSystem: 'Control System',
 	liquidCoolingSystemCharacteristics: 'Liquid cooling system',
-	removableSensorCharacteristics: 'Removable instrument sensor',
+	removableSensorCharacteristics: 'Aspiration',
 	builtInSensorCharacteristics: 'Built-in instrument sensor',
 	lubricationSystemCharacteristics: 'Lubrication system',
 	aspirationCharacteristics: 'Aspiration',
 	vaccumTableCharacteristics: 'Vacuum table',
 	rotaryDeviceCharacteristics: 'Rotary device',
-	// cabineCharacteristics: 'Cabine'
+	cabineCharacteristics: 'Cabine'
 }
 
 const ADDITIONAL_OPTIONS_IMAGES = {
 	liquidCoolingSystemCharacteristics: liquidSrc,
 	aspirationCharacteristics: aspirationSrc,
 	removableSensorCharacteristics: controlSysSrc,
-	builtInSensorCharacteristics: controlSysSrc,
+	builtInSensorCharacteristics: builtInSrc,
 	vaccumTableCharacteristics: vacuumSrc,
-	lubricationSystemCharacteristics: controlSysSrc,
-	// cabineCharacteristics: controlSysSrc,
+	lubricationSystemCharacteristics: lubricationSystem,
+	cabineCharacteristics: controlSysSrc,
 	rotaryDeviceCharacteristics: rotarySrc
 }
 

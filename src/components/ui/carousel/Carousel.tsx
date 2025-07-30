@@ -97,8 +97,8 @@ const Carousel = ({
 		if (items.length > 2) {
 			setCarouselItems(
 				[
-					...items.slice(items.length - Math.ceil(items.length / 2)),
-					...items.slice(0, -Math.ceil(items.length / 2))
+					...items.slice(items.length - Math.ceil(items.length / 2) + 1),
+					...items.slice(0, -Math.ceil(items.length / 2) + 1)
 				].map((item, index) => ({
 					content: item,
 					order: index + 1,
@@ -109,8 +109,8 @@ const Carousel = ({
 		} else {
 			setCarouselItems(
 				[
-					...items.slice(items.length - Math.ceil(items.length / 2)),
-					...items.slice(0, -Math.ceil(items.length / 2))
+					...items.slice(items.length - Math.ceil(items.length / 2) + 1),
+					...items.slice(0, -Math.ceil(items.length / 2) + 1)
 				].map((item, index) => ({
 					content: item,
 					order: index + 1,

@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 
 import styles from './MediaModal.module.scss'
+import { configuratorStore } from '@store/configurator'
 
 const MediaModal = ({
 	seriesId,
@@ -23,6 +24,10 @@ const MediaModal = ({
 	const [loading, setLoading] = useState(true)
 	const [items, setItems] = useState([])
 
+	const categoryInfo = configuratorStore.use.categoryInfoSelector()
+	const machineInfo = configuratorStore.use.machineInfoSelector()
+	const modelName = configuratorStore.use.modelNameSelector()
+
 	useEffect(() => {
 		const getData = async () => {
 			if(isVideoModal){
@@ -30,7 +35,7 @@ const MediaModal = ({
 					seriesId,
 					modelId
 				)
-				setItems(data)
+				setItems(data?.map(x => ({...x, videoPoster: null})))
 			} else {
 				const { data } = await configurationsService.getRealPhotos(
 					seriesId,
@@ -67,8 +72,10 @@ const MediaModal = ({
 						? translations.view_videos_title
 						: translations.view_photos_title}
 				</div>
-				<div className={styles['category']}>CNC Router Machine</div>
-				<div className={styles['machine-name']}>M1 6090 modified</div>
+				<div className={styles['category']}>{categoryInfo?.name}</div>
+				<div className={styles['machine-name']}>
+					{machineInfo?.name} {modelName}
+				</div>
 			</div>
 			<div className={styles['modal__content']}>
 				<Carousel

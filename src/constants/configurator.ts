@@ -50,7 +50,7 @@ export const SUBSECTIONS_TITLE = {
 	motorCharacteristics: {name: 'Motor', formKey: 'motorCharacteristics', code: 'Motor', order: 7},
 	controlSystemCharacteristics: {name: 'Control System', formKey: 'controlSystemCharacteristics', code: 'ControlSystem', order: 8},
 	liquidCoolingSystemCharacteristics: {name: 'Liquid cooling system', formKey: 'liquidCoolingSystemCharacteristics', code: 'LiquidCoolingSystem', order: 9},
-	removableSensorCharacteristics: {name: 'Removable instrument sensor', formKey: 'removableSensorCharacteristics', code: 'RemovableSensor', order: 10},
+	removableSensorCharacteristics: {name: 'Aspiration', formKey: 'removableSensorCharacteristics', code: 'RemovableSensor', order: 10},
 	builtInSensorCharacteristics: {name: 'Built-in instrument sensor', formKey: 'builtInSensorCharacteristics', code: 'BuildInSensor', order: 11},
 	lubricationSystemCharacteristics: {name: 'Lubrication system', formKey: 'lubricationSystemCharacteristics', code: 'LubricationSystem', order: 12},
 	aspirationCharacteristics: {name: 'Removable instrument sensor', formKey: 'aspirationCharacteristics', code: 'Aspiration', order: 13},

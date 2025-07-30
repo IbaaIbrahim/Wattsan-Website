@@ -10,12 +10,17 @@ import { useEffect, useState } from 'react'
 import { configurationsService } from '@services/configurations.service'
 import { Loader } from '@components/modules/page-loader/components/loader'
 import { Typography } from '@components/ui/typography/Typography'
+import { configuratorStore } from '@store/configurator'
 
 const Rotate3dModal = ({seriesId, modelId, autoChangeToolsId}) => {
 	const { translations }: { translations: ILanguage } = useLang()
 	const [loading, setLoading] = useState(true)
 	const [item, setItem] = useState<any>({})
 	const [encodedUrl, setEncodedUrl] = useState(null)
+
+	const categoryInfo = configuratorStore.use.categoryInfoSelector()
+	const machineInfo = configuratorStore.use.machineInfoSelector()
+	const modelName = configuratorStore.use.modelNameSelector()
 
 	// useEffect(() => {
 	// 	// Encode the URL properly
@@ -79,8 +84,10 @@ const Rotate3dModal = ({seriesId, modelId, autoChangeToolsId}) => {
 				<div className={styles['modal__title']}>
 					{translations.rotate_modal_title}
 				</div>
-				<div className={styles['category']}>CNC Router Machine</div>
-				<div className={styles['machine-name']}>M1 6090 modified</div>
+				<div className={styles['category']}>{categoryInfo?.name}</div>
+				<div className={styles['machine-name']}>
+					{machineInfo?.name} {modelName}
+				</div>
 			</div>
 			<ModelViewer
 				className={styles.modelViewer}
