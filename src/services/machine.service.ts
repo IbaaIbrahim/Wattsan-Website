@@ -23,7 +23,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: false,
 		price: 'from 1000$',
-		imgUrl: '/img/grid-machines/Mini.png',
+		imgUrl: '/img/grid-machines/icon-for-mini-equipment.png',
 		id: '11'
 	},
 	{
@@ -34,7 +34,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: false,
 		price: 'from 1500$',
-		imgUrl: '/img/grid-machines/Mini-Cabine.png',
+		imgUrl: '/img/grid-machines/icon-for-mini-cabine-equipment.png',
 		id: '12'
 	},
 	{
@@ -45,7 +45,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: false,
 		price: 'from 2000$',
-		imgUrl: '/img/grid-machines/A1.png',
+		imgUrl: '/img/grid-machines/icon-for-a1-equipment.png',
 		id: '13'
 	},
 	{
@@ -56,7 +56,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: true,
 		price: 'from 3000$',
-		imgUrl: '/img/grid-machines/M1.png',
+		imgUrl: '/img/grid-machines/icon-for-m1-equipment.png',
 		id: '4'
 	},
 	{
@@ -78,7 +78,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: false,
 		price: 'from 4000$',
-		imgUrl: '/img/grid-machines/M1-RD.png',
+		imgUrl: '/img/grid-machines/icon-for-m1-rd-equipment.png',
 		id: '16'
 	},
 	{
@@ -89,7 +89,7 @@ export const MACHINES: IMachineItem[] = [
 		categoryIds: ['2'],
 		isActive: true,
 		price: 'from 5000$',
-		imgUrl: '/img/grid-machines/M3.png',
+		imgUrl: '/img/grid-machines/icon-for-m3-equipment.png',
 		id: '17'
 	}
 ]

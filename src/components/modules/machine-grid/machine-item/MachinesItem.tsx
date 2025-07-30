@@ -79,7 +79,7 @@ const MachinesItem = ({
 			<div className={styles['main-content']}>
 				<div className={styles['main-content__img']}>
 					<Image
-						src={machineData.logo?.src ?? '/img/grid-machines/Mini.png'}
+						src={machineData.logo?.src ?? '/img/grid-machines/icon-for-mini-equipment.png'}
 						alt=''
 						fill
 						sizes='(max-width: 120px)'
