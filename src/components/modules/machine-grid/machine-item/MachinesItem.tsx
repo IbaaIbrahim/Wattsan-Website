@@ -21,7 +21,10 @@ const MachinesItem = ({
 	const router = useRouter()
 
 	const characteristicByWorkArea = machineData?.seriesCharacteristics?.filter?.(
-		({ code, isAvailable, isDefault }: any) => code === 'WorkArea' && isAvailable && isDefault
+		({ code, isAvailable, isDefault }: any) => {
+
+			return code === 'WorkArea' && isAvailable && isDefault
+		}
 	)
 
 	// const makeRequest = async (clientInfo: SupportCallback) => {

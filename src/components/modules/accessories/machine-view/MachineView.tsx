@@ -170,6 +170,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 											section: hoveredSection ?? selectedSection ?? 'mainPage',
 											motorId: values?.motorCharacteristics,
 											spindleQuantityId: values?.spindleQuantityCharacteristics,
+											toolQuantityId: values?.autoChangeToolsRelations,
 											modelId,
 											seriesId
 										})
@@ -200,6 +201,7 @@ const MachineView = ({ selectedSection, onSelect, setIsSummary }: {
 												section: hoveredSection ?? selectedSection ?? 'mainPage',
 												motorId: values?.motorCharacteristics,
 												spindleQuantityId: values?.spindleQuantityCharacteristics,
+												toolQuantityId: values?.autoChangeToolsRelations,
 												modelId,
 												seriesId
 											})

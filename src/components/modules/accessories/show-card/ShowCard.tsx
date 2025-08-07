@@ -5,6 +5,7 @@ import lubricationSystem from '@public/img/mini-parts/lubrication-system.svg'
 import liquidSrc from '@public/img/mini-parts/liquid-cool.svg'
 import rotarySrc from '@public/img/mini-parts/rotary.svg'
 import vacuumSrc from '@public/img/mini-parts/vacuum.svg'
+import cabinSrc from '@public/img/mini-parts/cabin.svg'
 import {
 	basicMachineConfigurationForm,
 	machineConfigurationForm
@@ -36,7 +37,7 @@ const ADDITIONAL_OPTIONS_IMAGES = {
 	builtInSensorCharacteristics: builtInSrc,
 	vaccumTableCharacteristics: vacuumSrc,
 	lubricationSystemCharacteristics: lubricationSystem,
-	cabineCharacteristics: controlSysSrc,
+	cabineCharacteristics: cabinSrc,
 	rotaryDeviceCharacteristics: rotarySrc
 }
 

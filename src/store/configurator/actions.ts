@@ -327,7 +327,7 @@ const STEP_CODE_MAP = {
 	// controlSystem: 5
 }
 
-export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
+export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, motorId, seriesId, toolQuantityId }) => {
 	let stepCode = STEP_CODE_MAP?.[section] ?? 1
 
 	if (stepCode === null && section !== '') return
@@ -335,39 +335,39 @@ export const getImagesFilterByValues = ({ section, modelId, spindleQuantityId, m
 	let additionalFilter = ''
 
 	if (stepCode === 2) {
-		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~null~and~toolQuantityId~eq~null~and~motorId~eq~null`
 	}
 
 	if (stepCode === 3) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~toolQuantityId~eq~${toolQuantityId ?? 'null'}~and~motorId~eq~null`
 	}
 
 	if (stepCode === 4) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~toolQuantityId~eq~${toolQuantityId ?? 'null'}~and~motorId~eq~'${motorId}'`
 	}
 
 	// if (stepCode === 5) {
-	// 	additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+	// 	additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~toolQuantityId~eq~${toolQuantityId ?? 'null'}~and~motorId~eq~'${motorId}'`
 	// }
 
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode > 0 ? stepCode : 1}'${additionalFilter}`
 }
 
-export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindleQuantityId, motorId, seriesId }) => {
+export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindleQuantityId, motorId, seriesId, toolQuantityId }) => {
 	stepCode = stepCode ?? 1
 
 	let additionalFilter = ''
 
 	if (stepCode === 2) {
-		additionalFilter += `~and~spindleQuantityId~eq~null~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~null~and~toolQuantityId~eq~null~and~motorId~eq~null`
 	}
 
 	if (stepCode === 3) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~null`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~toolQuantityId~eq~${toolQuantityId ?? 'null'}~and~motorId~eq~null`
 	}
 
 	if (stepCode === 4) {
-		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~motorId~eq~'${motorId}'`
+		additionalFilter += `~and~spindleQuantityId~eq~'${spindleQuantityId}'~and~toolQuantityId~eq~${toolQuantityId ?? 'null'}~and~motorId~eq~'${motorId}'`
 	}
 
 	// if (stepCode === 5) {
@@ -377,10 +377,10 @@ export const getImagesFilterByValuesWithStepCode = ({ stepCode, modelId, spindle
 	return `seriesId~eq~'${seriesId}'~and~workAreaId~eq~'${modelId}'~and~stepCode~eq~'${stepCode}'${additionalFilter}`
 }
 
-export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, motorId, seriesId }) => {
+export const getConfigurationImages = async ({ section, modelId, spindleQuantityId, toolQuantityId, motorId, seriesId }) => {
 	try {
 
-		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, motorId, seriesId})
+		const filter = getImagesFilterByValues({section, modelId, spindleQuantityId, toolQuantityId, motorId, seriesId})
 
 		if (configuratorStore.get.images()?.[filter] !== undefined || !modelId || !seriesId) return
 
