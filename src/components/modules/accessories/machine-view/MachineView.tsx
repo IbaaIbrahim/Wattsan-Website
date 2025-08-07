@@ -39,7 +39,7 @@ import ActionsPanel from '../actions-panel/ActionsPanel';
 
 
 import styles from './MachineView.module.scss';
-import ImageWithLoader from '@components/modules/accessories/machine-view/ImageWithLoader'
+// import ImageWithLoader from '@components/modules/accessories/machine-view/ImageWithLoader'
 
 
 const MACHINE_IMAGES = {
