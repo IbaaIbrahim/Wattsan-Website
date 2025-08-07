@@ -59,6 +59,7 @@ const ImageWithLoader = ({ seriesId, onSelect, selectedSection, values, loadingI
 							section: hoveredSection ?? selectedSection ?? 'mainPage',
 							motorId: values?.motorCharacteristics,
 							spindleQuantityId: values?.spindleQuantityCharacteristics,
+							toolQuantityId: values?.autoChangeToolsRelations,
 							modelId,
 							seriesId
 						})
@@ -88,6 +89,7 @@ const ImageWithLoader = ({ seriesId, onSelect, selectedSection, values, loadingI
 								section: hoveredSection ?? selectedSection ?? 'mainPage',
 								motorId: values?.motorCharacteristics,
 								spindleQuantityId: values?.spindleQuantityCharacteristics,
+								toolQuantityId: values?.autoChangeToolsRelations,
 								modelId,
 								seriesId
 							})
