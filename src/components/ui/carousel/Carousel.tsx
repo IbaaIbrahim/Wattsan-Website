@@ -109,8 +109,7 @@ const Carousel = ({
 		} else {
 			setCarouselItems(
 				[
-					...items.slice(items.length - Math.ceil(items.length / 2) + 1),
-					...items.slice(0, -Math.ceil(items.length / 2) + 1)
+					...items
 				].map((item, index) => ({
 					content: item,
 					order: index + 1,
@@ -144,7 +143,12 @@ const Carousel = ({
 		}
 	}, [carouselItems])
 
-	console.log('carouselItems', carouselItems)
+	const emptyStyles = items.length > 0 ? {} : {
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 
 	return (
 		<div className={styles.carousel}>
@@ -190,7 +194,8 @@ const Carousel = ({
 				<div
 					className={styles['carousel-items']}
 					style={{
-						transform: getTransformValue()
+						transform: getTransformValue(),
+						...emptyStyles
 					}}
 				>
 					{items.length ? (
