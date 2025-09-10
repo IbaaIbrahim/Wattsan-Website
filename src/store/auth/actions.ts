@@ -62,7 +62,7 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 			}
 		})
 
-		const responseData: TUserInfo = response?.data.content
+		const responseData: TUserInfo = response?.content
 
 		authStore.set.clientId(responseData.id)
 		authStore.set.token(responseData.token)
@@ -81,7 +81,7 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 
 		onComplete()
 	} catch (error) {
-		console.error(error)
+		console.error('store/auth/actions.js -> reLoginHandler', error)
 
 		onError()
 	}
