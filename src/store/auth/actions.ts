@@ -13,6 +13,7 @@ import { request } from '../../utils/request'
 
 import { authStore } from './index'
 import { TUserInfo } from '@my-types/user'
+import { toast } from 'react-toastify'
 
 export const loginHandler = async (onComplete, onError) => {
 	const valid = loginForm.set.validate()
@@ -110,11 +111,17 @@ export const signUpHandler = async (onComplete, onError) => {
 			}
 		})
 
-		authStore.set.sessionId(response?.data?.content?.id)
+		if (response?.error_code !== 0 || !response?.status) {
+			toast.error(response?.error_des)
+			requestsStore.set.updateRequest('register', STATUSES.failure)
+		} else {
 
-		onComplete()
+			authStore.set.sessionId(response?.data?.content?.id)
 
-		requestsStore.set.updateRequest('register', STATUSES.success)
+			onComplete()
+
+			requestsStore.set.updateRequest('register', STATUSES.success)
+		}
 	} catch (error) {
 		requestsStore.set.updateRequest('register', STATUSES.failure)
 	}
