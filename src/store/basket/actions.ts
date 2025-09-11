@@ -80,7 +80,7 @@ export const getCountries = async () => {
 			method: 'GET'
 		})
 
-		basketStore.set.countries(response?.data?.data)
+		basketStore.set.countries(response?.data)
 
 		requestsStore.set.updateRequest(API_GET_COUNTRIES, STATUSES.success)
 	} catch (error) {
