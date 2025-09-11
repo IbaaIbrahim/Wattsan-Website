@@ -142,7 +142,7 @@ export const getOrder = async ({
 			query: { filter: `clientId~eq~'${clientId}'~and~id~eq~'${id}'` }
 		})
 
-		basketStore.set.order(response?.data?.data?.[0])
+		basketStore.set.order(response?.data?.[0])
 		return response.data?.data?.[0]
 	} catch (error) {
 		console.error(error)
