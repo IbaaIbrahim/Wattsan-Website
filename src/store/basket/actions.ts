@@ -105,7 +105,7 @@ export const getDeliveryMethods = async () => {
 			method: 'GET'
 		})
 
-		basketStore.set.deliveryMethods(response?.data?.data)
+		basketStore.set.deliveryMethods(response?.data)
 
 		requestsStore.set.updateRequest(API_GET_DELIVERY_METHODS, STATUSES.success)
 	} catch (error) {
