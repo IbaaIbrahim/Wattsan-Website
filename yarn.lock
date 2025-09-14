@@ -3574,6 +3574,11 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
+zukeeper@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/zukeeper/-/zukeeper-1.0.2.tgz#7e5ff289af39001566b885a842e180b0e16860b8"
+  integrity sha512-mffz8JpzC96B3Gpoixklfl2/wY4KsYxZvgPRLFMIqAvEQeMPTjLYG8oUWXm9eoItU/nQ5Lt0G2b0GcZRDGzVgA==
+
 zustand-x@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/zustand-x/-/zustand-x-3.0.4.tgz#9d4aa43c44d92681bda169f58f5e098a05283aac"

@@ -15,7 +15,7 @@ class OffersService {
 		return {
 			// TODO Заглушка для демонстрации
 			// promoCodes: [],
-			promoCodes: response?.data?.data,
+			promoCodes: response?.data,
 			// TODO Заглушка для демонстрации
 			// offers: []
 			offers: []

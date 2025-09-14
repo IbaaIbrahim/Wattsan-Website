@@ -6,6 +6,7 @@ export type TAuthStore = {
 	clientId: string
 	token: string
 	sessionId: string
+	tempEmail: string
 	user: TUserInfo
 }
 
@@ -15,6 +16,7 @@ export const authStore = createStore('auth')<TAuthStore>({
 	token: null,
 	authorized: false,
 	clientId: null,
+	tempEmail: null,
 	// token: null,
 	sessionId: null,
 	user: null

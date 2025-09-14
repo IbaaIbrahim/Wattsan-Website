@@ -32,6 +32,7 @@
 		"react-toastify": "^11.0.5",
 		"three": "^0.179.1",
 		"uuid": "^11.0.5",
+		"zukeeper": "^1.0.2",
 		"zustand": "^4.4.7",
 		"zustand-x": "^3.0.4"
 	},
