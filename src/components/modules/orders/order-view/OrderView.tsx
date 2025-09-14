@@ -204,7 +204,7 @@ const OrderView: FC<{
 					<div className={styles.priceWrapper}>
 						<div className={styles.price}>
 							<span className={styles.priceTitle}>Total</span>
-							${_.sumBy(order.orderProducts, x => x.price * x.quantity)}
+							${_.sumBy(order.orderProducts, x => x.price * x.quantity) - (order?.coupon?.maxPurchaseDiscount ?? 0)}
 						</div>
 						<div className={styles.deliveryPrice}>
 							{order?.deliveryMethod.cost ?? 'Delivery not included'}

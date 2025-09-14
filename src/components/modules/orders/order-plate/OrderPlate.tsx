@@ -35,7 +35,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 						from&nbsp;{getOrderDate(order.fromDate)}
 					</div>
 				</div>
-				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price)}</div>
+				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price) - (order?.coupon?.maxPurchaseDiscount ?? 0)}</div>
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.footer}>

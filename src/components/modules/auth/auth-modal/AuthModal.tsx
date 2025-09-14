@@ -10,6 +10,7 @@ import {
 	verifyHandler
 } from '@store/auth/actions'
 import { FC, useEffect, useState } from 'react';
+import { authStore } from '@store/auth'
 
 
 const screensMap = {
@@ -33,7 +34,7 @@ const AuthModal: FC<{
 	const [state, setState] = useState<'INITIAL' | 'PROCESSING' | 'ERROR' | 'SUCCESS'>('INITIAL')
 	const [code, setCode] = useState('')
 
-	const [timeLeft, startTimer, stopTimer] = useCountdown(5 * 1000)
+	const [timeLeft, startTimer, stopTimer] = useCountdown(60 * 1000)
 
 	const prevScreen = usePrevious(screen)
 	// const prevState = usePrevious(state)
@@ -51,30 +52,33 @@ const AuthModal: FC<{
 		}
 	}, [state, startTimer])
 
+	const tempEmail = authStore.use.tempEmail()
+
 	const handleSmsRetry = async () => {
 		setCode('')
 		setState('PROCESSING')
-
-		const type = prevScreen === 'LOGIN' ? 'authorize' : 'register'
-
-		if (type === 'authorize') {
-			loginHandler(() => {
-				setState('INITIAL')
-				// setCode('')
-				startTimer()
-			}, onError)
-		} else {
-			await signUpHandler(
+		// if (type === 'authorize') {
+			loginHandler(
 				() => {
 					setState('INITIAL')
 					// setCode('')
 					startTimer()
 				},
-				() => {
-					setState('ERROR')
-				}
+				onError,
+				tempEmail
 			)
-		}
+		// } else {
+		// 	await signUpHandler(
+		// 		() => {
+		// 			setState('INITIAL')
+		// 			// setCode('')
+		// 			startTimer()
+		// 		},
+		// 		() => {
+		// 			setState('ERROR')
+		// 		}
+		// 	)
+		// }
 	}
 
 	const handleInputFinished = async (code: string) => {

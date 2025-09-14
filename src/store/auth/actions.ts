@@ -15,8 +15,8 @@ import { authStore } from './index'
 import { TUserInfo } from '@my-types/user'
 import { toast } from 'react-toastify'
 
-export const loginHandler = async (onComplete, onError) => {
-	const valid = loginForm.set.validate()
+export const loginHandler = async (onComplete, onError, tempMail: string = null) => {
+	const valid = loginForm.set.validate() || !!tempMail
 
 	if (!valid) return
 
@@ -29,7 +29,7 @@ export const loginHandler = async (onComplete, onError) => {
 			url: API_LOGIN_BY_CODE_URL,
 			method: 'GET',
 			query: {
-				email,
+				email: tempMail ?? email,
 				rememberMe
 			}
 		})
@@ -37,6 +37,7 @@ export const loginHandler = async (onComplete, onError) => {
 		// loginForm.set.reset()
 		// authStore.set.clientId(response.data.content.id)
 		// authStore.set.token(response.data.content.token)
+		authStore.set.tempEmail(`${email}`)
 		// authStore.set.authorized(true)
 		requestsStore.set.updateRequest('login', STATUSES.success)
 
@@ -116,7 +117,9 @@ export const signUpHandler = async (onComplete, onError) => {
 			requestsStore.set.updateRequest('register', STATUSES.failure)
 		} else {
 
-			authStore.set.sessionId(response?.data?.content?.id)
+			authStore.set.tempEmail(`${email}`)
+
+			authStore.set.sessionId(response?.content?.id)
 
 			onComplete()
 
@@ -142,7 +145,7 @@ export const verifyHandler = async (code, onComplete, onError) => {
 			}
 		})
 
-		const error = response?.data?.error_code ?? null
+		const error = response?.error_code ?? null
 
 		if (error !== 0) {
 			onError()
