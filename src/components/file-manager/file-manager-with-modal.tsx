@@ -12,7 +12,7 @@ import { _getFileManagerItemData } from './actions'
 import cn from './Modal.module.scss'
 import clsx from 'clsx'
 import closeIcon from '@public/img/icons/close.svg'
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import userAvatar from '@public/img/account/user-avatar.png'
 
 const ButtonRipple = Button
@@ -25,16 +25,23 @@ interface GenerateThumbnailParams {
   fileObjectWhenIsFullObjectFalse: FileManagerValue
 }
 
-const getPlaceholderImage = (): string => {
-
-  // return userAvatar.default
+const getPlaceholderImage = (): StaticImageData | string => {
   if (typeof userAvatar === 'string') return userAvatar
-  // `userAvatar` can be StaticImageData: { src: string, height: number, width: number }
-  if ('src' in userAvatar && typeof (userAvatar as any).src === 'string') return (userAvatar as any).src
-  // Fallback to default property if present (older import style)
-  if ('default' in userAvatar && typeof (userAvatar as any).default === 'string') return (userAvatar as any).default
-  return ''
+  if (typeof (userAvatar as { src?: string }).src === 'string') return userAvatar
+  // if (typeof (userAvatar as { default?: string }).default === 'string') return userAvatar.default
+  return '/img/account/user-avatar.png'
 }
+
+const renderThumbnailImage = (src: StaticImageData | string): JSX.Element => (
+  <Image
+    alt=""
+    fill
+    sizes="(max-width: 768px) 50vw, 200px"
+    src={src}
+    style={{ objectFit: 'cover' }}
+    unoptimized={typeof src === 'string'}
+  />
+)
 
 export const generateThumbnail = ({
   isFullObject,
@@ -43,8 +50,10 @@ export const generateThumbnail = ({
 }: GenerateThumbnailParams): JSX.Element => {
   const fullObject = (isFullObject ? value : fileObjectWhenIsFullObjectFalse) as FileManagerValue
 
+  const placeholderSrc = getPlaceholderImage()
+
   if (_.isEmpty(fullObject)) {
-    return <img width={'100%'} style={{ objectFit: 'fill' }} height={'100%'} src={getPlaceholderImage()} alt={''} />
+    return renderThumbnailImage(placeholderSrc)
   }
 
   if (typeof fullObject === 'object' && fullObject !== null && 'name' in fullObject) {
@@ -54,13 +63,13 @@ export const generateThumbnail = ({
       FILE_TYPES['image'].fileType === getFileTypeFromFile(typedObject) ||
       (typedObject as { thumbnailUrl?: string }).thumbnailUrl
     ) {
-      const fallbackUrl = (typedObject as { url?: string }).url ?? getPlaceholderImage()
+      const fallbackUrl = (typedObject as { url?: string }).url ?? placeholderSrc
       const thumbnailUrl = (typedObject as { thumbnailUrl?: string }).thumbnailUrl ?? fallbackUrl
-      return <img width={'100%'} height={'100%'} src={thumbnailUrl} alt={''} />
+      return renderThumbnailImage(thumbnailUrl ?? fallbackUrl)
     }
   }
 
-  return <img width={'100%'} style={{ objectFit: 'fill' }} height={'100%'} src={getPlaceholderImage()} alt={''} />
+  return renderThumbnailImage(placeholderSrc)
 }
 
 interface FileManagerWithModalProps {
@@ -96,17 +105,15 @@ const FileManagerWithModal = React.forwardRef<HTMLDivElement, FileManagerWithMod
     onChangeState?.(value)
   }, [value, onChangeState])
   
-  useEffect(() => {    
+  useEffect(() => {
     if (!isFullObject && _.size(value) > 0) {
       _getFileManagerItemData(value, (data: ApiFile[]) => {
-        console.log(data);
-        
         if (_.size(data) === 1) {
           setFileObjectWhenIsFullObjectFalse(mapApiFileToLocal(data[0]))
         }
       })
     }
-  }, [])
+  }, [isFullObject, value])
 
   const onSelectFile = (file: LocalFile) => {
     if (isFullObject) {
@@ -223,5 +230,7 @@ const FileManagerWithModal = React.forwardRef<HTMLDivElement, FileManagerWithMod
     </>
   )
 })
+
+FileManagerWithModal.displayName = 'FileManagerWithModal'
 
 export default FileManagerWithModal
