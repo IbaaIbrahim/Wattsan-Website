@@ -15,4 +15,5 @@ export type TUserInfo = {
 	phoneNumber: string
 	authorized: boolean // not exists
 	fileManagerId: string | null
+	profilePicture: string | null
 }

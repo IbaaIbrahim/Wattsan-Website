@@ -59,7 +59,7 @@ const SESSION_MOCK = [
 const SettingsView = () => {
 	const user = authStore.use.user()
 	const [tabs, setTab] = useState('0')
-	const [profileImage, setProfileImage] = useState(user.fileManagerId || null)
+	const [profileImage, setProfileImage] = useState(user.fileManagerId || user.profilePicture || null)
 	const [acknowledged, setAcknowledged] = useState(false)
 	const [userName, setUserName] = useState(user.firstname || '')
 	const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || '')
