@@ -9,7 +9,7 @@ import DOMPurify from 'dompurify'
 
 const PromoCodeModal: FC<{ info: TPromoCode }> = ({ info }) => {
 	return (
-		<>
+		<div>
 			<div className={styles.title}>{info.couponTitle}</div>
 			{/*<div className={styles.subtitle}>{info.title}</div>*/}
 			<div className={styles.description} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(JSON.parse(info?.couponDesc)) }}/>
@@ -43,7 +43,7 @@ const PromoCodeModal: FC<{ info: TPromoCode }> = ({ info }) => {
 				These terms may vary based on the brand's strategies and marketing
 				campaigns.
 			</div>
-		</>
+		</div>
 	)
 }
 

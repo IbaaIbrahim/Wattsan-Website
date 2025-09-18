@@ -61,7 +61,7 @@ const PersonalDd: FC<{
 								/>
 							</span>
 							<div className={styles['dd-content__links']}>
-								<Link
+								{/* <Link
 									className={clsx(
 										styles.link,
 										pathname === PAGES.dashboard && styles.active
@@ -76,7 +76,7 @@ const PersonalDd: FC<{
 									<div className={styles.text}>
 										{translations.header.personal_dd.dashboard}
 									</div>
-								</Link>
+								</Link> */}
 								<Link
 									className={clsx(
 										styles.link,
@@ -109,7 +109,7 @@ const PersonalDd: FC<{
 										{translations.header.personal_dd.configurations}
 									</div>
 								</Link>
-								<Link
+								{/* <Link
 									className={clsx(
 										styles.link,
 										pathname === PAGES.equipment && styles.active
@@ -124,7 +124,7 @@ const PersonalDd: FC<{
 									<div className={styles.text}>
 										{translations.header.personal_dd.my_equipment}
 									</div>
-								</Link>
+								</Link> */}
 								<Link
 									className={clsx(
 										styles.link,

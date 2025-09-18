@@ -25,6 +25,9 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 	const [isTablet] = useMatchMedia('max-width: 1440px')
 	const [isMobile] = useMatchMedia('max-width: 768px')
 
+	console.log(order);
+	
+
 	return (
 		<div className={styles.plate}>
 			{title && <div className={styles.title}>{title}</div>}

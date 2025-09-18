@@ -9,7 +9,7 @@ const RequestSupportModal = () => {
 	const [description, setDescription] = useState('')
 
 	return (
-		<>
+		<div>
 			<div className={styles.title}>New support request</div>
 			<div className={styles.subtitle}>Request theme</div>
 			<FormSelect
@@ -36,7 +36,7 @@ const RequestSupportModal = () => {
 				placeholder='Write your message'
 				onChange={setDescription}
 			/>
-		</>
+		</div>
 	)
 }
 

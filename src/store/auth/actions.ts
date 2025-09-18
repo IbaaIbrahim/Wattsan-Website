@@ -2,6 +2,7 @@ import {
 	API_LOGIN_BY_CODE_URL,
 	API_LOGIN_URL,
 	API_REGISTER_URL,
+	API_UPDATE_USER,
 	API_VERIFY_URL
 } from '@constants/api'
 import { loginForm, signUpForm } from '@store/forms'
@@ -34,6 +35,8 @@ export const loginHandler = async (onComplete, onError, tempMail: string = null)
 			}
 		})
 
+		console.log('loginHandler', response);
+
 		// loginForm.set.reset()
 		// authStore.set.clientId(response.data.content.id)
 		// authStore.set.token(response.data.content.token)
@@ -65,6 +68,9 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 		})
 
 		const responseData: TUserInfo = response?.content
+
+		console.log('reLoginHandler', responseData);
+		
 
 		authStore.set.clientId(responseData.id)
 		authStore.set.token(responseData.token)
@@ -127,6 +133,53 @@ export const signUpHandler = async (onComplete, onError) => {
 		}
 	} catch (error) {
 		requestsStore.set.updateRequest('register', STATUSES.failure)
+	}
+}
+
+export const updateUserInfo = async (data: {
+	id: string,
+	email: string,
+	firstName: string | null,
+	phoneNumber: string | null,
+	fileManagerId: string | null
+}, onComplete, onError) => {
+	const { id, email, firstName, phoneNumber, fileManagerId } = data
+
+	requestsStore.set.updateRequest('updateUserInfo', STATUSES.loading)
+
+	try {
+		const response = await request({
+			url: API_UPDATE_USER,
+			method: 'PUT',
+			data: {
+				id,
+				email,
+				phoneNumber,
+				firstName,
+				fileManagerId
+			}
+		})
+		
+		// if (response?.error_code !== 0 || !response?.status) {
+		// 	toast.error(response?.error_des)
+		// 	requestsStore.set.updateRequest('updateUserInfo', STATUSES.failure)
+		// } else {
+			
+			const responseData: TUserInfo = response?.data[0]
+			authStore.set.user({...responseData, firstname: responseData.firstName})
+			const userJson = JSON.parse(Cookie.get('wattsan_data') ?? '{}')
+			userJson.user = {...userJson.user, ...responseData, firstname: responseData.firstName}
+			Cookie.set(
+				'wattsan_data',
+				JSON.stringify(userJson)
+			)
+
+			onComplete()
+
+			requestsStore.set.updateRequest('updateUserInfo', STATUSES.success)
+		// }
+	} catch (error) {
+		requestsStore.set.updateRequest('updateUserInfo', STATUSES.failure)
 	}
 }
 

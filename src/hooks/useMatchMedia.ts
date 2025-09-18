@@ -25,7 +25,6 @@ export const useMatchMedia = (
 	useLayoutEffect(() => {
 		const mql = getMatchMedia(mediaQuery)
 		const handleMatchChange = () => {
-			console.log(mql.matches)
 			setMatches(mql.matches)
 		}
 

@@ -82,7 +82,7 @@ const OrderView: FC<{
 	return (
 		<div className={styles.orderView}>
 			<div>
-				<div className={styles.navigationWrapper}>
+				{/* <div className={styles.navigationWrapper}>
 					<Button
 						className={styles.navigation}
 						href='/orders'
@@ -110,7 +110,7 @@ const OrderView: FC<{
 					>
 						<div className={styles.notificationButtonText}>Notifications</div>
 					</Button>
-				</div>
+				</div> */}
 				<div className={styles.header}>
 					<div className={styles.info}>
 						<div className={styles.id}>№&nbsp;{order.id}</div>
@@ -127,7 +127,7 @@ const OrderView: FC<{
 						{/*	</div>*/}
 						{/*</div>*/}
 					</div>
-					<div className={styles.actions}>
+					{/* <div className={styles.actions}>
 						<Button
 							leftAddon={
 								<Image
@@ -190,7 +190,7 @@ const OrderView: FC<{
 						>
 							Return order
 						</Button>
-					</div>
+					</div> */}
 				</div>
 				<div className={styles.divider} />
 				<div className={styles.deliveryInfo}>
@@ -233,7 +233,7 @@ const OrderView: FC<{
 					})}
 				</div>
 			</div>
-			<Notifications
+			{/* <Notifications
 				show={showNotification}
 				selectedFilter={notificationFilter}
 				filters={[
@@ -245,7 +245,7 @@ const OrderView: FC<{
 				notifications={[]}
 				onChange={changeNotificationFilter}
 				onClose={() => setShowNotification(false)}
-			/>
+			/> */}
 		</div>
 	)
 }

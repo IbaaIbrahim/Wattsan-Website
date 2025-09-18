@@ -3,10 +3,10 @@ import turk from '@public/img/lang-icons/turk.svg'
 
 export enum AllowedLangs {
 	EN = 'eng',
-	// TUR = 'turk'
+	TUR = 'turk'
 }
 
 export const LANG_ICONS: { [lang in AllowedLangs]: string } = {
 	[AllowedLangs.EN]: eng,
-	// [AllowedLangs.TUR]: turk
+	[AllowedLangs.TUR]: turk
 }

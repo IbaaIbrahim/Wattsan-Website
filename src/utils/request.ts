@@ -5,12 +5,12 @@ import axios from 'axios'
 import qs from 'query-string'
 
 export const request = async ({
-																					url,
-																					method,
-																					data = undefined,
-																					query = undefined,
-																					track = true
-																				}: {
+	url,
+	method,
+	data = undefined,
+	query = undefined,
+	track = true
+}: {
 	url: string
 	method: 'POST' | 'GET' | 'PUT'
 	data?: any

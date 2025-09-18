@@ -20,11 +20,11 @@ import { PAGES } from '../../../../config/pages.url.config'
 import styles from './Sibebar.module.scss'
 
 const menuItems = [
-	{
-		icon: DashIcon,
-		content: 'Dashboard',
-		href: PAGES.dashboard
-	},
+	// {
+	// 	icon: DashIcon,
+	// 	content: 'Dashboard',
+	// 	href: PAGES.dashboard
+	// },
 	{
 		icon: OrdersIcon,
 		content: 'Orders',
@@ -35,11 +35,11 @@ const menuItems = [
 		content: 'Configurations',
 		href: PAGES.configurations
 	},
-	{
-		icon: EquipmentIcon,
-		content: 'My equipment',
-		href: PAGES.equipment
-	},
+	// {
+	// 	icon: EquipmentIcon,
+	// 	content: 'My equipment',
+	// 	href: PAGES.equipment
+	// },
 	{
 		icon: PersOffersIcon,
 		content: 'Personal offers',
@@ -53,11 +53,11 @@ const menuItems = [
 ]
 
 const logoutItems = [
-	{
-		icon: PersOffersIcon,
-		content: 'Support',
-		href: PAGES.accountSupport
-	},
+	// {
+	// 	icon: PersOffersIcon,
+	// 	content: 'Support',
+	// 	href: PAGES.accountSupport
+	// },
 	{
 		icon: LogOutIcon,
 		content: 'Log out',
