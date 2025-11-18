@@ -25,9 +25,14 @@ export const getBaskets = async () => {
 	try {
 		const clientId = authStore.get.clientId()
 
+		// if (
+		// 	!clientId ||
+		// 	requestsStore.get.statusSelector(API_GET_BASKETS) !== STATUSES.idle
+		// )
+		// 	return
+
 		if (
-			!clientId ||
-			requestsStore.get.statusSelector(API_GET_BASKETS) !== STATUSES.idle
+			!clientId
 		)
 			return
 
