@@ -1,0 +1,161 @@
+.container {
+	padding: 60px 0;
+	width: 100%;
+}
+
+.sectionTitle {
+	margin-bottom: 40px;
+}
+
+.redText {
+	color: #E31E24;
+}
+
+.contentWrapper {
+	display: flex;
+	gap: 60px;
+	align-items: flex-start;
+	background-color: #F8F9FA;
+	border-radius: 24px;
+	padding: 60px;
+
+	@media (max-width: 968px) {
+		flex-direction: column;
+		gap: 32px;
+		padding: 32px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 24px;
+	}
+}
+
+.tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-width: 280px;
+	flex-shrink: 0;
+
+	@media (max-width: 968px) {
+		flex-direction: row;
+		overflow-x: auto;
+		width: 100%;
+		padding-bottom: 8px;
+		min-width: auto;
+		flex-shrink: 1;
+	}
+}
+
+.tab {
+	padding: 16px 24px;
+	border-radius: 100px;
+	background: #FFFFFF;
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s;
+	color: #666666;
+	text-align: left;
+	font-weight: 600;
+	font-size: 16px;
+	width: fit-content; // Let them size naturally or utilize full width? fit-content looks like pills
+
+	&:hover {
+		color: #333;
+		background: #FFFFFF;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	}
+}
+
+.activeTab {
+	background-color: #E31E24;
+	color: white;
+	box-shadow: 0px 4px 12px rgba(227, 30, 36, 0.2);
+
+	&:hover {
+		color: white;
+		background-color: #E31E24;
+	}
+}
+
+.specsCard {
+	flex: 1;
+	background: #FFFFFF;
+	border-radius: 20px;
+	padding: 40px;
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: 60px;
+	width: 100%;
+
+	@media (max-width: 1200px) {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 24px;
+		gap: 24px;
+	}
+}
+
+.specificationsList {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.specItem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 18px 0;
+	border-bottom: 1px solid #EEEEEE;
+
+	&:first-child {
+		padding-top: 0;
+	}
+
+	&:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+}
+
+.specLabel {
+	color: #888888;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+.specDots {
+	display: none;
+}
+
+.specValue {
+	text-align: right;
+	color: #1A1A1A;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.specUnit {
+	font-weight: 400;
+	font-size: 0.9em;
+	color: #666;
+}
+
+.specsVisual {
+	background-color: #F8F9FA; // Restore background for the visual area
+	border-radius: 12px;
+	min-height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@media (max-width: 1200px) {
+		min-height: 300px;
+		display: none;
+	}
+}

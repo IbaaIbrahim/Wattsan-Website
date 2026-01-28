@@ -156,3 +156,9 @@ ol li {
 ul li {
 	list-style-type: circle !important;
 }
+
+// Remove margin from layout wrapper for product pages
+main.content:has(.productPageNoMargin) {
+	margin: 0 !important;
+	padding: 0 !important;
+}

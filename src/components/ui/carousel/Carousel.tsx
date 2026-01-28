@@ -2,29 +2,50 @@ import { CarouselItem } from '@my-types/carouselItem'
 import arrowSrc from '@public/img/icons/arrow-left.svg'
 import { utilsService } from '@services/utils.service'
 import Image from 'next/image'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import VideoPlayer from '../video-player/VideoPlayer'
 
 import styles from './Carousel.module.scss'
 
-type ItemsWithOrder = {
-	content: CarouselItem
+type ItemsWithOrder<T = CarouselItem> = {
+	content: T
 	order: number
 	collapse: boolean
 	expand: boolean
 }
 
-const Carousel = ({
-	items,
-	maxImageSize
-}: {
-	items: CarouselItem[]
+interface CarouselProps<T = CarouselItem> {
+	items: T[]
 	maxImageSize?: number
-}) => {
-	const [carouselItems, setCarouselItems] = useState<ItemsWithOrder[]>([])
-	const [itemWidth, setItemWidth] = useState<number>(0)
+	renderItem?: (item: T, index: number) => ReactNode
+	itemWidth?: number
+	hideNavigation?: boolean
+	enableSwipe?: boolean
+	enableDrag?: boolean
+	swipeThreshold?: number
+}
+
+const Carousel = <T extends CarouselItem | any = CarouselItem>({
+	items,
+	maxImageSize,
+	renderItem,
+	itemWidth: fixedItemWidth,
+	hideNavigation = false,
+	enableSwipe = true,
+	enableDrag = true,
+	swipeThreshold = 50
+}: CarouselProps<T>) => {
+	const [carouselItems, setCarouselItems] = useState<ItemsWithOrder<T>[]>([])
+	const [itemWidth, setItemWidth] = useState<number>(fixedItemWidth || 0)
 	const viewZoneRef = useRef<HTMLDivElement | null>(null)
+	const itemsContainerRef = useRef<HTMLDivElement | null>(null)
+	
+	// Touch/Drag state
+	const [isDragging, setIsDragging] = useState(false)
+	const [startX, setStartX] = useState(0)
+	const [currentX, setCurrentX] = useState(0)
+	const [dragOffset, setDragOffset] = useState(0)
 
 	let goNextTimeout: NodeJS.Timeout
 	let goPrevTimeout: NodeJS.Timeout
@@ -90,7 +111,77 @@ const Carousel = ({
 
 	const getTransformValue = (): string => {
 		const centerIndex = Math.ceil(items.length / 2) - 1
-		return `translateX(-${centerIndex * (itemWidth + paddingValue * 2) + paddingValue}px)`
+		const baseTransform = centerIndex * (itemWidth + paddingValue * 2) + paddingValue
+		return `translateX(${-baseTransform + dragOffset}px)`
+	}
+
+	// Touch/Drag handlers
+	const handleStart = (clientX: number) => {
+		if (!enableSwipe && !enableDrag) return
+		setIsDragging(true)
+		setStartX(clientX)
+		setCurrentX(clientX)
+		setDragOffset(0)
+	}
+
+	const handleMove = (clientX: number) => {
+		if (!isDragging) return
+		const diff = clientX - startX
+		setCurrentX(clientX)
+		setDragOffset(diff)
+	}
+
+	const handleEnd = () => {
+		if (!isDragging) return
+		const diff = currentX - startX
+		
+		if (Math.abs(diff) > swipeThreshold) {
+			if (diff > 0) {
+				goPrev()
+			} else {
+				goNext()
+			}
+		}
+		
+		setIsDragging(false)
+		setDragOffset(0)
+		setStartX(0)
+		setCurrentX(0)
+	}
+
+	// Mouse handlers
+	const handleMouseDown = (e: React.MouseEvent) => {
+		if (!enableDrag) return
+		e.preventDefault()
+		handleStart(e.clientX)
+	}
+
+	const handleMouseMove = (e: React.MouseEvent) => {
+		if (!isDragging || !enableDrag) return
+		handleMove(e.clientX)
+	}
+
+	const handleMouseUp = () => {
+		if (!isDragging) return
+		handleEnd()
+	}
+
+	// Touch handlers
+	const handleTouchStart = (e: React.TouchEvent) => {
+		if (!enableSwipe) return
+		const touch = e.touches[0]
+		handleStart(touch.clientX)
+	}
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		if (!isDragging || !enableSwipe) return
+		const touch = e.touches[0]
+		handleMove(touch.clientX)
+	}
+
+	const handleTouchEnd = () => {
+		if (!isDragging) return
+		handleEnd()
 	}
 
 	useEffect(() => {
@@ -109,7 +200,8 @@ const Carousel = ({
 		} else {
 			setCarouselItems(
 				[
-					...items
+					...items.slice(items.length - Math.ceil(items.length / 2) + 1),
+					...items.slice(0, -Math.ceil(items.length / 2) + 1)
 				].map((item, index) => ({
 					content: item,
 					order: index + 1,
@@ -128,6 +220,11 @@ const Carousel = ({
 	}, [])
 
 	useEffect(() => {
+		if (fixedItemWidth) {
+			setItemWidth(fixedItemWidth)
+			return
+		}
+
 		const resizeObserver = new ResizeObserver(() => {
 			if (viewZoneRef.current) {
 				setItemWidth(viewZoneRef.current.offsetWidth)
@@ -141,14 +238,47 @@ const Carousel = ({
 		return () => {
 			resizeObserver.disconnect()
 		}
-	}, [carouselItems])
+	}, [carouselItems, fixedItemWidth])
 
-	const emptyStyles = items.length > 0 ? {} : {
-		width: '100%',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
+	// Global mouse event listeners for drag
+	useEffect(() => {
+		if (!isDragging || !enableDrag) return
+
+		const handleGlobalMouseMove = (e: MouseEvent) => {
+			if (!isDragging) return
+			const diff = e.clientX - startX
+			setCurrentX(e.clientX)
+			setDragOffset(diff)
+		}
+
+		const handleGlobalMouseUp = () => {
+			if (!isDragging) return
+			const diff = currentX - startX
+			
+			if (Math.abs(diff) > swipeThreshold) {
+				if (diff > 0) {
+					goPrev()
+				} else {
+					goNext()
+				}
+			}
+			
+			setIsDragging(false)
+			setDragOffset(0)
+			setStartX(0)
+			setCurrentX(0)
+		}
+
+		window.addEventListener('mousemove', handleGlobalMouseMove)
+		window.addEventListener('mouseup', handleGlobalMouseUp)
+
+		return () => {
+			window.removeEventListener('mousemove', handleGlobalMouseMove)
+			window.removeEventListener('mouseup', handleGlobalMouseUp)
+		}
+	}, [isDragging, enableDrag, startX, currentX, swipeThreshold])
+
+	console.log('carouselItems', carouselItems)
 
 	return (
 		<div className={styles.carousel}>
@@ -188,14 +318,26 @@ const Carousel = ({
 			`}</style>
 			<div
 				className={styles['carousel__view-zone']}
-				style={maxImageSize ? { maxWidth: `${maxImageSize}px` } : {}}
 				ref={viewZoneRef}
+				onMouseDown={handleMouseDown}
+				onMouseMove={handleMouseMove}
+				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseUp}
+				onTouchStart={handleTouchStart}
+				onTouchMove={handleTouchMove}
+				onTouchEnd={handleTouchEnd}
+				style={{
+					cursor: enableDrag && !hideNavigation ? (isDragging ? 'grabbing' : 'grab') : 'default',
+					userSelect: 'none',
+					...(maxImageSize ? { maxWidth: `${maxImageSize}px` } : {})
+				}}
 			>
 				<div
+					ref={itemsContainerRef}
 					className={styles['carousel-items']}
 					style={{
 						transform: getTransformValue(),
-						...emptyStyles
+						transition: isDragging ? 'none' : `transform ${animationTime}ms ease-out`
 					}}
 				>
 					{items.length ? (
@@ -207,34 +349,42 @@ const Carousel = ({
 									${item.expand ? 'expand' : ''}`}
 								style={{ order: item.order, width: `${itemWidth}px` }}
 							>
-								{!item.content.isVideo ? (
-									<Image
-										className={styles['carousel-item__media']}
-										src={item.content.url}
-										alt={item.content.placeholder || 'carousel image'}
-										width={920}
-										height={600}
-									/>
+								{renderItem ? (
+									renderItem(item.content, index)
 								) : (
-									<div className={styles['carousel-item__media']}>
-										<VideoPlayer
-											videoSrc={item.content.url}
-											posterSrc={item.content.videoPoster || ''}
-										/>
-									</div>
+									<>
+										{!(item.content as CarouselItem).isVideo ? (
+											<Image
+												className={styles['carousel-item__media']}
+												src={(item.content as CarouselItem).url}
+												alt={(item.content as CarouselItem).placeholder || 'carousel image'}
+												width={920}
+												height={600}
+											/>
+										) : (
+											<div className={styles['carousel-item__media']}>
+												<VideoPlayer
+													videoSrc={(item.content as CarouselItem).url}
+													posterSrc={(item.content as CarouselItem).videoPoster || ''}
+												/>
+											</div>
+										)}
+									</>
 								)}
 							</div>
 						))
 					) : (
-						<span>No images or video was provided</span>
+						<span>No items were provided</span>
 					)}
 				</div>
 			</div>
-			{carouselItems.length > 1 && (
+			{!hideNavigation && carouselItems.length > 1 && (
 				<div className={styles['carousel__panel']}>
 					<button
 						className={styles['go-to-prev']}
 						onClick={debauncedHandlePrev}
+						aria-label="Go to previous item"
+						title="Go to previous item"
 					>
 						<Image
 							className={styles['go-to-prev__img']}
@@ -245,6 +395,8 @@ const Carousel = ({
 					<button
 						className={styles['go-to-next']}
 						onClick={debauncedHandleNext}
+						aria-label="Go to next item"
+						title="Go to next item"
 					>
 						<Image
 							className={styles['go-to-next__img']}

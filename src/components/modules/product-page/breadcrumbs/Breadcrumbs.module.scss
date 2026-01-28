@@ -1,0 +1,30 @@
+.breadcrumbs {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+
+	@media (max-width: 768px) {
+		gap: 6px;
+	}
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.link {
+	text-decoration: none;
+	color: inherit;
+	transition: opacity 0.2s ease;
+
+	&:hover {
+		opacity: 0.7;
+	}
+}
+
+.separator {
+	opacity: 0.4;
+}

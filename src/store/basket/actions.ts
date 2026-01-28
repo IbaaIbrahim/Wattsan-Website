@@ -25,14 +25,9 @@ export const getBaskets = async () => {
 	try {
 		const clientId = authStore.get.clientId()
 
-		// if (
-		// 	!clientId ||
-		// 	requestsStore.get.statusSelector(API_GET_BASKETS) !== STATUSES.idle
-		// )
-		// 	return
-
 		if (
-			!clientId
+			!clientId ||
+			requestsStore.get.statusSelector(API_GET_BASKETS) !== STATUSES.idle
 		)
 			return
 
@@ -85,7 +80,7 @@ export const getCountries = async () => {
 			method: 'GET'
 		})
 
-		basketStore.set.countries(response?.data)
+		basketStore.set.countries(response?.data?.data)
 
 		requestsStore.set.updateRequest(API_GET_COUNTRIES, STATUSES.success)
 	} catch (error) {
@@ -110,7 +105,7 @@ export const getDeliveryMethods = async () => {
 			method: 'GET'
 		})
 
-		basketStore.set.deliveryMethods(response?.data)
+		basketStore.set.deliveryMethods(response?.data?.data)
 
 		requestsStore.set.updateRequest(API_GET_DELIVERY_METHODS, STATUSES.success)
 	} catch (error) {
@@ -147,38 +142,20 @@ export const getOrder = async ({
 			query: { filter: `clientId~eq~'${clientId}'~and~id~eq~'${id}'` }
 		})
 
-		basketStore.set.order(response?.data?.[0])
-		return response.data?.[0]
+		basketStore.set.order(response?.data?.data?.[0])
+		return response.data?.data?.[0]
 	} catch (error) {
 		console.error(error)
 	}
 }
 
-export const createOrder = async (router) => {
+export const createOrder = async router => {
 	try {
 		const clientId = authStore.get.clientId()
 
 		const { deliveryMethod } = basketForm.get.valuesSelector()
 		const positions = basketStore.get.positions()
 		const couponCode = basketStore.get.appliedPromoCode() ?? ''
-
-		console.log({
-			url: API_ORDERS_CREATE,
-			method: 'POST',
-			data: {
-				deliveryMethodId: deliveryMethod as number,
-				clientId,
-				couponCode: couponCode,
-				orderProducts: positions
-					.filter(
-						({ selected, quantity, price }: any) =>
-							selected && quantity > 0 && !!+(price ?? 0)
-					)
-					.map(position =>
-						pickAll(['itemtype', 'referenceId', 'price', 'quantity'], position)
-					)
-			}
-		})
 
 		const response = await authorizedRequest({
 			url: API_ORDERS_CREATE,
@@ -210,11 +187,12 @@ export const createOrder = async (router) => {
 	}
 }
 
-export const checkCoupon = async (totalAmount) => {
+export const checkCoupon = async () => {
 	try {
 		requestsStore.set.updateRequest(API_GET_CHECK_COUPON, STATUSES.loading)
 
 		const { promoCode } = basketForm.get.valuesSelector()
+		const totalAmount = basketStore.get.totalPriceSelector()
 
 		const response = await request({
 			url: API_GET_CHECK_COUPON,
@@ -225,17 +203,16 @@ export const checkCoupon = async (totalAmount) => {
 			}
 		})
 
-		if (response?.content !== null) {
+		if (response?.data?.content !== null) {
 			requestsStore.set.updateRequest(API_GET_CHECK_COUPON, STATUSES.success)
 
-			basketStore.set.appliedPromoCode(`${promoCode}`)
-			basketStore.set.promoDiscount(response?.content)
+			basketStore.set.promoDiscount(response?.data?.content)
 
 			return
 		}
 
 		basketForm.set.change('promoCode', '')
-		basketStore.set.appliedPromoCode('')
+		basketStore.set.appliedPromoCode(promoCode as string)
 
 		requestsStore.set.updateRequest(API_GET_CHECK_COUPON, STATUSES.failure)
 		return

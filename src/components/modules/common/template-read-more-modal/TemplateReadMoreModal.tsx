@@ -14,7 +14,7 @@ const TemplateReadMoreModal: FC<{
 	id: string
 }> = ({ title, id, image, name, price, code, content }) => {
 	return (
-		<div>
+		<>
 			<div className={styles.subtitle}>About template</div>
 			<div className={styles.title}>{title}</div>
 			<div className={styles.description}>{content}</div>
@@ -28,7 +28,7 @@ const TemplateReadMoreModal: FC<{
 					View item
 				</Button>
 			</ConfigurationTemplatePlate>
-		</div>
+		</>
 	)
 }
 

@@ -25,9 +25,6 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 	const [isTablet] = useMatchMedia('max-width: 1440px')
 	const [isMobile] = useMatchMedia('max-width: 768px')
 
-	console.log(order);
-	
-
 	return (
 		<div className={styles.plate}>
 			{title && <div className={styles.title}>{title}</div>}
@@ -38,7 +35,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 						from&nbsp;{getOrderDate(order.fromDate)}
 					</div>
 				</div>
-				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price) - (order?.coupon?.maxPurchaseDiscount ?? 0)}</div>
+				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price)}</div>
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.footer}>

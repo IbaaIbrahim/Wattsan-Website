@@ -1,0 +1,30 @@
+.cta {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 24px;
+	background-color: #f5f5f5;
+	border-radius: 8px;
+
+	@media (max-width: 768px) {
+		padding: 20px;
+		gap: 12px;
+	}
+}
+
+.title {
+	margin-bottom: 4px;
+}
+
+.description {
+	opacity: 0.8;
+}
+
+.button {
+	margin-top: 8px;
+	width: fit-content;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
+}

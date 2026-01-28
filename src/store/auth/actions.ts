@@ -2,7 +2,6 @@ import {
 	API_LOGIN_BY_CODE_URL,
 	API_LOGIN_URL,
 	API_REGISTER_URL,
-	API_UPDATE_USER,
 	API_VERIFY_URL
 } from '@constants/api'
 import { loginForm, signUpForm } from '@store/forms'
@@ -14,10 +13,9 @@ import { request } from '../../utils/request'
 
 import { authStore } from './index'
 import { TUserInfo } from '@my-types/user'
-import { toast } from 'react-toastify'
 
-export const loginHandler = async (onComplete, onError, tempMail: string = null) => {
-	const valid = loginForm.set.validate() || !!tempMail
+export const loginHandler = async (onComplete, onError) => {
+	const valid = loginForm.set.validate()
 
 	if (!valid) return
 
@@ -30,17 +28,14 @@ export const loginHandler = async (onComplete, onError, tempMail: string = null)
 			url: API_LOGIN_BY_CODE_URL,
 			method: 'GET',
 			query: {
-				email: tempMail ?? email,
+				email,
 				rememberMe
 			}
 		})
 
-		console.log('loginHandler', response);
-
 		// loginForm.set.reset()
 		// authStore.set.clientId(response.data.content.id)
 		// authStore.set.token(response.data.content.token)
-		authStore.set.tempEmail(`${email}`)
 		// authStore.set.authorized(true)
 		requestsStore.set.updateRequest('login', STATUSES.success)
 
@@ -67,10 +62,7 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 			}
 		})
 
-		const responseData: TUserInfo = response?.content
-
-		console.log('reLoginHandler', responseData);
-		
+		const responseData: TUserInfo = response?.data.content
 
 		authStore.set.clientId(responseData.id)
 		authStore.set.token(responseData.token)
@@ -89,7 +81,7 @@ export const reLoginHandler = async (code, onComplete, onError) => {
 
 		onComplete()
 	} catch (error) {
-		console.error('store/auth/actions.js -> reLoginHandler', error)
+		console.error(error)
 
 		onError()
 	}
@@ -118,68 +110,13 @@ export const signUpHandler = async (onComplete, onError) => {
 			}
 		})
 
-		if (response?.error_code !== 0 || !response?.status) {
-			toast.error(response?.error_des)
-			requestsStore.set.updateRequest('register', STATUSES.failure)
-		} else {
+		authStore.set.sessionId(response?.data?.content?.id)
 
-			authStore.set.tempEmail(`${email}`)
+		onComplete()
 
-			authStore.set.sessionId(response?.content?.id)
-
-			onComplete()
-
-			requestsStore.set.updateRequest('register', STATUSES.success)
-		}
+		requestsStore.set.updateRequest('register', STATUSES.success)
 	} catch (error) {
 		requestsStore.set.updateRequest('register', STATUSES.failure)
-	}
-}
-
-export const updateUserInfo = async (data: {
-	id: string,
-	email: string,
-	firstName: string | null,
-	phoneNumber: string | null,
-	fileManagerId: string | null
-}, onComplete, onError) => {
-	const { id, email, firstName, phoneNumber, fileManagerId } = data
-
-	requestsStore.set.updateRequest('updateUserInfo', STATUSES.loading)
-
-	try {
-		const response = await request({
-			url: API_UPDATE_USER,
-			method: 'PUT',
-			data: {
-				id,
-				email,
-				phoneNumber,
-				firstName,
-				fileManagerId
-			}
-		})
-		
-		// if (response?.error_code !== 0 || !response?.status) {
-		// 	toast.error(response?.error_des)
-		// 	requestsStore.set.updateRequest('updateUserInfo', STATUSES.failure)
-		// } else {
-			
-			const responseData: TUserInfo = response?.data[0]
-			authStore.set.user({...responseData, firstname: responseData.firstName})
-			const userJson = JSON.parse(Cookie.get('wattsan_data') ?? '{}')
-			userJson.user = {...userJson.user, ...responseData, firstname: responseData.firstName}
-			Cookie.set(
-				'wattsan_data',
-				JSON.stringify(userJson)
-			)
-
-			onComplete()
-
-			requestsStore.set.updateRequest('updateUserInfo', STATUSES.success)
-		// }
-	} catch (error) {
-		requestsStore.set.updateRequest('updateUserInfo', STATUSES.failure)
 	}
 }
 
@@ -198,7 +135,7 @@ export const verifyHandler = async (code, onComplete, onError) => {
 			}
 		})
 
-		const error = response?.error_code ?? null
+		const error = response?.data?.error_code ?? null
 
 		if (error !== 0) {
 			onError()

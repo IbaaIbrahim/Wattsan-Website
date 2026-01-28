@@ -30,9 +30,7 @@ const PaymentInfo: FC<{
 	const positions = basketStore.use.positions()
 	const deliveryMethodName = basketStore.use.deliveryMethodNameSelector()
 	const totalPrice = basketStore.use.totalPriceSelector()
-	const mainPriceSelector = basketStore.use.mainPriceSelector()
 	const appliedPromoCode = basketStore.use.appliedPromoCode()
-	const aa = basketStore.useStore(x => x)
 	const promoDiscount = basketStore.use.promoDiscount()
 	const countries = basketStore.use.countries()
 
@@ -54,7 +52,7 @@ const PaymentInfo: FC<{
 	}
 
 	const handleCheckCoupon = () => {
-		checkCoupon(totalPrice)
+		checkCoupon()
 	}
 
 	return (
@@ -72,7 +70,7 @@ const PaymentInfo: FC<{
 				)}
 				<div className={styles.calculation}>
 					<div className={styles.counter}>{selectedPositions}&nbsp;items</div>
-					<div className={styles.amount}>${mainPriceSelector}</div>
+					<div className={styles.amount}>${totalPrice}</div>
 					{promoDiscount === 0 ? null : (
 						<>
 							<div className={styles.counter}>Discount</div>

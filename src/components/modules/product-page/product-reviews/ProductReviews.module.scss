@@ -1,0 +1,187 @@
+// Product Reviews Styles
+
+.section {
+	width: 100%;
+	padding: 80px 0;
+
+	@media (max-width: 968px) {
+		padding: 60px 0;
+	}
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+}
+
+.title {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 800; // Extra Bold
+	font-size: 40px;
+	line-height: 120%;
+	color: #000000;
+
+	@media (max-width: 768px) {
+		font-size: 32px;
+	}
+}
+
+.redText {
+	color: #E31E24;
+}
+
+.controls {
+	display: flex;
+	gap: 16px;
+}
+
+.controlButton {
+	width: 48px;
+	height: 48px;
+	border: 2px solid #000000;
+	border-radius: 8px;
+	background: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s;
+
+	&:hover {
+		background: #000000;
+		color: #ffffff;
+
+		img {
+			filter: invert(1);
+		}
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
+.prevButton img {
+	transform: rotate(0deg);
+}
+
+.nextButton img {
+	transform: rotate(180deg);
+}
+
+.reviewsTrack {
+	display: flex;
+	gap: 24px;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	padding-bottom: 24px;
+	/* Space for scrollbar if needed, though we hide it */
+
+	/* Hide scrollbar */
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Add some padding to sides if needed for peeking effect wrapper, 
+	   or parent container handles it. 
+	   Assuming parent .container provides the edges. */
+}
+
+.reviewCard {
+	flex: 0 0 540px;
+	/* Fixed width mostly */
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	@media (max-width: 1200px) {
+		flex: 0 0 450px;
+	}
+
+	@media (max-width: 768px) {
+		flex: 0 0 320px;
+		gap: 16px;
+	}
+}
+
+.imageWrapper {
+	width: 100%;
+	aspect-ratio: 540/360; // Approx from screenshot
+	border-radius: 20px;
+	overflow: hidden;
+	background-color: #f0f0f0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	&:hover img {
+		transform: scale(1.02);
+	}
+}
+
+.reviewContent {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.quote {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 150%;
+	color: #000000;
+	margin: 0;
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
+}
+
+.author {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	background-color: #ddd;
+	flex-shrink: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.authorInfo {
+	display: flex;
+	flex-direction: column;
+}
+
+.authorName {
+	font-weight: 700;
+	font-size: 14px;
+	color: #000000;
+}
+
+.authorTitle {
+	font-weight: 400;
+	font-size: 12px;
+	color: #666666;
+}

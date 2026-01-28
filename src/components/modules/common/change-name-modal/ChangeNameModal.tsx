@@ -20,7 +20,7 @@ const ChangeNameModal: FC<{
 	}
 
 	return (
-		<div>
+		<>
 			<div className={styles.title}>Change name</div>
 			<Input
 				name='name'
@@ -47,7 +47,7 @@ const ChangeNameModal: FC<{
 					Cancel
 				</Button>
 			</div>
-		</div>
+		</>
 	)
 }
 

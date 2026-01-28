@@ -25,7 +25,7 @@ const RecommendationModal = ({
 	const [selected, setSelected] = useState<any>(suggestions?.[0]?.suggestionId)
 
 	return (
-		<div>
+		<>
 			<Typography
 				className={styles.title}
 				tag='h2'
@@ -91,7 +91,7 @@ const RecommendationModal = ({
 			>
 				Cancelling result: Work area size 600х900 mm
 			</Typography>
-		</div>
+		</>
 	)
 }
 
