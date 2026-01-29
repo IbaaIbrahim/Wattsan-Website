@@ -27,6 +27,194 @@ import FAQ from '@components/modules/product-page/faq/FAQ'
 import InterestedProducts from '@components/modules/product-page/interested-products/InterestedProducts'
 
 // Sample product data - replace with actual data fetching
+const BREADCRUMBS: BreadcrumbItem[] = [
+	{ label: 'Home', href: '/' },
+	{ label: 'CNC Routers', href: '/catalog' },
+	{ label: 'M1 series' }
+]
+
+const INFO_CARDS: ProductInfoCardData[] = [
+	{
+		id: 'ideal-for',
+		title: 'Ideal for',
+		content: 'medium-sized production'
+	},
+	{
+		id: 'economy',
+		title: 'Economy',
+		content: 'Up to 70% cheaper than ordering from third party'
+	},
+	{
+		id: 'materials',
+		title: 'Materials',
+		materials: [
+			{ color: '#D4C5B9', name: 'Beige' },
+			{ color: '#8B6F47', name: 'Brown' },
+			{ color: '#B8B8B8', name: 'Grey' },
+			{ color: '#6B9BD1', name: 'Blue' },
+			{ color: '#D4A5A5', name: 'Pink' },
+			{ color: '#4A4A4A', name: 'Charcoal' }
+		],
+		onViewAllClick: () => console.log('View all materials clicked')
+	},
+	{
+		id: 'expert-reviews',
+		title: 'Expert Reviews',
+		content: 80,
+		onViewAllClick: () => console.log('View all reviews clicked')
+	}
+]
+
+const FACTS_CARDS: WattsanFactCardData[] = [
+	{
+		id: 'ideal-for',
+		subtitle: 'Ideal for',
+		title: 'Make money 24/7 or work for your soul',
+		type: 'image',
+		imageUrl: '/img/catalog/cnc-routes.png'
+	},
+	{
+		id: 'customization',
+		subtitle: 'Strong customization',
+		title: 'As a manufacturer we can assemble any machine for your application',
+		type: 'image',
+		imageUrl: '/img/catalog/cnc-routes.png'
+	},
+	{
+		id: 'safety',
+		subtitle: 'Safety',
+		title: 'We provide certifications and warranty',
+		type: 'solid',
+		backgroundColor: '#DEEBFA',
+		certifications: ['ISO', 'CE', 'ANSI', 'RoHS', 'and others']
+	},
+	{
+		id: 'reputation',
+		subtitle: 'Impeccable reputation',
+		title: 'Wattsan equipment is on every continent and even Antarctica',
+		type: 'solid',
+		backgroundColor: '#335198'
+	}
+]
+
+const MACHINE_FEATURES: ProductFeature[] = [
+	{
+		title: 'Frame',
+		description: 'The durability of the machine is due to the frame configuration, metal wall thickness and heat treatment. We can therefore guarantee reliability and a long service life.'
+	},
+	{
+		title: 'Guides and racks',
+		description: 'We use rails and racks from renowned manufacturers to ensure precision and smoothness of movement for detailed work.'
+	},
+	{
+		title: 'Gantry',
+		description: 'Due to high loads during operation, the gantry is made of reinforced aluminium profile with increased wall thickness.'
+	},
+	{
+		title: 'Axis Z',
+		description: 'The z-axis module plays a huge role in the quality of the cut, so we pay special attention to its rigidity and reliability.'
+	},
+	{
+		title: 'Motor',
+		description: 'We use high-quality stepper motors or servo motors depending on the configuration to ensure speed and accuracy.'
+	}
+]
+
+const SPEC_CATEGORIES: SpecificationCategory[] = [
+	{
+		id: 'general',
+		label: 'General and dimensions',
+		items: [
+			{ label: 'Work area', value: '600x900', unit: 'mm' },
+			{ label: 'Machine size (L*W*H)', value: '1380*1500*1890', unit: 'mm' },
+			{ label: 'Packing size', value: '1530*1380*2020', unit: 'mm' },
+			{ label: 'Weight', value: '400', unit: 'kg' },
+			{ label: 'Spindle', value: '1,5 kW, water, ER11, One spindle' },
+			{ label: 'Tool switch', value: 'Manual' },
+			{ label: 'Motor', value: 'Stepper motor with feedback' },
+			{ label: 'Control system', value: 'DSP A11' },
+			{ label: 'Liquid cooling system', value: 'Not included' },
+			{ label: 'Removable instrument sensor', value: 'Not included' },
+			{ label: 'Built-in instrument sensor', value: 'Not included' },
+			{ label: 'Lubrication system', value: 'Not included' },
+			{ label: 'Aspiration', value: 'Not included' }
+		]
+	},
+	{
+		id: 'portal',
+		label: 'Portal and spindle',
+		items: [
+			{ label: 'Gantry material', value: 'Aluminum profile' },
+			{ label: 'Spindle power', value: '1.5', unit: 'kW' },
+			{ label: 'Spindle cooling', value: 'Water' }
+		]
+	},
+	{
+		id: 'mechanics',
+		label: 'Mechanics',
+		items: [
+			{ label: 'Guides', value: 'Square rail' },
+			{ label: 'Transmission', value: 'Helical rack' }
+		]
+	},
+	{
+		id: 'control',
+		label: 'Control system',
+		items: [
+			{ label: 'Controller', value: 'DSP A11' },
+			{ label: 'Remote', value: 'Included' }
+		]
+	},
+	{
+		id: 'electrics',
+		label: 'Electrics',
+		items: [
+			{ label: 'Voltage', value: '220', unit: 'V' },
+			{ label: 'Phase', value: 'Single phase' }
+		]
+	}
+]
+
+const SERIES_COMPARISON_DATA: ComparisonSeries[] = [
+	{
+		id: 'm1',
+		image: '/img/catalog/cnc-routes.png',
+		title: 'M1 series',
+		tagline: 'Real workhorse',
+		price: '$19,000',
+		specs: {
+			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+			spindle: 'from 1,5 kW',
+			motor: 'Stepper motor / Stepper motor with feedback',
+			control: 'DSP A11 / Syntec',
+			cooling: 'Optional',
+			sensorRemovable: 'Optional',
+			sensorBuiltIn: 'Optional',
+			lubrication: 'Optional',
+			aspiration: 'Optional'
+		}
+	},
+	{
+		id: 'm1-rd',
+		image: '/img/catalog/cnc-routes.png',
+		title: 'M1 RD series',
+		tagline: 'Real workhorse',
+		price: '$19,000',
+		active: true,
+		specs: {
+			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+			spindle: 'from 1,5 kW',
+			motor: 'Stepper motor / Stepper motor with feedback',
+			control: 'DSP A11 / Syntec',
+			cooling: 'Optional',
+			sensorRemovable: 'Optional',
+			sensorBuiltIn: 'Optional',
+			lubrication: 'Optional',
+			aspiration: 'Optional'
+		}
+	}
+]
+
 const ProductPage = ({ params }: { params: { productId: string } }) => {
 	const router = useRouter()
 
@@ -170,23 +358,10 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 		}
 	])
 
-	const breadcrumbs: BreadcrumbItem[] = [
-		{ label: 'Home', href: '/' },
-		{ label: 'CNC Routers', href: '/catalog' },
-		{ label: 'M1 series' }
-	]
-
-	// Placeholder image - replace with actual product images
-	// Using a placeholder - replace with actual product image path
 	const mainImage = '/img/catalog/cnc-routes.png'
-	const thumbnails = [
-		mainImage,
-		mainImage,
-		mainImage
-	]
+	const thumbnails = [mainImage, mainImage, mainImage]
 
 	const handleAddToBasket = () => {
-		// Add to basket logic
 		console.log('Add to basket', { productId: params.productId, parameters })
 	}
 
@@ -195,241 +370,13 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 	}
 
 	const handleViewSpecifications = () => {
-		// Handle view specifications action
 		console.log('View specifications clicked')
 	}
 
-	// Product info cards data
-	const infoCards: ProductInfoCardData[] = [
-		{
-			id: 'ideal-for',
-			title: 'Ideal for',
-			content: 'medium-sized production'
-		},
-		{
-			id: 'economy',
-			title: 'Economy',
-			content: 'Up to 70% cheaper than ordering from third party'
-		},
-		{
-			id: 'materials',
-			title: 'Materials',
-			materials: [
-				{ color: '#D4C5B9', name: 'Beige' },
-				{ color: '#8B6F47', name: 'Brown' },
-				{ color: '#B8B8B8', name: 'Grey' },
-				{ color: '#6B9BD1', name: 'Blue' },
-				{ color: '#D4A5A5', name: 'Pink' },
-				{ color: '#4A4A4A', name: 'Charcoal' }
-			],
-			onViewAllClick: () => console.log('View all materials clicked')
-		},
-		{
-			id: 'expert-reviews',
-			title: 'Expert Reviews',
-			content: 80,
-			onViewAllClick: () => console.log('View all reviews clicked')
-		}
-	]
-
-	// Wattsan facts slider data
-	const factsCards: WattsanFactCardData[] = [
-		{
-			id: 'ideal-for',
-			subtitle: 'Ideal for',
-			title: 'Make money 24/7 or work for your soul',
-			type: 'image',
-			imageUrl: '/img/catalog/cnc-routes.png' // Placeholder - replace with actual image
-		},
-		{
-			id: 'customization',
-			subtitle: 'Strong customization',
-			title: 'As a manufacturer we can assemble any machine for your application',
-			type: 'image',
-			imageUrl: '/img/catalog/cnc-routes.png' // Placeholder - replace with actual image
-		},
-		{
-			id: 'safety',
-			subtitle: 'Safety',
-			title: 'We provide certifications and warranty',
-			type: 'solid',
-			backgroundColor: '#DEEBFA',
-			certifications: ['ISO', 'CE', 'ANSI', 'RoHS', 'and others']
-		},
-		{
-			id: 'reputation',
-			subtitle: 'Impeccable reputation',
-			title: 'Wattsan equipment is on every continent and even Antarctica',
-			type: 'solid',
-			backgroundColor: '#335198'
-		}
-	]
-
-
-	// Power of Machine features
-	const machineFeatures: ProductFeature[] = [
-		{
-			title: 'Frame',
-			description: 'The durability of the machine is due to the frame configuration, metal wall thickness and heat treatment. We can therefore guarantee reliability and a long service life.'
-		},
-		{
-			title: 'Guides and racks',
-			description: 'We use rails and racks from renowned manufacturers to ensure precision and smoothness of movement for detailed work.'
-		},
-		{
-			title: 'Gantry',
-			description: 'Due to high loads during operation, the gantry is made of reinforced aluminium profile with increased wall thickness.'
-		},
-		{
-			title: 'Axis Z',
-			description: 'The z-axis module plays a huge role in the quality of the cut, so we pay special attention to its rigidity and reliability.'
-		},
-		{
-			title: 'Motor',
-			description: 'We use high-quality stepper motors or servo motors depending on the configuration to ensure speed and accuracy.'
-		}
-	]
-
-	// Product specifications categories
-	const specCategories: SpecificationCategory[] = [
-		{
-			id: 'general',
-			label: 'General and dimensions',
-			items: [
-				{ label: 'Work area', value: '600x900', unit: 'mm' },
-				{ label: 'Machine size (L*W*H)', value: '1380*1500*1890', unit: 'mm' },
-				{ label: 'Packing size', value: '1530*1380*2020', unit: 'mm' },
-				{ label: 'Weight', value: '400', unit: 'kg' },
-				{ label: 'Spindle', value: '1,5 kW, water, ER11, One spindle' },
-				{ label: 'Tool switch', value: 'Manual' },
-				{ label: 'Motor', value: 'Stepper motor with feedback' },
-				{ label: 'Control system', value: 'DSP A11' },
-				{ label: 'Liquid cooling system', value: 'Not included' },
-				{ label: 'Removable instrument sensor', value: 'Not included' },
-				{ label: 'Built-in instrument sensor', value: 'Not included' },
-				{ label: 'Lubrication system', value: 'Not included' },
-				{ label: 'Aspiration', value: 'Not included' }
-			]
-		},
-		{
-			id: 'portal',
-			label: 'Portal and spindle',
-			items: [
-				{ label: 'Gantry material', value: 'Aluminum profile' },
-				{ label: 'Spindle power', value: '1.5', unit: 'kW' },
-				{ label: 'Spindle cooling', value: 'Water' }
-			]
-		},
-		{
-			id: 'mechanics',
-			label: 'Mechanics',
-			items: [
-				{ label: 'Guides', value: 'Square rail' },
-				{ label: 'Transmission', value: 'Helical rack' }
-			]
-		},
-		{
-			id: 'control',
-			label: 'Control system',
-			items: [
-				{ label: 'Controller', value: 'DSP A11' },
-				{ label: 'Remote', value: 'Included' }
-			]
-		},
-		{
-			id: 'electrics',
-			label: 'Electrics',
-			items: [
-				{ label: 'Voltage', value: '220', unit: 'V' },
-				{ label: 'Phase', value: 'Single phase' }
-			]
-		}
-	]
-
-	// Series Comparison Data
-	const seriesComparisonData: ComparisonSeries[] = [
-		{
-			id: 'm1',
-			image: '/img/catalog/cnc-routes.png', // Replace with actual
-			title: 'M1 series',
-			tagline: 'Real workhorse',
-			price: '$19,000',
-			specs: {
-				workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-				spindle: 'from 1,5 kW',
-				motor: 'Stepper motor / Stepper motor with feedback',
-				control: 'DSP A11 / Syntec',
-				cooling: 'Optional',
-				sensorRemovable: 'Optional',
-				sensorBuiltIn: 'Optional',
-				lubrication: 'Optional',
-				aspiration: 'Optional'
-			}
-		},
-		{
-			id: 'm1-rd',
-			image: '/img/catalog/cnc-routes.png', // Replace with actual
-			title: 'M1 RD series',
-			tagline: 'Real workhorse',
-			price: '$19,000',
-			active: true,
-			specs: {
-				workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-				spindle: 'from 1,5 kW',
-				motor: 'Stepper motor / Stepper motor with feedback',
-				control: 'DSP A11 / Syntec',
-				cooling: 'Optional',
-				sensorRemovable: 'Optional',
-				sensorBuiltIn: 'Optional',
-				lubrication: 'Optional',
-				aspiration: 'Optional'
-			}
-		},
-		{
-			id: 'a1',
-			image: '/img/catalog/cnc-routes.png', // Replace with actual
-			title: 'A1 series',
-			tagline: 'Real workhorse',
-			price: '$19,000',
-			active: true,
-			specs: {
-				workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-				spindle: 'from 1,5 kW',
-				motor: 'Stepper motor / Stepper motor with feedback',
-				control: 'DSP A11 / Syntec',
-				cooling: 'Optional',
-				sensorRemovable: 'Optional',
-				sensorBuiltIn: 'Optional',
-				lubrication: 'Optional',
-				aspiration: 'Optional'
-			}
-		},
-		{
-			id: 'm3',
-			image: '/img/catalog/cnc-routes.png', // Replace with actual
-			title: 'M3 series',
-			tagline: 'Real workhorse',
-			price: '$19,000',
-			active: true,
-			specs: {
-				workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-				spindle: 'from 1,5 kW',
-				motor: 'Stepper motor / Stepper motor with feedback',
-				control: 'DSP A11 / Syntec',
-				cooling: 'Optional',
-				sensorRemovable: 'Optional',
-				sensorBuiltIn: 'Optional',
-				lubrication: 'Optional',
-				aspiration: 'Optional'
-			}
-		}
-	]
-
 	return (
-
 		<div className={`${styles.productPage} ${styles.productPageNoMargin}`}>
 			<div className={styles.container}>
-				<Breadcrumbs items={breadcrumbs} className={styles.breadcrumbs} />
+				<Breadcrumbs items={BREADCRUMBS} className={styles.breadcrumbs} />
 
 				<div className={styles.content}>
 					<div className={styles.leftColumn}>
@@ -476,18 +423,18 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.infoCardsSection}>
-					<ProductInfoCards cards={infoCards} />
+					<ProductInfoCards cards={INFO_CARDS} />
 				</div>
 
 				<div className={styles.factsSliderSection}>
-					<WattsanFactsSlider cards={factsCards} />
+					<WattsanFactsSlider cards={FACTS_CARDS} />
 				</div>
 
 				<div className={styles.powerSection}>
 					<ProductDescription
 						title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
 						image='/img/catalog/cnc-routes.png' // Replace with actual machine image
-						features={machineFeatures}
+						features={MACHINE_FEATURES}
 					/>
 				</div>
 
@@ -496,11 +443,11 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.specsSection}>
-					<ProductSpecifications categories={specCategories} />
+					<ProductSpecifications categories={SPEC_CATEGORIES} />
 				</div>
 
 				<div className={styles.comparisonSection}>
-					<SeriesComparison seriesData={seriesComparisonData} />
+					<SeriesComparison seriesData={SERIES_COMPARISON_DATA} />
 				</div>
 
 				<div className={styles.reviewsSection}>
@@ -536,12 +483,12 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					<FAQ />
 				</div>
 
-				<div className={styles.interestedSection}>
-					<InterestedProducts />
-				</div>
-
 				<div className={styles.advisorSection}>
 					<MachineAdvisor />
+				</div>
+
+				<div className={styles.interestedSection}>
+					<InterestedProducts />
 				</div>
 			</div>
 		</div>

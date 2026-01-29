@@ -13,8 +13,9 @@ body {
 
 html,
 body {
-	height: 100%;
-	overflow: hidden;
+	min-height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 ul,
@@ -108,7 +109,7 @@ input[type='reset'] {
 }
 
 ::-webkit-scrollbar {
-	//width: 6px;
+	width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -158,7 +159,7 @@ ul li {
 }
 
 // Remove margin from layout wrapper for product pages
-main.content:has(.productPageNoMargin) {
+main:has([class*="productPageNoMargin"]) {
 	margin: 0 !important;
 	padding: 0 !important;
 }

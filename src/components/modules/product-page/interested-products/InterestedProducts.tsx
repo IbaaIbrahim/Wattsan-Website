@@ -7,11 +7,12 @@ import styles from './InterestedProducts.module.scss'
 
 interface InterestedProductsProps {
     className?: string
+    products?: TPopularItem[]
 }
 
-const InterestedProducts: FC<InterestedProductsProps> = ({ className }) => {
+const InterestedProducts: FC<InterestedProductsProps> = ({ className, products: initialProducts }) => {
     // Sample data based on the design
-    const products: TPopularItem[] = [
+    const defaultProducts: TPopularItem[] = [
         {
             id: '1',
             image: '/img/catalog/cnc-routes.png', // Placeholder
@@ -46,13 +47,15 @@ const InterestedProducts: FC<InterestedProductsProps> = ({ className }) => {
         }
     ]
 
+    const displayProducts = initialProducts || defaultProducts
+
     return (
         <section className={`${styles.section} ${className || ''}`}>
             <h2 className={styles.title}>
                 You might be <span className={styles.titleHighlight}>interested</span>
             </h2>
             <div className={styles.grid}>
-                {products.map((item) => (
+                {displayProducts.map((item) => (
                     <PopularItem key={item.id} item={item} />
                 ))}
             </div>

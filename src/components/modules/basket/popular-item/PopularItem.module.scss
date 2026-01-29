@@ -1,27 +1,54 @@
 .wrapper {
-    padding: 32px;
+    padding: 24px;
     border: 1px solid #92B0D2;
     border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(146, 176, 210, 0.15);
+    }
+
+    @media (max-width: 768px) {
+        padding: 16px;
+    }
 }
 
 .image {
     position: relative;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     width: 100%;
-    height: 220px;
+    height: 240px;
     border-radius: 8px;
     overflow: hidden;
+    background: #F4F7F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 1200px) {
+        height: 200px;
+    }
+
+    @media (max-width: 768px) {
+        height: 180px;
+        margin-bottom: 16px;
+    }
 
     img {
         object-fit: contain;
+        padding: 20px;
     }
 }
 
 .actions {
     position: absolute;
-    z-index: 1;
-    right: 0;
-    top: 0;
+    z-index: 10;
+    right: 12px;
+    top: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -33,39 +60,53 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.7;
+    }
 }
 
 .name {
-    margin-bottom: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 21px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #4A4A4A;
 }
 
 .code {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     display: flex;
+    align-items: baseline;
+    gap: 4px;
     width: 100%;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #000000;
 }
 
 .modification {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 21px;
-    opacity: .4;
+    color: #9B9B9B;
+    display: inline;
 }
 
 .price {
+    margin-top: auto;
     margin-bottom: 16px;
     font-size: 24px;
-    font-weight: 600;
-    line-height: 33.6px;
-    opacity: .4;
+    font-weight: 700;
+    line-height: 1;
+    color: #9B9B9B;
 }
 
 .addToBasket {
     width: 100%;
+    font-weight: 600;
 }
