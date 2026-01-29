@@ -11,7 +11,7 @@ export const Typography: FC<{
 	discolored?: boolean
 	align?: 'left' | 'center' | 'right'
 	children: ReactNode | any
-	styles?: React.CSSProperties
+	style?: React.CSSProperties
 }> = ({
 	className,
 	tag = 'p',
@@ -20,7 +20,7 @@ export const Typography: FC<{
 	discolored = false,
 	align = 'left',
 	children,
-	styles
+	style
 }) => {
 		const Component = tag
 
@@ -35,7 +35,7 @@ export const Typography: FC<{
 					discolored && cn.discolored,
 					className
 				)}
-				style={styles}
+				style={style}
 			>
 				{children}
 			</Component>
