@@ -1,0 +1,107 @@
+.multiSpindles {
+    padding: 80px 0;
+    width: 100%;
+}
+
+.topSection {
+    width: 100%;
+    margin-bottom: 60px;
+}
+
+.imageWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+}
+
+.middleSection {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    margin-bottom: 60px;
+    align-items: start;
+
+    @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+.titleColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.title {
+    margin: 0;
+    line-height: 1.1;
+}
+
+.subtitle {
+    margin: 0;
+    text-transform: lowercase;
+}
+
+.descriptionColumn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+.descriptionItem {
+    p {
+        color: #000;
+        line-height: 1.5;
+        margin: 0;
+
+        b,
+        strong {
+            font-weight: 700;
+        }
+    }
+}
+
+.bottomSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    border-top: 1px solid transparent; // Just in case, but each item has its own line
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+.specItem {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.specLine {
+    height: 1px;
+    background-color: #B8B8B8;
+    width: 100%;
+}
+
+.specTitle {
+    margin: 0;
+}
+
+.specDescription {
+    color: #4A4A4A;
+    line-height: 1.5;
+    margin: 0;
+}

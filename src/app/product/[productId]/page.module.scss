@@ -1,15 +1,15 @@
 .productPage {
 	width: 100%;
 	min-height: 100vh;
-	padding: 20px; // Reduced from 40px
+	padding: 40px;
 	background-color: #ffffff;
 
 	@media (max-width: 968px) {
-		padding: 16px;
+		padding: 24px;
 	}
 
 	@media (max-width: 768px) {
-		padding: 12px;
+		padding: 16px;
 	}
 }
 
@@ -162,7 +162,15 @@
 .productionSection,
 .serviceSection,
 .interestedSection,
-.blogSection {
+.blogSection,
+.safetyCabinSection,
+.rotaryDeviceSection,
+.separateRotaryDeviceSection,
+.toolSwitchSection,
+.multiSpindlesSection,
+.liquidCoolingSection,
+.aspirationSection,
+.tableTypesSection {
 	margin-top: 80px;
 	width: 100%;
 
