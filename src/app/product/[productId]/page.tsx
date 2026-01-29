@@ -25,6 +25,7 @@ import PackageList from '@components/modules/product-page/package-list/PackageLi
 import AdditionalContent from '@components/modules/product-page/additional-content/AdditionalContent'
 import FAQ from '@components/modules/product-page/faq/FAQ'
 import InterestedProducts from '@components/modules/product-page/interested-products/InterestedProducts'
+import ProductBlog from '@components/modules/product-page/product-blog/ProductBlog'
 
 // Sample product data - replace with actual data fetching
 const BREADCRUMBS: BreadcrumbItem[] = [
@@ -182,6 +183,44 @@ const SERIES_COMPARISON_DATA: ComparisonSeries[] = [
 		title: 'M1 series',
 		tagline: 'Real workhorse',
 		price: '$19,000',
+		specs: {
+			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+			spindle: 'from 1,5 kW',
+			motor: 'Stepper motor / Stepper motor with feedback',
+			control: 'DSP A11 / Syntec',
+			cooling: 'Optional',
+			sensorRemovable: 'Optional',
+			sensorBuiltIn: 'Optional',
+			lubrication: 'Optional',
+			aspiration: 'Optional'
+		}
+	},
+	{
+		id: 'm1-rd',
+		image: '/img/catalog/cnc-routes.png',
+		title: 'M1 RD series',
+		tagline: 'Real workhorse',
+		price: '$19,000',
+		active: true,
+		specs: {
+			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+			spindle: 'from 1,5 kW',
+			motor: 'Stepper motor / Stepper motor with feedback',
+			control: 'DSP A11 / Syntec',
+			cooling: 'Optional',
+			sensorRemovable: 'Optional',
+			sensorBuiltIn: 'Optional',
+			lubrication: 'Optional',
+			aspiration: 'Optional'
+		}
+	},
+	{
+		id: 'm1-rd',
+		image: '/img/catalog/cnc-routes.png',
+		title: 'M1 RD series',
+		tagline: 'Real workhorse',
+		price: '$19,000',
+		active: true,
 		specs: {
 			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
 			spindle: 'from 1,5 kW',
@@ -489,6 +528,10 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 				<div className={styles.interestedSection}>
 					<InterestedProducts />
+				</div>
+
+				<div className={styles.blogSection}>
+					<ProductBlog />
 				</div>
 			</div>
 		</div>
