@@ -10,7 +10,7 @@ const DeleteConfigurationModal: FC<{
 	price: string
 }> = ({ image, name, price, code }) => {
 	return (
-		<>
+		<div>
 			<div className={styles.title}>
 				Do you really want to delete this configuration?
 			</div>
@@ -20,7 +20,7 @@ const DeleteConfigurationModal: FC<{
 				needed.
 			</div>
 			<ConfigurationTemplatePlate item={{ image, name, code, price }} />
-		</>
+		</div>
 	)
 }
 

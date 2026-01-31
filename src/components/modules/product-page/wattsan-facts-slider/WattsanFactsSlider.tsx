@@ -2,7 +2,7 @@
 
 import { FC, useState, useEffect } from 'react'
 import Image from 'next/image'
-import Carousel from '@components/ui/carousel/Carousel'
+// import Carousel from '@components/ui/carousel/Carousel'
 import styles from './WattsanFactsSlider.module.scss'
 
 export interface WattsanFactCardData {
@@ -111,14 +111,14 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, className }) =
 				A couple of facts about <span className={styles.titleHighlight}>Wattsan CNC routers</span>
 			</h2>
 			<div className={styles.carouselWrapper}>
-				<Carousel
+				{/* <Carousel
 					items={cards}
 					itemWidth={itemWidth}
 					renderItem={(card) => renderCard(card as WattsanFactCardData)}
 					align="start"
 					loop={true}
 					hideNavigation={false}
-				/>
+				/> */}
 			</div>
 		</section>
 	)

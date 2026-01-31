@@ -8,7 +8,7 @@ import styles from './OfferModal.module.scss'
 
 const OfferModal: FC<{ offer: TOffer }> = ({ offer }) => {
 	return (
-		<>
+		<div>
 			<div className={styles.title}>{offer.title}</div>
 			<div className={styles.description}>{offer.description}</div>
 			<div className={styles.subtitle}></div>
@@ -46,7 +46,7 @@ const OfferModal: FC<{ offer: TOffer }> = ({ offer }) => {
 				These terms may vary based on the brand's strategies and marketing
 				campaigns.
 			</div>
-		</>
+		</div>
 	)
 }
 

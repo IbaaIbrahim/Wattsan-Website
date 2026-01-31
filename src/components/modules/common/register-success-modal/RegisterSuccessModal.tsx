@@ -7,7 +7,7 @@ import styles from './RegisterSuccessModal.module.scss'
 
 const RegisterSuccessModal: FC = () => {
 	return (
-		<>
+		<div>
 			<Typography
 				className={styles.title}
 				tag='h2'
@@ -38,7 +38,7 @@ const RegisterSuccessModal: FC = () => {
 					Cancel
 				</Button>
 			</div>
-		</>
+		</div>
 	)
 }
 

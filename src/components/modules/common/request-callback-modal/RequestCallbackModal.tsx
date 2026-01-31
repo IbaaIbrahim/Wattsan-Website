@@ -12,7 +12,7 @@ const RequestCallbackModal: FC<{
 	const [phone, setPhone] = useState('')
 
 	return (
-		<>
+		<div>
 			<div className={styles.title}>Request a callback</div>
 			<div className={styles.description}>
 				Have questions or need immediate help? Request a callback for prompt
@@ -51,7 +51,7 @@ const RequestCallbackModal: FC<{
 					Cancel
 				</Button>
 			</div>
-		</>
+		</div>
 	)
 }
 

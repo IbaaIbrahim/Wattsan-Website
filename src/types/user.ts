@@ -7,9 +7,13 @@ export type TUserInfo = {
 	callbackURL: string // https://wattsancnc.com
 	role: any
 	firstName: string
+	firstname: string 
 
 	image: string // not exists
 	fullName: string // not exists
 	phone: string // not exists
+	phoneNumber: string
 	authorized: boolean // not exists
+	fileManagerId: string | null
+	profilePicture: string | null
 }

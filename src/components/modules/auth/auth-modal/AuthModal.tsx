@@ -1,14 +1,17 @@
-import ConfirmationCode from '@components/modules/auth/confirmation-code/ConfirmationCode'
-import {AuthModalContext} from '@components/modules/auth/context'
-import Login from '@components/modules/auth/login/Login'
-import SignUp from '@components/modules/auth/sign-up/SignUp'
-import {useCountdown, usePrevious} from '@components/modules/auth/utils'
+import ConfirmationCode from '@components/modules/auth/confirmation-code/ConfirmationCode';
+import { AuthModalContext } from '@components/modules/auth/context';
+import Login from '@components/modules/auth/login/Login';
+import SignUp from '@components/modules/auth/sign-up/SignUp';
+import { useCountdown, usePrevious } from '@components/modules/auth/utils'
 import {
+	loginHandler,
 	reLoginHandler,
 	signUpHandler,
 	verifyHandler
 } from '@store/auth/actions'
-import {FC, useEffect, useState} from 'react'
+import { FC, useEffect, useState } from 'react';
+import { authStore } from '@store/auth'
+
 
 const screensMap = {
 	SIGN_UP: SignUp,
@@ -34,7 +37,7 @@ const AuthModal: FC<{
 	const [timeLeft, startTimer, stopTimer] = useCountdown(60 * 1000)
 
 	const prevScreen = usePrevious(screen)
-	const prevState = usePrevious(state)
+	// const prevState = usePrevious(state)
 
 	useEffect(() => {
 		startTimer()
@@ -47,23 +50,35 @@ const AuthModal: FC<{
 		if (state === 'INITIAL') {
 			startTimer()
 		}
-	}, [state, prevState, startTimer])
+	}, [state, startTimer])
+
+	const tempEmail = authStore.use.tempEmail()
 
 	const handleSmsRetry = async () => {
 		setCode('')
 		setState('PROCESSING')
-
-		await signUpHandler(
-			() => {
-				setState('INITIAL')
-				startTimer()
-			},
-			() => {
-				setState('ERROR')
-			}
-		)
-
-		setCode('')
+		// if (type === 'authorize') {
+			loginHandler(
+				() => {
+					setState('INITIAL')
+					// setCode('')
+					startTimer()
+				},
+				onError,
+				tempEmail
+			)
+		// } else {
+		// 	await signUpHandler(
+		// 		() => {
+		// 			setState('INITIAL')
+		// 			// setCode('')
+		// 			startTimer()
+		// 		},
+		// 		() => {
+		// 			setState('ERROR')
+		// 		}
+		// 	)
+		// }
 	}
 
 	const handleInputFinished = async (code: string) => {

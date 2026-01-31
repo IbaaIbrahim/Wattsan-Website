@@ -1,5 +1,6 @@
 .container {
-	display: flex;
+	display: grid;
+	grid-template-columns: auto auto;
 	justify-content: space-between;
 	align-items: center;
 	height: 48px;
@@ -12,7 +13,7 @@
 	@media (max-width: 1024px) {
 		height: 64px;
 	}
-
+	
 	@media (max-width: 768px) {
 		padding: 0 20px;
 		height: 40px;
@@ -45,7 +46,7 @@
 		&:hover {
 			color: #E63C32;
 
-			img {
+			img	{
 				filter: brightness(0) saturate(100%) invert(61%) sepia(97%) saturate(6696%) hue-rotate(346deg) brightness(96%) contrast(88%);
 			}
 		}
@@ -105,8 +106,7 @@
 			border: 1px solid #ffffff;
 			border-radius: 2px;
 
-			&:before,
-			&:after {
+			&:before, &:after {
 				content: '';
 				position: absolute;
 				left: 50%;
@@ -130,11 +130,10 @@
 
 	&Wrapper {
 		padding: 12px 40px;
-		padding: 12px 40px;
-		display: flex;
+		display: grid;
 		align-items: center;
-		justify-content: space-between;
-		gap: 40px;
+		grid-template-columns: auto 1fr auto;
+		grid-gap: 80px;
 		background-color: #F5F8FB;
 
 		@media (max-width: 1024px) {
@@ -177,7 +176,7 @@
 .configuratorNavigation {
 	display: flex;
 	align-items: center;
-	gap: 24px;
+    gap: 24px;
 
 	&Link {
 		font-size: 15px;
