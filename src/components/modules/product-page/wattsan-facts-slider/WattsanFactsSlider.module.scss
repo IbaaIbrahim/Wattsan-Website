@@ -54,7 +54,7 @@
 
 	:global(.carousel) {
 		height: 100%;
-		overflow: visible; // Show overflow to see next items
+		overflow: hidden; // Hidden to prevent horizontal scroll
 	}
 
 	:global(.carousel__view-zone) {
@@ -124,9 +124,7 @@
 	color: #FFFFFF;
 }
 
-.cardSolid {
-	/* Background color set via inline style */
-}
+
 
 .imageContainer {
 	position: absolute;

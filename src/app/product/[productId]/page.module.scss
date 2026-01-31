@@ -3,6 +3,7 @@
 	min-height: 100vh;
 	padding: 40px;
 	background-color: #ffffff;
+	overflow-x: hidden;
 
 	@media (max-width: 968px) {
 		padding: 24px;
@@ -14,9 +15,7 @@
 }
 
 // Marker class for this page
-.productPageNoMargin {
-	// This class is used in the global styles to remove layout margins
-}
+
 
 .container {
 	max-width: 1800px; // Increased from 1400px
@@ -127,7 +126,7 @@
 
 .factsSliderSection {
 	margin-top: 0;
-	width: 100%;
+	width: auto;
 	margin-left: -40px;
 	margin-right: -40px;
 	padding-left: 40px;

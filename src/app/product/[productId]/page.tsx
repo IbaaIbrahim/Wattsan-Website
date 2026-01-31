@@ -591,12 +591,12 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				<div className={styles.ctaSection}>
 					<ProductConfiguratorCTA onConfiguratorClick={handleConfiguratorClick} />
 				</div>
-				{/* <div className={styles.infoCardsSection}>
+				<div className={styles.infoCardsSection}>
 					<ProductInfoCards cards={INFO_CARDS} />
-				</div> */}
-				{/* <div className={styles.factsSliderSection}>
+				</div>
+				<div className={styles.factsSliderSection}>
 					<WattsanFactsSlider cards={FACTS_CARDS} />
-				</div> */}
+				</div>
 
 				<div className={styles.powerSection}>
 					<ProductDescription
@@ -606,38 +606,38 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					/>
 				</div>
 
-				{/* <div className={styles.heartSection}>
+				<div className={styles.heartSection}>
 					<HeartOfTheMachinery />
-				</div> */}
+				</div>
 
-				{/* <div className={styles.specsSection}>
+				<div className={styles.specsSection}>
 					<ProductSpecifications categories={SPEC_CATEGORIES} />
-				</div> */}
+				</div>
 
-				{/* <div className={styles.comparisonSection}>
+				<div className={styles.comparisonSection}>
 					<SeriesComparison seriesData={SERIES_COMPARISON_DATA} />
-				</div> */}
+				</div>
 
-				{/* <div className={styles.reviewsSection}>
+				<div className={styles.reviewsSection}>
 					<ProductReviews />
-				</div> */}
+				</div>
 
 				<div className={styles.madeWithSection}>
 					<MadeWithWattsan />
 				</div>
 
 
-				{/* <div className={styles.productionSection}>
+				<div className={styles.productionSection}>
 					<ProductionProcess />
-				</div> */}
+				</div>
 
-				{/* <div className={styles.serviceSection}>
+				<div className={styles.serviceSection}>
 					<ServiceAndSupport />
-				</div> */}
+				</div>
 
-				{/* <div className={styles.reviewsAndQuestionsSection}>
+				<div className={styles.reviewsAndQuestionsSection}>
 					<ProductReviewsAndQuestions />
-				</div> */}
+				</div>
 
 				<div className={styles.packageListSection}>
 					<PackageList />
@@ -663,7 +663,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					<ProductBlog />
 				</div>
 
-				{/* <div className={styles.safetyCabinSection}>
+				<div className={styles.safetyCabinSection}>
 					<SafetyCabin
 						title={<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>}
 						description={
@@ -679,9 +679,9 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 						features={SAFETY_CABIN_FEATURES}
 						image='/product-cards/safety-cabin/sc-1.png'
 					/>
-				</div> */}
+				</div>
 
-				{/* <div className={styles.rotaryDeviceSection}>
+				<div className={styles.rotaryDeviceSection}>
 					<RotaryDevice
 						subtitle="WATTSAN RD Rotary Device"
 						title="Precision Multi-Sided Machining with Integrated Fourth Axis"
@@ -698,9 +698,9 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 						specs={ROTARY_DEVICE_SPECS}
 						image='/product-cards/rd-rotary/rd-r-1.png'
 					/>
-				</div> */}
+				</div>
 
-				{/* <div className={styles.separateRotaryDeviceSection}>
+				<div className={styles.separateRotaryDeviceSection}>
 					<SeparateRotaryDevice
 						title={<span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>}
 						description={
@@ -722,7 +722,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 						]}
 						image='/product-cards/rd-rotary/rd-r-1.png'
 					/>
-				</div> */}
+				</div>
 
 				<div className={styles.multiSpindlesSection}>
 					<MultiSpindles
