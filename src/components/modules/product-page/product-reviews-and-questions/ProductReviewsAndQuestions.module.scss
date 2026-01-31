@@ -1,0 +1,327 @@
+$color-red: #E31E24;
+
+.section {
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.sectionTitle {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #000;
+
+    .redText {
+        color: $color-red;
+    }
+}
+
+.tabs {
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid #E0E0E0;
+    margin-bottom: 24px;
+
+    .tab {
+        background: none;
+        border: none;
+        padding: 12px 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #999;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.2s ease;
+
+        &.active {
+            color: #000;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: #000;
+            }
+        }
+
+        .tabCount {
+            font-weight: 400;
+            color: #999;
+        }
+    }
+}
+
+.filtersBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+
+    .leftFilters {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .filterLabel {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .sortBtn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #999;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+
+            &.active {
+                color: #000;
+            }
+        }
+    }
+
+    .rightFilters {
+        display: flex;
+        gap: 24px;
+
+        .checkboxFilter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #000;
+        }
+    }
+}
+
+.mainContent {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 60px;
+}
+
+.reviewsList {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Review Card Styles */
+.reviewCard {
+    border-bottom: 1px solid #F2F2F2;
+    padding-bottom: 40px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.reviewHeader {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #DEEBFA;
+
+        .avatarPlaceholder {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .headerInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .authorName {
+        font-weight: 600;
+    }
+
+    .ratingRow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .date {
+            font-size: 12px;
+            color: #999;
+        }
+    }
+}
+
+.reviewContent {
+    .reviewSection {
+        margin-bottom: 20px;
+
+        .sectionTitle {
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .sectionText {
+            color: #333;
+            line-height: 1.5;
+        }
+    }
+}
+
+.reviewImages {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+
+    .imageThumb {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #F9F9F9;
+    }
+}
+
+.viewMoreBtn {
+    width: 160px;
+    height: 48px;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    background: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #F5F5F5;
+        border-color: #999;
+    }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 100%;
+
+    .leaveReviewBtn {
+        background-color: #000 !important;
+        color: #fff !important;
+        border-radius: 8px;
+        height: 56px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        width: 100%;
+    }
+
+    .evaluationSummary {
+        background-color: #F8FAFC;
+        border-radius: 12px;
+        padding: 24px;
+        width: 100%;
+
+        .summaryHeader {
+            margin-bottom: 24px;
+
+            p {
+                font-size: 20px;
+                margin-bottom: 4px;
+            }
+
+            .basedOn {
+                font-size: 14px;
+                color: #999;
+            }
+        }
+
+        .ratingBreakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .breakdownItem {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                .breakdownCount {
+                    font-size: 14px;
+                    color: #999;
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .mainContent {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        order: -1;
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sectionTitle {
+        font-size: 32px;
+        overflow-wrap: break-word;
+        /* Ensure long titles wrap */
+    }
+
+    .tabs {
+        gap: 12px;
+        flex-wrap: wrap;
+        /* Allow tabs to wrap */
+
+        .tab {
+            font-size: 16px;
+            padding: 8px 0;
+            white-space: nowrap;
+        }
+    }
+
+    .filtersBar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+
+        .leftFilters {
+            flex-wrap: wrap;
+        }
+
+        .rightFilters {
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+    }
+
+    .reviewImages {
+        flex-wrap: wrap;
+        /* Allow review images to wrap */
+
+        .imageThumb {
+            width: 64px;
+            height: 64px;
+        }
+    }
+}

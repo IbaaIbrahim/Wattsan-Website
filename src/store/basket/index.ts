@@ -183,17 +183,6 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 				}, 0) - get.promoDiscount()
 			)
 		},
-		mainPriceSelector: () => {
-			const selected = get.positions().filter(({ selected }) => selected)
-
-			return (
-				selected.reduce((acc, item) => {
-					const sum = item?.quantity * +(item?.referenceObject?.price ?? 0)
-
-					return acc + sum
-				}, 0)
-			)
-		},
 		orderTotalPriceSelector: () => {
 			const products = get.order().orderProducts ?? []
 

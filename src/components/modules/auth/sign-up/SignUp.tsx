@@ -34,8 +34,7 @@ const SignUp = () => {
 		}) || values?.agreePolicy === false
 
 	return (
-
-		<div>
+		<Form onSubmit={handleSubmit}>
 			<div className={styles.header}>
 				<Typography tag='h1'>Sign Up</Typography>
 				{!authModalContext.onlyInitialScreen && (
@@ -47,89 +46,87 @@ const SignUp = () => {
 					</button>
 				)}
 			</div>
-			<Form onSubmit={handleSubmit}>
-				<Typography
-					className={styles.description}
-					tag='p'
-					size='m'
-					weight='regular'
-				>
-					Registration of your account is done using one-time codes for secure
-					access.
-				</Typography>
-				<Input
-					className={styles.field}
-					label='Full Name'
-					placeholder='Enter your Full Name'
-					disabled={loading}
-					value={values?.fullName}
-					error={errors?.fullName}
-					onChange={value => signUpForm.set.change('fullName', value)}
-					onBlur={() => signUpForm.set.blur('fullName')}
-				/>
-				<Input
-					className={styles.field}
-					label='Phone'
-					placeholder='Enter your phone number'
-					disabled={loading}
-					value={values?.phone}
-					error={errors?.phone}
-					onChange={value => signUpForm.set.change('phone', value)}
-					onBlur={() => signUpForm.set.blur('phone')}
-				/>
-				{/*<FormPhone*/}
-				{/*	className={styles.field}*/}
-				{/*	name='phone'*/}
-				{/*	label='Phone'*/}
-				{/*	placeholder='Enter your phone number'*/}
-				{/*/>*/}
-				<Input
-					className={styles.field}
-					label='E-mail'
-					placeholder='Enter your e-mail address'
-					disabled={loading}
-					value={values?.email}
-					error={errors?.email}
-					onChange={value => signUpForm.set.change('email', value)}
-					onBlur={() => signUpForm.set.blur('email')}
-				/>
-				<FormRadio
-					name='activationType'
-					label='Account verification'
-					disabled={loading}
-					value={values?.activationType as number}
-					options={[
-						{ value: 1, text: 'Via e-mail' },
-						// { value: 2, text: 'Via phone' }
-					]}
-					onChange={value => signUpForm.set.change('activationType', value)}
-				/>
-				<Button
-					className={styles.signUpButton}
-					size='l'
-					view='blue'
-					disabled={disabled || loading}
-				>
-					Sign up
-				</Button>
-				<FormCheckbox
-					className={styles.checkbox}
-					disabled={loading}
-					selected={values?.subscriptions}
-					error={errors?.subscriptions}
-					label='Subscribe to receive news and exclusive offers'
-					onChange={value => signUpForm.set.change('subscriptions', value)}
-				/>
-				<FormCheckbox
-					disabled={loading}
-					selected={values?.agreePolicy}
-					error={errors?.agreePolicy}
-					label='Agree to privacy policy and personal data processing'
-					onChange={value => signUpForm.set.change('agreePolicy', value)}
-				/>
-				<div style={{ width: '100%', marginBottom: 10 }}></div>
-			</Form>
-		</div>
+			<Typography
+				className={styles.description}
+				tag='p'
+				size='m'
+				weight='regular'
+			>
+				Registration of your account is done using one-time codes for secure
+				access.
+			</Typography>
+			<Input
+				className={styles.field}
+				label='Full Name'
+				placeholder='Enter your Full Name'
+				disabled={loading}
+				value={values?.fullName}
+				error={errors?.fullName}
+				onChange={value => signUpForm.set.change('fullName', value)}
+				onBlur={() => signUpForm.set.blur('fullName')}
+			/>
+			<Input
+				className={styles.field}
+				label='Phone'
+				placeholder='Enter your phone number'
+				disabled={loading}
+				value={values?.phone}
+				error={errors?.phone}
+				onChange={value => signUpForm.set.change('phone', value)}
+				onBlur={() => signUpForm.set.blur('phone')}
+			/>
+			{/*<FormPhone*/}
+			{/*	className={styles.field}*/}
+			{/*	name='phone'*/}
+			{/*	label='Phone'*/}
+			{/*	placeholder='Enter your phone number'*/}
+			{/*/>*/}
+			<Input
+				className={styles.field}
+				label='E-mail'
+				placeholder='Enter your e-mail address'
+				disabled={loading}
+				value={values?.email}
+				error={errors?.email}
+				onChange={value => signUpForm.set.change('email', value)}
+				onBlur={() => signUpForm.set.blur('email')}
+			/>
+			<FormRadio
+				name='activationType'
+				label='Account verification'
+				disabled={loading}
+				value={values?.activationType as number}
+				options={[
+					{ value: 1, text: 'Via e-mail' },
+					// { value: 2, text: 'Via phone' }
+				]}
+				onChange={value => signUpForm.set.change('activationType', value)}
+			/>
+			<Button
+				className={styles.signUpButton}
+				size='l'
+				view='blue'
+				disabled={disabled || loading}
+			>
+				Sign up
+			</Button>
+			<FormCheckbox
+				className={styles.checkbox}
+				disabled={loading}
+				selected={values?.subscriptions}
+				error={errors?.subscriptions}
+				label='Subscribe to receive news and exclusive offers'
+				onChange={value => signUpForm.set.change('subscriptions', value)}
+			/>
+			<FormCheckbox
+				disabled={loading}
+				selected={values?.agreePolicy}
+				error={errors?.agreePolicy}
+				label='Agree to privacy policy and personal data processing'
+				onChange={value => signUpForm.set.change('agreePolicy', value)}
+			/>
+			<div style={{width: '100%', marginBottom: 10}}></div>
+		</Form>
 	)
 }
 

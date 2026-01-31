@@ -15,7 +15,7 @@ const RequestModal = ({
 	paramName: string
 }) => {
 	return (
-		<div>
+		<>
 			<Typography
 				className={styles.title}
 				tag='h2'
@@ -103,7 +103,7 @@ const RequestModal = ({
 			>
 				Cancelling result: Work area size 600х900 mm
 			</Typography>
-		</div>
+		</>
 	)
 }
 

@@ -3,7 +3,6 @@ export interface IOrder {
 	"serial"?: string | number,
 	"number"?: string | number
 	"fromDate"?: string
-	"createDate"?: string
 	"deliveryMethodId"?: string | number
 	"deliveryMethod"?: {
 		"id": string | number

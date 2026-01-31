@@ -6,7 +6,6 @@ import { ReactNode } from 'react'
 
 import Layout from '../components/layouts/Layout'
 import '../styles/globals.scss'
-import { ToastContainer } from 'react-toastify'
 
 export const metadata: Metadata = {
 	title: 'Wattsan'
@@ -25,22 +24,15 @@ export default function RootLayout({
 }>) {
 	return (
 		<html>
-			<head>
-				<meta
-					name='robots'
-					content='noindex, nofollow'
-				/>
-				<meta
-					name='googlebot'
-					content='noindex, nofollow'
-				/>
-				<title>Wattsan-cnc</title>
-			</head>
-			<body className={`${roboto_init.variable} roboto`}>
-				<AuthProvider>
-					<Layout>{children}</Layout>
+		<head>
+			<meta name="robots" content="noindex, nofollow" />
+			<meta name="googlebot" content="noindex, nofollow" />
+			<title>Wattsan-cnc</title>
+		</head>
+		<body className={`${roboto_init.variable} roboto`}>
+		<AuthProvider>
+			<Layout>{children}</Layout>
 					<Modal />
-					<ToastContainer />
 				</AuthProvider>
 			</body>
 		</html>

@@ -18,9 +18,7 @@ const Input: FC<{
 	disabled?: boolean
 	onChange?: (value: string) => void
 	onFocus?: () => void
-	onBlur?: () => void,
-	inputClassName?: string
-	inputWrapperClassName?: string
+	onBlur?: () => void
 }> = props => {
 	const [focused, setFocused] = useState<boolean>(false)
 
@@ -53,9 +51,9 @@ const Input: FC<{
 			)}
 		>
 			{props.label && <div className={styles.wrapperLabel}>{props.label}</div>}
-			<div className={clsx(styles.inputWrapper, props.inputWrapperClassName ?? {})}>
+			<div className={styles.inputWrapper}>
 				<input
-					className={clsx(styles.input, props.inputClassName ?? {})}
+					className={styles.input}
 					name={props.name}
 					type='text'
 					placeholder={props.placeholder}

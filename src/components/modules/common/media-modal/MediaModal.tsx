@@ -62,6 +62,8 @@ const MediaModal = ({
 		)
 	}
 
+	console.log('items', items)
+
 	return (
 		<div className={styles.view}>
 			<div>

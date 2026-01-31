@@ -1,0 +1,290 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 80px 0;
+	gap: 60px;
+	width: 100%;
+	background: #FFFFFF;
+
+	@media (max-width: 1200px) {
+		padding: 60px 0;
+		gap: 40px;
+	}
+
+	@media (max-width: 968px) {
+		padding: 40px 0;
+		gap: 32px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 32px 0;
+		gap: 24px;
+	}
+}
+
+.title {
+	width: 100%;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 40px;
+	line-height: 120%;
+	color: #000000;
+	margin: 0;
+
+	@media (max-width: 968px) {
+		font-size: 32px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 24px;
+	}
+}
+
+.titleHighlight {
+	color: #E63C32;
+}
+
+.carouselWrapper {
+	width: 100%;
+	height: 600px;
+	margin-top: 20px;
+
+	:global(.carousel) {
+		height: 100%;
+		overflow: hidden; // Hidden to prevent horizontal scroll
+	}
+
+	:global(.carousel__view-zone) {
+		height: 100%;
+		border-radius: 0;
+		padding-bottom: 20px;
+		overflow: visible; // Show overflow
+	}
+
+	:global(.carousel-items) {
+		// Gap is handled by carousel-item padding in new version
+		margin-left: -24px;
+		align-items: stretch;
+	}
+
+	:global(.carousel-item) {
+		padding-left: 24px;
+		height: 100%;
+	}
+
+	@media (max-width: 1400px) {
+		height: 550px;
+	}
+
+	@media (max-width: 1200px) {
+		height: 500px;
+	}
+
+	@media (max-width: 768px) {
+		height: 480px;
+	}
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 40px;
+	gap: 16px;
+	position: relative;
+	isolation: isolate;
+	flex: none;
+	width: 100%;
+	height: 100%;
+	border-radius: 24px; // Increased radius for premium feel
+	overflow: hidden;
+	box-sizing: border-box;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	background: #F5F5F7; // Default light background
+
+	&:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+	}
+
+	@media (max-width: 968px) {
+		padding: 32px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 24px;
+	}
+}
+
+.cardImage {
+	background: #282829;
+	color: #FFFFFF;
+}
+
+
+
+.imageContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+
+.image {
+	object-fit: cover;
+}
+
+.gradientOverlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.cardImage .gradientOverlay {
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+/* Specific gradients for better readability */
+.cardImage:nth-of-type(1) .gradientOverlay {
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.cardImage:nth-of-type(2) .gradientOverlay {
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.worldMap {
+	position: absolute;
+	bottom: 30px;
+	/* Lifted up slightly */
+	left: 50%;
+	transform: translateX(-50%);
+	width: 90%;
+	/* Responsive width */
+	height: auto;
+	aspect-ratio: 464/246;
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0.8;
+}
+
+.worldMapSvg {
+	width: 100%;
+	height: 100%;
+}
+
+.cardContent {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0;
+	gap: 12px;
+	width: 100%;
+	position: relative;
+	z-index: 2;
+	flex: 1;
+	justify-content: flex-start;
+	/* Default align top */
+}
+
+/* Solid cards align content to be distributed */
+.cardSolid .cardContent {
+	justify-content: space-between;
+}
+
+.subtitle {
+	width: 100%;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 140%;
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	opacity: 0.8;
+}
+
+.cardImage .subtitle {
+	color: #FFFFFF;
+}
+
+.cardSolid .subtitle {
+	color: #000000;
+}
+
+.cardSolid[id='reputation'] .subtitle,
+.cardSolid[id='reputation'] .cardTitle {
+	color: #FFFFFF;
+}
+
+.cardTitle {
+	width: 100%;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 32px;
+	line-height: 120%;
+	margin: 0;
+	word-wrap: break-word;
+	z-index: 2;
+
+	@media (max-width: 968px) {
+		font-size: 28px;
+	}
+
+	@media (max-width: 480px) {
+		font-size: 24px;
+	}
+}
+
+.cardImage .cardTitle {
+	color: #FFFFFF;
+	margin-top: 4px;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cardSolid .cardTitle {
+	color: #000000;
+}
+
+.card[id='reputation'] .subtitle,
+.card[id='reputation'] .cardTitle {
+	color: #FFFFFF;
+}
+
+.certifications {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+	padding: 0;
+	gap: 10px;
+	width: 100%;
+	margin-top: auto;
+}
+
+.certificationTag {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 8px 16px;
+	background: #E63C32;
+	border-radius: 100px;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 140%;
+	color: #FFFFFF;
+	white-space: nowrap;
+}

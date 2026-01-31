@@ -5,7 +5,7 @@ import styles from './EndSessionModal.module.scss'
 
 const EndSessionModal: FC<{ allSession: boolean }> = ({ allSession }) => {
 	return (
-		<div>
+		<>
 			<div className={styles.title}>
 				{allSession ? 'End all sessions?' : 'End a session?'}
 			</div>
@@ -29,7 +29,7 @@ const EndSessionModal: FC<{ allSession: boolean }> = ({ allSession }) => {
 					Cancel
 				</Button>
 			</div>
-		</div>
+		</>
 	)
 }
 

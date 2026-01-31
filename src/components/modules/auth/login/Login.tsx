@@ -26,7 +26,7 @@ const Login = () => {
 	}
 
 	return (
-		<div>
+		<Form onSubmit={handleLogin}>
 			<div className={styles.header}>
 				<Typography tag='h1'>Login</Typography>
 				{!authModalContext.onlyInitialScreen && (
@@ -38,45 +38,43 @@ const Login = () => {
 					</button>
 				)}
 			</div>
-			<Form onSubmit={handleLogin}>
-				<Typography
-					className={styles.description}
-					tag='p'
-					size='m'
-					weight='regular'
-				>
-					We use one-time codes for secure entry into your personal account.
-				</Typography>
-				<Input
-					name='email'
-					label='E-mail'
-					placeholder='Enter your e-mail address'
-					disabled={loading === 'loading'}
-					value={values?.email}
-					error={errors?.email}
-					onChange={value => loginForm.set.change('email', value)}
-					onBlur={() => loginForm.set.blur('email')}
-				/>
-				<Button
-					className={styles.loginButton}
-					view='green'
-					disabled={loading === 'loading'}
-					size='l'
-					type='submit'
-				>
-					Login
-				</Button>
-				<FormCheckbox
-					name='rememberMe'
-					label='Remember me'
-					disabled={loading === 'loading'}
-					selected={values?.rememberMe}
-					error={errors?.rememberMe}
-					onChange={value => loginForm.set.change('rememberMe', value)}
-				/>
-				<div style={{ width: '100%', marginBottom: 10 }}></div>
-			</Form>
-		</div>
+			<Typography
+				className={styles.description}
+				tag='p'
+				size='m'
+				weight='regular'
+			>
+				We use one-time codes for secure entry into your personal account.
+			</Typography>
+			<Input
+				name='email'
+				label='E-mail'
+				placeholder='Enter your e-mail address'
+				disabled={loading === 'loading'}
+				value={values?.email}
+				error={errors?.email}
+				onChange={value => loginForm.set.change('email', value)}
+				onBlur={() => loginForm.set.blur('email')}
+			/>
+			<Button
+				className={styles.loginButton}
+				view='green'
+				disabled={loading === 'loading'}
+				size='l'
+				type='submit'
+			>
+				Login
+			</Button>
+			<FormCheckbox
+				name='rememberMe'
+				label='Remember me'
+				disabled={loading === 'loading'}
+				selected={values?.rememberMe}
+				error={errors?.rememberMe}
+				onChange={value => loginForm.set.change('rememberMe', value)}
+			/>
+			<div style={{width: '100%', marginBottom: 10}}></div>
+		</Form>
 	)
 }
 

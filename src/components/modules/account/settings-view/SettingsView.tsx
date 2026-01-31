@@ -12,18 +12,9 @@ import changeAvatarIcon from '@public/img/icons/change-avatar.svg'
 import changeNameIcon from '@public/img/icons/change-name.svg'
 import { modalsStore } from '@store/modals'
 import Image from 'next/image'
-import { use, useState } from 'react'
+import { useState } from 'react'
 
 import styles from './SettingsView.module.scss'
-import { FileManagerWithModal } from '@components/file-manager'
-import { authStore } from '@store/auth'
-import PhoneInput from 'react-phone-input-2'
-// import 'react-phone-input-2/lib/style.css'
-import 'react-phone-input-2/lib/bootstrap.css';
-import { Form } from '@components/ui/inputs/form/Form'
-import { Label } from '@headlessui/react'
-import { updateUserInfo } from '@store/auth/actions'
-import { set } from 'lodash'
 
 const SESSION_MOCK = [
 	{
@@ -45,7 +36,7 @@ const SESSION_MOCK = [
 		name: 'Desktop Mac OS X',
 		place: 'England, London',
 		ip: '783.183.55.9',
-		status: 'Inactive'		
+		status: 'Inactive'
 	},
 	{
 		id: '1001',
@@ -57,20 +48,11 @@ const SESSION_MOCK = [
 ]
 
 const SettingsView = () => {
-	const user = authStore.use.user()
 	const [tabs, setTab] = useState('0')
-	const [profileImage, setProfileImage] = useState(user.fileManagerId || user.profilePicture || null)
-	const [acknowledged, setAcknowledged] = useState(false)
-	const [userName, setUserName] = useState(user.firstname || '')
-	const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || '')
 
 	const handleNameModal = () => {
 		modalsStore.set.open(MODALS.changeName, {
-			onChange: (name) => {
-				setUserName(name)
-				modalsStore.set.close()
-			},
-			onClose: () => modalsStore.set.close()
+			onChange: modalsStore.set.close()
 		})
 	}
 
@@ -90,25 +72,6 @@ const SettingsView = () => {
 
 	const image = null
 
-	const handleSaveUserInfo = (data) => {
-		
-		updateUserInfo(
-			{
-				id: user.id,
-				email: user.email,
-				phoneNumber: phoneNumber || user.phoneNumber || null,
-				firstName: userName || user?.firstname || null,
-				fileManagerId: profileImage || null
-			},
-			() => {
-				// onComplete
-				// modalsStore.set.close()
-			},
-			() => {}
-		)
-	}
-	
-	
 	return (
 		<div className={styles.page}>
 			<div className={styles.title}>Account</div>
@@ -116,8 +79,8 @@ const SettingsView = () => {
 				size='l'
 				items={[
 					{ content: 'Personal info', id: '0' },
-					// { content: 'Subscriptions', id: '1' },
-					// { content: 'Account security', id: '2' }
+					{ content: 'Subscriptions', id: '1' },
+					{ content: 'Account security', id: '2' }
 				]}
 				selected={[tabs]}
 				onClick={tab => setTab(tab)}
@@ -126,17 +89,7 @@ const SettingsView = () => {
 				<div className={styles.form}>
 					<div className={styles.user}>
 						<div className={styles.userImage}>
-							{
-								user?.id && (
-									<FileManagerWithModal
-								
-										value={profileImage}
-										// defaultValue={user?.fileManagerId}
-										onChange={(v: string) => setProfileImage(v)}
-									/>
-								)
-							}
-							{/* {image === null ? (
+							{image === null ? (
 								<>М</>
 							) : (
 								<Image
@@ -144,15 +97,15 @@ const SettingsView = () => {
 									alt=''
 									fill={true}
 								/>
-							)} */}
-							{/* <button className={styles.changeImage}>
+							)}
+							<button className={styles.changeImage}>
 								<Image
 									src={changeAvatarIcon}
 									alt=''
 								/>
-							</button> */}
+							</button>
 						</div>
-						<div className={styles.userName}>{userName ?? user?.firstname ?? 'No name'}</div>
+						<div className={styles.userName}>Mark Markov</div>
 						<button
 							className={styles.changeName}
 							onClick={handleNameModal}
@@ -164,41 +117,26 @@ const SettingsView = () => {
 						</button>
 					</div>
 					<div className={styles.fields}>
-						<Input
-							name='email'
-							label='E-mail'
-							value={user?.email}
-							disabled={true}
-							inputWrapperClassName={styles.emailInput}
-						/>
-						<div>
-						<label className={styles.phoneLabel}>Phone</label>
-						<PhoneInput
-							value={phoneNumber || ''}
-							onChange={phone => {
-								setPhoneNumber(phone)
-							}}
-						/>
-							</div>
-						{/* <FormInput
+						<FormInput
 							name='phone'
 							label='Phone'
 							placeholder='+79998889988'
 							change={() => {}}
 							type='phone'
-						/> */}
+						/>
+						<Input
+							name='email'
+							label='E-mail'
+						/>
 					</div>
 					<FormCheckbox
 						className={styles.checkbox}
 						label='Agree to privacy policy and personal data processing'
-						selected={acknowledged}
-						onChange={() => setAcknowledged(!acknowledged)}
 					/>
 					<Button
 						view='red'
 						size='l'
-						disabled={!acknowledged}
-						onClick={handleSaveUserInfo}
+						disabled={true}
 					>
 						Save changes
 					</Button>

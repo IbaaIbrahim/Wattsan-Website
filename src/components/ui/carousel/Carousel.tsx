@@ -1,240 +1,134 @@
 import { CarouselItem } from '@my-types/carouselItem'
 import arrowSrc from '@public/img/icons/arrow-left.svg'
-import { utilsService } from '@services/utils.service'
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 import Image from 'next/image'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 
 import VideoPlayer from '../video-player/VideoPlayer'
 
 import styles from './Carousel.module.scss'
 
-type ItemsWithOrder = {
-	content: CarouselItem
-	order: number
-	collapse: boolean
-	expand: boolean
+interface CarouselProps<T = CarouselItem> {
+	items: T[]
+	maxImageSize?: number
+	renderItem?: (item: T, index: number) => ReactNode
+	itemWidth?: number
+	hideNavigation?: boolean
+	loop?: boolean
+	autoplay?: boolean
+	autoplayDelay?: number
+	align?: 'start' | 'center' | 'end'
 }
 
-const Carousel = ({
+const Carousel = <T extends CarouselItem | any = CarouselItem>({
 	items,
-	maxImageSize
-}: {
-	items: CarouselItem[]
-	maxImageSize?: number
-}) => {
-	const [carouselItems, setCarouselItems] = useState<ItemsWithOrder[]>([])
-	const [itemWidth, setItemWidth] = useState<number>(0)
-	const viewZoneRef = useRef<HTMLDivElement | null>(null)
-
-	let goNextTimeout: NodeJS.Timeout
-	let goPrevTimeout: NodeJS.Timeout
-
-	const animationTime: number = 200
-	const paddingValue: number = 16
-
-	const goNext = (): void => {
-		clearTimeout(goNextTimeout)
-		setCarouselItems(prevs => {
-			let updatedItems = prevs.map((item, index) => {
-				let newItem = { ...item, collapse: false }
-				if (item.order === 1) {
-					newItem.collapse = true
-				}
-				return newItem
-			})
-			return updatedItems
-		})
-
-		goNextTimeout = setTimeout(() => {
-			setCarouselItems(prevs => {
-				let reorderedItems = prevs.map(prev => {
-					let reordered = { ...prev, collapse: false }
-					reordered.order = prev.order - 1
-					if (reordered.order < 1) {
-						reordered.order = prevs.length
-					}
-					return reordered
-				})
-				return reorderedItems
-			})
-		}, animationTime - 50)
-	}
-
-	const goPrev = (): void => {
-		clearTimeout(goPrevTimeout)
-		setCarouselItems(prevs =>
-			prevs.map(prev => {
-				let reordered = { ...prev }
-				reordered.order = prev.order + 1
-				if (reordered.order > prevs.length) {
-					reordered.order = 1
-					reordered.expand = true
-				}
-				return reordered
-			})
-		)
-
-		goPrevTimeout = setTimeout(() => {
-			setCarouselItems(prevs => prevs.map(prev => ({ ...prev, expand: false })))
-		}, animationTime)
-	}
-
-	const debauncedHandleNext = useCallback(
-		utilsService.debounce(goNext, animationTime / 2),
-		[]
-	)
-	const debauncedHandlePrev = useCallback(
-		utilsService.debounce(goPrev, animationTime / 2),
-		[]
+	maxImageSize,
+	renderItem,
+	itemWidth,
+	hideNavigation = false,
+	loop = true,
+	autoplay = false,
+	autoplayDelay = 4000,
+	align = 'center'
+}: CarouselProps<T>) => {
+	const [emblaRef, emblaApi] = useEmblaCarousel(
+		{
+			loop,
+			align,
+			containScroll: 'trimSnaps',
+			dragFree: true
+		},
+		[
+			...(autoplay ? [Autoplay({ delay: autoplayDelay, stopOnInteraction: false })] : []),
+			WheelGesturesPlugin()
+		]
 	)
 
-	const getTransformValue = (): string => {
-		const centerIndex = Math.ceil(items.length / 2) - 1
-		return `translateX(-${centerIndex * (itemWidth + paddingValue * 2) + paddingValue}px)`
-	}
+	const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
+	const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+
+	const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
+	const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
+
+	const onSelect = useCallback(() => {
+		if (!emblaApi) return
+		setPrevBtnEnabled(emblaApi.canScrollPrev())
+		setNextBtnEnabled(emblaApi.canScrollNext())
+	}, [emblaApi])
 
 	useEffect(() => {
-		if (items.length > 2) {
-			setCarouselItems(
-				[
-					...items.slice(items.length - Math.ceil(items.length / 2) + 1),
-					...items.slice(0, -Math.ceil(items.length / 2) + 1)
-				].map((item, index) => ({
-					content: item,
-					order: index + 1,
-					collapse: false,
-					expand: false
-				}))
-			)
-		} else {
-			setCarouselItems(
-				[
-					...items
-				].map((item, index) => ({
-					content: item,
-					order: index + 1,
-					collapse: false,
-					expand: false
-				}))
-			)
-		}
-	}, [items])
-
-	useEffect(() => {
-		return () => {
-			clearTimeout(goPrevTimeout)
-			clearTimeout(goNextTimeout)
-		}
-	}, [])
-
-	useEffect(() => {
-		const resizeObserver = new ResizeObserver(() => {
-			if (viewZoneRef.current) {
-				setItemWidth(viewZoneRef.current.offsetWidth)
-			}
-		})
-
-		if (viewZoneRef.current) {
-			resizeObserver.observe(viewZoneRef.current)
-		}
-
-		return () => {
-			resizeObserver.disconnect()
-		}
-	}, [carouselItems])
-
-	const emptyStyles = items.length > 0 ? {} : {
-		width: '100%',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
+		if (!emblaApi) return
+		onSelect()
+		emblaApi.on('select', onSelect)
+		emblaApi.on('reInit', onSelect)
+	}, [emblaApi, onSelect])
 
 	return (
 		<div className={styles.carousel}>
-			<style jsx>{`
-				@keyframes expand {
-					from {
-						width: 0;
-						padding: 0;
-					}
-					to {
-						padding: 0 ${paddingValue}px;
-						width: ${itemWidth}px;
-					}
-				}
-
-				@keyframes collapse {
-					from {
-						width: ${itemWidth}px;
-						padding: 0 ${paddingValue}px;
-					}
-					to {
-						width: 0;
-						padding: 0;
-					}
-				}
-				.collapse {
-					animation-duration: ${animationTime / 1000}s;
-					animation-name: collapse;
-					will-change: width, padding;
-				}
-
-				.expand {
-					animation-duration: ${animationTime / 1000}s;
-					animation-name: expand;
-					will-change: width, padding;
-				}
-			`}</style>
 			<div
 				className={styles['carousel__view-zone']}
-				style={maxImageSize ? { maxWidth: `${maxImageSize}px` } : {}}
-				ref={viewZoneRef}
+				ref={emblaRef}
+				style={{
+					...(maxImageSize ? { maxWidth: `${maxImageSize}px` } : {})
+				}}
 			>
 				<div
 					className={styles['carousel-items']}
 					style={{
-						transform: getTransformValue(),
-						...emptyStyles
+						// If itemWidth is provided, we can pass it via CSS variable or handle in SCSS
+						// For Embla, the flex-basis of the item usually defines the width
 					}}
 				>
 					{items.length ? (
-						carouselItems.map((item, index) => (
+						items.map((item, index) => (
 							<div
 								key={index}
-								className={`${styles['carousel-item']} 
-									${item.collapse ? 'collapse' : ''}
-									${item.expand ? 'expand' : ''}`}
-								style={{ order: item.order, width: `${itemWidth}px` }}
+								className={styles['carousel-item']}
+								style={{
+									flex: itemWidth ? `0 0 ${itemWidth}px` : '0 0 100%',
+									minWidth: 0 // Crucial for Embla
+								}}
 							>
-								{!item.content.isVideo ? (
-									<Image
-										className={styles['carousel-item__media']}
-										src={item.content.url}
-										alt={item.content.placeholder || 'carousel image'}
-										width={920}
-										height={600}
-									/>
+								{renderItem ? (
+									renderItem(item, index)
 								) : (
-									<div className={styles['carousel-item__media']}>
-										<VideoPlayer
-											videoSrc={item.content.url}
-											posterSrc={item.content.videoPoster || ''}
-										/>
+									<div className={styles['carousel-item__media-wrapper']}>
+										{!(item as CarouselItem).isVideo ? (
+											<Image
+												className={styles['carousel-item__media']}
+												src={(item as CarouselItem).url}
+												alt={(item as CarouselItem).placeholder || 'carousel image'}
+												width={920}
+												height={600}
+											/>
+										) : (
+											<div className={styles['carousel-item__media']}>
+												<VideoPlayer
+													videoSrc={(item as CarouselItem).url}
+													posterSrc={(item as CarouselItem).videoPoster || ''}
+												/>
+											</div>
+										)}
 									</div>
 								)}
 							</div>
 						))
 					) : (
-						<span>No images or video was provided</span>
+						<div className={styles['carousel-empty']}>No items were provided</div>
 					)}
 				</div>
 			</div>
-			{carouselItems.length > 1 && (
+
+			{!hideNavigation && items.length > 1 && (
 				<div className={styles['carousel__panel']}>
 					<button
 						className={styles['go-to-prev']}
-						onClick={debauncedHandlePrev}
+						onClick={scrollPrev}
+						disabled={!prevBtnEnabled && !loop}
+						aria-label="Go to previous item"
+						title="Go to previous item"
 					>
 						<Image
 							className={styles['go-to-prev__img']}
@@ -244,7 +138,10 @@ const Carousel = ({
 					</button>
 					<button
 						className={styles['go-to-next']}
-						onClick={debauncedHandleNext}
+						onClick={scrollNext}
+						disabled={!nextBtnEnabled && !loop}
+						aria-label="Go to next item"
+						title="Go to next item"
 					>
 						<Image
 							className={styles['go-to-next__img']}

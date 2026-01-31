@@ -53,19 +53,14 @@ export const useCountdown: UseCountdown = (countdownDuration, tick = 1000) => {
 	return [timeLeft, startTimer, stopTimer]
 }
 
-export const usePrevious = <T,>(value: T): T | undefined => {
-	const currentValue = useRef<T>()
-	const previousValue = useRef<T>()
+export const usePrevious = value => {
+	const ref = useRef()
+	const prevValue = useRef()
 
-	if(currentValue.current !== value) {
-		previousValue.current = currentValue.current
-		currentValue.current = value
-	}
+	useEffect(() => {
+		prevValue.current = ref.current
+		ref.current = value
+	}, [value])
 
-	// useEffect(() => {
-	// 	ref.current = value
-	// }, [value])
-
-	return previousValue.current
+	return prevValue.current
 }
-

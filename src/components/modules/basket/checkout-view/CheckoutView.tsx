@@ -41,8 +41,6 @@ const CheckoutView: FC = () => {
 
 	const authorized = authStore.use.authorized()
 
-	const userInfo = authStore.useStore((state) => state.user)
-
 	const countries = newBasketStore.use.countries()
 
 	const { country } = basketForm.use.valuesSelector()
@@ -77,10 +75,10 @@ const CheckoutView: FC = () => {
 											fill={true}
 										/>
 									</div>
-									{userInfo.fullName ?? userInfo.firstName ?? "No name"}
+									Mark Markov
 								</div>
-								<div className={styles.phone}>{userInfo.phone}</div>
-								<div className={styles.email}>{userInfo.email}</div>
+								<div className={styles.phone}>+7 (999) 999 99 99</div>
+								<div className={styles.email}>hello@gamil.com</div>
 							</div>
 						) : (
 							<div className={styles.authActions}>
