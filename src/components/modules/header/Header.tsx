@@ -22,6 +22,7 @@ import { PAGES } from '../../../config/pages.url.config'
 import Logo from '../../ui/logo/Logo'
 
 import styles from './Header.module.scss'
+import { uiStore } from '@store/uiStore'
 import LocaleDd from './locale-dd/Locale-dd'
 import Navigation from './navigation/Navigation'
 import PersonalDd from './personal-dd/Personal-dd'
@@ -39,9 +40,9 @@ const Header = () => {
 	const [openSupportMenu, setSupportMenu] = useState<boolean>(false)
 	const [openCatalog, setOpenCatalog] = useState<boolean>(false)
 
-	const [menuSidebarOpen, changeMenuSidebarOpen] = useState<boolean>(false)
-	const [catalogSidebarOpen, changeCatalogSidebarOpen] =
-		useState<boolean>(false)
+	const isMenuSidebarOpen = uiStore.use.isMenuSidebarOpen()
+	const isCatalogSidebarOpen = uiStore.use.isCatalogSidebarOpen()
+
 	const [configuratorMenuOpen, changeConfiguratorMenuOpen] =
 		useState<boolean>(false)
 
@@ -76,7 +77,7 @@ const Header = () => {
 							size='m'
 							view='black'
 							leftAddon={<div className={styles.catalogButtonIcon} />}
-							onClick={() => changeCatalogSidebarOpen(true)}
+							onClick={() => uiStore.set.isCatalogSidebarOpen(true)}
 						>
 							Catalog
 						</Button>
@@ -194,7 +195,7 @@ const Header = () => {
 						onOpenMenu={() =>
 							isConfiguratorPage
 								? changeConfiguratorMenuOpen(!configuratorMenuOpen)
-								: changeMenuSidebarOpen(true)
+								: uiStore.set.isMenuSidebarOpen(true)
 						}
 					/>
 				</article>
@@ -257,15 +258,15 @@ const Header = () => {
 				onToggle={changeConfiguratorMenuOpen}
 			/>
 			<CatalogSidebar
-				open={catalogSidebarOpen}
-				onToggle={changeCatalogSidebarOpen}
+				open={isCatalogSidebarOpen}
+				onToggle={uiStore.set.isCatalogSidebarOpen}
 			/>
 			<MenuSidebar
 				lang={lang}
 				options={langOptions}
 				changeLang={changeLang}
-				open={menuSidebarOpen}
-				onToggle={changeMenuSidebarOpen}
+				open={isMenuSidebarOpen}
+				onToggle={uiStore.set.isMenuSidebarOpen}
 			/>
 		</div>
 	)

@@ -225,8 +225,8 @@ const DashboardView: FC<{ dashboard: IDashboard }> = ({ dashboard }) => {
 						notificationFilter.includes('0')
 							? MOCK_NOTIFICATIONS
 							: MOCK_NOTIFICATIONS.filter(
-									({ type }) => type === notificationFilter?.[0]
-								)
+								({ type }) => type === notificationFilter?.[0]
+							)
 					}
 					onChange={changeNotificationFilter}
 					onClose={() => setShowNotification(!showNotification)}

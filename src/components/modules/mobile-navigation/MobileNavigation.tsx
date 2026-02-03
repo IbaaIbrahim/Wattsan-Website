@@ -12,6 +12,7 @@ import { FC } from 'react'
 
 import { PAGES } from '../../../config/pages.url.config'
 
+import { uiStore } from '@store/uiStore'
 import styles from './MobileNavigation.module.scss'
 
 const MobileNavigation: FC<{}> = () => {
@@ -26,9 +27,9 @@ const MobileNavigation: FC<{}> = () => {
 
 	return (
 		<nav className={styles.wrapper}>
-			<Link
-				href={PAGES.catalog}
+			<button
 				className={styles.button}
+				onClick={() => uiStore.set.isCatalogSidebarOpen(true)}
 			>
 				<Image
 					className={styles.icon}
@@ -36,7 +37,7 @@ const MobileNavigation: FC<{}> = () => {
 					alt=''
 				/>
 				Catalog
-			</Link>
+			</button>
 			{/*<Link*/}
 			{/*	href={PAGES.comparison}*/}
 			{/*	className={styles.button}*/}
@@ -70,9 +71,9 @@ const MobileNavigation: FC<{}> = () => {
 				/>
 				Basket
 			</Link>
-			<Link
-				href={PAGES.account}
+			<button
 				className={styles.button}
+				onClick={() => uiStore.set.isMenuSidebarOpen(true)}
 			>
 				<Image
 					className={styles.icon}
@@ -80,7 +81,7 @@ const MobileNavigation: FC<{}> = () => {
 					alt=''
 				/>
 				Account
-			</Link>
+			</button>
 		</nav>
 	)
 }
