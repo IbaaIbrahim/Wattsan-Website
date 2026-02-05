@@ -80,7 +80,7 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className }) => {
             <div className={styles.content}>
                 <div className={styles.imageWrapper}>
                     <Image
-                        src="/product-cards/service-and-support/image 11691.png"
+                        src="/product-cards/cnc-router/service-and-support/image 11691.png"
                         alt="Service and Support"
                         fill
                         style={{ objectFit: 'cover' }}

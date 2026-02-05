@@ -83,14 +83,14 @@ const FACTS_CARDS: WattsanFactCardData[] = [
 		subtitle: 'Ideal for',
 		title: 'Make money 24/7 or work for your soul',
 		type: 'image',
-		imageUrl: '/product-cards/facts/facts1.png'
+		imageUrl: '/product-cards/cnc-router/facts/facts1.png'
 	},
 	{
 		id: 'customization',
 		subtitle: 'Strong customization',
 		title: 'As a manufacturer we can assemble any machine for your application',
 		type: 'image',
-		imageUrl: '/product-cards/facts/facts2.png'
+		imageUrl: '/product-cards/cnc-router/facts/facts2.png'
 	},
 	{
 		id: 'safety',
@@ -236,7 +236,7 @@ const MULTI_SPINDLES_SPECS: MultiSpindlesSpec[] = [
 const SERIES_COMPARISON_DATA: ComparisonSeries[] = [
 	{
 		id: 'm1',
-		image: '/img/catalog/cnc-routes.png',
+		image: '/product-cards/cnc-router/image 11649.png',
 		title: 'M1 series',
 		tagline: 'Real workhorse',
 		price: '$19,000',
@@ -254,7 +254,7 @@ const SERIES_COMPARISON_DATA: ComparisonSeries[] = [
 	},
 	{
 		id: 'm1-rd',
-		image: '/img/catalog/cnc-routes.png',
+		image: '/product-cards/cnc-router/image 11650.png',
 		title: 'M1 RD series',
 		tagline: 'Real workhorse',
 		price: '$19,000',
@@ -677,7 +677,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 							</>
 						}
 						features={SAFETY_CABIN_FEATURES}
-						image='/product-cards/safety-cabin/sc-1.png'
+						image='/product-cards/cnc-router/safety-cabin/sc-1.png'
 					/>
 				</div>
 
@@ -696,7 +696,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 							</>
 						}
 						specs={ROTARY_DEVICE_SPECS}
-						image='/product-cards/rd-rotary/rd-r-1.png'
+						image='/product-cards/cnc-router/rd-rotary/rd-r-1.png'
 					/>
 				</div>
 
@@ -720,7 +720,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 							<>Compatible exclusively with the <b>DSP A18 controller</b></>,
 							<>Robust construction for <b>high-precision rotation and stability</b></>
 						]}
-						image='/product-cards/rd-rotary/rd-r-1.png'
+						image='/product-cards/cnc-router/rd-rotary/rd-r-1.png'
 					/>
 				</div>
 
@@ -739,7 +739,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 							</>
 						}
 						specs={MULTI_SPINDLES_SPECS}
-						image="/product-cards/spindles/spindles-4.png"
+						image="/product-cards/cnc-router/spindles/spindles-4.png"
 					/>
 				</div>
 
@@ -767,7 +767,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 							</Typography>
 						}
 						variants={TOOL_SWITCH_VARIANTS}
-						image='/product-cards/automatic-tool-switch/image.png'
+						image='/product-cards/cnc-router/automatic-tool-switch/image.png'
 					/>
 				</div>
 

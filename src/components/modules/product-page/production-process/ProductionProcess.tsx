@@ -31,19 +31,19 @@ const ProductionProcess: FC<ProductionProcessProps> = ({ className }) => {
             id: '01',
             title: 'Development',
             description: 'The process begins with the creation of new equipment models based on feedback from customers, dealers, and engineers. Each model undergoes multiple tests before entering production. We use components from global leaders like Mitsubishi, HIWIN, and Raytools, ensuring quality and easy replacement availability worldwide.',
-            image: '/product-cards/production-process/image 10.png'
+            image: '/product-cards/cnc-router/production-process/image 10.png'
         },
         {
             id: '02',
             title: 'Robotic Accuracy',
             description: 'Parts are cut using bandsaws and metal cutters, with special attention given to the machine bed. Beds are welded onto stacker trays to ensure perfect flatness and long-term stability, unlike competitors who often rely on manual drilling.',
-            image: '/product-cards/production-process/image 11.png'
+            image: '/product-cards/cnc-router/production-process/image 11.png'
         },
         {
             id: '03',
             title: 'Precision in Each Detail',
             description: 'Specialized milling machines create connection points for guides and racks, ensuring portals move precisely and accurately along their guides. This results in superior cut quality and accuracy compared to standard methods.',
-            image: '/product-cards/production-process/image 12.png'
+            image: '/product-cards/cnc-router/production-process/image 12.png'
         }
     ]
 

@@ -43,7 +43,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ reviews = [], className }) =>
 	const defaultReviews: IReview[] = [
 		{
 			id: '1',
-			image: '/product-cards/image 11651.png',
+			image: '/product-cards/cnc-router/image 11651.png',
 			quote: '"I\'m extremely happy with the device! Its powerful reinforced frame reduces wobbling which is perfect for engraving at high speeds. I\'ve been using it for acrylic glass and the results look really cool."',
 			author: {
 				name: 'Heinrich Schuur',
@@ -53,7 +53,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ reviews = [], className }) =>
 		},
 		{
 			id: '2',
-			image: '/product-cards/image 11650.png',
+			image: '/product-cards/cnc-router/image 11650.png',
 			quote: '"The precision of this machine is unmatched in this price range. It fits perfectly in our workshop and the support team was super helpful during setup."',
 			author: {
 				name: 'David Miller',
@@ -63,7 +63,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ reviews = [], className }) =>
 		},
 		{
 			id: '3',
-			image: '/product-cards/image 11649.png',
+			image: '/product-cards/cnc-router/image 11649.png',
 			quote: '"Fast, reliable, and easy to use. The control system is intuitive and we were able to start production on day one."',
 			author: {
 				name: 'Sarah Chen',

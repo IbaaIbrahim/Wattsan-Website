@@ -12,7 +12,7 @@ interface MadeWithWattsanProps {
 }
 
 const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ className }) => {
-    const imagePath = '/product-cards/image 11680.png'
+    const imagePath = '/product-cards/cnc-router/image 11680.png'
 
     const renderLeftContent = () => (
         <div className={styles.imageColumn}>

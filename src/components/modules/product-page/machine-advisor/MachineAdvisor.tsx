@@ -11,7 +11,7 @@ const MachineAdvisor: FC<MachineAdvisorProps> = ({ className }) => {
     const renderLeftContent = () => (
         <div className={styles.videoWrapper}>
             <Image
-                src="/product-cards/contact/image_222.png"
+                src="/product-cards/cnc-router/contact/image_222.png"
                 alt="Machine selection advisor"
                 fill
                 style={{ objectFit: 'cover' }}
