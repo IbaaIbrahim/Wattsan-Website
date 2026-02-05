@@ -7,10 +7,7 @@ import clsx from 'clsx'
 
 import styles from './ProductDescription.module.scss'
 
-export interface ProductFeature {
-	title: string
-	description: string
-}
+import { ProductFeature } from '@my-types/product'
 
 interface ProductDescriptionProps {
 	title: ReactNode

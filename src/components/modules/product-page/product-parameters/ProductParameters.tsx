@@ -3,31 +3,12 @@
 import { FC } from 'react'
 import FormSelect from '@components/ui/inputs/form-select/FormSelect'
 import { Typography } from '@components/ui/typography/Typography'
-import ProductParameterRadio, { RadioOption } from './ProductParameterRadio'
+import ProductParameterRadio from './ProductParameterRadio'
 import clsx from 'clsx'
 
 import styles from './ProductParameters.module.scss'
 
-export interface ParameterOption {
-	value: string | number
-	text: string
-	price?: string
-}
-
-export interface RadioParameterOption {
-	value: string | number
-	text: string
-	price?: string
-}
-
-export interface ProductParameter {
-	id: string
-	label: string
-	type: 'select' | 'radio'
-	value: string | number
-	options: ParameterOption[] | RadioParameterOption[]
-	onChange: (value: string | number) => void
-}
+import { ProductParameter, ProductParameterOption } from '@my-types/product'
 
 interface ProductParametersProps {
 	parameters: ProductParameter[]
@@ -47,8 +28,8 @@ const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }
 							<FormSelect
 								label={param.label}
 								value={param.value}
-								options={param.options as ParameterOption[]}
-								onSelect={(value) => param.onChange(value)}
+								options={param.options as ProductParameterOption[]}
+								onSelect={(value) => param.onChange && param.onChange(value)}
 								size='l'
 								bordered
 							/>
@@ -56,8 +37,8 @@ const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }
 							<ProductParameterRadio
 								label={param.label}
 								value={param.value}
-								options={param.options as RadioOption[]}
-								onChange={(value) => param.onChange(value)}
+								options={param.options as ProductParameterOption[]}
+								onChange={(value) => param.onChange && param.onChange(value)}
 							/>
 						)}
 					</div>

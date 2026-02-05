@@ -1,5 +1,3 @@
-'use client'
-
 import { FC, useRef } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
@@ -8,12 +6,22 @@ import arrowIcon from '@public/img/icons/arrow-left.svg'
 import warrantyIcon from '@public/img/icons/config.svg'
 import historyIcon from '@public/img/icons/favorites.svg'
 import supportIcon from '@public/img/icons/account.svg'
+import { SupportCard } from '@my-types/product'
+
+const ICON_MAP: Record<string, any> = {
+    warranty: warrantyIcon,
+    history: historyIcon,
+    support: supportIcon,
+    training: supportIcon
+}
 
 interface ServiceAndSupportProps {
     className?: string
+    image?: string
+    cards?: SupportCard[]
 }
 
-const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className }) => {
+const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className, image, cards = [] }) => {
     const trackRef = useRef<HTMLDivElement>(null)
 
     const scroll = (direction: 'left' | 'right') => {
@@ -28,34 +36,6 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className }) => {
             })
         }
     }
-
-    const cards = [
-        {
-            id: 'warranty',
-            title: 'Warranty and Returns',
-            description: 'A robust warranty on all products, providing assurance of quality and durability. If breakages are detected or the product is not of the correct quality, we will refund your money.',
-            icon: warrantyIcon
-        },
-        {
-            id: 'history',
-            title: 'History of the machine',
-            description: 'We keep a detailed history of every machine we manufacture. This allows us to quickly identify parts and configurations for future service needs or upgrades.',
-            icon: historyIcon
-        },
-        {
-            id: 'support',
-            title: 'Offline and Online Support',
-            description: 'Our expert team is available to assist you with any questions or issues. Whether you need remote troubleshooting or on-site assistance, we are here to help.',
-            icon: supportIcon
-        },
-        // Duplicate for scroll effect testing if needed
-        {
-            id: 'training',
-            title: 'Training',
-            description: 'Comprehensive training programs to ensure your team can operate the machine efficiently and safely from day one.',
-            icon: supportIcon
-        }
-    ]
 
     return (
         <section className={clsx(styles.section, className)}>
@@ -79,12 +59,14 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className }) => {
 
             <div className={styles.content}>
                 <div className={styles.imageWrapper}>
-                    <Image
-                        src="/product-cards/cnc-router/service-and-support/image 11691.png"
-                        alt="Service and Support"
-                        fill
-                        style={{ objectFit: 'cover' }}
-                    />
+                    {image && (
+                        <Image
+                            src={image}
+                            alt="Service and Support"
+                            fill
+                            style={{ objectFit: 'cover' }}
+                        />
+                    )}
                 </div>
 
                 <div className={styles.sliderWrapper}>
@@ -92,7 +74,7 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className }) => {
                         {cards.map((card) => (
                             <div key={card.id} className={styles.card}>
                                 <div className={styles.cardIcon}>
-                                    <Image src={card.icon} alt="" width={32} height={32} />
+                                    <Image src={ICON_MAP[card.icon] || supportIcon} alt="" width={32} height={32} />
                                 </div>
                                 <h3 className={styles.cardTitle}>{card.title}</h3>
                                 <p className={styles.cardDescription}>

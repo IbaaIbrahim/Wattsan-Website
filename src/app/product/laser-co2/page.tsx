@@ -1,22 +1,22 @@
 'use client'
 
-import { useState } from 'react'
-import Breadcrumbs, { BreadcrumbItem } from '@components/modules/product-page/breadcrumbs/Breadcrumbs'
+import { useState, useEffect } from 'react'
+import Breadcrumbs from '@components/modules/product-page/breadcrumbs/Breadcrumbs'
 import ProductImageGallery from '@components/modules/product-page/product-image-gallery/ProductImageGallery'
-import ProductParameters, { ProductParameter } from '@components/modules/product-page/product-parameters/ProductParameters'
+import ProductParameters from '@components/modules/product-page/product-parameters/ProductParameters'
 import ProductInfo from '@components/modules/product-page/product-info/ProductInfo'
 import ProductConfiguratorCTA from '@components/modules/product-page/product-configurator-cta/ProductConfiguratorCTA'
-import ProductInfoCards, { ProductInfoCardData, MaterialColor } from '@components/modules/product-page/product-info-cards/ProductInfoCards'
-import WattsanFactsSlider, { WattsanFactCardData } from '@components/modules/product-page/wattsan-facts-slider/WattsanFactsSlider'
+import ProductInfoCards from '@components/modules/product-page/product-info-cards/ProductInfoCards'
+import WattsanFactsSlider from '@components/modules/product-page/wattsan-facts-slider/WattsanFactsSlider'
 import { useRouter } from 'next/navigation'
 import { Typography } from '@components/ui/typography/Typography'
 
 
 import styles from './page.module.scss'
-import ProductDescription, { ProductFeature } from '@components/modules/product-page/product-description/ProductDescription'
+import ProductDescription from '@components/modules/product-page/product-description/ProductDescription'
 import HeartOfTheMachinery from '@components/modules/product-page/heart-of-the-machinery/HeartOfTheMachinery'
-import ProductSpecifications, { SpecificationCategory } from '@components/modules/product-page/product-specifications/ProductSpecifications'
-import SeriesComparison, { ComparisonSeries } from '@components/modules/product-page/series-comparison/SeriesComparison'
+import ProductSpecifications from '@components/modules/product-page/product-specifications/ProductSpecifications'
+import SeriesComparison from '@components/modules/product-page/series-comparison/SeriesComparison'
 import ProductReviews from '@components/modules/product-page/product-reviews/ProductReviews'
 import ProductReviewsAndQuestions from '@components/modules/product-page/product-reviews-and-questions/ProductReviewsAndQuestions'
 import MadeWithWattsan from '@components/modules/product-page/made-with-wattsan/MadeWithWattsan'
@@ -28,365 +28,23 @@ import AdditionalContent from '@components/modules/product-page/additional-conte
 import FAQ from '@components/modules/product-page/faq/FAQ'
 import InterestedProducts from '@components/modules/product-page/interested-products/InterestedProducts'
 import ProductBlog from '@components/modules/product-page/product-blog/ProductBlog'
-import SafetyCabin, { SafetyCabinFeature } from '@components/modules/product-page/safety-cabin/SafetyCabin'
-import RotaryDevice, { RotaryDeviceSpec } from '@components/modules/product-page/rotary-device/RotaryDevice'
+import SafetyCabin from '@components/modules/product-page/safety-cabin/SafetyCabin'
+import RotaryDevice from '@components/modules/product-page/rotary-device/RotaryDevice'
 import SeparateRotaryDevice from '@components/modules/product-page/separate-rotary-device/SeparateRotaryDevice'
-import LiquidCoolingSystem, { LiquidCoolingType } from '@components/modules/product-page/liquid-cooling-system/LiquidCoolingSystem'
-import AutomaticToolSwitch, { ToolSwitchVariant } from '@components/modules/product-page/automatic-tool-switch/AutomaticToolSwitch'
-import MultiSpindles, { MultiSpindlesSpec } from '@components/modules/product-page/multi-spindles/MultiSpindles'
-import TableTypes, { TableTypeItem } from '@components/modules/product-page/table-types/TableTypes'
+import LiquidCoolingSystem from '@components/modules/product-page/liquid-cooling-system/LiquidCoolingSystem'
+import AutomaticToolSwitch from '@components/modules/product-page/automatic-tool-switch/AutomaticToolSwitch'
+import MultiSpindles from '@components/modules/product-page/multi-spindles/MultiSpindles'
+import TableTypes from '@components/modules/product-page/table-types/TableTypes'
 import AspirationSystem from '@components/modules/product-page/aspiration-system/AspirationSystem'
 
+import { getProductPageData } from '@api/product'
+import { ProductPageData, ProductParameter } from '@my-types/product'
 
-// Sample product data - replace with actual data fetching
-const BREADCRUMBS: BreadcrumbItem[] = [
-	{ label: 'Home', href: '/' },
-	{ label: 'CNC Routers', href: '/catalog' },
-	{ label: 'M1 series' }
-]
-
-const INFO_CARDS: ProductInfoCardData[] = [
-	{
-		id: 'ideal-for',
-		title: 'Ideal for',
-		content: 'medium-sized production'
-	},
-	{
-		id: 'economy',
-		title: 'Economy',
-		content: 'Up to 70% cheaper than ordering from third party'
-	},
-	{
-		id: 'materials',
-		title: 'Materials',
-		materials: [
-			{ color: '#D4C5B9', name: 'Beige' },
-			{ color: '#8B6F47', name: 'Brown' },
-			{ color: '#B8B8B8', name: 'Grey' },
-			{ color: '#6B9BD1', name: 'Blue' },
-			{ color: '#D4A5A5', name: 'Pink' },
-			{ color: '#4A4A4A', name: 'Charcoal' }
-		],
-		onViewAllClick: () => console.log('View all materials clicked')
-	},
-	{
-		id: 'expert-reviews',
-		title: 'Expert Reviews',
-		content: 80,
-		onViewAllClick: () => console.log('View all reviews clicked')
-	}
-]
-
-const FACTS_CARDS: WattsanFactCardData[] = [
-	{
-		id: 'ideal-for',
-		subtitle: 'Ideal for',
-		title: 'Make money 24/7 or work for your soul',
-		type: 'image',
-		imageUrl: '/product-cards/cnc-router/facts/facts1.png'
-	},
-	{
-		id: 'customization',
-		subtitle: 'Strong customization',
-		title: 'As a manufacturer we can assemble any machine for your application',
-		type: 'image',
-		imageUrl: '/product-cards/cnc-router/facts/facts2.png'
-	},
-	{
-		id: 'safety',
-		subtitle: 'Safety',
-		title: 'We provide certifications and warranty',
-		type: 'solid',
-		backgroundColor: '#DEEBFA',
-		certifications: ['ISO', 'CE', 'ANSI', 'RoHS', 'and others']
-	},
-	{
-		id: 'reputation',
-		subtitle: 'Impeccable reputation',
-		title: 'Wattsan equipment is on every continent and even Antarctica',
-		type: 'solid',
-		backgroundColor: '#335198'
-	}
-]
-
-const MACHINE_FEATURES: ProductFeature[] = [
-	{
-		title: 'Frame',
-		description: 'The durability of the machine is due to the frame configuration, metal wall thickness and heat treatment. We can therefore guarantee reliability and a long service life.'
-	},
-	{
-		title: 'Guides and racks',
-		description: 'We use rails and racks from renowned manufacturers to ensure precision and smoothness of movement for detailed work.'
-	},
-	{
-		title: 'Gantry',
-		description: 'Due to high loads during operation, the gantry is made of reinforced aluminium profile with increased wall thickness.'
-	},
-	{
-		title: 'Axis Z',
-		description: 'The z-axis module plays a huge role in the quality of the cut, so we pay special attention to its rigidity and reliability.'
-	},
-	{
-		title: 'Motor',
-		description: 'We use high-quality stepper motors or servo motors depending on the configuration to ensure speed and accuracy.'
-	}
-]
-
-const SAFETY_CABIN_FEATURES: SafetyCabinFeature[] = [
-	{
-		title: 'Chips and dust',
-		description: 'The durability of the machine is due to the frame configuration, metal wall thickness and heat treatment. We can therefore guarantee reliability and a long service life.'
-	},
-	{
-		title: 'Coolant operation',
-		description: 'We use rails and racks from renowned manufacturers. The assembly is carried out in pre-screened recesses and all assembly processes are robotized.'
-	},
-	{
-		title: 'Noise',
-		description: 'The reinforced Z-axis ball screw allows CNC milling machines to be equipped with reinforced spindles, making our machines much more flexible for all industries.'
-	},
-	{
-		title: 'Human Factor',
-		description: 'Used for high load applications. Converts stepper motor speed to power. Ideal for working with hardwoods and soft metals.'
-	}
-]
-
-const ROTARY_DEVICE_SPECS: RotaryDeviceSpec[] = [
-	{
-		value: '2510 mm',
-		label: 'max long of workpieces'
-	},
-	{
-		value: '300 mm',
-		label: 'max working diameter'
-	}
-]
-
-
-const SPEC_CATEGORIES: SpecificationCategory[] = [
-	{
-		id: 'general',
-		label: 'General and dimensions',
-		items: [
-			{ label: 'Work area', value: '600x900', unit: 'mm' },
-			{ label: 'Machine size (L*W*H)', value: '1380*1500*1890', unit: 'mm' },
-			{ label: 'Packing size', value: '1530*1380*2020', unit: 'mm' },
-			{ label: 'Weight', value: '400', unit: 'kg' },
-			{ label: 'Spindle', value: '1,5 kW, water, ER11, One spindle' },
-			{ label: 'Tool switch', value: 'Manual' },
-			{ label: 'Motor', value: 'Stepper motor with feedback' },
-			{ label: 'Control system', value: 'DSP A11' },
-			{ label: 'Liquid cooling system', value: 'Not included' },
-			{ label: 'Removable instrument sensor', value: 'Not included' },
-			{ label: 'Built-in instrument sensor', value: 'Not included' },
-			{ label: 'Lubrication system', value: 'Not included' },
-			{ label: 'Aspiration', value: 'Not included' }
-		]
-	},
-	{
-		id: 'portal',
-		label: 'Portal and spindle',
-		items: [
-			{ label: 'Gantry material', value: 'Aluminum profile' },
-			{ label: 'Spindle power', value: '1.5', unit: 'kW' },
-			{ label: 'Spindle cooling', value: 'Water' }
-		]
-	},
-	{
-		id: 'mechanics',
-		label: 'Mechanics',
-		items: [
-			{ label: 'Guides', value: 'Square rail' },
-			{ label: 'Transmission', value: 'Helical rack' }
-		]
-	},
-	{
-		id: 'control',
-		label: 'Control system',
-		items: [
-			{ label: 'Controller', value: 'DSP A11' },
-			{ label: 'Remote', value: 'Included' }
-		]
-	},
-	{
-		id: 'electrics',
-		label: 'Electrics',
-		items: [
-			{ label: 'Voltage', value: '220', unit: 'V' },
-			{ label: 'Phase', value: 'Single phase' }
-		]
-	}
-]
-
-const MULTI_SPINDLES_SPECS: MultiSpindlesSpec[] = [
-	{
-		title: 'Spindles quantity',
-		description: 'A machine can only have a certain number of spindles installed (up to 4 pcs). It is determined by the diameter of the spindles and the length of the X-axis.'
-	},
-	{
-		title: 'X-axis length',
-		description: 'This is an axis that runs parallel to the gantry. Its length determines the max amount of spindles. On Wattsan machines, the max quantity is four.'
-	},
-	{
-		title: 'Spindle diameter',
-		description: 'It can be 80, 100, or 125 mm.'
-	}
-]
-
-const SERIES_COMPARISON_DATA: ComparisonSeries[] = [
-	{
-		id: 'm1',
-		image: '/product-cards/cnc-router/image 11649.png',
-		title: 'M1 series',
-		tagline: 'Real workhorse',
-		price: '$19,000',
-		specs: {
-			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-			spindle: 'from 1,5 kW',
-			motor: 'Stepper motor / Stepper motor with feedback',
-			control: 'DSP A11 / Syntec',
-			cooling: 'Optional',
-			sensorRemovable: 'Optional',
-			sensorBuiltIn: 'Optional',
-			lubrication: 'Optional',
-			aspiration: 'Optional'
-		}
-	},
-	{
-		id: 'm1-rd',
-		image: '/product-cards/cnc-router/image 11650.png',
-		title: 'M1 RD series',
-		tagline: 'Real workhorse',
-		price: '$19,000',
-		active: true,
-		specs: {
-			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-			spindle: 'from 1,5 kW',
-			motor: 'Stepper motor / Stepper motor with feedback',
-			control: 'DSP A11 / Syntec',
-			cooling: 'Optional',
-			sensorRemovable: 'Optional',
-			sensorBuiltIn: 'Optional',
-			lubrication: 'Optional',
-			aspiration: 'Optional'
-		}
-	},
-	{
-		id: 'm1-rd',
-		image: '/img/catalog/cnc-routes.png',
-		title: 'M1 RD series',
-		tagline: 'Real workhorse',
-		price: '$19,000',
-		active: true,
-		specs: {
-			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-			spindle: 'from 1,5 kW',
-			motor: 'Stepper motor / Stepper motor with feedback',
-			control: 'DSP A11 / Syntec',
-			cooling: 'Optional',
-			sensorRemovable: 'Optional',
-			sensorBuiltIn: 'Optional',
-			lubrication: 'Optional',
-			aspiration: 'Optional'
-		}
-	},
-	{
-		id: 'm1-rd',
-		image: '/img/catalog/cnc-routes.png',
-		title: 'M1 RD series',
-		tagline: 'Real workhorse',
-		price: '$19,000',
-		active: true,
-		specs: {
-			workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
-			spindle: 'from 1,5 kW',
-			motor: 'Stepper motor / Stepper motor with feedback',
-			control: 'DSP A11 / Syntec',
-			cooling: 'Optional',
-			sensorRemovable: 'Optional',
-			sensorBuiltIn: 'Optional',
-			lubrication: 'Optional',
-			aspiration: 'Optional'
-		}
-	}
-]
-
-const TOOL_SWITCH_VARIANTS: ToolSwitchVariant[] = [
-	{
-		id: '4-6-tools',
-		title: '4 and 6 tools',
-		description: 'These two options are available for any M3 model. This is the lowest amount of tools, though it may be enough, if your production process is strictly defined.',
-		thumbnail: '',
-		footerLabel: 'All models supported'
-	},
-	{
-		id: '8-tools',
-		title: '8 tools',
-		description: 'Eight tools is a medium number of instruments that is good for the majority of operations. It\'s a standard option for 1313 and 1325 Wattsan CNC machines.',
-		thumbnail: '',
-		footerLabel: 'All models supported'
-	},
-	{
-		id: '10-tools',
-		title: '10 tools',
-		description: 'This is a basic configuration for the M3 1616 Wattsan machine.',
-		thumbnail: '',
-		footerLabel: 'Not available for smaller models.',
-		isWarning: true
-	},
-	{
-		id: '12-tools',
-		title: '12 tools',
-		description: 'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060. Due to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
-		thumbnail: '',
-		footerLabel: 'Twelve tools cannot be installed on the 1313, 1325, and 1616 models.',
-		isWarning: true
-	}
-]
-
-const LIQUID_COOLING_TYPES: LiquidCoolingType[] = [
-	{
-		title: 'Oil-mist spray system',
-		description: 'Here, the liquid is sprayed to the working area. The liquids themselves are more viscous and can sustain greater temperatures. This system can be installed on any Wattsan CNC machine.'
-	},
-	{
-		title: 'Flood type',
-		description: 'Here, a jet of pressured water is being delivered, and this system requires a modificated router bed. Water as coolant has a good price-quality ratio and is easily accessible.'
-	}
-]
-
-const TABLE_TYPES_DATA: TableTypeItem[] = [
-	{
-		id: 't-slot',
-		title: 'T-slot',
-		description: 'T-slot tables are characterised by their secure clamping, modularity, precision and flexibility. They allow for easy and versatile workpiece clamping, making them suitable for a wide range of materials, including wood, plastic, aluminum, PVC, acrylic, double-color plate, etc.'
-	},
-	{
-		id: 'vacuum',
-		title: 'Vacuum',
-		description: 'It has the characteristics of low cost, flexible method, cost-saving, and the price is lower than the price of the vacuum table. Vacuum tables provide uniform suction across large surfaces, making them ideal for large sheet materials. They are commonly used for cutting plywood, MDF, acrylic, and plastics.',
-		advantagesTitle: 'Advantages of a vacuum table:',
-		advantages: [
-			<><b>Versatile clamping:</b> vacuum tables clamp the workpiece evenly across its entire surface;</>
-		],
-		list: [
-			<><b>Less damage:</b> vacuum tables clamp the material more gently and minimise the risk of damage. This is particularly important when working with sensitive or finished materials;</>,
-			<><b>Quick material change:</b> on a vacuum table, less time is spent adjusting the clamp. Therefore, material change is easier, which increases productivity.</>
-		]
-	},
-	{
-		id: 'bath',
-		title: 'Bath',
-		description: 'The pump operates on a 380-volt power supply, and depending on the number of pumps and table size, the total power can range from 5.5 kW to 7.5 kW. When using the Milling Bath you can machine various materials under water or other liquids.',
-		list: [
-			'Suitable for milling metal, PCB cuprexit, plexi glass and other material;',
-			'Better result and slower dulling of the tool when milling in liquid (water, oil or other cooling liquid)'
-		]
-	}
-]
 
 const ProductPage = ({ params }: { params: { productId: string } }) => {
 	const router = useRouter()
+	const [productData, setProductData] = useState<ProductPageData | null>(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	const [parameters, setParameters] = useState<ProductParameter[]>([
 		{
@@ -400,7 +58,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: '1000x1500', text: '1000x1500 mm' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'workArea' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'workArea' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -414,7 +72,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: '300', text: '300 mm' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'toolLift' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'toolLift' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -428,7 +86,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: '7.5', text: '7,5 kW, water 15025' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'spindlePower' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'spindlePower' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -442,7 +100,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: '3', text: '3 pcs' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'spindleQuantity' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'spindleQuantity' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -456,7 +114,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'oilMist', text: 'Oil mist', price: '+$1500' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'liquidCooling' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'liquidCooling' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -470,7 +128,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: '380v', text: '380V', price: '+$1500' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'aspiration' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'aspiration' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -483,7 +141,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'included', text: 'Included', price: '+$1200' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'vacuumTable' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'vacuumTable' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -497,7 +155,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'integrated', text: 'Integrated', price: '+$2500' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'rotaryDevice' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'rotaryDevice' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -510,7 +168,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'yes', text: 'Yes', price: '+$2500' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'automaticToolSwitch' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'automaticToolSwitch' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
@@ -523,13 +181,25 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'included', text: 'Included', price: '+$2500' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'cabin' ? { ...p, value } : p))
+				setParameters(prev => prev.map(p => p.id === 'cabin' ? { ...p, value: value as string } : p))
 			}
 		}
 	])
 
-	const mainImage = '/img/catalog/cnc-routes.png'
-	const thumbnails = [mainImage, mainImage, mainImage]
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await getProductPageData('laser-co2') // Fetching Laser data!
+				setProductData(data)
+			} catch (error) {
+				console.error('Failed to fetch product data', error)
+			} finally {
+				setIsLoading(false)
+			}
+		}
+
+		fetchData()
+	}, [])
 
 	const handleAddToBasket = () => {
 		console.log('Add to basket', { productId: params.productId, parameters })
@@ -543,16 +213,20 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 		console.log('View specifications clicked')
 	}
 
+	if (isLoading || !productData) {
+		return <div className={styles.loadingContainer}>Loading...</div>
+	}
+
 	return (
 		<div className={`${styles.productPage} ${styles.productPageNoMargin}`}>
 			<div className={styles.container}>
-				<Breadcrumbs items={BREADCRUMBS} className={styles.breadcrumbs} />
+				<Breadcrumbs items={productData.breadcrumbs} className={styles.breadcrumbs} />
 
 				<div className={styles.content}>
 					<div className={styles.leftColumn}>
 						<ProductImageGallery
-							mainImage={mainImage}
-							thumbnails={thumbnails}
+							mainImage={productData.gallery.mainImage}
+							thumbnails={productData.gallery.thumbnails}
 							hasVideo={true}
 							has360View={true}
 							badge='New'
@@ -567,21 +241,21 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 					<div className={styles.rightColumn}>
 						<ProductInfo
-							title='CNC Router Machine M1 series'
-							rating={5.0}
-							reviewCount={10}
-							questionCount={21}
-							currentPrice='$19,000'
-							originalPrice='$19,000'
-							discount='$1000'
-							discountPercent='5%'
-							availability='In stock'
-							shipment='2 days'
-							delivery='from 20 days'
-							deliveryMethods={['EXW', 'CFR/CIF/CPT', 'FOB', 'DAP', 'DDP']}
+							title={productData.productInfo.title}
+							rating={productData.productInfo.rating}
+							reviewCount={productData.productInfo.reviewCount}
+							questionCount={productData.productInfo.questionCount}
+							currentPrice={productData.productInfo.currentPrice}
+							originalPrice={productData.productInfo.originalPrice}
+							discount={productData.productInfo.discount}
+							discountPercent={productData.productInfo.discountPercent}
+							availability={productData.productInfo.availability}
+							shipment={productData.productInfo.shipment}
+							delivery={productData.productInfo.delivery}
+							deliveryMethods={productData.productInfo.deliveryMethods}
 							activeDeliveryMethod='EXW'
 							onDeliveryMethodClick={(method) => console.log('Delivery method selected:', method)}
-							deliveryNote='Please note that the delivery cost is paid separately and is not included in the total amount. After placing your order, a manager will contact you to confirm all delivery details.'
+							deliveryNote={productData.productInfo.deliveryNote}
 							onAddToBasket={handleAddToBasket}
 							onViewSpecifications={handleViewSpecifications}
 						/>
@@ -592,34 +266,34 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					<ProductConfiguratorCTA onConfiguratorClick={handleConfiguratorClick} />
 				</div>
 				<div className={styles.infoCardsSection}>
-					<ProductInfoCards cards={INFO_CARDS} />
+					<ProductInfoCards cards={productData.infoCards} />
 				</div>
 				<div className={styles.factsSliderSection}>
-					<WattsanFactsSlider cards={FACTS_CARDS} />
+					<WattsanFactsSlider cards={productData.factsCards} />
 				</div>
 
 				<div className={styles.powerSection}>
 					<ProductDescription
 						title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
-						image='/img/catalog/cnc-routes.png' // Replace with actual machine image
-						features={MACHINE_FEATURES}
+						image={productData.gallery.mainImage}
+						features={productData.machineFeatures}
 					/>
 				</div>
 
 				<div className={styles.heartSection}>
-					<HeartOfTheMachinery />
+					<HeartOfTheMachinery data={productData.heartOfTheMachinery} />
 				</div>
 
 				<div className={styles.specsSection}>
-					<ProductSpecifications categories={SPEC_CATEGORIES} />
+					<ProductSpecifications categories={productData.specifications} />
 				</div>
 
 				<div className={styles.comparisonSection}>
-					<SeriesComparison seriesData={SERIES_COMPARISON_DATA} />
+					<SeriesComparison seriesData={productData.seriesComparison} />
 				</div>
 
 				<div className={styles.reviewsSection}>
-					<ProductReviews />
+					<ProductReviews reviews={productData.reviews} />
 				</div>
 
 				<div className={styles.madeWithSection}>
@@ -628,11 +302,14 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 
 				<div className={styles.productionSection}>
-					<ProductionProcess />
+					<ProductionProcess steps={productData.productionProcess} />
 				</div>
 
 				<div className={styles.serviceSection}>
-					<ServiceAndSupport />
+					<ServiceAndSupport
+						image={productData.serviceAndSupport.image}
+						cards={productData.serviceAndSupport.cards}
+					/>
 				</div>
 
 				<div className={styles.reviewsAndQuestionsSection}>
@@ -640,7 +317,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.packageListSection}>
-					<PackageList />
+					<PackageList items={productData.packageList} />
 				</div>
 
 				<div className={styles.additionalContentSection}>
@@ -656,7 +333,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.interestedSection}>
-					<InterestedProducts />
+					<InterestedProducts products={productData.interestedProducts} />
 				</div>
 
 				<div className={styles.blogSection}>
@@ -676,7 +353,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 								</Typography>
 							</>
 						}
-						features={SAFETY_CABIN_FEATURES}
+						features={productData.safetyCabinFeatures}
 						image='/product-cards/cnc-router/safety-cabin/sc-1.png'
 					/>
 				</div>
@@ -695,7 +372,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 								</Typography>
 							</>
 						}
-						specs={ROTARY_DEVICE_SPECS}
+						specs={productData.rotaryDeviceSpecs}
 						image='/product-cards/cnc-router/rd-rotary/rd-r-1.png'
 					/>
 				</div>
@@ -738,7 +415,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 								Wattsan provides equipment matching clients manufacturing needs, due to which a CNC router machine can have a singular spindle or multiple. This parameter defines speed and production volume. For example, with several spindles, you can simultaneously make 4 balusters.
 							</>
 						}
-						specs={MULTI_SPINDLES_SPECS}
+						specs={productData.multiSpindlesSpecs}
 						image="/product-cards/cnc-router/spindles/spindles-4.png"
 					/>
 				</div>
@@ -766,7 +443,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 								The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
 							</Typography>
 						}
-						variants={TOOL_SWITCH_VARIANTS}
+						variants={productData.toolSwitchVariants}
 						image='/product-cards/cnc-router/automatic-tool-switch/image.png'
 					/>
 				</div>
@@ -785,7 +462,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 								</Typography>
 							</>
 						}
-						types={LIQUID_COOLING_TYPES}
+						types={productData.liquidCoolingTypes}
 					/>
 				</div>
 
@@ -809,7 +486,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				<div className={styles.tableTypesSection}>
 					<TableTypes
 						title={<span><span style={{ color: '#E31E24' }}>Table types</span> for your tasks</span>}
-						items={TABLE_TYPES_DATA}
+						items={productData.tableTypes}
 					/>
 				</div>
 			</div>

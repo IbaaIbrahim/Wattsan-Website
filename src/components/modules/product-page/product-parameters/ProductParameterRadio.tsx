@@ -6,16 +6,12 @@ import clsx from 'clsx'
 
 import styles from './ProductParameterRadio.module.scss'
 
-export interface RadioOption {
-	value: string | number
-	text: string
-	price?: string
-}
+import { ProductParameterOption } from '@my-types/product'
 
 interface ProductParameterRadioProps {
 	label: string
 	value: string | number
-	options: RadioOption[]
+	options: ProductParameterOption[]
 	onChange: (value: string | number) => void
 	className?: string
 }
@@ -36,7 +32,7 @@ const ProductParameterRadio: FC<ProductParameterRadioProps> = ({
 				{options.map((option) => {
 					const isSelected = option.value === value
 					const isNotIncluded = option.text.toLowerCase().includes('not included')
-					
+
 					return (
 						<label
 							key={option.value}

@@ -4,35 +4,15 @@ import clsx from 'clsx'
 import { Typography } from '@components/ui/typography/Typography'
 import styles from './PackageList.module.scss'
 
-export interface PackageItem {
-    id: string
-    image: string
-    label: string
-}
+import { PackageItem } from '@my-types/product'
 
 interface PackageListProps {
-    items?: PackageItem[]
+    items: PackageItem[]
     className?: string
 }
 
 const PackageList: FC<PackageListProps> = ({ items = [], className }) => {
-    const defaultItems: PackageItem[] = [
-        { id: '2', image: '/img/catalog/cnc-routes.png', label: 'Package list - 2' },
-        { id: '3', image: '/img/catalog/cnc-routes.png', label: 'Package list - 3' },
-        { id: '4', image: '/img/catalog/cnc-routes.png', label: 'Package list - 4' },
-        { id: '5', image: '/img/catalog/cnc-routes.png', label: 'Package list - 5' },
-        { id: '6', image: '/img/catalog/cnc-routes.png', label: 'Package list - 6' },
-        { id: '7', image: '/img/catalog/cnc-routes.png', label: 'Package list - 7' },
-        { id: '8', image: '/img/catalog/cnc-routes.png', label: 'Package list - 8' },
-        { id: '8-2', image: '/img/catalog/cnc-routes.png', label: 'Package list - 8' },
-        { id: '9', image: '/img/catalog/cnc-routes.png', label: 'Package list - 9' },
-        { id: '10', image: '/img/catalog/cnc-routes.png', label: 'Package list - 10' },
-        { id: '11', image: '/img/catalog/cnc-routes.png', label: 'Package list - 11' },
-        { id: '12', image: '/img/catalog/cnc-routes.png', label: 'Package list - 12' },
-        { id: '13', image: '/img/catalog/cnc-routes.png', label: 'Package list - 13' },
-    ]
-
-    const displayItems = items.length > 0 ? items : defaultItems
+    const displayItems = items
 
     return (
         <section className={clsx(styles.section, className)}>
