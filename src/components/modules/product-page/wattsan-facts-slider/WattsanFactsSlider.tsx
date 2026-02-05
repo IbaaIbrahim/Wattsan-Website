@@ -1,8 +1,8 @@
 'use client'
 
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 import Image from 'next/image'
-// import Carousel from '@components/ui/carousel/Carousel'
+import EmblaCarousel from '@components/ui/embla-carousel/EmblaCarousel'
 import styles from './WattsanFactsSlider.module.scss'
 
 export interface WattsanFactCardData {
@@ -84,26 +84,7 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, className }) =
 		</div>
 	)
 
-	// Responsive item width
-	const [itemWidth, setItemWidth] = useState<number | undefined>(442)
 
-	useEffect(() => {
-		const handleResize = () => {
-			if (window.innerWidth < 768) {
-				setItemWidth(280) // Set a mobile width
-			} else if (window.innerWidth < 1200) {
-				setItemWidth(320)
-			} else {
-				setItemWidth(400)
-			}
-		}
-
-		// Initial call
-		handleResize()
-
-		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
-	}, [])
 
 	return (
 		<section className={`${styles.section} ${className || ''}`}>
@@ -111,14 +92,13 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, className }) =
 				A couple of facts about <span className={styles.titleHighlight}>Wattsan CNC routers</span>
 			</h2>
 			<div className={styles.carouselWrapper}>
-				{/* <Carousel
-					items={cards}
-					itemWidth={itemWidth}
+				<EmblaCarousel
+					slides={cards}
 					renderItem={(card) => renderCard(card as WattsanFactCardData)}
-					align="start"
-					loop={true}
-					hideNavigation={false}
-				/> */}
+					options={{ align: 'start', loop: true }}
+					slideClassName={styles.carouselSlide}
+					matchHeight={true}
+				/>
 			</div>
 		</section>
 	)
