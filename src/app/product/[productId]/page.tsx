@@ -83,14 +83,14 @@ const FACTS_CARDS: WattsanFactCardData[] = [
 		subtitle: 'Ideal for',
 		title: 'Make money 24/7 or work for your soul',
 		type: 'image',
-		imageUrl: '/img/catalog/cnc-routes.png'
+		imageUrl: '/product-cards/facts/facts1.png'
 	},
 	{
 		id: 'customization',
 		subtitle: 'Strong customization',
 		title: 'As a manufacturer we can assemble any machine for your application',
 		type: 'image',
-		imageUrl: '/img/catalog/cnc-routes.png'
+		imageUrl: '/product-cards/facts/facts2.png'
 	},
 	{
 		id: 'safety',
