@@ -2,7 +2,7 @@ import { ProductPageData } from '../../types/product';
 import * as mappers from './mappers';
 
 // Raw Mock Data simulating API response
-const MOCK_CNC_ROUTER_DATA = {
+export const MOCK_CNC_ROUTER_DATA = {
     breadcrumbs: [
         { label: 'Home', href: '/' },
         { label: 'CNC Routers', href: '/catalog' },
