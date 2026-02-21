@@ -7,6 +7,7 @@ import {
 	API_GET_COUNTRIES,
 	API_GET_DELIVERY_METHODS,
 	API_GET_ORDERS,
+	API_GET_REAL_ATTACHMENTS,
 	API_ORDERS_CREATE, API_VERIFY_URL
 } from '@constants/api'
 import { authStore } from '@store/auth'
@@ -148,6 +149,27 @@ export const getOrder = async ({
 		})
 
 		basketStore.set.order(response?.data?.[0])
+		return response.data?.[0]
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const getModelYoutubeLink = async ({
+	modelId,
+	seriesId
+}: {
+	modelId: number
+	seriesId: number
+}) => {
+	try {
+		const response = await request({
+			url: API_GET_REAL_ATTACHMENTS,
+			method: 'GET',
+			query: { filter: `seriesId~eq~'${seriesId}'~and~modelId~eq~'${modelId}'~and~attachmentType~eq~'4'` }
+		})
+
+		// basketStore.set.order(response?.data?.[0])
 		return response.data?.[0]
 	} catch (error) {
 		console.error(error)

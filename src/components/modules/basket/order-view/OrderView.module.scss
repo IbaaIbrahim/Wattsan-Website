@@ -30,3 +30,12 @@
     display: grid;
     grid-gap: 16px;
 }
+
+.videoSlider {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    // overflow-x: auto;
+    // padding-bottom: 12px;
+    // scrollbar-width: none;
+}

@@ -5,22 +5,38 @@ import LearningLink from '@components/modules/basket/learning-link/LearningLink'
 import VideoPlate from '@components/modules/basket/video-plate/VideoPlate'
 import OrderPlate from '@components/modules/orders/order-plate/OrderPlate'
 import { basketStore } from '@store/basket'
-import { getOrder } from '@store/basket/actions'
-import { FC, useEffect } from 'react'
+import { getModelYoutubeLink, getOrder } from '@store/basket/actions'
+import { FC, useEffect, useState } from 'react'
 
 import styles from './OrderView.module.scss'
-import { IOrder } from '@my-types/orders'
+import { IOrder, IOrderInfo } from '@my-types/orders'
+import _ from 'lodash'
 
 const OrderView: FC<{ clientId: string; orderId: string }> = ({
 	clientId,
 	orderId
 }) => {
+	const [youtubeLinks, setYoutubeLinks] = useState<Record<string, any>>({})
 	useEffect(() => {
 		getOrder({ clientId, id: orderId })
 	}, [clientId, orderId])
 
 	const order: IOrder = basketStore.use.order()
 	const totalPrice = basketStore.use.orderTotalPriceSelector()
+
+	useEffect(() => {
+		if (!order) return
+		order?.orderProducts?.forEach(async (product: IOrderInfo) => {
+			const { referenceObject } = product
+			const modelId = referenceObject?.workArea
+			const seriesId = referenceObject?.seriesId
+
+			const modelYouTubeLink = await getModelYoutubeLink({ modelId, seriesId })
+			setYoutubeLinks((prev) => {
+				return { ...prev, [`${seriesId}-${modelId}`]: modelYouTubeLink }
+			})
+		})
+	}, [order])
 
 	return (
 		<div className={styles.page}>
@@ -49,13 +65,18 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 				equipment. Subscribe to our channel and stay updated with all the latest
 				content.
 			</div>
-			{/*{orderInfo.video.videoSrc && (*/}
-			{/*	<VideoPlate*/}
-			{/*		videoSrc={orderInfo.video.videoSrc}*/}
-			{/*		preview={orderInfo.video.preview}*/}
-			{/*		title={orderInfo.video.title}*/}
-			{/*	/>*/}
-			{/*)}*/}
+			{_.size(youtubeLinks) > 0 && (
+				<div className={styles.videoSlider}>
+					{_.map(youtubeLinks, (link, key) => (
+						<VideoPlate
+							key={key}
+							videoSrc={link.youtubeLink}
+							preview={link.preview || ''}
+							title={link.title || ''}
+						/>
+					))}
+				</div>
+			)}
 			<div className={styles.sectionTitle}>Explore our blog</div>
 			<div className={styles.sectionParagraph}>
 				Explore valuable insights while delving into practical examples of using

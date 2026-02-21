@@ -30,12 +30,14 @@ export interface IOrderInfo {
 	"orderId": number
 	"statusCategory": number
 	"status": number
-	"referenceObject":{
+	"referenceObject": {
 		"id": number
 		fileManger: {
 			id: number
 			url: string
-		}
+		},
+		workArea: number
+		seriesId: number
 	}
 }
 
