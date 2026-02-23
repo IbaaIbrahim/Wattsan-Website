@@ -7,6 +7,7 @@ import Link from 'next/link'
 import styles from './FilesSection.module.scss'
 
 const FilesSection = ({ info }) => {
+
 	return (
 		<PlateFoldable
 			key={info.name}
@@ -48,7 +49,8 @@ const FilesSection = ({ info }) => {
 							</div>
 							<Link
 								className={styles.link}
-								href={link.url}
+								href={link.url || ''}
+								target='_blank'
 							>
 								<Image
 									src={downloadIcon}

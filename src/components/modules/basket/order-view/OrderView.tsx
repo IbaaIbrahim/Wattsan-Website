@@ -42,30 +42,33 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 				return { ...prev, [`${seriesId}-${modelId}`]: modelYouTubeLink }
 			})
 
-			const supportAsset = await getSupportAssetsByTag(`tag_${seriesId}_${modelId}`)
-			if (supportAsset && supportAsset.id > 0) {
-				const files = supportAsset.supportFiles.filter((x: any) => x.categoryType === 2) // Education materials
-				const sections = files.filter((x: any) => x.parentId === null)
+			const supportAssets: any[] = await getSupportAssetsByTag(`tag_${seriesId}_${modelId}`) || []
 
-				const formattedSections = sections.map((section: any) => ({
-					id: section.id,
-					name: section.title,
-					description: section.stepName,
-					links: files.filter((x: any) => x.parentId === section.id).map((x: any) => ({
-						id: x.id,
-						icon: x.fileType === 1 ? imageIcon : (x.fileType === 2 ? videoIcon : fileIcon),
-						name: x.title,
-						description: x.stepName,
-						url: x?.fileManager?.url ?? ''
+			supportAssets.forEach((supportAsset: any) => {
+				if (supportAsset && supportAsset.id > 0 && supportAsset.supportFiles) {
+					const files = supportAsset.supportFiles.filter((x: any) => x.categoryType === 2) // Education materials
+					const sections = files.filter((x: any) => x.parentId === null)
+
+					const formattedSections = sections.map((section: any) => ({
+						id: section.id,
+						name: section.title,
+						description: section.stepName,
+						links: files.filter((x: any) => x.parentId === section.id).map((x: any) => ({
+							id: x.id,
+							icon: x.fileType === 1 ? imageIcon : (x.fileType === 2 ? videoIcon : fileIcon),
+							name: x.title,
+							description: x.stepName,
+							url: x?.fileManger?.url ?? ''
+						}))
 					}))
-				}))
 
-				setSupportSections(prev => {
-					// Avoid duplicates based on ID
-					const newSections = formattedSections.filter((fs: any) => !prev.some(p => p.id === fs.id))
-					return [...prev, ...newSections]
-				})
-			}
+					setSupportSections(prev => {
+						// Avoid duplicates based on ID
+						const newSections = formattedSections.filter((fs: any) => !prev.some(p => p.id === fs.id))
+						return [...prev, ...newSections]
+					})
+				}
+			})
 		})
 	}, [order])
 
@@ -84,12 +87,16 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 							get comfortable with the device, fully unlocking its potential.
 						</div>
 						<div className={styles.steps}>
-							{supportSections.map((section) => (
-								<FilesSection
-									key={section.id}
-									info={section}
-								/>
-							))}
+							{supportSections.map((section) => {
+								console.log('section1', section);
+
+								return (
+									<FilesSection
+										key={section.id}
+										info={section}
+									/>
+								)
+							})}
 						</div>
 					</>
 				)

@@ -182,12 +182,13 @@ export const getSupportAssetsByTag = async (tagName: string) => {
 		const response = await request({
 			url: API_GET_SUPPORT_ASSETS_BY_TAG,
 			method: 'GET',
-			query: { tag: tagName }
+			query: { tagName }
 		})
 
-		return response?.data?.[0] // Returns the first matched support asset
+		return response?.data || [] // Returns all matched support assets
 	} catch (error) {
 		console.error(error)
+		return []
 	}
 }
 
