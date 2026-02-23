@@ -8,6 +8,7 @@ import {
 	API_GET_DELIVERY_METHODS,
 	API_GET_ORDERS,
 	API_GET_REAL_ATTACHMENTS,
+	API_GET_SUPPORT_ASSETS_BY_TAG,
 	API_ORDERS_CREATE, API_VERIFY_URL
 } from '@constants/api'
 import { authStore } from '@store/auth'
@@ -171,6 +172,20 @@ export const getModelYoutubeLink = async ({
 
 		// basketStore.set.order(response?.data?.[0])
 		return response.data?.[0]
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const getSupportAssetsByTag = async (tagName: string) => {
+	try {
+		const response = await request({
+			url: API_GET_SUPPORT_ASSETS_BY_TAG,
+			method: 'GET',
+			query: { tag: tagName }
+		})
+
+		return response?.data?.[0] // Returns the first matched support asset
 	} catch (error) {
 		console.error(error)
 	}
