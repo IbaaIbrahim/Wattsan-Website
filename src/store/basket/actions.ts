@@ -2,6 +2,7 @@ import quantity from '@components/modules/basket/quantity/Quantity'
 import { MODALS } from '@components/ui/modal/Modal'
 import {
 	API_CREATE_BASKET,
+	API_GET_ARTICLES_BY_TAG,
 	API_GET_BASKETS,
 	API_GET_CHECK_COUPON,
 	API_GET_COUNTRIES,
@@ -186,6 +187,21 @@ export const getSupportAssetsByTag = async (tagName: string) => {
 		})
 
 		return response?.data || [] // Returns all matched support assets
+	} catch (error) {
+		console.error(error)
+		return []
+	}
+}
+
+export const getArticlesByTag = async (tagName: string) => {
+	try {
+		const response = await request({
+			url: API_GET_ARTICLES_BY_TAG,
+			method: 'GET',
+			query: { tagName }
+		})
+
+		return response?.data || []
 	} catch (error) {
 		console.error(error)
 		return []

@@ -17,6 +17,7 @@ const BlogPlate: FC<{
 							src={post.image}
 							fill={true}
 							alt=''
+							objectFit='contain'
 						/>
 					</div>
 					<div className={styles.tag}>{post.tag}</div>
@@ -27,6 +28,7 @@ const BlogPlate: FC<{
 						size='l'
 						view='black'
 						href={post.url}
+						target='_blank'
 					>
 						Learn more
 					</Button>

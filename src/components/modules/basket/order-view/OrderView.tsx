@@ -9,7 +9,7 @@ import fileIcon from '@public/img/support/file-icon.png'
 import imageIcon from '@public/img/support/image-icon.png'
 import videoIcon from '@public/img/support/video-icon.png'
 import { basketStore } from '@store/basket'
-import { getModelYoutubeLink, getOrder, getSupportAssetsByTag } from '@store/basket/actions'
+import { getArticlesByTag, getModelYoutubeLink, getOrder, getSupportAssetsByTag } from '@store/basket/actions'
 import { FC, useEffect, useState } from 'react'
 
 import styles from './OrderView.module.scss'
@@ -22,6 +22,7 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 }) => {
 	const [youtubeLinks, setYoutubeLinks] = useState<Record<string, any>>({})
 	const [supportSections, setSupportSections] = useState<any[]>([])
+	const [blogs, setBlogs] = useState<any[]>([])
 
 	useEffect(() => {
 		getOrder({ clientId, id: orderId })
@@ -45,6 +46,21 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 			})
 
 			const supportAssets: any[] = await getSupportAssetsByTag(`${seriesName}_${modelName}`) || []
+
+			const blogsList: any[] = await getArticlesByTag(`${seriesName}_${modelName}`) || []
+			const formattedBlogs = blogsList.map((blog: any) => ({
+				id: blog.id,
+				image: referenceObject.fileManger.url,
+				tag: blog.articleTag?.[0]?.tag?.name || '',
+				title: blog.title || '',
+				// subtitle: blog.metaDescription || '',
+				url: blog.externalLink || (blog.slug ? `/blog/${blog.slug}` : '')
+			}))
+
+			setBlogs(prev => {
+				const newBlogs = formattedBlogs.filter((fb: any) => !prev.some(p => p.id === fb.id))
+				return [...prev, ...newBlogs]
+			})
 
 			supportAssets.forEach((supportAsset: any) => {
 				if (supportAsset && supportAsset.id > 0 && supportAsset.supportFiles) {
@@ -122,12 +138,16 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 					</div>
 				</>
 			)}
-			<div className={styles.sectionTitle}>Explore our blog</div>
-			<div className={styles.sectionParagraph}>
-				Explore valuable insights while delving into practical examples of using
-				our equipment, and stay updated on its applications and advancements.
-			</div>
-			{/*<BlogPlate posts={orderInfo.blog} />*/}
+			{blogs.length > 0 && (
+				<>
+					<div className={styles.sectionTitle}>Explore our blog</div>
+					<div className={styles.sectionParagraph}>
+						Explore valuable insights while delving into practical examples of using
+						our equipment, and stay updated on its applications and advancements.
+					</div>
+					<BlogPlate posts={blogs} />
+				</>
+			)}
 		</div>
 	)
 }

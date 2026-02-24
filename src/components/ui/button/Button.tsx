@@ -20,6 +20,7 @@ const Button: FC<{
 	withoutContent?: boolean
 	addonsHideMobile?: boolean
 	withoutBorder?: boolean
+	target?: string
 	onClick?: (event: MouseEvent<HTMLElement>) => void
 }> = ({
 	block = false,
@@ -35,24 +36,68 @@ const Button: FC<{
 	withoutContent = false,
 	addonsHideMobile = false,
 	withoutBorder = false,
+	target = '_self',
 	onClick
 }) => {
-	if (href) {
+		if (href) {
+			return (
+				<Link
+					className={clsx(
+						styles.button,
+						styles[size],
+						styles[view],
+						disabled && styles.disabled,
+						block && styles.block,
+						withoutContent && styles.withoutContent,
+						addonsHideMobile && styles.buttonWithoutAddons,
+						withoutBorder && styles.withoutBorder,
+						className && className
+					)}
+					href={href}
+					type={type}
+					onClick={onClick}
+					target={target}
+				>
+					{leftAddon && (
+						<span
+							className={clsx(
+								styles.leftAddon,
+								addonsHideMobile && styles.addonsHideMobile
+							)}
+						>
+							{leftAddon}
+						</span>
+					)}
+					{children}
+					{rightAddon && (
+						<span
+							className={clsx(
+								styles.rightAddon,
+								addonsHideMobile && styles.addonsHideMobile
+							)}
+						>
+							{rightAddon}
+						</span>
+					)}
+				</Link>
+			)
+		}
+
 		return (
-			<Link
+			<button
 				className={clsx(
 					styles.button,
 					styles[size],
 					styles[view],
-					disabled && styles.disabled,
 					block && styles.block,
+					disabled && styles.disabled,
 					withoutContent && styles.withoutContent,
 					addonsHideMobile && styles.buttonWithoutAddons,
 					withoutBorder && styles.withoutBorder,
 					className && className
 				)}
-				href={href}
 				type={type}
+				disabled={disabled}
 				onClick={onClick}
 			>
 				{leftAddon && (
@@ -76,50 +121,8 @@ const Button: FC<{
 						{rightAddon}
 					</span>
 				)}
-			</Link>
+			</button>
 		)
 	}
-
-	return (
-		<button
-			className={clsx(
-				styles.button,
-				styles[size],
-				styles[view],
-				block && styles.block,
-				disabled && styles.disabled,
-				withoutContent && styles.withoutContent,
-				addonsHideMobile && styles.buttonWithoutAddons,
-				withoutBorder && styles.withoutBorder,
-				className && className
-			)}
-			type={type}
-			disabled={disabled}
-			onClick={onClick}
-		>
-			{leftAddon && (
-				<span
-					className={clsx(
-						styles.leftAddon,
-						addonsHideMobile && styles.addonsHideMobile
-					)}
-				>
-					{leftAddon}
-				</span>
-			)}
-			{children}
-			{rightAddon && (
-				<span
-					className={clsx(
-						styles.rightAddon,
-						addonsHideMobile && styles.addonsHideMobile
-					)}
-				>
-					{rightAddon}
-				</span>
-			)}
-		</button>
-	)
-}
 
 export default Button

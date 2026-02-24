@@ -25,6 +25,7 @@ export const API_GET_REAL_ATTACHMENTS = `${API_URL}/ConfiguratorImages/ReadRealA
 export const API_GET_SUPPORT_ABOUT_US = `${API_URL}/Support/AboutUs`
 export const API_GET_SUPPORT_TRAINING_FILES = `${API_URL}/Support/ReadAssets`
 export const API_GET_SUPPORT_ASSETS_BY_TAG = `${API_URL}/Support/ReadAssetsByTag`
+export const API_GET_ARTICLES_BY_TAG = `${API_URL}/Articles/ReadByTag?tagName=Mini_0609`
 export const API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT = `${API_URL}/ClientConfiguration/ReadCharCodeContent`
 export const API_GET_PERSONAL_OFFERS = `${API_URL}/Coupons/Read`
 export const API_FILE_MANAGER_READ = `${API_URL}/FileManager/Read`
