@@ -36,13 +36,15 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 			const { referenceObject } = product
 			const modelId = referenceObject?.workArea
 			const seriesId = referenceObject?.seriesId
+			const modelName = referenceObject?.modelName
+			const seriesName = referenceObject?.series?.name
 
 			const modelYouTubeLink = await getModelYoutubeLink({ modelId, seriesId })
 			setYoutubeLinks((prev) => {
 				return { ...prev, [`${seriesId}-${modelId}`]: modelYouTubeLink }
 			})
 
-			const supportAssets: any[] = await getSupportAssetsByTag(`tag_${seriesId}_${modelId}`) || []
+			const supportAssets: any[] = await getSupportAssetsByTag(`${seriesName}_${modelName}`) || []
 
 			supportAssets.forEach((supportAsset: any) => {
 				if (supportAsset && supportAsset.id > 0 && supportAsset.supportFiles) {
@@ -88,8 +90,6 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 						</div>
 						<div className={styles.steps}>
 							{supportSections.map((section) => {
-								console.log('section1', section);
-
 								return (
 									<FilesSection
 										key={section.id}

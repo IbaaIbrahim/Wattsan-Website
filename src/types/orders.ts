@@ -36,8 +36,15 @@ export interface IOrderInfo {
 			id: number
 			url: string
 		},
+		modelName: string
 		workArea: number
+		workAreaChar: {
+			name: string
+		}
 		seriesId: number
+		series: {
+			name: string
+		}
 	}
 }
 
