@@ -36,11 +36,13 @@ import AutomaticToolSwitch from '@components/modules/product-page/automatic-tool
 import MultiSpindles from '@components/modules/product-page/multi-spindles/MultiSpindles'
 import TableTypes from '@components/modules/product-page/table-types/TableTypes'
 import AspirationSystem from '@components/modules/product-page/aspiration-system/AspirationSystem'
-
-import { getProductPageData } from '@api/product'
-import { ProductPageData, ProductParameter } from '@my-types/product'
 import PlentyOfMaterials from '@components/modules/product-page/plenty-of-materials/PlentyOfMaterials'
-import TwoLaserHeads from '@components/modules/product-page/two-laser-heads/TwoLaserHeads'
+import { getProductPageData } from '@api/product'
+import { ProductPageData, ProductParameter, LaserTypesData, MopaComparisonData } from '@my-types/product'
+
+import LaserTypes from '@components/modules/product-page/laser-types/LaserTypes'
+import MopaQSwitchComparison from '@components/modules/product-page/mopa-qswitch-comparison/MopaQSwitchComparison'
+import MopaQSwitchGrid from '@components/modules/product-page/mopa-qswitch-grid/MopaQSwitchGrid'
 
 
 const ProductPage = ({ params }: { params: { productId: string } }) => {
@@ -50,92 +52,58 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 	const [parameters, setParameters] = useState<ProductParameter[]>([
 		{
-			id: 'workArea',
-			label: 'Work area size',
+			id: 'typeOfLaser',
+			label: 'Type of laser',
 			type: 'select',
-			value: '600x900',
+			value: 'fiber',
 			options: [
-				{ value: '600x900', text: '600x900 mm' },
-				{ value: '800x1200', text: '800x1200 mm' },
-				{ value: '1000x1500', text: '1000x1500 mm' }
+				{ value: 'fiber', text: 'Fiber (metals and reflections)' },
+				{ value: 'uv', text: 'UV (all materials)' },
+				{ value: 'co2', text: 'CO2 (Organic materials)' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'workArea' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'typeOfLaser' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'toolLift',
-			label: 'Tool lift height (Z axis)',
+			id: 'laserPower',
+			label: 'Laser power',
 			type: 'select',
-			value: '200',
+			value: '20',
 			options: [
-				{ value: '200', text: '200 mm' },
-				{ value: '250', text: '250 mm' },
-				{ value: '300', text: '300 mm' }
+				{ value: '20', text: '20W' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'toolLift' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'laserPower' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'spindlePower',
-			label: 'Spindle power',
+			id: 'lensWorkArea',
+			label: 'Lens work area',
 			type: 'select',
-			value: '3.5',
+			value: '100x100',
 			options: [
-				{ value: '3.5', text: '3,5 kW, water 15025' },
-				{ value: '5.5', text: '5,5 kW, water 15025' },
-				{ value: '7.5', text: '7,5 kW, water 15025' }
+				{ value: '100x100', text: '100x100 mm' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'spindlePower' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'lensWorkArea' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'spindleQuantity',
-			label: 'Spindle quantity',
+			id: 'workTableSize',
+			label: 'Work table size',
 			type: 'select',
-			value: '1',
+			value: '600x600',
 			options: [
-				{ value: '1', text: '1 pcs' },
-				{ value: '2', text: '2 pcs' },
-				{ value: '3', text: '3 pcs' }
+				{ value: '600x600', text: '600x600 mm' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'spindleQuantity' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'workTableSize' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'liquidCooling',
-			label: 'Liquid cooling system',
-			type: 'radio',
-			value: 'notIncluded',
-			options: [
-				{ value: 'notIncluded', text: 'Not included' },
-				{ value: 'automatic', text: 'Automatic irrigation', price: '+$1200' },
-				{ value: 'oilMist', text: 'Oil mist', price: '+$1500' }
-			],
-			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'liquidCooling' ? { ...p, value: value as string } : p))
-			}
-		},
-		{
-			id: 'aspiration',
-			label: 'Aspiration',
-			type: 'radio',
-			value: 'notIncluded',
-			options: [
-				{ value: 'notIncluded', text: 'Not included' },
-				{ value: '220v', text: '220V', price: '+$1200' },
-				{ value: '380v', text: '380V', price: '+$1500' }
-			],
-			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'aspiration' ? { ...p, value: value as string } : p))
-			}
-		},
-		{
-			id: 'vacuumTable',
-			label: 'Vacuum table',
+			id: 'autofocus',
+			label: 'Autofocus',
 			type: 'radio',
 			value: 'notIncluded',
 			options: [
@@ -143,47 +111,46 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{ value: 'included', text: 'Included', price: '+$1200' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'vacuumTable' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'autofocus' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'rotaryDevice',
-			label: 'Rotary device',
+			id: 'dynamicFocus',
+			label: 'Dynamic focus',
 			type: 'radio',
 			value: 'notIncluded',
 			options: [
 				{ value: 'notIncluded', text: 'Not included' },
-				{ value: 'separate', text: 'Separate', price: '+$1200' },
-				{ value: 'integrated', text: 'Integrated', price: '+$2500' }
+				{ value: 'included', text: 'Included', price: '+$1200' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'rotaryDevice' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'dynamicFocus' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'automaticToolSwitch',
-			label: 'Automatic tool switch',
+			id: 'rotaryDeviceCapability',
+			label: 'Rotary device capability',
 			type: 'radio',
-			value: 'no',
+			value: 'yes',
 			options: [
-				{ value: 'no', text: 'No' },
-				{ value: 'yes', text: 'Yes', price: '+$2500' }
+				{ value: 'yes', text: 'Yes' },
+				{ value: 'no', text: 'No' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'automaticToolSwitch' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'rotaryDeviceCapability' ? { ...p, value: value as string } : p))
 			}
 		},
 		{
-			id: 'cabin',
-			label: 'Cabin (Only for mini series)',
+			id: 'integrationCapability',
+			label: 'Integration capability',
 			type: 'radio',
 			value: 'notIncluded',
 			options: [
 				{ value: 'notIncluded', text: 'Not included' },
-				{ value: 'included', text: 'Included', price: '+$2500' }
+				{ value: 'included', text: 'Included' }
 			],
 			onChange: (value) => {
-				setParameters(prev => prev.map(p => p.id === 'cabin' ? { ...p, value: value as string } : p))
+				setParameters(prev => prev.map(p => p.id === 'integrationCapability' ? { ...p, value: value as string } : p))
 			}
 		}
 	])
@@ -191,7 +158,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await getProductPageData('laser-co2') // Fetching Laser data!
+				const data = await getProductPageData('laser-markers') // Fetching Laser data!
 				setProductData(data)
 			} catch (error) {
 				console.error('Failed to fetch product data', error)
@@ -217,6 +184,82 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 	if (isLoading || !productData) {
 		return <div className={styles.loadingContainer}>Loading...</div>
+	}
+
+	const laserTypesData: LaserTypesData = {
+		title: 'Laser types',
+		cards: [
+			{
+				id: 'fiber',
+				title: 'Fiber',
+				image: '/img/product/laser-markers/fiber.png',
+				specs: [
+					{ label: 'Wave length', value: '1,06 µm' },
+					{ label: 'Materials', value: 'Metals, plastics, leather, ceramics' },
+					{ label: 'Applications', value: 'Industrial marking, batch numbers, codes' },
+					{ label: 'Quality', value: 'High precision, no consumables' },
+					{ label: 'Cost', value: 'Low maintenance, long life (100,000h)' }
+				]
+			},
+			{
+				id: 'uv',
+				title: 'UV',
+				image: '/img/product/laser-markers/uv.png',
+				specs: [
+					{ label: 'Wave length', value: '0,355 µm' },
+					{ label: 'Materials', value: 'All materials (glass, silicon, etc)' },
+					{ label: 'Applications', value: 'Micro-marking, cold processing' },
+					{ label: 'Quality', value: 'Extremely high detail, no heat effect' },
+					{ label: 'Cost', value: 'High precision, specialized tasks' }
+				]
+			},
+			{
+				id: 'co2',
+				title: 'CO2',
+				image: '/img/product/laser-markers/co2.png',
+				specs: [
+					{ label: 'Wave length', value: '10,6 µm' },
+					{ label: 'Materials', value: 'Woods, glass, acrylic, paper, leather' },
+					{ label: 'Applications', value: 'Branding, personalization, crafts' },
+					{ label: 'Quality', value: 'Versatile for organic materials' },
+					{ label: 'Cost', value: 'Easy to maintain, affordable' }
+				]
+			}
+		]
+	}
+
+	const mopaComparisonData: MopaComparisonData = {
+		title: 'Comparison of MOPA and Q-SWITCH',
+		description: 'MOPA lasers offer greater flexibility with adjustable pulse duration, allowing for color marking on stainless steel and high-quality marking on plastics without burning. Q-SWITCH lasers have fixed pulse width and are better suited for deep engraving on metals.',
+		cards: [
+			{
+				title: 'MOPA',
+				specs: [
+					{ label: 'Flexibility', value: 'High (adjustable)' },
+					{ label: 'Pulse width', value: '2-500 ns' },
+					{ label: 'Quality on thin materials', value: 'Excellent' },
+					{ label: 'Color control', value: 'Yes' },
+					{ label: 'Plastic marking', value: 'High quality' },
+					{ label: 'Application', value: 'Color marking, sensitive materials' },
+					{ label: 'Cost', value: 'Higher' }
+				]
+			},
+			{
+				title: 'Q-SWITCH',
+				specs: [
+					{ label: 'Flexibility', value: 'Fixed' },
+					{ label: 'Pulse width', value: '100-120 ns' },
+					{ label: 'Quality on thin materials', value: 'Good for general tasks' },
+					{ label: 'Color control', value: 'No' },
+					{ label: 'Plastic marking', value: 'Risk of burning' },
+					{ label: 'Application', value: 'Deep engraving, standard metal marking' },
+					{ label: 'Cost', value: 'Lower' }
+				]
+			}
+		],
+		alert: {
+			text: 'The choice between MOPA and Q-SWITCH depends on the required marking precision and the materials you plan to process.'
+		}
 	}
 
 	return (
@@ -342,7 +385,31 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					<ProductBlog />
 				</div>
 
-				<div className={styles.safetyCabinSection}>
+				<div className={styles.laserTypesSection}>
+					<LaserTypes
+						title={<span><span style={{ color: '#E31E24' }}>Laser</span> types</span>}
+						cards={laserTypesData.cards}
+					/>
+				</div>
+
+				<div className={styles.mopaComparisonSection}>
+					<MopaQSwitchComparison
+						title={<span><span style={{ color: '#E31E24' }}>Comparison</span> of MOPA and Q-SWITCH</span>}
+						description={mopaComparisonData.description}
+						cards={mopaComparisonData.cards}
+					/>
+				</div>
+
+				<div className={styles.mopaGridSection}>
+					<MopaQSwitchGrid
+						title={<span><span style={{ color: '#E31E24' }}>Comparison</span> of MOPA and Q-SWITCH (Grid View)</span>}
+						description={mopaComparisonData.description}
+						cards={mopaComparisonData.cards}
+						alert={mopaComparisonData.alert}
+					/>
+				</div>
+
+				{/* <div className={styles.safetyCabinSection}>
 					<SafetyCabin
 						title={<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>}
 						description={
@@ -490,19 +557,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 						title={<span><span style={{ color: '#E31E24' }}>Table types</span> for your tasks</span>}
 						items={productData.tableTypes}
 					/>
-				</div>
-
-				<div className={styles.materialsSection}>
-					<PlentyOfMaterials data={productData.materialsProcessing} />
-				</div>
-
-				{productData.twoLaserHeads && (
-					<div className={styles.twoLaserHeadsSection}>
-						<TwoLaserHeads
-							{...productData.twoLaserHeads}
-						/>
-					</div>
-				)}
+				</div> */}
 			</div>
 		</div>
 

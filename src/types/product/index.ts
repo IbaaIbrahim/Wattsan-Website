@@ -174,6 +174,70 @@ export interface HeartOfTheMachineryData {
     content: Record<string, MachineTabContent>
 }
 
+// Materials Processing Data
+export interface TitlePart {
+    text: string
+    color?: string
+}
+
+export interface MaterialItem {
+    id: string
+    name: string
+    action: string
+    icon: string
+}
+
+export interface MaterialsProcessingData {
+    title: TitlePart[]
+    images: string[]
+    materials: MaterialItem[]
+}
+
+// Two Laser Heads Data
+export interface TwoLaserHeadsData {
+    title: string
+    subtitle: string
+    description1: string
+    description2: string
+    image: string
+}
+
+// Laser Types Data
+export interface LaserTypeCard {
+    id: string
+    title: string
+    image: string
+    specs: {
+        label: string
+        value: string
+    }[]
+}
+
+export interface LaserTypesData {
+    title?: string
+    cards: LaserTypeCard[]
+}
+
+// MOPA Comparison Data
+export interface MopaComparisonCard {
+    title: string
+    image?: string
+    specs: {
+        label: string
+        value: string
+    }[]
+}
+
+export interface MopaComparisonData {
+    title?: string
+    description?: string
+    cards: MopaComparisonCard[]
+    alert?: {
+        text: string
+        icon?: string
+    }
+}
+
 // Aggregated Page Data Interface
 export interface ProductPageData {
     breadcrumbs: BreadcrumbItem[]
@@ -193,6 +257,10 @@ export interface ProductPageData {
     supportCards: SupportCard[]
     interestedProducts: InterestedProduct[]
     heartOfTheMachinery: HeartOfTheMachineryData
+    materialsProcessing: MaterialsProcessingData
+    twoLaserHeads?: TwoLaserHeadsData
+    laserTypesData?: LaserTypesData
+    mopaComparisonData?: MopaComparisonData
     gallery: {
         mainImage: string
         thumbnails: string[]

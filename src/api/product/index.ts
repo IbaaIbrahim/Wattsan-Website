@@ -483,6 +483,33 @@ export const MOCK_CNC_ROUTER_DATA = {
             }
         }
     },
+    materialsProcessing: {
+        title: [
+            { text: 'Plenty of materials ', color: '#e63c32' },
+            { text: 'available for processing' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'plywood', name: 'Plywood', action: 'Cutting and engraving', icon: '/image 11643' },
+            { id: 'mdf', name: 'MDF', action: 'Cutting and engraving', icon: '/image 11681' },
+            { id: 'wood', name: 'Wood', action: 'Cutting and engraving', icon: '/image 11644' },
+            { id: 'plexyglass', name: 'Plexyglass', action: 'Cutting and engraving', icon: '/image 11682' },
+            { id: 'acrylic', name: 'Acrylic', action: 'Cutting and engraving', icon: '/image 11683' },
+            { id: 'abs', name: 'ABS', action: 'Cutting and engraving', icon: '/image 11684' },
+            { id: 'foamboard', name: 'Foamboard', action: 'Cutting and engraving', icon: '/image 11685' },
+            { id: 'leather', name: 'Leather', action: 'Cutting and engraving', icon: '/image 11686' },
+            { id: 'fabric', name: 'Fabric', action: 'Cutting and engraving', icon: '/image 11687' },
+            { id: 'stone-ceramics', name: 'Stone and ceramics', action: 'Engraving', icon: '/image 11688' },
+            { id: 'laser-rubber', name: 'Laser rubber', action: 'Engraving', icon: '/image 11704' },
+            { id: 'glass', name: 'Glass', action: 'Engraving', icon: '/image 11690' }
+        ]
+    },
     gallery: {
         mainImage: '/img/catalog/cnc-routes.png',
         thumbnails: [
@@ -568,6 +595,105 @@ const MOCK_LASER_CO2_DATA = {
     ]
 };
 
+const MOCK_LASER_MARKERS_DATA = {
+    ...MOCK_CNC_ROUTER_DATA,
+    productInfo: {
+        ...MOCK_CNC_ROUTER_DATA.productInfo,
+        title: 'Laser Markers TT series'
+    },
+    breadcrumbs: [
+        { label: 'Home', href: '/' },
+        { label: 'Laser Markers', href: '/catalog' },
+        { label: 'TT series' }
+    ],
+    machineFeatures: [
+        {
+            title: 'Laser source',
+            description: 'There are three types: fiber, ultraviolet, and RF laser sources. Fiber is for metals, ultraviolet is for any product, and CO2 is for processing organic materials.'
+        },
+        {
+            title: 'Cooling system',
+            description: 'There are water-cooled and air-cooled types. Water-cooled types are only available with UV sources, while air-cooled types are installed on markers with FL and CO2 sources. Desktop models have the source built in, making them more compact.'
+        },
+        {
+            title: 'Column',
+            description: 'A device with a trapezoidal screw inside, designed to adjust the height of the scanner. Mainly manual type. Motorized version available as an option.'
+        }
+    ],
+    heartOfTheMachinery: {
+        tabs: [
+            { id: 'scanner', label: 'Scanner' },
+            { id: 'controlSystem', label: 'Control system' },
+            { id: 'fThetaLens', label: 'F-theta lens' },
+            { id: 'electrics', label: 'Electrics' }
+        ],
+        content: {
+            scanner: {
+                id: 'scanner',
+                title: 'Scanner',
+                description: 'A device that directs a laser beam onto the surface to be treated. Inside, there are two motors with mirrors adjusted to the required power and wavelength. There are also two red laser pointers that help to precisely adjust the focal length.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            controlSystem: {
+                id: 'controlSystem',
+                title: 'Control system',
+                description: 'Advanced control system designed for precise laser marking operations.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            fThetaLens: {
+                id: 'fThetaLens',
+                title: 'F-theta lens',
+                description: 'Specialized lens optimized for flat field focal points required in laser marking.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            electrics: {
+                id: 'electrics',
+                title: 'Electrics',
+                description: 'Reliable electrical components ensuring stable operation of the laser marking machine.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            }
+        }
+    },
+    materialsProcessing: {
+        title: [
+            { text: 'Plenty of materials ', color: '#e63c32' },
+            { text: 'available for processing' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png', // Placeholder or generated later
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'abs', name: 'ABS', action: 'Marking', icon: '/image 11684' },
+            { id: 'polycarbonate', name: 'Polycarbonate', action: 'Marking', icon: '/image 11681' },
+            { id: 'rubber', name: 'Rubber', action: 'Marking', icon: '/image 11704' },
+            { id: 'aluminum', name: 'Aluminum', action: 'Marking', icon: '/image 11643' },
+            { id: 'gold', name: 'Gold', action: 'Marking', icon: '/image 11644' },
+            { id: 'copper', name: 'Copper', action: 'Marking', icon: '/image 11682' },
+            { id: 'platinum', name: 'Platinum', action: 'Marking', icon: '/image 11683' },
+            { id: 'silver', name: 'Silver', action: 'Marking', icon: '/image 11685' },
+            { id: 'titanium', name: 'Titanium', action: 'Marking', icon: '/image 11686' },
+            { id: 'brass', name: 'Brass', action: 'Marking', icon: '/image 11687' },
+            { id: 'stainless-steel', name: 'Stainless steel', action: 'Marking', icon: '/image 11688' },
+            { id: 'ceramics', name: 'Ceramics', action: 'Marking', icon: '/image 11690' }
+        ]
+    },
+    twoLaserHeads: {
+        title: 'Two laser heads',
+        subtitle: 'Only DUOS series models supported',
+        description1: 'Parallel operation of two laser heads significantly increases production speed',
+        description2: 'Laser heads can divide the work area and process two workpieces at once, or use one head for large workpieces',
+        image: '/img/catalog/cnc-routes.png' // Placeholder for the two heads graphic
+    }
+};
+
 export const getProductPageData = async (productId: string): Promise<ProductPageData> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -575,6 +701,10 @@ export const getProductPageData = async (productId: string): Promise<ProductPage
     // Return mock data based on ID
     if (productId === 'laser-co2') {
         return mappers.mapProductPageData(MOCK_LASER_CO2_DATA);
+    }
+
+    if (productId === 'laser-markers') {
+        return mappers.mapProductPageData(MOCK_LASER_MARKERS_DATA);
     }
 
     // Default to CNC

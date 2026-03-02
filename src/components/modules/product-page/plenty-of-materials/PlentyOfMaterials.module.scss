@@ -1,0 +1,164 @@
+.container {
+    width: 100%;
+    max-width: 1840px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    @media (max-width: 768px) {
+        padding: 40px 16px;
+        gap: 32px;
+    }
+}
+
+.header {
+    width: 100%;
+}
+
+.title {
+    font-size: 40px;
+    line-height: 48px;
+    margin: 0;
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+        line-height: 36px;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.imagesContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    height: 480px;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+.mainImageWrapper {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+
+    @media (max-width: 1024px) {
+        height: 300px;
+    }
+}
+
+.mainImage {
+    object-fit: cover;
+}
+
+.gridImagesWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+    }
+}
+
+.gridImageWrapper {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+
+    @media (max-width: 1024px) {
+        height: 150px;
+    }
+
+    @media (max-width: 768px) {
+        height: 200px;
+    }
+}
+
+.gridImage {
+    object-fit: cover;
+}
+
+.materialsLayout {
+    width: 100%;
+}
+
+.materialsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.materialCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 15px;
+    margin: -15px; // to offset padding of active background
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover,
+    &.active {
+        background-color: #f5f8fb;
+    }
+}
+
+.materialIcon {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #deebfa; // fallback color
+    flex-shrink: 0;
+
+    img {
+        object-fit: cover;
+    }
+}
+
+.materialInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.materialName {
+    color: #000000;
+}
+
+.materialAction {
+    color: #9b9191; // or whatever secondary color is in the design, wait, the JSON says the text is "#000000" but the screenshot shows dark gray/medium weight. I'll stick to a softer color for the subtitle or just use opacity.
+    opacity: 0.6;
+}

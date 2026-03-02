@@ -167,6 +167,28 @@ export const mapInterestedProducts = (data: any[]): ProductTypes.InterestedProdu
     }));
 };
 
+export const mapMaterialsProcessing = (data: any): ProductTypes.MaterialsProcessingData => {
+    return {
+        title: data?.title || [],
+        images: data?.images || [],
+        materials: data?.materials?.map((m: any) => ({
+            id: m.id,
+            name: m.name,
+            action: m.action,
+            icon: m.icon
+        })) || []
+    };
+};
+
+export const mapTwoLaserHeads = (data: any): ProductTypes.TwoLaserHeadsData => {
+    return {
+        title: data?.title || '',
+        subtitle: data?.subtitle || '',
+        description1: data?.description1 || '',
+        description2: data?.description2 || '',
+        image: data?.image || ''
+    };
+};
 
 export const mapHeartOfTheMachinery = (data: any): ProductTypes.HeartOfTheMachineryData => {
     return {
@@ -210,6 +232,8 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
         supportCards: mapSupportCards(data.supportCards || []),
         interestedProducts: mapInterestedProducts(data.interestedProducts || []),
         heartOfTheMachinery: mapHeartOfTheMachinery(data.heartOfTheMachinery || { tabs: [], content: {} }),
+        materialsProcessing: mapMaterialsProcessing(data.materialsProcessing || {}),
+        twoLaserHeads: data.twoLaserHeads ? mapTwoLaserHeads(data.twoLaserHeads) : undefined,
         gallery: {
             mainImage: data.gallery?.mainImage || '',
             thumbnails: data.gallery?.thumbnails || []

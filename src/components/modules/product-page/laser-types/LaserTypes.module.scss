@@ -1,0 +1,91 @@
+.laserTypes {
+  padding: 80px 0;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  .title {
+    margin-bottom: 48px;
+    color: #e63c32;
+    text-align: left;
+  }
+
+  .grid {
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+  }
+
+  .card {
+    flex: 1;
+    background: #f5f8fb;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .imageWrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      margin-bottom: 24px;
+      background: #f5f8fb;
+      border-radius: 12px;
+      overflow: hidden;
+
+      img {
+        transition: transform 0.3s ease;
+      }
+    }
+
+    &:hover .imageWrapper img {
+      transform: scale(1.05);
+    }
+
+    .cardTitle {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .specs {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .spec {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+
+      .label {
+        color: #7d8591;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 11px;
+      }
+
+      .value {
+        color: #1a1a1a;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .laserTypes {
+    .grid {
+      flex-direction: column;
+      gap: 32px;
+    }
+  }
+}
