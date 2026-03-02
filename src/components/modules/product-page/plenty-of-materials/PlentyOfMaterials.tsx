@@ -69,10 +69,10 @@ const PlentyOfMaterials: React.FC<PlentyOfMaterialsProps> = ({ data }) => {
                                     />
                                 </div>
                                 <div className={styles.materialInfo}>
-                                    <Typography tag="h3" size="s" weight="semiBold" className={styles.materialName}>
+                                    <Typography tag="h3" size="s" weight="semi-bold" className={styles.materialName}>
                                         {material.name}
                                     </Typography>
-                                    <Typography tag="p" size="s" weight="semiBold" className={styles.materialAction}>
+                                    <Typography tag="p" size="s" weight="semi-bold" className={styles.materialAction}>
                                         {material.action}
                                     </Typography>
                                 </div>
