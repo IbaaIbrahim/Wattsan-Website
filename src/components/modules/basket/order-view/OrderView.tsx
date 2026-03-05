@@ -50,8 +50,8 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 			const blogsList: any[] = await getArticlesByTag(`${seriesName}_${modelName}`) || []
 			const formattedBlogs = blogsList.map((blog: any) => ({
 				id: blog.id,
-				image: referenceObject.fileManger.url,
-				tag: blog.articleTag?.[0]?.tag?.name || '',
+				image: blog.mainImageUrl,
+				tags: blog.articleTag?.map((tag: any) => tag.tag?.name) || [],
 				title: blog.title || '',
 				// subtitle: blog.metaDescription || '',
 				url: blog.externalLink || (blog.slug ? `/blog/${blog.slug}` : '')

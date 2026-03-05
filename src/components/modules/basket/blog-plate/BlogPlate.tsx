@@ -20,7 +20,13 @@ const BlogPlate: FC<{
 							objectFit='contain'
 						/>
 					</div>
-					<div className={styles.tag}>{post.tag}</div>
+					<div>
+						{
+							post.tags?.map((tag: string) => (
+								<div key={tag} className={styles.tag}>{tag}</div>
+							))
+						}
+					</div>
 					<div className={styles.title}>{post.title}</div>
 					<div className={styles.subtitle}>{post.subtitle}</div>
 					<Button

@@ -20,6 +20,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'api.wattsancnc.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'wattsan.com',
+            }
         ],
     },
 }

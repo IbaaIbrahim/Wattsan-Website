@@ -66,7 +66,7 @@ export type TOrderInfo = {
 	}
 	blog: {
 		image: string
-		tag: string
+		tags: string[]
 		title: string
 		subtitle: string
 		url: string
