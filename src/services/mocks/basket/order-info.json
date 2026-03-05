@@ -4,7 +4,12 @@
   "status": "Processing",
   "statusInfo": "Calculation wait time: 1-2 days",
   "price": "$5000",
-  "preview": ["/img/grid-machines/A1.png", "/img/grid-machines/A1.png", "/img/grid-machines/A1.png", "/img/grid-machines/A1.png"],
+  "preview": [
+    "/img/grid-machines/A1.png",
+    "/img/grid-machines/A1.png",
+    "/img/grid-machines/A1.png",
+    "/img/grid-machines/A1.png"
+  ],
   "steps": [
     {
       "title": "Software Installation & Safety",
@@ -35,14 +40,18 @@
   "blog": [
     {
       "image": "/img/account/offer.png",
-      "tag": "Equipment",
+      "tags": [
+        "Equipment"
+      ],
       "title": "Laser Marking Machine for Metal",
       "subtitle": "Laser marking machines are used everywhere from mechanical engineering to souvenir production. The demand for laser metal engravers is growing due to the large-scale use of equipment for engraving products.",
       "url": ""
     },
     {
       "image": "/img/account/offer.png",
-      "tag": "Case study",
+      "tags": [
+        "Case study"
+      ],
       "title": "How our client accelerated production using Wattsan CNC Router machines",
       "subtitle": "By integrating Wattsan CNC Router machines into their workflow, our client witnessed a remarkable surge in production efficiency",
       "url": ""
