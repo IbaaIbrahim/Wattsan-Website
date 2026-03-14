@@ -1,0 +1,126 @@
+.section {
+    display: flex;
+    flex-direction: row;
+    gap: 64px;
+    margin-bottom: 100px;
+    font-family: 'Roboto', sans-serif;
+    padding: 0 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 60px;
+    }
+}
+
+.header {
+    flex: 0 0 clamp(280px, 25%, 320px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .title {
+        font-size: 40px;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0;
+
+        .redText {
+            color: #e63c32;
+        }
+    }
+
+    .description {
+        max-width: 500px;
+        color: #000;
+        margin: 0;
+    }
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.comparisonGrid {
+    flex: 1;
+    display: flex;
+    gap: 40px;
+    
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
+}
+
+.card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cardHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.iconWrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #e5effa;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+    &::after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-left: 25px solid #cbd5e1;
+        margin-left: 8px;
+    }
+}
+
+.icon {
+    opacity: 0.5;
+}
+
+.cardTitle {
+    color: #000;
+}
+
+.specsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.specRow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 0;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.specLabel {
+    font-size: 13px;
+    font-weight: 400;
+    color: #94a3b8;
+    text-transform: capitalize;
+}
+
+.specValue {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    line-height: 1.5;
+}

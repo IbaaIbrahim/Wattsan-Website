@@ -238,6 +238,40 @@ export interface MopaComparisonData {
     }
 }
 
+// Aspiration System Data
+export interface AspirationSystemData {
+    title: TitlePart[]
+    subtitle: string
+    descriptions: string[]
+}
+
+// Purifier/Welder Comparison Data
+export interface PurifierWelderCard {
+    title: string
+    image?: string
+    specs: {
+        label: string
+        value: string
+    }[]
+}
+
+export interface PurifierWelderComparisonData {
+    title: string
+    description: string
+    cards: PurifierWelderCard[]
+}
+
+// Stitches Comparison Data
+export interface StitchesComparisonCard {
+    title: string
+    image?: string
+}
+
+export interface StitchesComparisonData {
+    title: string
+    cards: StitchesComparisonCard[]
+}
+
 // Aggregated Page Data Interface
 export interface ProductPageData {
     breadcrumbs: BreadcrumbItem[]
@@ -261,6 +295,9 @@ export interface ProductPageData {
     twoLaserHeads?: TwoLaserHeadsData
     laserTypesData?: LaserTypesData
     mopaComparisonData?: MopaComparisonData
+    aspirationSystem?: AspirationSystemData
+    purifierWelderComparisonData?: PurifierWelderComparisonData
+    stitchesComparisonData?: StitchesComparisonData
     gallery: {
         mainImage: string
         thumbnails: string[]

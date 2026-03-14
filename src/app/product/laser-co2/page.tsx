@@ -468,22 +468,37 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 					/>
 				</div>
 
-				<div className={styles.aspirationSection}>
-					<AspirationSystem
-						title={<span><span style={{ color: '#E31E24' }}>Aspiration</span> System</span>}
-						subtitle="All models supported"
-						description={
-							<>
-								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									Aspiration systems are designed to efficiently remove dust, chips, and debris created during machining. This improves air quality in the workspace, ensures a cleaner environment, and reduces the risk of tool wear and clogging. It also helps maintain precision and prolongs the machine's lifespan.
-								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									Airflow rate, filter capacity, and suction efficiency affect dust removal, tool longevity, and workspace cleanliness, ensuring optimal machine performance and safety.
-								</Typography>
-							</>
-						}
-					/>
-				</div>
+				{productData.aspirationSystem && (
+					<div className={styles.aspirationSection}>
+						<AspirationSystem
+							title={
+								<span>
+									{productData.aspirationSystem.title.map((part, index) => (
+										<span key={index} style={{ color: part.color || 'inherit' }}>
+											{part.text}
+										</span>
+									))}
+								</span>
+							}
+							subtitle={productData.aspirationSystem.subtitle}
+							description={
+								<>
+									{productData.aspirationSystem.descriptions.map((desc, index) => (
+										<Typography 
+											key={index} 
+											tag='p' 
+											size='s' 
+											weight='regular' 
+											style={index < productData.aspirationSystem!.descriptions.length - 1 ? { marginBottom: '16px' } : undefined}
+										>
+											{desc}
+										</Typography>
+									))}
+								</>
+							}
+						/>
+					</div>
+				)}
 
 				<div className={styles.tableTypesSection}>
 					<TableTypes

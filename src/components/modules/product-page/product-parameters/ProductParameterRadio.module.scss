@@ -10,19 +10,23 @@
 
 .options {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	gap: 8px;
+	flex-wrap: wrap;
 }
 
 .option {
 	display: flex;
 	align-items: center;
 	padding: 12px 16px;
-	border: 2px solid transparent;
+	border: 1px solid #CACACA;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: border-color 0.2s ease, background-color 0.2s ease;
 	background-color: #ffffff;
+	flex: 1;
+	min-width: 180px;
+	gap: 8px;
 
 	&:hover {
 		background-color: #f5f5f5;
@@ -46,6 +50,41 @@
 	position: absolute;
 	opacity: 0;
 	pointer-events: none;
+}
+
+.radioCircle {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 1px solid #CACACA;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	transition: border-color 0.2s ease;
+
+	&::after {
+		content: '';
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background-color: transparent;
+		transition: background-color 0.2s ease;
+	}
+
+	.selected & {
+		border-color: #000000;
+		&::after {
+			background-color: #000000;
+		}
+	}
+
+	.selected.notIncluded & {
+		border-color: #E63C32;
+		&::after {
+			background-color: #E63C32;
+		}
+	}
 }
 
 .content {

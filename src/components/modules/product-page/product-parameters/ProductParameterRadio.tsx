@@ -25,7 +25,7 @@ const ProductParameterRadio: FC<ProductParameterRadioProps> = ({
 }) => {
 	return (
 		<div className={clsx(styles.radioGroup, className)}>
-			<Typography tag='p' size='m' weight='regular' className={styles.label}>
+			<Typography tag='p' size='m' weight='semi-bold' className={styles.label}>
 				{label}
 			</Typography>
 			<div className={styles.options}>
@@ -49,6 +49,7 @@ const ProductParameterRadio: FC<ProductParameterRadioProps> = ({
 								onChange={() => onChange(option.value)}
 								className={styles.input}
 							/>
+							<div className={styles.radioCircle}></div>
 							<div className={styles.content}>
 								<Typography tag='p' size='m' weight='regular'>
 									{option.text}

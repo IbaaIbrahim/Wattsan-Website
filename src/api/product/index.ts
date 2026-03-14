@@ -510,6 +510,17 @@ export const MOCK_CNC_ROUTER_DATA = {
             { id: 'glass', name: 'Glass', action: 'Engraving', icon: '/image 11690' }
         ]
     },
+    aspirationSystem: {
+        title: [
+            { text: 'Aspiration ', color: '#e63c32' },
+            { text: 'System' }
+        ],
+        subtitle: 'All models supported',
+        descriptions: [
+            'Aspiration systems are designed to efficiently remove dust, chips, and debris created during machining. This improves air quality in the workspace, ensures a cleaner environment, and reduces the risk of tool wear and clogging. It also helps maintain precision and prolongs the machine\'s lifespan.',
+            'Airflow rate, filter capacity, and suction efficiency affect dust removal, tool longevity, and workspace cleanliness, ensuring optimal machine performance and safety.'
+        ]
+    },
     gallery: {
         mainImage: '/img/catalog/cnc-routes.png',
         thumbnails: [
@@ -694,6 +705,309 @@ const MOCK_LASER_MARKERS_DATA = {
     }
 };
 
+const MOCK_METAL_CUTTERS_DATA = {
+    ...MOCK_CNC_ROUTER_DATA,
+    productInfo: {
+        ...MOCK_CNC_ROUTER_DATA.productInfo,
+        title: 'Laser Metal Cutters A series'
+    },
+    breadcrumbs: [
+        { label: 'Home', href: '/' },
+        { label: 'Laser Metal Cutters', href: '/catalog' },
+        { label: 'A series' }
+    ],
+    machineFeatures: [
+        {
+            title: 'Workspace',
+            description: 'Depending on the description of the "ideal for" block for metal cutters (needs clarification).'
+        },
+        {
+            title: 'Frame',
+            description: 'The frame is made from sheet metal with a thickness of 6-8 mm, ensuring no deformation or misalignment even at speeds of 80 m/min and acceleration up to 1G. Reinforced ribs add extra strength, minimizing vibrations at high speeds and accelerations.'
+        },
+        {
+            title: 'Aluminum Support',
+            description: "Constructed from the last generation of aircraft aluminum, the machine's portals offer rigidity, lightness, and resistance to corrosion and oxidation. This ensures stability under heavy loads and prevents deformation, guaranteeing long-term, trouble-free operation."
+        },
+        {
+            title: 'HIWIN guides',
+            description: "Wattsan laser metal cutting machines have Hiwin guides, 25 mm. This is a worldwide-known brand with a proven track record. These guides have high precision, reliability, and low friction."
+        },
+        {
+            title: 'Yaskawa motor',
+            description: "Wattsan employs Yaskawa motors, known globally for their power and reliability. These motors offer double the safety margin with a lightweight design, supporting up to 1,5G acceleration and minimal vibration. They ensure accuracy to within millimeters even at 40 km/h and are easy to maintain and replace."
+        }
+    ],
+    heartOfTheMachinery: {
+        tabs: [
+            { id: 'laserHead', label: 'Laser head' },
+            { id: 'laserSources', label: 'Laser sources' },
+            { id: 'intelligentControlSystem', label: 'Intelligent Control System' },
+            { id: 'secureMachine', label: 'Secure the machine from wear' },
+            { id: 'electrics', label: 'Electrics' }
+        ],
+        content: {
+            laserHead: {
+                id: 'laserHead',
+                title: 'Laser head',
+                description: "The power range of laser sources used in metal cutting machines is from 1.5 kW to 100 kW. IPG, Raycus, Max Photonics, Reci are the world's leading manufacturers of laser transmitters that provide the best results, which is why we use them.",
+                details: [],
+                image: '/product-cards/cnc-router/spindles/spindles-4.png'
+            },
+            laserSources: {
+                id: 'laserSources',
+                title: 'Laser sources',
+                description: 'High-quality laser sources ensure precision and cutting power for thick metals.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            intelligentControlSystem: {
+                id: 'intelligentControlSystem',
+                title: 'Intelligent Control System',
+                description: 'Advanced intelligent control system capable of fully automating the cutting process.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            },
+            secureMachine: {
+                id: 'secureMachine',
+                title: 'Secure the machine from wear',
+                description: 'Built-in security systems to extend the machine lifetime and secure from wearing out quickly.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            electrics: {
+                id: 'electrics',
+                title: 'Electrics',
+                description: 'Reliable electrical components ensuring stable operation.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            }
+        }
+    },
+    materialsProcessing: {
+        title: [
+            { text: 'Plenty of materials ', color: '#e63c32' },
+            { text: 'available for processing' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'titanium', name: 'Titanium', action: 'Cutting', icon: '/image 11684' },
+            { id: 'brass', name: 'Brass', action: 'Cutting', icon: '/image 11681' },
+            { id: 'copper', name: 'Copper', action: 'Cutting', icon: '/image 11704' },
+            { id: 'aluminum', name: 'Aluminium', action: 'Cutting', icon: '/image 11643' },
+            { id: 'galvanized-steel', name: 'Galvanized steel', action: 'Cutting', icon: '/image 11644' },
+            { id: 'stainless-steel', name: 'Stainless steel', action: 'Cutting', icon: '/image 11682' },
+            { id: 'carbon-steel', name: 'Carbon steel', action: 'Cutting', icon: '/image 11683' }
+        ]
+    }
+};
+
+const MOCK_CLEANING_MACHINES_DATA = {
+    ...MOCK_CNC_ROUTER_DATA,
+    productInfo: {
+        ...MOCK_CNC_ROUTER_DATA.productInfo,
+        title: 'Cleaning machines A series'
+    },
+    breadcrumbs: [
+        { label: 'Home', href: '/' },
+        { label: 'Cleaning machines', href: '/catalog' },
+        { label: 'A series' }
+    ],
+    machineFeatures: [
+        {
+            title: 'Fiber cable',
+            description: 'Connecting gun to source'
+        },
+        {
+            title: 'Cooling system',
+            description: 'Water or air. Reliable, with a water circuit located below the laser source to eliminate the risk of damage in the event of a leak.'
+        },
+        {
+            title: 'Control panel',
+            description: 'Providing control over all operating parameters.'
+        }
+    ],
+    heartOfTheMachinery: {
+        tabs: [
+            { id: 'laserGun', label: 'Laser gun' },
+            { id: 'laserSources', label: 'Laser sources' },
+            { id: 'controlSystem', label: 'Control System' },
+            { id: 'electrics', label: 'Electrics' }
+        ],
+        content: {
+            laserGun: {
+                id: 'laserGun',
+                title: 'Laser gun Ralfar',
+                description: 'One of the most convenient and lightweight in its class. Provides precise, stable and safe control of the welding process.',
+                details: [],
+                image: '/product-cards/cnc-router/spindles/spindles-4.png'
+            },
+            laserSources: {
+                id: 'laserSources',
+                title: 'Laser sources',
+                description: 'High-quality laser sources ensure precision and power.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            controlSystem: {
+                id: 'controlSystem',
+                title: 'Control System',
+                description: 'Advanced intelligent control system capable of fully automating the process.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            },
+            electrics: {
+                id: 'electrics',
+                title: 'Electrics',
+                description: 'Reliable electrical components ensuring stable operation.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            }
+        }
+    },
+    materialsProcessing: {
+        title: [
+            { text: 'Types of contaminants ', color: '#e63c32' },
+            { text: 'to be treated' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'dye', name: 'Dye', action: 'All treatments', icon: '/image 11684' },
+            { id: 'soot', name: 'Soot', action: 'All treatments', icon: '/image 11681' },
+            { id: 'rust', name: 'Rust', action: 'All treatments', icon: '/image 11704' },
+            { id: 'rubber', name: 'Rubber', action: 'All treatments', icon: '/image 11643' },
+            { id: 'oxidized-rusty-metal', name: 'Oxidized rusty metal', action: 'All treatments', icon: '/image 11644' },
+            { id: 'oxide-coating', name: 'Oxide coating', action: 'All treatments', icon: '/image 11682' },
+            { id: 'oil-paint', name: 'Oil paint', action: 'All treatments', icon: '/image 11683' },
+            { id: 'electroplating', name: 'Electroplating', action: 'All treatments', icon: '/image 11682' }
+        ]
+    },
+    seriesComparison: [
+        {
+            id: 'pa',
+            image: '/product-cards/cnc-router/image 11649.png',
+            title: 'PA series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'cw',
+            image: '/product-cards/cnc-router/image 11650.png',
+            title: 'CW series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'cw-pro',
+            image: '/product-cards/cnc-router/image 11651.png',
+            title: 'CW PRO series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            active: true,
+            specs: {
+                workspace: '300x400 mm / 600x900 mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor',
+                control: 'RichAuto / DSP A11',
+                cooling: 'Optional',
+                sensorRemovable: '—',
+                sensorBuiltIn: '—',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'pw-pro',
+            image: '/product-cards/cnc-router/image 11680.png',
+            title: 'PW PRO series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '300x400 mm / 600x900 mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor',
+                control: 'RichAuto / DSP A11',
+                cooling: 'Optional',
+                sensorRemovable: '—',
+                sensorBuiltIn: '—',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        }
+    ],
+    purifierWelderComparisonData: {
+        title: 'Comparison of purifier and welder with purification',
+        description: 'При выборе волоконного лазерного маркиратора важно понимать различия между двумя основными типами источников — MOPA и Q-Switched. Оба используются для маркировки и гравировки, но отличаются по возможностям, точности и сферам применения.',
+        cards: [
+            {
+                title: 'Cleaner',
+                image: '/img/catalog/cnc-routes.png',
+                specs: [
+                    { label: 'Purpose', value: 'Specialized for laser cleaning (removal of rust, paint, scale)' },
+                    { label: 'Type of laser', value: 'Often used is a pulsed laser (for delicate and precise cleaning)' },
+                    { label: 'Cleaning quality', value: 'Cleans quickly and neatly without damaging the base material' },
+                    { label: 'Depth and precision of processing', value: 'Adjustable to the type of pollution: frequency, power, pattern are adjustable' },
+                    { label: 'Ease of use', value: 'Automatic presets, simple interface, quick setup' },
+                    { label: 'The feasibility of choice', value: 'Ideal for production where stable and high-quality cleaning is important' }
+                ]
+            },
+            {
+                title: 'Welding',
+                image: '/img/catalog/cnc-routes.png',
+                specs: [
+                    { label: 'Purpose', value: 'Multifunctional: welding, soldering, cleaning, cutting, seam cutting' },
+                    { label: 'Type of laser', value: 'Continuous Wave (CW) only, less gentle when cleaning, higher risk of overheating' },
+                    { label: 'Cleaning quality', value: 'In cleaning mode, it may leave marks, especially on thin surfaces.' },
+                    { label: 'Depth and precision of processing', value: 'Limited customization options for cleaning mode' },
+                    { label: 'Ease of use', value: 'Switching between functions requires reconfiguration and changing attachments' },
+                    { label: 'The feasibility of choice', value: 'Good as a general purpose solution for minor repairs and welding with occasional cleaning' }
+                ]
+            }
+        ]
+    },
+    stitchesComparisonData: {
+        title: 'Comparison of stitches',
+        cards: [
+            { title: 'Linear', image: '/img/catalog/cnc-routes.png' },
+            { title: 'Complex stitches Ꝏ, ◯, ⨝, ◎, △, ◯◯◯', image: '/img/catalog/cnc-routes.png' }
+        ]
+    }
+};
+
 export const getProductPageData = async (productId: string): Promise<ProductPageData> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -705,6 +1019,14 @@ export const getProductPageData = async (productId: string): Promise<ProductPage
 
     if (productId === 'laser-markers') {
         return mappers.mapProductPageData(MOCK_LASER_MARKERS_DATA);
+    }
+
+    if (productId === 'metal-cutters') {
+        return mappers.mapProductPageData(MOCK_METAL_CUTTERS_DATA);
+    }
+
+    if (productId === 'cleaning-machines') {
+        return mappers.mapProductPageData(MOCK_CLEANING_MACHINES_DATA);
     }
 
     // Default to CNC

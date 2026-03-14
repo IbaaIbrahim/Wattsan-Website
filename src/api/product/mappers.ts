@@ -234,6 +234,27 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
         heartOfTheMachinery: mapHeartOfTheMachinery(data.heartOfTheMachinery || { tabs: [], content: {} }),
         materialsProcessing: mapMaterialsProcessing(data.materialsProcessing || {}),
         twoLaserHeads: data.twoLaserHeads ? mapTwoLaserHeads(data.twoLaserHeads) : undefined,
+        aspirationSystem: data.aspirationSystem ? {
+            title: data.aspirationSystem.title || [],
+            subtitle: data.aspirationSystem.subtitle || '',
+            descriptions: data.aspirationSystem.descriptions || []
+        } : undefined,
+        purifierWelderComparisonData: data.purifierWelderComparisonData ? {
+            title: data.purifierWelderComparisonData.title || '',
+            description: data.purifierWelderComparisonData.description || '',
+            cards: data.purifierWelderComparisonData.cards?.map((card: any) => ({
+                title: card.title,
+                image: card.image,
+                specs: card.specs
+            })) || []
+        } : undefined,
+        stitchesComparisonData: data.stitchesComparisonData ? {
+            title: data.stitchesComparisonData.title || '',
+            cards: data.stitchesComparisonData.cards?.map((card: any) => ({
+                title: card.title,
+                image: card.image
+            })) || []
+        } : undefined,
         gallery: {
             mainImage: data.gallery?.mainImage || '',
             thumbnails: data.gallery?.thumbnails || []
