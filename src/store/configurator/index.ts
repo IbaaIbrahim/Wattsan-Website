@@ -47,7 +47,13 @@ const IMAGES_PLACEHOLDER = {
 	Mini: miniImage,
 	'Mini Cabine': miniCabineImage,
 	'M1 RD': m1RDImage,
-	'M3':m3Image
+	'M3': m3Image,
+	"M1 S2 X": {
+		src: "https://api.wattsancnc.com/Attachments/20251226074923076.webp"
+	},
+	"M2": {
+		src: "https://api.wattsancnc.com/Attachments/20251226074616337.webp"
+	}
 }
 
 export const configuratorStore = createStore(
@@ -70,10 +76,14 @@ export const configuratorStore = createStore(
 		setStartParameters: (category, parameters) => {
 			const modified = {
 				...parameters,
-				series: parameters.series.map(series => ({
-					...series,
-					logo: IMAGES_PLACEHOLDER[series.name] ?? null
-				}))
+				series: parameters.series.map(series => {
+					console.log(series);
+
+					return {
+						...series,
+						logo: IMAGES_PLACEHOLDER[series.name] ?? null
+					}
+				})
 			}
 			set.startParameters({
 				...get.startParameters(),
