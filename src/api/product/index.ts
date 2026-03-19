@@ -1252,6 +1252,38 @@ const MOCK_WELDING_MACHINES_DATA = {
             { title: 'Complex stitches Ꝏ, ◯, ⨝, ◎, △, ◯◯◯', image: '/img/catalog/cnc-routes.png' }
         ]
     },
+    weldingComparisonData: {
+        title: 'Welding comparison',
+        features: [
+            'Laser welding is the main function for joining metal parts.',
+            'Laser cleaning – removal of rust, paint, scale before or after welding.',
+            'Laser seam cleaning – polishing and processing of the weld seam to obtain a clean and aesthetic result.',
+            'Laser cutting function, allowing the device to be used as a full-fledged metal cutting tool.',
+            'A special attachment for welding battery terminals, also called a riveter or laser riveting function. This function is used for spot welding of small components such as conductive terminals and is in demand, for example, when assembling batteries.'
+        ],
+        columns: [
+            {
+                title: '4in1',
+                checks: [
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: false }
+                ]
+            },
+            {
+                title: '5in1',
+                checks: [
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' },
+                    { hasCheck: true, icon: '/img/icons/check.svg' }
+                ]
+            }
+        ]
+    },
     productionProcess: [
         {
             id: '01',

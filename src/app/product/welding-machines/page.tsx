@@ -29,6 +29,7 @@ import ProductBlog from '@components/modules/product-page/product-blog/ProductBl
 import PlentyOfMaterials from '@components/modules/product-page/plenty-of-materials/PlentyOfMaterials'
 import PurifierWelderComparison from '@components/modules/product-page/purifier-welder-comparison/PurifierWelderComparison'
 import StitchesComparison from '@components/modules/product-page/stitches-comparison/StitchesComparison'
+import WeldingComparison from '@components/modules/product-page/welding-comparison/WeldingComparison'
 
 import { getProductPageData } from '@api/product'
 import { ProductPageData, ProductParameter } from '@my-types/product'
@@ -284,6 +285,12 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				{productData.stitchesComparisonData && (
 					<div className={styles.comparisonSection}>
 						<StitchesComparison data={productData.stitchesComparisonData} />
+					</div>
+				)}
+
+				{productData.weldingComparisonData && (
+					<div className={styles.comparisonSection}>
+						<WeldingComparison data={productData.weldingComparisonData} />
 					</div>
 				)}
 			</div>

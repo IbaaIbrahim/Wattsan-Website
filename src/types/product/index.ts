@@ -272,6 +272,23 @@ export interface StitchesComparisonData {
     cards: StitchesComparisonCard[]
 }
 
+// Welding Comparison Data
+export interface WeldingComparisonCheck {
+    hasCheck: boolean
+    icon?: string
+}
+
+export interface WeldingComparisonColumn {
+    title: string
+    checks: WeldingComparisonCheck[]
+}
+
+export interface WeldingComparisonData {
+    title?: string
+    features: string[]
+    columns: WeldingComparisonColumn[]
+}
+
 // Aggregated Page Data Interface
 export interface ProductPageData {
     breadcrumbs: BreadcrumbItem[]
@@ -298,6 +315,7 @@ export interface ProductPageData {
     aspirationSystem?: AspirationSystemData
     purifierWelderComparisonData?: PurifierWelderComparisonData
     stitchesComparisonData?: StitchesComparisonData
+    weldingComparisonData?: WeldingComparisonData
     gallery: {
         mainImage: string
         thumbnails: string[]

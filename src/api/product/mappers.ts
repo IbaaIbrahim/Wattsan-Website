@@ -255,6 +255,17 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
                 image: card.image
             })) || []
         } : undefined,
+        weldingComparisonData: data.weldingComparisonData ? {
+            title: data.weldingComparisonData.title,
+            features: data.weldingComparisonData.features || [],
+            columns: data.weldingComparisonData.columns?.map((column: any) => ({
+                title: column.title,
+                checks: column.checks?.map((check: any) => ({
+                    hasCheck: check.hasCheck ?? false,
+                    icon: check.icon
+                })) || []
+            })) || []
+        } : undefined,
         gallery: {
             mainImage: data.gallery?.mainImage || '',
             thumbnails: data.gallery?.thumbnails || []
