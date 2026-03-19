@@ -1008,11 +1008,293 @@ const MOCK_CLEANING_MACHINES_DATA = {
     }
 };
 
+const MOCK_WELDING_MACHINES_DATA = {
+    ...MOCK_CNC_ROUTER_DATA,
+    productInfo: {
+        ...MOCK_CNC_ROUTER_DATA.productInfo,
+        title: 'Laser tube cutting machines G2 series'
+    },
+    breadcrumbs: [
+        { label: 'Home', href: '/' },
+        { label: 'Welding machines', href: '/catalog' },
+        { label: 'G2 series' }
+    ],
+    machineFeatures: [
+        {
+            title: 'Fiber cable',
+            description: 'Connecting gun to source'
+        },
+        {
+            title: 'Cooling system',
+            description: 'Water or air. Reliable, with a water circuit located below the laser source to eliminate the risk of damage in the event of a leak.'
+        },
+        {
+            title: 'Control panel',
+            description: 'Providing control over all operating parameters.'
+        },
+        {
+            title: 'Wire feed system',
+            description: 'Allows welding with filler material, expanding the capabilities of the equipment.'
+        }
+    ],
+    heartOfTheMachinery: {
+        tabs: [
+            { id: 'laserGun', label: 'Laser gun' },
+            { id: 'laserSources', label: 'Laser sources' },
+            { id: 'controlSystem', label: 'Control System' },
+            { id: 'fiberCable', label: 'Fiber cable' },
+            { id: 'electrics', label: 'Electrics' }
+        ],
+        content: {
+            laserGun: {
+                id: 'laserGun',
+                title: 'Laser gun Ralfar',
+                description: 'One of the most convenient and lightweight in its class. Provides precise, stable and safe control of the welding process.',
+                details: [],
+                image: '/product-cards/cnc-router/spindles/spindles-4.png'
+            },
+            laserSources: {
+                id: 'laserSources',
+                title: 'Laser sources Raycus or JPT',
+                description: 'Reliable and productive sources that provide stable laser beam supply in the range from 1000 to 6000 W. These brands are widely used in industry and have proven themselves to be the best.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11651.png'
+            },
+            controlSystem: {
+                id: 'controlSystem',
+                title: 'Control system Ruida',
+                description: 'Multilingual, intuitive and flexible in configuration. Its key advantage is that it is ideally combined with the Railfar gun, forming the most consistent and stable working bundle. This is one of the main competitive advantages of our assembly.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            },
+            fiberCable: {
+                id: 'fiberCable',
+                title: 'Fiber cable',
+                description: 'The diameter of the fiber cable is 30% of the success in the cable, 50 microns. The narrower, the more powerful and concentrated the beam.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            },
+            electrics: {
+                id: 'electrics',
+                title: 'Electrics',
+                description: 'Reliable electrical components ensuring stable operation of the welding machine.',
+                details: [],
+                image: '/product-cards/cnc-router/image 11650.png'
+            }
+        }
+    },
+    materialsProcessing: {
+        title: [
+            { text: 'Plenty of materials ', color: '#e63c32' },
+            { text: 'available for processing' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'ferrous-metal', name: 'Ferrous metal', action: 'Welding', icon: '/image 11684' },
+            { id: 'stainless-steel', name: 'Stainless steel', action: 'Welding', icon: '/image 11681' },
+            { id: 'non-ferrous-metals', name: 'Non-ferrous metals', action: 'Welding', icon: '/image 11704' },
+            { id: 'aluminum', name: 'Aluminum', action: 'Welding', icon: '/image 11643' },
+            { id: 'brass', name: 'Brass', action: 'Welding', icon: '/image 11644' },
+            { id: 'copper', name: 'Copper', action: 'Welding', icon: '/image 11682' }
+        ]
+    },
+    seriesComparison: [
+        {
+            id: 'cw',
+            image: '/product-cards/cnc-router/image 11649.png',
+            title: 'CW series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            active: true,
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'cw-pro',
+            image: '/product-cards/cnc-router/image 11650.png',
+            title: 'CW PRO series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '300x400 mm / 600x900 mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor',
+                control: 'RichAuto / DSP A11',
+                cooling: 'Optional',
+                sensorRemovable: '—',
+                sensorBuiltIn: '—',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'lightclean',
+            image: '/product-cards/cnc-router/image 11651.png',
+            title: 'Lightclean series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'pa',
+            image: '/product-cards/cnc-router/image 11680.png',
+            title: 'PA series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'air',
+            image: '/product-cards/cnc-router/image 11649.png',
+            title: 'AIR series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '600x900 mm / 1300x1300 mm / 1300x2500 mm / 2000x3000mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor / Stepper motor with feedback',
+                control: 'DSP A11 / Syntec',
+                cooling: 'Optional',
+                sensorRemovable: 'Optional',
+                sensorBuiltIn: 'Optional',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        },
+        {
+            id: 'pw-pro',
+            image: '/product-cards/cnc-router/image 11650.png',
+            title: 'PW PRO series',
+            tagline: 'Real workhorse',
+            price: '$19,000',
+            specs: {
+                workspace: '300x400 mm / 600x900 mm',
+                spindle: 'from 1,5 kW',
+                motor: 'Stepper motor',
+                control: 'RichAuto / DSP A11',
+                cooling: 'Optional',
+                sensorRemovable: '—',
+                sensorBuiltIn: '—',
+                lubrication: 'Optional',
+                aspiration: 'Optional'
+            }
+        }
+    ],
+    purifierWelderComparisonData: {
+        title: 'Comparison of purifier and welder with purification',
+        description: 'При выборе волоконного лазерного маркиратора важно понимать различия между двумя основными типами источников — MOPA и Q-Switched. Оба используются для маркировки и гравировки, но отличаются по возможностям, точности и сферам применения.',
+        cards: [
+            {
+                title: 'Cleaner',
+                image: '/img/catalog/cnc-routes.png',
+                specs: [
+                    { label: 'Purpose', value: 'Specialized for laser cleaning (removal of rust, paint, scale)' },
+                    { label: 'Type of laser', value: 'Often used is a pulsed laser (for delicate and precise cleaning)' },
+                    { label: 'Cleaning quality', value: 'Cleans quickly and neatly without damaging the base material' },
+                    { label: 'Depth and precision of processing', value: 'Adjustable to the type of pollution: frequency, power, pattern are adjustable' },
+                    { label: 'Ease of use', value: 'Automatic presets, simple interface, quick setup' },
+                    { label: 'The feasibility of choice', value: 'Ideal for production where stable and high-quality cleaning is important' }
+                ]
+            },
+            {
+                title: 'Welding',
+                image: '/img/catalog/cnc-routes.png',
+                specs: [
+                    { label: 'Purpose', value: 'Multifunctional: welding, soldering, cleaning, cutting, seam cutting' },
+                    { label: 'Type of laser', value: 'Continuous Wave (CW) only, less gentle when cleaning, higher risk of overheating' },
+                    { label: 'Cleaning quality', value: 'In cleaning mode, it may leave marks, especially on thin surfaces.' },
+                    { label: 'Depth and precision of processing', value: 'Limited customization options for cleaning mode' },
+                    { label: 'Ease of use', value: 'Switching between functions requires reconfiguration and changing attachments' },
+                    { label: 'The feasibility of choice', value: 'Good as a general purpose solution for minor repairs and welding with occasional cleaning' }
+                ]
+            }
+        ]
+    },
+    stitchesComparisonData: {
+        title: 'Comparison of stitches',
+        cards: [
+            { title: 'Linear', image: '/img/catalog/cnc-routes.png' },
+            { title: 'Complex stitches Ꝏ, ◯, ⨝, ◎, △, ◯◯◯', image: '/img/catalog/cnc-routes.png' }
+        ]
+    },
+    productionProcess: [
+        {
+            id: '01',
+            title: 'Ordering and assembly of components',
+            description: 'The first stage involves putting together a delivery package, which includes:\nLaser source\nElectrical components (including Siemens components)\nLaser gun\nControl system\nCooling system\nAll necessary cables, hoses, and connecting elements',
+            image: '/product-cards/cnc-router/production-process/image 10.png'
+        },
+        {
+            id: '02',
+            title: 'Acceptance and inspection of components',
+            description: 'Each component is checked for:\nAbsence of defects\nOperability\nCompliance with technical parameters\nThis allows malfunctions to be eliminated before assembly begins.',
+            image: '/product-cards/cnc-router/production-process/image 11.png'
+        },
+        {
+            id: '03',
+            title: 'Equipment assembly',
+            description: 'Assembly is carried out in a specialized room.\nThe process includes:\nInstallation of all modules\nConnection of cables, cooling and control systems\nEnsuring the tightness and reliability of connections',
+            image: '/product-cards/cnc-router/production-process/image 12.png'
+        },
+        {
+            id: '04',
+            title: 'Initial start-up and system check',
+            description: 'Cooling check\nPower supply connected\nTest start-up performed\nStability of all systems and modules checked',
+            image: '/product-cards/cnc-router/production-process/image 10.png'
+        },
+        {
+            id: '05',
+            title: 'Testing',
+            description: 'The equipment undergoes a full testing cycle for all functions, depending on the configuration (3 in 1, 4 in 1, 5 in 1): Laser welding, laser cleaning, laser cutting, seam cleaning, terminal welding (riveter function).\nTesting is carried out on various types of metals: Ferrous metal, Stainless steel, Non-ferrous metals (including aluminum and copper). As well as on different thicknesses to confirm versatility and stability of operation.',
+            image: '/product-cards/cnc-router/production-process/image 11.png'
+        },
+        {
+            id: '06',
+            title: 'Packing and Shipping',
+            description: 'After passing all inspections, the welded product is sent to the shipping department. There it is:\nCarefully packed in shock-resistant transport packaging\nChecked for completeness\nPrepared for safe delivery to the customer',
+            image: '/product-cards/cnc-router/production-process/image 12.png'
+        }
+    ]
+};
+
 export const getProductPageData = async (productId: string): Promise<ProductPageData> => {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    // Return mock data based on ID
     if (productId === 'laser-co2') {
         return mappers.mapProductPageData(MOCK_LASER_CO2_DATA);
     }
@@ -1029,6 +1311,9 @@ export const getProductPageData = async (productId: string): Promise<ProductPage
         return mappers.mapProductPageData(MOCK_CLEANING_MACHINES_DATA);
     }
 
-    // Default to CNC
+    if (productId === 'welding-machines') {
+        return mappers.mapProductPageData(MOCK_WELDING_MACHINES_DATA);
+    }
+
     return mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);
 };
