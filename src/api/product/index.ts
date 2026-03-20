@@ -1,5 +1,6 @@
 import { ProductPageData } from '../../types/product';
 import * as mappers from './mappers';
+import { MOCK_LASER_TUBE_CUTTERS_DATA } from './mock-laser-tube-cutters';
 
 // Raw Mock Data simulating API response
 export const MOCK_CNC_ROUTER_DATA = {
@@ -1324,6 +1325,284 @@ const MOCK_WELDING_MACHINES_DATA = {
     ]
 };
 
+const MOCK_PRESS_BRAKES_DATA = {
+    ...MOCK_CNC_ROUTER_DATA,
+    breadcrumbs: [
+        { label: 'Home', href: '/' },
+        { label: 'Press brakes', href: '/catalog' },
+        { label: 'PR series' }
+    ],
+    factsCards: [
+        {
+            id: 'ideal-for',
+            subtitle: 'Ideal for',
+            title: 'Stable bending for production-ready parts',
+            type: 'solid',
+            backgroundColor: '#335198'
+        },
+        {
+            id: 'productivity',
+            subtitle: 'Productivity',
+            title: 'Fast setup + repeatable results every shift',
+            type: 'solid',
+            backgroundColor: '#282829'
+        },
+        {
+            id: 'accuracy',
+            subtitle: 'Accuracy',
+            title: 'Back-gauge control tuned for consistent angles',
+            type: 'solid',
+            backgroundColor: '#DEEBFA'
+        },
+        {
+            id: 'reputation',
+            subtitle: 'Pro reliability',
+            title: 'Wattsan equipment is on every continent',
+            type: 'solid',
+            backgroundColor: '#335198'
+        }
+    ],
+    machineFeatures: [
+        {
+            title: 'Bending beam rigidity',
+            description: 'Reinforced beam construction keeps tonnage distribution stable across the working length, minimizing deflection.'
+        },
+        {
+            title: 'Back gauge system',
+            description: 'A multi-axis back gauge supports accurate positioning for repetitive batches and high-quality sheet forming.'
+        },
+        {
+            title: 'Hydraulic drive',
+            description: 'Hydraulic power provides controlled ram motion for smooth bends, reliable forming, and reduced cycle time.'
+        },
+        {
+            title: 'Tooling + quick change',
+            description: 'Tooling setup is designed for fast exchange with consistent alignment to reduce downtime between jobs.'
+        }
+    ],
+    safetyCabinFeatures: [
+        {
+            title: 'Guards and finger protection',
+            description: 'Physical guards and protective zones help keep operators safe during active bending cycles.'
+        },
+        {
+            title: 'Emergency stop system',
+            description: 'Accessible emergency controls allow rapid stopping in case of an unexpected situation.'
+        },
+        {
+            title: 'Safety light curtain',
+            description: 'Optional safety light curtain configuration helps detect intrusions and mitigate collision risk.'
+        },
+        {
+            title: 'Operator-friendly access',
+            description: 'Ergonomic access points support safer operation, inspection, and scheduled maintenance.'
+        }
+    ],
+    rotaryDeviceSpecs: [],
+    tableTypes: [],
+    multiSpindlesSpecs: [],
+    toolSwitchVariants: [],
+    liquidCoolingTypes: [],
+    seriesComparison: [],
+    specifications: [
+        {
+            id: 'bending',
+            label: 'Bending performance',
+            items: [
+                { label: 'Max bending length', value: '3200', unit: 'mm' },
+                { label: 'Max tonnage', value: '100', unit: 't' },
+                { label: 'Ram stroke', value: '200', unit: 'mm' },
+                { label: 'Position repeatability', value: '±0.01', unit: 'mm' }
+            ]
+        },
+        {
+            id: 'control',
+            label: 'Axes and control',
+            items: [
+                { label: 'Back-gauge axes', value: '7', unit: 'axis' },
+                { label: 'Control system', value: 'DA-66' },
+                { label: 'Drive type', value: 'Hydraulic servo', unit: '' },
+                { label: 'Job programs', value: 'Up to 99' }
+            ]
+        },
+        {
+            id: 'safety',
+            label: 'Safety and equipment',
+            items: [
+                { label: 'Safety standard', value: 'CE' },
+                { label: 'Safety light curtain', value: 'Optional' },
+                { label: 'Work area lighting', value: 'LED' },
+                { label: 'Air filtration', value: 'Integrated (option)' }
+            ]
+        }
+    ],
+    heartOfTheMachinery: {
+        tabs: [
+            { id: 'bendingBeam', label: 'Bending beam' },
+            { id: 'backGauge', label: 'Back gauge' },
+            { id: 'hydraulics', label: 'Hydraulics' },
+            { id: 'control', label: 'Control system' }
+        ],
+        content: {
+            bendingBeam: {
+                id: 'bendingBeam',
+                title: 'Rigidity where it matters',
+                description: 'Stable structure helps keep angle accuracy consistent, even under heavy forming loads.',
+                details: [
+                    { label: 'Deflection', value: 'Minimized' },
+                    { label: 'Repeatability', value: 'Shift-ready' }
+                ],
+                image: '/product-cards/cnc-router/image 11680.png'
+            },
+            backGauge: {
+                id: 'backGauge',
+                title: 'Back gauge tuned for batches',
+                description: 'Programmable positioning supports reliable repeat runs and fast job setup.',
+                details: [
+                    { label: 'Axes', value: '7-axis' },
+                    { label: 'Accuracy', value: '±0.01 mm' }
+                ],
+                image: '/product-cards/cnc-router/image 11649.png'
+            },
+            hydraulics: {
+                id: 'hydraulics',
+                title: 'Hydraulic drive with smooth motion',
+                description: 'Controlled ram movement supports stable bending dynamics for clean sheet forming.',
+                details: [
+                    { label: 'Cycle time', value: 'Optimized' },
+                    { label: 'Process feel', value: 'Stable' }
+                ],
+                image: '/product-cards/cnc-router/image 11650.png'
+            },
+            control: {
+                id: 'control',
+                title: 'Control system for confident operation',
+                description: 'The interface helps operators manage programs, monitor parameters, and keep production steady.',
+                details: [
+                    { label: 'Programs', value: 'Up to 99' },
+                    { label: 'Setup', value: 'Fast learning' }
+                ],
+                image: '/product-cards/cnc-router/image 11651.png'
+            }
+        }
+    },
+    materialsProcessing: {
+        title: [
+            { text: 'Plenty of metal ', color: '#e63c32' },
+            { text: 'available for bending' }
+        ],
+        images: [
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png',
+            '/img/catalog/cnc-routes.png'
+        ],
+        materials: [
+            { id: 'carbon-steel', name: 'Carbon steel', action: 'Bending', icon: '/img/catalog/cnc-routes.png' },
+            { id: 'stainless-steel', name: 'Stainless steel', action: 'Bending', icon: '/img/catalog/cnc-routes.png' },
+            { id: 'aluminium', name: 'Aluminium', action: 'Bending', icon: '/img/catalog/cnc-routes.png' },
+            { id: 'galvanized-steel', name: 'Galvanized steel', action: 'Bending', icon: '/img/catalog/cnc-routes.png' },
+            { id: 'copper', name: 'Copper', action: 'Bending', icon: '/img/catalog/cnc-routes.png' }
+        ]
+    },
+    productionProcess: [
+        {
+            id: '01',
+            title: 'Design + planning',
+            description: 'We finalize the bending configuration based on required tonnage, forming length, and control preferences.',
+            image: '/product-cards/cnc-router/production-process/image 10.png'
+        },
+        {
+            id: '02',
+            title: 'Assembly in controlled environment',
+            description: 'Key components (drive, beam, and back gauge) are assembled and checked for mechanical consistency.',
+            image: '/product-cards/cnc-router/production-process/image 11.png'
+        },
+        {
+            id: '03',
+            title: 'Calibration + final test',
+            description: 'Ram motion and back-gauge positioning are calibrated to ensure stable bending accuracy before delivery.',
+            image: '/product-cards/cnc-router/production-process/image 12.png'
+        }
+    ],
+    aspirationSystem: {
+        title: [
+            { text: 'Dust ', color: '#e63c32' },
+            { text: 'extraction' }
+        ],
+        subtitle: 'All models supported',
+        descriptions: [
+            'Aspiration equipment helps remove fine particles from the bending area to keep the workplace cleaner and reduce wear on components.',
+            'Efficient filtration supports stable operation and helps maintain consistent process conditions.'
+        ]
+    },
+    interestedProducts: [
+        {
+            id: '1',
+            image: '/img/catalog/cnc-routes.png',
+            name: 'Bending tooling set',
+            code: 'TB-3200-V',
+            modification: 'standard',
+            price: '$2,400'
+        },
+        {
+            id: '2',
+            image: '/img/catalog/cnc-routes.png',
+            name: 'Back-gauge accessories',
+            code: 'BG-7AX-ADD',
+            modification: 'expanded',
+            price: '$1,150'
+        },
+        {
+            id: '3',
+            image: '/img/catalog/cnc-routes.png',
+            name: 'Sheet support extensions',
+            code: 'SS-EXT-2M',
+            modification: '',
+            price: '$780'
+        },
+        {
+            id: '4',
+            image: '/img/catalog/cnc-routes.png',
+            name: 'Safety package upgrade',
+            code: 'SAFE-UPG-PR',
+            modification: 'option',
+            price: '$960'
+        }
+    ],
+    gallery: {
+        mainImage: '/product-cards/cnc-router/image 11680.png',
+        thumbnails: [
+            '/product-cards/cnc-router/image 11649.png',
+            '/product-cards/cnc-router/image 11650.png',
+            '/product-cards/cnc-router/image 11651.png'
+        ]
+    },
+    productInfo: {
+        ...MOCK_CNC_ROUTER_DATA.productInfo,
+        title: 'Press Brakes PR series',
+        rating: 4.9,
+        reviewCount: 22,
+        questionCount: 34,
+        currentPrice: '$29,500',
+        originalPrice: '$32,000',
+        discount: '$2,500',
+        discountPercent: '8%',
+        availability: 'In stock',
+        shipment: '3 days',
+        delivery: 'from 25 days',
+        deliveryMethods: ['EXW', 'CFR/CIF/CPT', 'FOB', 'DAP', 'DDP'],
+        deliveryNote: 'Delivery cost is paid separately. After placing your order, a manager will contact you to confirm all delivery details.'
+    },
+    packageList: [
+        { id: '1', image: '/img/catalog/cnc-routes.png', label: 'Operator manual - 1 pc' },
+        { id: '2', image: '/img/catalog/cnc-routes.png', label: 'Tools & accessories set - 1 set' },
+        { id: '3', image: '/img/catalog/cnc-routes.png', label: 'Safety documentation - 1 set' },
+        { id: '4', image: '/img/catalog/cnc-routes.png', label: 'Transport protection kit - 1 set' }
+    ]
+};
+
 export const getProductPageData = async (productId: string): Promise<ProductPageData> => {
     await new Promise(resolve => setTimeout(resolve, 100));
 
@@ -1345,6 +1624,14 @@ export const getProductPageData = async (productId: string): Promise<ProductPage
 
     if (productId === 'welding-machines') {
         return mappers.mapProductPageData(MOCK_WELDING_MACHINES_DATA);
+    }
+
+    if (productId === 'press-brakes') {
+        return mappers.mapProductPageData(MOCK_PRESS_BRAKES_DATA);
+    }
+
+    if (productId === 'laser-tube-cutters') {
+        return mappers.mapProductPageData(MOCK_LASER_TUBE_CUTTERS_DATA);
     }
 
     return mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);

@@ -17,10 +17,11 @@ export interface WattsanFactCardData {
 
 interface WattsanFactsSliderProps {
 	cards: WattsanFactCardData[]
+	titleHighlight?: string
 	className?: string
 }
 
-const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, className }) => {
+const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, titleHighlight = 'Wattsan CNC routers', className }) => {
 	const renderCard = (card: WattsanFactCardData) => (
 		<div
 			key={card.id}
@@ -89,7 +90,7 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, className }) =
 	return (
 		<section className={`${styles.section} ${className || ''}`}>
 			<h2 className={styles.title}>
-				A couple of facts about <span className={styles.titleHighlight}>Wattsan CNC routers</span>
+				A couple of facts about <span className={styles.titleHighlight}>{titleHighlight}</span>
 			</h2>
 			<div className={styles.carouselWrapper}>
 				<EmblaCarousel
