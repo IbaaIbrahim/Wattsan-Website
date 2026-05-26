@@ -24,7 +24,7 @@ const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }
 			<div className={styles.list}>
 				{parameters.map((param) => (
 					<div key={param.id} className={styles.parameter}>
-						{param.type === 'select' ? (
+						{param.options && param.options.length > 3 ? (
 							<FormSelect
 								label={param.label}
 								value={param.value}

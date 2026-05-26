@@ -1,6 +1,9 @@
 import { ProductPageData } from '../../types/product';
 import * as mappers from './mappers';
 import { MOCK_LASER_TUBE_CUTTERS_DATA } from './mock-laser-tube-cutters';
+import { request } from '../../utils/request';
+import { API_URL } from '@constants/api';
+
 
 // Raw Mock Data simulating API response
 export const MOCK_CNC_ROUTER_DATA = {
@@ -1636,3 +1639,65 @@ export const getProductPageData = async (productId: string): Promise<ProductPage
 
     return mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);
 };
+
+export const getProductById = async (id: string | number) => {
+	try {
+		const response = await request({
+			url: `${API_URL}/Products/Read`,
+			method: 'GET',
+			query: {
+				filter: `id~eq~'${id}'`
+			}
+		});
+		return response?.data?.[0] || null;
+	} catch (error) {
+		console.error('Error fetching product by ID', error);
+		return null;
+	}
+};
+
+export const getFullCharacteristics = async () => {
+	try {
+		const response = await request({
+			url: `${API_URL}/FullCharacteristics/Read`,
+			method: 'GET',
+			query: {
+				pageSize: 1000
+			}
+		});
+		return response?.data || [];
+	} catch (error) {
+		console.error('Error fetching full characteristics', error);
+		return [];
+	}
+};
+
+export const getCharacteristicsEnums = async () => {
+	try {
+		const response = await request({
+			url: `${API_URL}/api/CharacteristicsEnums/all`,
+			method: 'GET'
+		});
+		return response || null;
+	} catch (error) {
+		console.error('Error fetching characteristics enums', error);
+		return null;
+	}
+};
+
+export const getFileManagerItem = async (id: string) => {
+	try {
+		const response = await request({
+			url: `${API_URL}/FileManager/Read`,
+			method: 'GET',
+			query: {
+				filter: `id~eq~'${id}'`
+			}
+		});
+		return response?.data?.[0] || null;
+	} catch (error) {
+		console.error('Error fetching file manager item', error);
+		return null;
+	}
+};
+
