@@ -25,12 +25,12 @@ import ProductBlog from '@components/modules/product-page/product-blog/ProductBl
 import VideoPlayer from '@components/ui/video-player/VideoPlayer'
 import { Typography } from '@components/ui/typography/Typography'
 
-import { 
-	getProductPageData, 
-	getProductById, 
-	getFullCharacteristics, 
-	getCharacteristicsEnums, 
-	getFileManagerItem 
+import {
+	getProductPageData,
+	getProductById,
+	getFullCharacteristics,
+	getCharacteristicsEnums,
+	getFileManagerItem
 } from '@api/product'
 import { ProductPageData, ProductParameter } from '@my-types/product'
 
@@ -42,11 +42,11 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	const [categories, setCategories] = useState<any[]>([])
 	const [codes, setCodes] = useState<any[]>([])
 	const [fullCharacteristics, setFullCharacteristics] = useState<any[]>([])
-	
+
 	const [galleryImages, setGalleryImages] = useState<string[]>([])
 	const [videoUrl, setVideoUrl] = useState<string>('')
 	const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>({})
-	
+
 	const [baseMockData, setBaseMockData] = useState<ProductPageData | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [isVideoOpen, setIsVideoOpen] = useState(false)
@@ -81,7 +81,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 
 				if (productData.attachments && productData.attachments.length > 0) {
 					const sortedAttachments = [...productData.attachments].sort((a, b) => (a.order || 0) - (b.order || 0))
-					
+
 					await Promise.all(
 						sortedAttachments.map(async (att: any) => {
 							let url = ''
@@ -112,7 +112,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				// Map current product characteristics to get code enums
 				const initialSelections: Record<number, number> = {}
 				if (productData.fullProductCharacteristics) {
-					productData.fullProductCharacteristics.forEach((pc: any) => {
+					productData.fullProductCharacteristics.filter(x => x.isActive).forEach((pc: any) => {
 						const staticChar = fullChars.find((fc: any) => fc.id === pc.characteristicId)
 						if (staticChar) {
 							// If code group hasn't been set yet, or we prefer checking order/price
@@ -139,7 +139,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	}
 
 	// 1. Enrich product characteristics with static details
-	const enrichedCharacteristics = (product.fullProductCharacteristics || []).map((pc: any) => {
+	const enrichedCharacteristics = (product.fullProductCharacteristics || []).filter(x => x.isActive).map((pc: any) => {
 		const staticChar = fullCharacteristics.find((fc: any) => fc.id === pc.characteristicId)
 		return {
 			...pc,
@@ -287,7 +287,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							has360View={false}
 							badge={product.rating ? `Rating: ${product.rating}` : 'New'}
 							onVideoClick={() => setIsVideoOpen(true)}
-							on360ViewClick={() => {}}
+							on360ViewClick={() => { }}
 						/>
 					</div>
 
