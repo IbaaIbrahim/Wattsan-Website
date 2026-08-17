@@ -1701,3 +1701,105 @@ export const getFileManagerItem = async (id: string) => {
 	}
 };
 
+export const formatProductModelName = (name: string): string => {
+	if (!name) return ''
+	const clean = name.trim()
+	const map: Record<string, string> = {
+		'0404': '400*400 mm',
+		'0609': '600*900 mm',
+		'6090': '600*900 mm',
+		'1313': '1300*1300 mm',
+		'1313 S4': '1300*1300 S4 mm',
+		'1325': '1300*2500 mm',
+		'1616': '1600*1600 mm',
+		'2030': '2000*3000 mm',
+		'2040': '2000*4000 mm',
+		'2060': '2000*6000 mm'
+	}
+	if (map[clean]) return map[clean]
+	if (clean.includes('*') || clean.includes('x') || clean.includes('X')) {
+		return clean.endsWith('mm') ? clean : `${clean} mm`
+	}
+	return clean
+}
+
+export const getCategories = async () => {
+	try {
+		const response = await request({
+			url: `${API_URL}/Categories/Read`,
+			method: 'GET',
+			query: { pageSize: 100 }
+		});
+		return response?.data || [];
+	} catch (error) {
+		console.error('Error fetching categories', error);
+		return [];
+	}
+};
+
+export const getSeries = async (categoryId?: string | number) => {
+	try {
+		const query: Record<string, any> = { pageSize: 100 };
+		if (categoryId) {
+			query.filter = `categoryId~eq~${categoryId}`;
+		}
+		const response = await request({
+			url: `${API_URL}/Series/Read`,
+			method: 'GET',
+			query
+		});
+		return response?.data || [];
+	} catch (error) {
+		console.error('Error fetching series', error);
+		return [];
+	}
+};
+
+export const getSeriesById = async (id: string | number) => {
+	try {
+		const response = await request({
+			url: `${API_URL}/Series/Read`,
+			method: 'GET',
+			query: {
+				filter: `id~eq~${id}`
+			}
+		});
+		return response?.data?.[0] || null;
+	} catch (error) {
+		console.error('Error fetching series by ID', error);
+		return null;
+	}
+};
+
+export const getProductsBySeriesId = async (seriesId: string | number) => {
+	try {
+		const response = await request({
+			url: `${API_URL}/Products/Read`,
+			method: 'GET',
+			query: {
+				filter: `seriesId~eq~${seriesId}`,
+				pageSize: 100
+			}
+		});
+		return response?.data || [];
+	} catch (error) {
+		console.error('Error fetching products by series ID', error);
+		return [];
+	}
+};
+
+export const getAllProducts = async () => {
+	try {
+		const response = await request({
+			url: `${API_URL}/Products/Read`,
+			method: 'GET',
+			query: { pageSize: 200 }
+		});
+		return response?.data || [];
+	} catch (error) {
+		console.error('Error fetching all products', error);
+		return [];
+	}
+};
+
+

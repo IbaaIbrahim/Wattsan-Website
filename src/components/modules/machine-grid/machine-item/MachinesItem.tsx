@@ -1,10 +1,14 @@
+'use client'
+
+import { formatProductModelName, getProductsBySeriesId } from '@api/product'
 import { useLang } from '@hooks/useLang'
 import { ILanguage } from '@my-types/languages'
 import { SupportCallback } from '@my-types/supportCallback'
-import { getInitialSeriesConfiguration } from '@store/configurator/actions'
 import { TSeries } from '@store/configurator/types'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import { CONFIGURATOR_PAGES } from '../../../../config/pages.url.config'
 
@@ -19,57 +23,30 @@ const MachinesItem = ({
 }) => {
 	const { translations }: { translations: ILanguage } = useLang()
 	const router = useRouter()
+	const [products, setProducts] = useState<any[]>([])
+
+	useEffect(() => {
+		let isMounted = true
+		if (machineData?.id) {
+			getProductsBySeriesId(machineData.id).then((prods) => {
+				if (isMounted && prods && prods.length > 0) {
+					setProducts(prods)
+				}
+			})
+		}
+		return () => {
+			isMounted = false
+		}
+	}, [machineData?.id])
 
 	const characteristicByWorkArea = machineData?.seriesCharacteristics?.filter?.(
 		({ code, isAvailable, isDefault }: any) => {
-
 			return code === 'WorkArea' && isAvailable && isDefault
 		}
 	)
 
-	// const makeRequest = async (clientInfo: SupportCallback) => {
-	// 	await machineService.machineRequest(machineData.id, clientInfo)
-	// 	// openDialog({
-	// 	// 	okText: translations.request_result_modal.confirm_btn_text,
-	// 	// 	onOk: () => closeAll(),
-	// 	// 	isValid: true,
-	// 	// 	children: (
-	// 	// 		<CharacteristicCodeInfoModal
-	// 	// 			title={translations.request_result_modal.title}
-	// 	// 			description={translations.request_result_modal.description}
-	// 	// 			providedContact={clientInfo.phone}
-	// 	// 		/>
-	// 	// 	)
-	// 	// })
-	// }
-
 	const handleOnEdit = async () => {
-
 		if (!machineData.isActive) {
-			let clientInfo: SupportCallback = { fullname: '', phone: '' }
-
-			const updateClientInfo = (currentInfo: SupportCallback) => {
-				clientInfo = { ...currentInfo }
-			}
-
-			const setValidation = (state: boolean) => {
-				// setValidState(state)
-			}
-
-			// openDialog({
-			// 	okText: translations.request_modal.ok_btn,
-			// 	cancelText: translations.request_modal.cansel_btn,
-			// 	onOk: () => {
-			// 		makeRequest(clientInfo)
-			// 	},
-			// 	children: (
-			// 		<RequestModal
-			// 			currentItem={machineData.name}
-			// 			onChange={updateClientInfo}
-			// 			onValidationChange={setValidation}
-			// 		/>
-			// 	)
-			// })
 			return
 		}
 		router.push(
@@ -116,14 +93,26 @@ const MachinesItem = ({
 					{translations.machines.area_sizes}
 				</span>
 				<span className={styles['area-sizes__values']}>
-					{characteristicByWorkArea?.map(({ name }) => (
-						<div
-							key={name}
-							className={styles['area-value']}
-						>
-							<span className={styles['area-value__text']}>{name}</span>
-						</div>
-					))}
+					{products.length > 0
+						? products.map((prod) => (
+							<Link
+								key={prod.id}
+								href={`/product/${prod.id}`}
+								className={styles['area-value']}
+							>
+								<span className={styles['area-value__text']}>
+									{formatProductModelName(prod.name)}
+								</span>
+							</Link>
+						))
+						: characteristicByWorkArea?.map(({ name }: any) => (
+							<div
+								key={name}
+								className={styles['area-value']}
+							>
+								<span className={styles['area-value__text']}>{name}</span>
+							</div>
+						))}
 				</span>
 			</div>
 		</article>

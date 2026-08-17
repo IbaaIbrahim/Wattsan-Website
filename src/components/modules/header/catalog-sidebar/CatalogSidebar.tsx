@@ -18,41 +18,86 @@ import config from '@public/img/icons/config.svg'
 import rightArrowIcon from '@public/img/icons/right-arrow.svg'
 import clsx from 'clsx'
 import Image from 'next/image'
-import { FC, useState } from 'react'
+import Link from 'next/link'
+import { FC, useEffect, useState } from 'react'
+
+import { formatProductModelName, getAllProducts, getCategories, getSeries } from '@api/product'
 
 import { PAGES } from '../../../../config/pages.url.config'
 
 import styles from './CatalogSidebar.module.scss'
 
-const MENU = [
-	{ id: '01', image: laserMachines, content: 'Laser machines' },
-	{ id: '02', image: cncRoutes, content: 'CNC Routers' },
-	{ id: '03', image: laserMarkers, content: 'Laser markers' },
-	{ id: '04', image: metalCutters, content: 'Metal Cutters' },
-	{ id: '05', image: laserWelding, content: 'Laser welding' },
-	{ id: '06', image: laserCleaning, content: 'Laser cleaning' },
-	{ id: '07', image: laserPipeCutting, content: 'Laser pipe cutting' },
-	{ id: '08', image: hydraulicPressBrakes, content: 'Hydraulic press brakes' }
-]
+const CATEGORY_IMAGES: Record<number, any> = {
+	1: laserMachines,
+	2: cncRoutes,
+	3: laserMarkers,
+	4: metalCutters,
+	5: laserWelding,
+	6: laserCleaning,
+	7: laserPipeCutting,
+	8: hydraulicPressBrakes
+}
 
-const RESULT = [
-	{ name: '400x400mm', id: '01' },
-	{ name: '600x900mm', id: '02' },
-	{ name: '1300x1300mm', id: '03' },
-	{ name: '1600x1600mm', id: '04' },
-	{ name: '1300x2500mm', id: '05' },
-	{ name: '2000x3000mm', id: '07' },
-	{ name: '2000x4000mm', id: '08' },
-	{ name: '2000x6000mm', id: '09' }
+const DEFAULT_CATEGORIES = [
+	{ id: 1, name: 'Laser machines' },
+	{ id: 2, name: 'CNC Routers' },
+	{ id: 3, name: 'Laser markers' },
+	{ id: 4, name: 'Metal Cutters' },
+	{ id: 5, name: 'Laser welding' },
+	{ id: 6, name: 'Laser cleaning' },
+	{ id: 7, name: 'Laser pipe cutting' },
+	{ id: 8, name: 'Hydraulic press brakes' }
 ]
 
 const CatalogSidebar: FC<{
 	open: boolean
 	onToggle: (open: boolean) => void
 }> = ({ open, onToggle }) => {
-	const [equipment, setEquipment] = useState(null)
+	const [selectedCategory, setSelectedCategory] = useState<number | string | null>(null)
+	const [categories, setCategories] = useState<any[]>(DEFAULT_CATEGORIES)
+	const [allSeries, setAllSeries] = useState<any[]>([])
+	const [allProducts, setAllProducts] = useState<any[]>([])
+	const [isLoading, setIsLoading] = useState(false)
 
-	const handleOverlayClick = () => onToggle(false)
+	useEffect(() => {
+		const loadData = async () => {
+			setIsLoading(true)
+			try {
+				const [cats, seriesData, productsData] = await Promise.all([
+					getCategories(),
+					getSeries(),
+					getAllProducts()
+				])
+
+				if (cats && cats.length > 0) {
+					setCategories(cats)
+				}
+				if (seriesData && seriesData.length > 0) {
+					setAllSeries(seriesData)
+				}
+				if (productsData && productsData.length > 0) {
+					setAllProducts(productsData)
+				}
+			} catch (error) {
+				console.error('Failed to load catalog data', error)
+			} finally {
+				setIsLoading(false)
+			}
+		}
+
+		if (open) {
+			loadData()
+		}
+	}, [open])
+
+	const handleOverlayClick = () => {
+		onToggle(false)
+		setSelectedCategory(null)
+	}
+
+	const currentCategoryId = typeof selectedCategory === 'number' ? selectedCategory : parseInt(selectedCategory as string, 10)
+	const activeSeries = allSeries.filter((s: any) => s.categoryId === currentCategoryId)
+	const activeCategoryObj = categories.find((c: any) => c.id === currentCategoryId)
 
 	return (
 		<div className={clsx(open && styles.open)}>
@@ -73,15 +118,16 @@ const CatalogSidebar: FC<{
 						}
 						size='s'
 						view='default'
-						onClick={() => onToggle(false)}
+						onClick={handleOverlayClick}
 					>
 						Catalog
 					</Button>
 				</div>
+
 				<div
 					className={clsx(
 						styles.mobileSidebarContent,
-						equipment !== null && styles.mobileSidebarContentShow
+						selectedCategory !== null && styles.mobileSidebarContentShow
 					)}
 				>
 					<Button
@@ -94,27 +140,68 @@ const CatalogSidebar: FC<{
 								alt=''
 							/>
 						}
-						onClick={() => setEquipment(null)}
+						onClick={() => setSelectedCategory(null)}
 					>
-						Accessories
+						{selectedCategory === 'accessories' ? 'Accessories' : activeCategoryObj?.name?.trim() || 'Back'}
 					</Button>
-					<div className={styles.contentTitle}>Work area</div>
-					<div className={styles.equipmentTypes}>
-						<div className={styles.tag}>All models</div>
-						{RESULT.map(({ id, name }) => (
-							<div
-								key={id}
-								className={styles.tag}
-							>
-								{name}
-							</div>
-						))}
+
+					<div className={styles.contentTitle}>
+						{selectedCategory === 'accessories' ? 'Accessories' : 'Series & Work areas'}
 					</div>
+
+					{selectedCategory === 'accessories' ? (
+						<div className={styles.productTags}>
+							<Link
+								href='/accessories'
+								className={styles.tag}
+								onClick={handleOverlayClick}
+							>
+								All Accessories
+							</Link>
+						</div>
+					) : activeSeries.length > 0 ? (
+						<div className={styles.seriesListContainer}>
+							{activeSeries.map((series: any) => {
+								const seriesProducts = allProducts.filter((p: any) => p.seriesId === series.id)
+
+								return (
+									<div key={series.id} className={styles.seriesGroup}>
+										<div className={styles.seriesTitle}>
+											{series.name} Series
+										</div>
+										<div className={styles.productTags}>
+											{seriesProducts.length > 0 ? (
+												seriesProducts.map((prod: any) => (
+													<Link
+														key={prod.id}
+														href={`/product/${prod.id}`}
+														className={styles.tag}
+														onClick={handleOverlayClick}
+													>
+														{formatProductModelName(prod.name)}
+													</Link>
+												))
+											) : (
+												<span className={styles.emptyState}>
+													No models available
+												</span>
+											)}
+										</div>
+									</div>
+								)
+							})}
+						</div>
+					) : (
+						<div className={styles.emptyState}>
+							{isLoading ? 'Loading models...' : 'No models found for this category.'}
+						</div>
+					)}
 				</div>
+
 				<div
 					className={clsx(
 						styles.sidebarContent,
-						equipment !== null && styles.sidebarContentHide
+						selectedCategory !== null && styles.sidebarContentHide
 					)}
 				>
 					<div className={styles.form}>
@@ -142,48 +229,57 @@ const CatalogSidebar: FC<{
 							Configurator
 						</Button>
 					</div>
+
 					<div className={styles.content}>
 						<div
 							className={clsx(
 								styles.equipmentMenu,
-								equipment && styles.equipmentMenuSelected
+								selectedCategory !== null && styles.equipmentMenuSelected
 							)}
 						>
-							{MENU.map(({ id, image, content }) => (
-								<button
-									className={clsx(
-										styles.equipmentButton,
-										id === equipment && styles.equipmentButtonActive
-									)}
-									key={id}
-									onClick={() => setEquipment(id)}
-								>
-									<div className={styles.equipmentButtonImage}>
+							{categories.map((cat: any) => {
+								const catId = cat.id
+								const image = CATEGORY_IMAGES[catId] || cncRoutes
+								const isActive = selectedCategory === catId
+
+								return (
+									<button
+										key={catId}
+										className={clsx(
+											styles.equipmentButton,
+											isActive && styles.equipmentButtonActive
+										)}
+										onClick={() => setSelectedCategory(catId)}
+									>
+										<div className={styles.equipmentButtonImage}>
+											<Image
+												src={image}
+												alt={cat.name}
+												fill={true}
+											/>
+										</div>
+										{cat.name.trim()}
 										<Image
-											src={image}
+											src={rightArrowIcon}
 											alt=''
-											fill={true}
 										/>
-									</div>
-									{content}
-									<Image
-										src={rightArrowIcon}
-										alt=''
-									/>
-								</button>
-							))}
+									</button>
+								)
+							})}
+
 							<div className={styles.divider} />
+
 							<button
 								className={clsx(
 									styles.equipmentButton,
-									'09' === equipment && styles.equipmentButtonActive
+									selectedCategory === 'accessories' && styles.equipmentButtonActive
 								)}
-								onClick={() => setEquipment('09')}
+								onClick={() => setSelectedCategory('accessories')}
 							>
 								<div className={styles.equipmentButtonImage}>
 									<Image
 										src={accessories}
-										alt=''
+										alt='Accessories'
 										fill={true}
 									/>
 								</div>
@@ -194,20 +290,60 @@ const CatalogSidebar: FC<{
 								/>
 							</button>
 						</div>
-						{equipment !== null && (
+
+						{selectedCategory !== null && (
 							<div className={styles.hideMobile}>
-								<div className={styles.contentTitle}>Work area</div>
-								<div className={styles.equipmentTypes}>
-									<div className={styles.tag}>All models</div>
-									{RESULT.map(({ id, name }) => (
-										<div
-											key={id}
-											className={styles.tag}
-										>
-											{name}
-										</div>
-									))}
+								<div className={styles.contentTitle}>
+									{selectedCategory === 'accessories' ? 'Accessories' : 'Series & Work Areas'}
 								</div>
+
+								{selectedCategory === 'accessories' ? (
+									<div className={styles.productTags}>
+										<Link
+											href='/accessories'
+											className={styles.tag}
+											onClick={handleOverlayClick}
+										>
+											All Accessories
+										</Link>
+									</div>
+								) : activeSeries.length > 0 ? (
+									<div className={styles.seriesListContainer}>
+										{activeSeries.map((series: any) => {
+											const seriesProducts = allProducts.filter((p: any) => p.seriesId === series.id)
+
+											return (
+												<div key={series.id} className={styles.seriesGroup}>
+													<div className={styles.seriesTitle}>
+														{series.name} Series
+													</div>
+													<div className={styles.productTags}>
+														{seriesProducts.length > 0 ? (
+															seriesProducts.map((prod: any) => (
+																<Link
+																	key={prod.id}
+																	href={`/product/${prod.id}`}
+																	className={styles.tag}
+																	onClick={handleOverlayClick}
+																>
+																	{formatProductModelName(prod.name)}
+																</Link>
+															))
+														) : (
+															<span className={styles.emptyState}>
+																No models available
+															</span>
+														)}
+													</div>
+												</div>
+											)
+										})}
+									</div>
+								) : (
+									<div className={styles.emptyState}>
+										{isLoading ? 'Loading models...' : 'No models available.'}
+									</div>
+								)}
 							</div>
 						)}
 					</div>

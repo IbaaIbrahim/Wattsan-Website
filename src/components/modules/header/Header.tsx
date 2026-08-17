@@ -213,7 +213,7 @@ const Header = () => {
 							placement='bottom-start'
 							offset={[0, 8]}
 							onToggle={setOpenCatalog}
-							content={<Catalog />}
+							content={<Catalog onClose={() => setOpenCatalog(false)} />}
 						>
 							<Button
 								size='l'

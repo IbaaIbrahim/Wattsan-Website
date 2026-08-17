@@ -30,7 +30,10 @@ import {
 	getProductById,
 	getFullCharacteristics,
 	getCharacteristicsEnums,
-	getFileManagerItem
+	getFileManagerItem,
+	getSeriesById,
+	getProductsBySeriesId,
+	formatProductModelName
 } from '@api/product'
 import { ProductPageData, ProductParameter } from '@my-types/product'
 
@@ -39,6 +42,8 @@ import styles from './page.module.scss'
 const ProductPage = ({ params }: { params: { id: string } }) => {
 	const router = useRouter()
 	const [product, setProduct] = useState<any>(null)
+	const [series, setSeries] = useState<any>(null)
+	const [seriesProducts, setSeriesProducts] = useState<any[]>([])
 	const [categories, setCategories] = useState<any[]>([])
 	const [codes, setCodes] = useState<any[]>([])
 	const [fullCharacteristics, setFullCharacteristics] = useState<any[]>([])
@@ -53,8 +58,9 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			setIsLoading(true)
 			try {
-				// Fetch API data
+				// 1. Fetch current product data
 				const productData = await getProductById(params.id)
 				if (!productData) {
 					setIsLoading(false)
@@ -62,6 +68,17 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				}
 				setProduct(productData)
 
+				// 2. Fetch series and sibling products for this series
+				if (productData.seriesId) {
+					const [seriesData, prodsInSeries] = await Promise.all([
+						getSeriesById(productData.seriesId),
+						getProductsBySeriesId(productData.seriesId)
+					])
+					if (seriesData) setSeries(seriesData)
+					if (prodsInSeries) setSeriesProducts(prodsInSeries)
+				}
+
+				// 3. Fetch enums and characteristics
 				const enums = await getCharacteristicsEnums()
 				if (enums) {
 					setCategories(enums.characteristicsCategories || [])
@@ -71,11 +88,11 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				const fullChars = await getFullCharacteristics()
 				setFullCharacteristics(fullChars || [])
 
-				// Fetch dynamic CMS product page data (falls back to default template if not in CMS)
+				// 4. Fetch dynamic CMS product page data
 				const mockData = await getProductPageData(params.id)
 				setBaseMockData(mockData)
 
-				// Resolve attachments
+				// 5. Resolve attachments
 				const imageList: string[] = []
 				let foundVideoUrl = ''
 
@@ -108,14 +125,12 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				setGalleryImages(imageList)
 				setVideoUrl(foundVideoUrl)
 
-				// Initialize default selected options for parameters
-				// Map current product characteristics to get code enums
+				// 6. Initialize default selected options for parameters
 				const initialSelections: Record<number, number> = {}
 				if (productData.fullProductCharacteristics) {
-					productData.fullProductCharacteristics.filter(x => x.isActive).forEach((pc: any) => {
+					productData.fullProductCharacteristics.filter((x: any) => x.isActive).forEach((pc: any) => {
 						const staticChar = fullChars.find((fc: any) => fc.id === pc.characteristicId)
 						if (staticChar) {
-							// If code group hasn't been set yet, or we prefer checking order/price
 							if (!initialSelections[staticChar.code]) {
 								initialSelections[staticChar.code] = pc.characteristicId
 							}
@@ -139,7 +154,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	}
 
 	// 1. Enrich product characteristics with static details
-	const enrichedCharacteristics = (product.fullProductCharacteristics || []).filter(x => x.isActive).map((pc: any) => {
+	const enrichedCharacteristics = (product.fullProductCharacteristics || []).filter((x: any) => x.isActive).map((pc: any) => {
 		const staticChar = fullCharacteristics.find((fc: any) => fc.id === pc.characteristicId)
 		return {
 			...pc,
@@ -152,16 +167,22 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	})
 
 	// 2. Group characteristics by code to form parameters
+	// Exclude work area codes (38: Machine_working_area, 81: Work_area, 82: Working_area) from standard characteristics
+	// because the primary Work Area (Model) select handles switching products
+	const WORK_AREA_CODES = [36, 38, 81, 82]
+
 	const groupedByCode: Record<number, any[]> = {}
 	enrichedCharacteristics.forEach((char: any) => {
+		if (WORK_AREA_CODES.includes(char.code)) return
+
 		if (!groupedByCode[char.code]) {
 			groupedByCode[char.code] = []
 		}
 		groupedByCode[char.code].push(char)
 	})
 
-	// Build ProductParameters list
-	const dynamicParameters: ProductParameter[] = Object.entries(groupedByCode).map(([codeStr, optionsList]) => {
+	// Build characteristic parameter inputs
+	const dynamicCharacteristicsParameters: ProductParameter[] = Object.entries(groupedByCode).map(([codeStr, optionsList]) => {
 		const code = parseInt(codeStr, 10)
 		const codeInfo = codes.find((x) => x.value === code)
 		const label = codeInfo ? codeInfo.name.replace(/_/g, ' ') : `Parameter ${code}`
@@ -198,6 +219,37 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 		}
 	})
 
+	// 3. Work Area (Model) parameter as the FIRST input in product attributes
+	const currentProductId = Number(params.id) || product.id
+	const modelOptions = seriesProducts.length > 0
+		? seriesProducts.map((p: any) => ({
+			value: p.id,
+			text: formatProductModelName(p.name)
+		}))
+		: [{
+			value: currentProductId,
+			text: formatProductModelName(product.name)
+		}]
+
+	const modelParameter: ProductParameter = {
+		id: 'work-area-model',
+		label: 'Work area (model)',
+		type: 'select',
+		value: currentProductId,
+		options: modelOptions,
+		onChange: (val) => {
+			const targetId = typeof val === 'string' ? parseInt(val, 10) : val
+			if (targetId && targetId !== currentProductId) {
+				router.push(`/product/${targetId}`)
+			}
+		}
+	}
+
+	const dynamicParameters: ProductParameter[] = [
+		modelParameter,
+		...dynamicCharacteristicsParameters
+	]
+
 	// Calculate total price based on selected characteristics sum
 	const currentPriceValue = Object.entries(selectedOptions).reduce((sum, [codeStr, charId]) => {
 		const code = parseInt(codeStr, 10)
@@ -215,10 +267,20 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	const formattedDiscount = discountValue > 0 ? `$${discountValue.toLocaleString()}` : undefined
 	const discountPercent = discountValue > 0 ? `${Math.round((discountValue / originalPriceValue) * 100)}%` : undefined
 
+	// 4. Build dynamic specifications categories list
+	const allEnrichedForSpecs = (product.fullProductCharacteristics || []).filter((x: any) => x.isActive).map((pc: any) => {
+		const staticChar = fullCharacteristics.find((fc: any) => fc.id === pc.characteristicId)
+		return {
+			...pc,
+			name: staticChar?.name || '',
+			unit: staticChar?.unit || '',
+			charCategory: staticChar?.charCategory ?? 0,
+			code: staticChar?.code ?? 0,
+			order: staticChar?.order ?? 0,
+		}
+	})
 
-	// 3. Build dynamic specifications categories list
-	// Filter characteristics to include only selected ones (or single options)
-	const activeCharacteristics = enrichedCharacteristics.filter((char: any) => {
+	const activeCharacteristics = allEnrichedForSpecs.filter((char: any) => {
 		const siblings = groupedByCode[char.code] || []
 		if (siblings.length <= 1) return true
 		return selectedOptions[char.code] === char.characteristicId
@@ -257,12 +319,16 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	const galleryMain = galleryImages[0] || defaultImage
 	const galleryThumbs = galleryImages.length > 0 ? galleryImages : [defaultImage]
 
-	// Breadcrumbs mapping
+	// Formatted product title and breadcrumbs
+	const seriesDisplayName = series?.name || 'CNC Routers'
+	const productModelDisplayName = formatProductModelName(product.name) || product.name
+	const fullProductTitle = series?.name ? `${series.name} ${productModelDisplayName}` : productModelDisplayName
+
 	const pageBreadcrumbs = [
 		{ label: 'Home', href: '/' },
-		{ label: 'Products', href: '/catalog' },
-		{ label: product.series?.name || 'Series' },
-		{ label: product.name }
+		{ label: series?.category?.name || 'CNC Routers', href: '/configurator' },
+		{ label: `${seriesDisplayName} Series` },
+		{ label: productModelDisplayName }
 	]
 
 	const handleAddToBasket = () => {
@@ -305,7 +371,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 
 					<div className={styles.rightColumn}>
 						<ProductInfo
-							title={product.name}
+							title={fullProductTitle}
 							rating={parseFloat(product.rating) || 5.0}
 							reviewCount={12}
 							questionCount={4}
