@@ -88,12 +88,14 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
+    color: #111111;
 }
 
 .value {
     overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #111111;
 }
 
 .placeholder {
@@ -103,6 +105,7 @@
     opacity: .4;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: #111111;
 }
 
 .input {
@@ -122,6 +125,7 @@
     box-shadow: 0 8px 32px -8px #00000052;
     border-radius: 8px;
     background-color: #FFFFFF;
+    color: #111111;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -132,10 +136,11 @@
     text-align: left;
     font-size: 16px;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.4;
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer;
+    color: #111111;
     transition: background-color .2s ease;
 
     &:hover {

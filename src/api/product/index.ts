@@ -1662,7 +1662,7 @@ export const getFullCharacteristics = async () => {
 			url: `${API_URL}/FullCharacteristics/Read`,
 			method: 'GET',
 			query: {
-				pageSize: 1000
+				pageSize: 5000
 			}
 		});
 		return response?.data || [];

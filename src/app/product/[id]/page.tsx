@@ -154,17 +154,21 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	}
 
 	// 1. Enrich product characteristics with static details
-	const enrichedCharacteristics = (product.fullProductCharacteristics || []).filter((x: any) => x.isActive).map((pc: any) => {
-		const staticChar = fullCharacteristics.find((fc: any) => fc.id === pc.characteristicId)
-		return {
-			...pc,
-			name: staticChar?.name || '',
-			unit: staticChar?.unit || '',
-			charCategory: staticChar?.charCategory ?? 0,
-			code: staticChar?.code ?? 0,
-			order: staticChar?.order ?? 0,
-		}
-	})
+	const enrichedCharacteristics = (product.fullProductCharacteristics || [])
+		.filter((x: any) => x.isActive)
+		.map((pc: any) => {
+			const staticChar = fullCharacteristics.find((fc: any) => Number(fc.id) === Number(pc.characteristicId))
+			if (!staticChar || !staticChar.name || staticChar.code === undefined || staticChar.code === null) return null
+			return {
+				...pc,
+				name: staticChar.name,
+				unit: staticChar.unit || '',
+				charCategory: staticChar.charCategory ?? 0,
+				code: staticChar.code,
+				order: staticChar.order ?? 0,
+			}
+		})
+		.filter(Boolean)
 
 	// 2. Group characteristics by code to form parameters
 	// Exclude work area codes (38: Machine_working_area, 81: Work_area, 82: Working_area) from standard characteristics
@@ -182,42 +186,47 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	})
 
 	// Build characteristic parameter inputs
-	const dynamicCharacteristicsParameters: ProductParameter[] = Object.entries(groupedByCode).map(([codeStr, optionsList]) => {
-		const code = parseInt(codeStr, 10)
-		const codeInfo = codes.find((x) => x.value === code)
-		const label = codeInfo ? codeInfo.name.replace(/_/g, ' ') : `Parameter ${code}`
+	const dynamicCharacteristicsParameters: ProductParameter[] = Object.entries(groupedByCode)
+		.map(([codeStr, optionsList]) => {
+			const code = parseInt(codeStr, 10)
+			const codeInfo = codes.find((x) => x.value === code)
+			const label = codeInfo ? codeInfo.name.replace(/_/g, ' ') : `Parameter ${code}`
 
-		const selectedValue = selectedOptions[code] || (optionsList[0]?.characteristicId)
-		const chosenOpt = optionsList.find((opt) => opt.characteristicId === selectedValue)
+			const validOptions = optionsList.filter((opt) => opt.name && opt.name.trim() !== '')
+			if (validOptions.length === 0) return null
 
-		return {
-			id: codeStr,
-			label,
-			type: optionsList.length > 3 ? 'select' : 'radio',
-			value: selectedValue,
-			options: optionsList.map((opt) => {
-				const priceDiff = opt.price - (chosenOpt?.price || 0)
-				let diffText: string | undefined = undefined
-				if (priceDiff > 0) {
-					diffText = `+$${priceDiff.toLocaleString()}`
-				} else if (priceDiff < 0) {
-					diffText = `-$${Math.abs(priceDiff).toLocaleString()}`
+			const selectedValue = selectedOptions[code] || (validOptions[0]?.characteristicId)
+			const chosenOpt = validOptions.find((opt) => opt.characteristicId === selectedValue) || validOptions[0]
+
+			return {
+				id: codeStr,
+				label,
+				type: validOptions.length > 3 ? 'select' : 'radio',
+				value: selectedValue,
+				options: validOptions.map((opt) => {
+					const priceDiff = opt.price - (chosenOpt?.price || 0)
+					let diffText: string | undefined = undefined
+					if (priceDiff > 0) {
+						diffText = `+$${priceDiff.toLocaleString()}`
+					} else if (priceDiff < 0) {
+						diffText = `-$${Math.abs(priceDiff).toLocaleString()}`
+					}
+
+					return {
+						value: opt.characteristicId,
+						text: `${opt.name} ${opt.unit || ''}`.trim(),
+						price: diffText
+					}
+				}),
+				onChange: (val) => {
+					setSelectedOptions((prev) => ({
+						...prev,
+						[code]: typeof val === 'string' ? parseInt(val, 10) : (val as number)
+					}))
 				}
-
-				return {
-					value: opt.characteristicId,
-					text: `${opt.name} ${opt.unit || ''}`.trim(),
-					price: diffText
-				}
-			}),
-			onChange: (val) => {
-				setSelectedOptions((prev) => ({
-					...prev,
-					[code]: typeof val === 'string' ? parseInt(val, 10) : (val as number)
-				}))
 			}
-		}
-	})
+		})
+		.filter(Boolean) as ProductParameter[]
 
 	// 3. Work Area (Model) parameter as the FIRST input in product attributes
 	const currentProductId = Number(params.id) || product.id
@@ -268,17 +277,21 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	const discountPercent = discountValue > 0 ? `${Math.round((discountValue / originalPriceValue) * 100)}%` : undefined
 
 	// 4. Build dynamic specifications categories list
-	const allEnrichedForSpecs = (product.fullProductCharacteristics || []).filter((x: any) => x.isActive).map((pc: any) => {
-		const staticChar = fullCharacteristics.find((fc: any) => fc.id === pc.characteristicId)
-		return {
-			...pc,
-			name: staticChar?.name || '',
-			unit: staticChar?.unit || '',
-			charCategory: staticChar?.charCategory ?? 0,
-			code: staticChar?.code ?? 0,
-			order: staticChar?.order ?? 0,
-		}
-	})
+	const allEnrichedForSpecs = (product.fullProductCharacteristics || [])
+		.filter((x: any) => x.isActive)
+		.map((pc: any) => {
+			const staticChar = fullCharacteristics.find((fc: any) => Number(fc.id) === Number(pc.characteristicId))
+			if (!staticChar || !staticChar.name || staticChar.code === undefined || staticChar.code === null) return null
+			return {
+				...pc,
+				name: staticChar.name,
+				unit: staticChar.unit || '',
+				charCategory: staticChar.charCategory ?? 0,
+				code: staticChar.code,
+				order: staticChar.order ?? 0,
+			}
+		})
+		.filter(Boolean)
 
 	const activeCharacteristics = allEnrichedForSpecs.filter((char: any) => {
 		const siblings = groupedByCode[char.code] || []
