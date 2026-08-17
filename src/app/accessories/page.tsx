@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import Accessories from '@/accessories/accessories'
-import Summary from '@/accessories/summary'
+import Accessories from './accessories'
+import Summary from './summary'
 import { useConfigurator } from '@hooks/use-configurator'
 
 const MachineId = () => {

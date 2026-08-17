@@ -304,3 +304,207 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
         })) || []
     };
 };
+
+/**
+ * Merges dynamic CMS Content & ContentMeta rows into ProductPageData.
+ * Falls back safely to default structured data for any section not configured in the CMS.
+ */
+export const mergeCmsDataIntoProductPageData = (
+    baseData: ProductTypes.ProductPageData,
+    cmsSectionsMap: Record<string, any[]>
+): ProductTypes.ProductPageData => {
+    if (!cmsSectionsMap || Object.keys(cmsSectionsMap).length === 0) {
+        return baseData;
+    }
+
+    const merged = { ...baseData };
+
+    // 1. Info Cards
+    if (cmsSectionsMap.info_cards?.[0]) {
+        const customInfoCards = cmsSectionsMap.info_cards[0].toProductInfoCards?.();
+        if (customInfoCards && customInfoCards.length > 0) {
+            merged.infoCards = customInfoCards;
+        }
+    }
+
+    // 2. Facts Cards
+    if (cmsSectionsMap.facts_cards && cmsSectionsMap.facts_cards.length > 0) {
+        const customFacts = cmsSectionsMap.facts_cards
+            .map((c) => c.toFactsCard?.())
+            .filter(Boolean);
+        if (customFacts.length > 0) {
+            merged.factsCards = customFacts;
+        }
+    }
+
+    // 3. Power of Machine (Features)
+    if (cmsSectionsMap.power_of_machine?.[0]) {
+        const customFeatures = cmsSectionsMap.power_of_machine[0].toMachineFeatures?.();
+        if (customFeatures && customFeatures.length > 0) {
+            merged.machineFeatures = customFeatures;
+        }
+    }
+
+    // 4. Heart of Machinery
+    if (cmsSectionsMap.heart_of_machinery?.[0]) {
+        const customHeart = cmsSectionsMap.heart_of_machinery[0].toHeartOfTheMachinery?.();
+        if (customHeart && customHeart.items && customHeart.items.length > 0) {
+            // Keep tabs/content shape or enrich
+            merged.heartOfTheMachinery = {
+                ...merged.heartOfTheMachinery,
+                title: customHeart.title || merged.heartOfTheMachinery?.title,
+                subtitle: customHeart.subtitle || merged.heartOfTheMachinery?.subtitle
+            };
+        }
+    }
+
+    // 5. Safety Cabin
+    if (cmsSectionsMap.safety_cabin?.[0]) {
+        const customCabin = cmsSectionsMap.safety_cabin[0].toSafetyCabin?.();
+        if (customCabin) {
+            merged.safetyCabinData = customCabin;
+            if (customCabin.features && customCabin.features.length > 0) {
+                merged.safetyCabinFeatures = customCabin.features;
+            }
+        }
+    }
+
+    // 6. Rotary Device
+    if (cmsSectionsMap.rotary_device?.[0]) {
+        const customRotary = cmsSectionsMap.rotary_device[0].toRotaryDevice?.();
+        if (customRotary) {
+            merged.rotaryDeviceData = customRotary;
+            if (customRotary.specs && customRotary.specs.length > 0) {
+                merged.rotaryDeviceSpecs = customRotary.specs;
+            }
+        }
+    }
+
+    // 7. Separate Rotary Device
+    if (cmsSectionsMap.separate_rotary_device?.[0]) {
+        const customSeparateRotary = cmsSectionsMap.separate_rotary_device[0].toSeparateRotaryDevice?.();
+        if (customSeparateRotary) {
+            merged.separateRotaryDeviceData = customSeparateRotary;
+        }
+    }
+
+    // 8. Multi Spindles
+    if (cmsSectionsMap.multi_spindles?.[0]) {
+        const customSpindles = cmsSectionsMap.multi_spindles[0].toMultiSpindles?.();
+        if (customSpindles) {
+            merged.multiSpindlesData = customSpindles;
+            if (customSpindles.specs && customSpindles.specs.length > 0) {
+                merged.multiSpindlesSpecs = customSpindles.specs;
+            }
+        }
+    }
+
+    // 9. Tool Switch
+    if (cmsSectionsMap.automatic_tool_switch?.[0]) {
+        const customToolSwitch = cmsSectionsMap.automatic_tool_switch[0].toToolSwitch?.();
+        if (customToolSwitch) {
+            merged.toolSwitchData = customToolSwitch;
+            if (customToolSwitch.variants && customToolSwitch.variants.length > 0) {
+                merged.toolSwitchVariants = customToolSwitch.variants;
+            }
+        }
+    }
+
+    // 10. Liquid Cooling
+    if (cmsSectionsMap.liquid_cooling?.[0]) {
+        const customCooling = cmsSectionsMap.liquid_cooling[0].toLiquidCooling?.();
+        if (customCooling) {
+            merged.liquidCoolingData = customCooling;
+            if (customCooling.types && customCooling.types.length > 0) {
+                merged.liquidCoolingTypes = customCooling.types;
+            }
+        }
+    }
+
+    // 11. Table Types
+    if (cmsSectionsMap.table_types?.[0]) {
+        const customTableTypes = cmsSectionsMap.table_types[0].toTableTypes?.();
+        if (customTableTypes && customTableTypes.length > 0) {
+            merged.tableTypes = customTableTypes;
+        }
+    }
+
+    // 12. Production Process
+    if (cmsSectionsMap.production_process && cmsSectionsMap.production_process.length > 0) {
+        const customProcess = cmsSectionsMap.production_process
+            .map((c) => c.toProductionStep?.())
+            .filter(Boolean);
+        if (customProcess.length > 0) {
+            merged.productionProcess = customProcess;
+        }
+    }
+
+    // 13. Service and Support
+    if (cmsSectionsMap.service_and_support?.[0]) {
+        const customService = cmsSectionsMap.service_and_support[0].toServiceAndSupport?.();
+        if (customService) {
+            merged.serviceAndSupport = {
+                image: customService.image || merged.serviceAndSupport?.image || '',
+                cards: customService.cards && customService.cards.length > 0 ? customService.cards : merged.serviceAndSupport?.cards || []
+            };
+        }
+    }
+
+    // 14. Package List
+    if (cmsSectionsMap.package_list && cmsSectionsMap.package_list.length > 0) {
+        const customPackageList = cmsSectionsMap.package_list
+            .map((c) => c.toPackageListItem?.())
+            .filter(Boolean);
+        if (customPackageList.length > 0) {
+            merged.packageList = customPackageList;
+        }
+    }
+
+    // 15. FAQ
+    if (cmsSectionsMap.faq && cmsSectionsMap.faq.length > 0) {
+        const customFaq = cmsSectionsMap.faq
+            .map((c) => c.toFAQItem?.())
+            .filter(Boolean);
+        if (customFaq.length > 0) {
+            merged.faqData = customFaq;
+        }
+    }
+
+    // 16. Reviews
+    if (cmsSectionsMap.reviews && cmsSectionsMap.reviews.length > 0) {
+        const customReviews = cmsSectionsMap.reviews
+            .map((c) => {
+                const item = c.toReviewItem?.();
+                if (!item) return null;
+                return {
+                    id: String(item.id),
+                    quote: item.content,
+                    author: {
+                        name: item.author,
+                        avatar: item.avatar || '/product-cards/cnc-router/reviews/avatar.png'
+                    }
+                };
+            })
+            .filter(Boolean);
+        if (customReviews.length > 0) {
+            merged.reviews = customReviews as any;
+        }
+    }
+
+    // 17. Product Info Extra (notes, shipment, delivery)
+    if (cmsSectionsMap.product_info_extra?.[0]) {
+        const meta = cmsSectionsMap.product_info_extra[0].contentMetasJson || {};
+        merged.productInfo = {
+            ...merged.productInfo,
+            shipment: meta.shipment || merged.productInfo?.shipment,
+            delivery: meta.delivery || merged.productInfo?.delivery,
+            deliveryNote: meta.delivery_note || merged.productInfo?.deliveryNote,
+            deliveryMethods: meta.delivery_methods
+                ? String(meta.delivery_methods).split(',').map((s) => s.trim()).filter(Boolean)
+                : merged.productInfo?.deliveryMethods
+        };
+    }
+
+    return merged;
+};
+

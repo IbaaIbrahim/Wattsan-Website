@@ -3,6 +3,7 @@ import * as mappers from './mappers';
 import { MOCK_LASER_TUBE_CUTTERS_DATA } from './mock-laser-tube-cutters';
 import { request } from '../../utils/request';
 import { API_URL } from '@constants/api';
+import { loadProductPageDynamicContent } from '@/services/content.service';
 
 
 // Raw Mock Data simulating API response
@@ -1606,38 +1607,37 @@ const MOCK_PRESS_BRAKES_DATA = {
     ]
 };
 
-export const getProductPageData = async (productId: string): Promise<ProductPageData> => {
-    await new Promise(resolve => setTimeout(resolve, 100));
+export const getProductPageData = async (productId: string, locale: string = 'en'): Promise<ProductPageData> => {
+    let baseData: ProductPageData;
 
     if (productId === 'laser-co2') {
-        return mappers.mapProductPageData(MOCK_LASER_CO2_DATA);
+        baseData = mappers.mapProductPageData(MOCK_LASER_CO2_DATA);
+    } else if (productId === 'laser-markers') {
+        baseData = mappers.mapProductPageData(MOCK_LASER_MARKERS_DATA);
+    } else if (productId === 'metal-cutters') {
+        baseData = mappers.mapProductPageData(MOCK_METAL_CUTTERS_DATA);
+    } else if (productId === 'cleaning-machines') {
+        baseData = mappers.mapProductPageData(MOCK_CLEANING_MACHINES_DATA);
+    } else if (productId === 'welding-machines') {
+        baseData = mappers.mapProductPageData(MOCK_WELDING_MACHINES_DATA);
+    } else if (productId === 'press-brakes') {
+        baseData = mappers.mapProductPageData(MOCK_PRESS_BRAKES_DATA);
+    } else if (productId === 'laser-tube-cutters') {
+        baseData = mappers.mapProductPageData(MOCK_LASER_TUBE_CUTTERS_DATA);
+    } else {
+        baseData = mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);
     }
 
-    if (productId === 'laser-markers') {
-        return mappers.mapProductPageData(MOCK_LASER_MARKERS_DATA);
+    try {
+        const cmsSections = await loadProductPageDynamicContent(productId, locale);
+        if (cmsSections && Object.keys(cmsSections).length > 0) {
+            return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections);
+        }
+    } catch (e) {
+        console.error('Failed to load CMS content for product:', productId, e);
     }
 
-    if (productId === 'metal-cutters') {
-        return mappers.mapProductPageData(MOCK_METAL_CUTTERS_DATA);
-    }
-
-    if (productId === 'cleaning-machines') {
-        return mappers.mapProductPageData(MOCK_CLEANING_MACHINES_DATA);
-    }
-
-    if (productId === 'welding-machines') {
-        return mappers.mapProductPageData(MOCK_WELDING_MACHINES_DATA);
-    }
-
-    if (productId === 'press-brakes') {
-        return mappers.mapProductPageData(MOCK_PRESS_BRAKES_DATA);
-    }
-
-    if (productId === 'laser-tube-cutters') {
-        return mappers.mapProductPageData(MOCK_LASER_TUBE_CUTTERS_DATA);
-    }
-
-    return mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);
+    return baseData;
 };
 
 export const getProductById = async (id: string | number) => {

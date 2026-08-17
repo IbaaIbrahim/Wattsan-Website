@@ -24,7 +24,7 @@
 		],
 		"paths": {
 			"@/*": [
-				"./src/app/*"
+				"./src/*"
 			],
 			"@public/*": [
 				"./public/*"
@@ -49,6 +49,12 @@
 			],
 			"@api/*": [
 				"./src/api/*"
+			],
+			"@classes/*": [
+				"./src/classes/*"
+			],
+			"@utils/*": [
+				"./src/utils/*"
 			]
 		}
 	},

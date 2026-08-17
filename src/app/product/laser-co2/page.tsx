@@ -327,7 +327,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.faqSection}>
-					<FAQ />
+					<FAQ items={productData.faqData} />
 				</div>
 
 				<div className={styles.advisorSection}>

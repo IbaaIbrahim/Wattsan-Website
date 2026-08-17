@@ -170,6 +170,8 @@ export interface MachineTabContent {
 }
 
 export interface HeartOfTheMachineryData {
+    title?: string
+    subtitle?: string
     tabs: { id: string; label: string }[]
     content: Record<string, MachineTabContent>
 }
@@ -343,6 +345,54 @@ export interface ProductPageData {
         cards: SupportCard[]
     }
     packageList: PackageItem[]
+    safetyCabinData?: {
+        title?: string
+        description?: string
+        image?: string
+        features?: SafetyCabinFeature[]
+    }
+    rotaryDeviceData?: {
+        title?: string
+        subtitle?: string
+        description?: string
+        image?: string
+        specs?: RotaryDeviceSpec[]
+    }
+    separateRotaryDeviceData?: {
+        title?: string
+        description?: string
+        featuresTitle?: string
+        features?: string[]
+        image?: string
+    }
+    multiSpindlesData?: {
+        title?: string
+        subtitle?: string
+        description1?: string
+        description2?: string
+        image?: string
+        specs?: MultiSpindlesSpec[]
+    }
+    toolSwitchData?: {
+        title?: string
+        subtitle?: string
+        description?: string
+        subHeading?: string
+        subDescription?: string
+        image?: string
+        variants?: ToolSwitchVariant[]
+    }
+    liquidCoolingData?: {
+        title?: string
+        subtitle?: string
+        description?: string
+        types?: LiquidCoolingType[]
+    }
+    faqData?: {
+        id: string
+        question: string
+        answer: string
+    }[]
 }
 
 export interface PackageItem {

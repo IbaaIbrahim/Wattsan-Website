@@ -325,7 +325,7 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 				</div>
 
 				<div className={styles.faqSection}>
-					<FAQ />
+					<FAQ items={productData.faqData} />
 				</div>
 
 				<div className={styles.advisorSection}>
@@ -342,127 +342,171 @@ const ProductPage = ({ params }: { params: { productId: string } }) => {
 
 				<div className={styles.safetyCabinSection}>
 					<SafetyCabin
-						title={<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>}
+						title={productData.safetyCabinData?.title || <span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>}
 						description={
-							<>
+							productData.safetyCabinData?.description ? (
 								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									The cabin is a robust protective enclosure that ensures a safe working environment. Its design maintains optimal conditions for machining, enhancing precision, boosting productivity, and supporting compliance with safety standards. This option is suitable for 0404 mini and 0609 mini CNC router machines.
+									{productData.safetyCabinData.description}
 								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									The cabin's design minimizes exposure to dust, noise, and debris, shielding both operators and equipment. Also, it provides effective sealing to enhance operator safety and reduce noise levels.
-								</Typography>
-							</>
+							) : (
+								<>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										The cabin is a robust protective enclosure that ensures a safe working environment. Its design maintains optimal conditions for machining, enhancing precision, boosting productivity, and supporting compliance with safety standards. This option is suitable for 0404 mini and 0609 mini CNC router machines.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular'>
+										The cabin's design minimizes exposure to dust, noise, and debris, shielding both operators and equipment. Also, it provides effective sealing to enhance operator safety and reduce noise levels.
+									</Typography>
+								</>
+							)
 						}
-						features={productData.safetyCabinFeatures}
-						image='/product-cards/cnc-router/safety-cabin/sc-1.png'
+						features={productData.safetyCabinData?.features || productData.safetyCabinFeatures}
+						image={productData.safetyCabinData?.image || '/product-cards/cnc-router/safety-cabin/sc-1.png'}
 					/>
 				</div>
 
 				<div className={styles.rotaryDeviceSection}>
 					<RotaryDevice
-						subtitle="WATTSAN RD Rotary Device"
-						title="Precision Multi-Sided Machining with Integrated Fourth Axis"
+						subtitle={productData.rotaryDeviceData?.subtitle || "WATTSAN RD Rotary Device"}
+						title={productData.rotaryDeviceData?.title || "Precision Multi-Sided Machining with Integrated Fourth Axis"}
 						description={
-							<>
+							productData.rotaryDeviceData?.description ? (
 								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									The WATTSAN RD rotary device is an integrated fourth axis for CNC routers that enables automatic rotation of workpieces during milling. This allows multi-sided machining without manual repositioning, saving time and improving accuracy. It supports workpieces up to 2510 mm long, making it ideal for cylindrical and complex shaped parts.
+									{productData.rotaryDeviceData.description}
 								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									Controlled via CNC, it synchronizes rotation with other axes for precise, repeatable operations. This feature boosts productivity and expands capabilities, perfect for furniture manufacturers and decorative element producers needing efficient multi-face processing.
-								</Typography>
-							</>
+							) : (
+								<>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										The WATTSAN RD rotary device is an integrated fourth axis for CNC routers that enables automatic rotation of workpieces during milling. This allows multi-sided machining without manual repositioning, saving time and improving accuracy. It supports workpieces up to 2510 mm long, making it ideal for cylindrical and complex shaped parts.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular'>
+										Controlled via CNC, it synchronizes rotation with other axes for precise, repeatable operations. This feature boosts productivity and expands capabilities, perfect for furniture manufacturers and decorative element producers needing efficient multi-face processing.
+									</Typography>
+								</>
+							)
 						}
-						specs={productData.rotaryDeviceSpecs}
-						image='/product-cards/cnc-router/rd-rotary/rd-r-1.png'
+						specs={productData.rotaryDeviceData?.specs || productData.rotaryDeviceSpecs}
+						image={productData.rotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
 					/>
 				</div>
 
 				<div className={styles.separateRotaryDeviceSection}>
 					<SeparateRotaryDevice
-						title={<span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>}
+						title={productData.separateRotaryDeviceData?.title || <span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>}
 						description={
-							<>
+							productData.separateRotaryDeviceData?.description ? (
 								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									Expand the capabilities of your Wattsan CNC router with a standalone rotary device designed for precise 4-axis machining of cylindrical and complex parts. This add-on is ideal for woodworking, engraving, and 3D shaping tasks that require rotation along the A-axis.
+									{productData.separateRotaryDeviceData.description}
 								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									Up to 4 rotary devices can be installed on the M1 S model.
-								</Typography>
-							</>
+							) : (
+								<>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										Expand the capabilities of your Wattsan CNC router with a standalone rotary device designed for precise 4-axis machining of cylindrical and complex parts. This add-on is ideal for woodworking, engraving, and 3D shaping tasks that require rotation along the A-axis.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular'>
+										Up to 4 rotary devices can be installed on the M1 S model.
+									</Typography>
+								</>
+							)
 						}
-						featuresTitle="Key Features"
-						features={[
+						featuresTitle={productData.separateRotaryDeviceData?.featuresTitle || "Key Features"}
+						features={productData.separateRotaryDeviceData?.features || [
 							<>Available with processing lengths <b>from 600 to 3000 mm</b></>,
 							<>Maximum Z-axis height is <b>up to 300 mm</b></>,
 							<>Compatible exclusively with the <b>DSP A18 controller</b></>,
 							<>Robust construction for <b>high-precision rotation and stability</b></>
 						]}
-						image='/product-cards/cnc-router/rd-rotary/rd-r-1.png'
+						image={productData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
 					/>
 				</div>
 
 				<div className={styles.multiSpindlesSection}>
 					<MultiSpindles
-						title="4 spindles"
-						subtitle="x4 productivity"
+						title={productData.multiSpindlesData?.title || "4 spindles"}
+						subtitle={productData.multiSpindlesData?.subtitle || "x4 productivity"}
 						description1={
-							<>
-								Wattsan milling machines with <b>4 synchronized spindles</b> increase productivity by 4 times while maintaining high accuracy and repeatability. This saves changeover time, reduces personnel and equipment costs, and optimizes shop floor space utilization.
-							</>
+							productData.multiSpindlesData?.description1 ? (
+								<>{productData.multiSpindlesData.description1}</>
+							) : (
+								<>
+									Wattsan milling machines with <b>4 synchronized spindles</b> increase productivity by 4 times while maintaining high accuracy and repeatability. This saves changeover time, reduces personnel and equipment costs, and optimizes shop floor space utilization.
+								</>
+							)
 						}
 						description2={
-							<>
-								Wattsan provides equipment matching clients manufacturing needs, due to which a CNC router machine can have a singular spindle or multiple. This parameter defines speed and production volume. For example, with several spindles, you can simultaneously make 4 balusters.
-							</>
+							productData.multiSpindlesData?.description2 ? (
+								<>{productData.multiSpindlesData.description2}</>
+							) : (
+								<>
+									Wattsan provides equipment matching clients manufacturing needs, due to which a CNC router machine can have a singular spindle or multiple. This parameter defines speed and production volume. For example, with several spindles, you can simultaneously make 4 balusters.
+								</>
+							)
 						}
-						specs={productData.multiSpindlesSpecs}
-						image="/product-cards/cnc-router/spindles/spindles-4.png"
+						specs={productData.multiSpindlesData?.specs || productData.multiSpindlesSpecs}
+						image={productData.multiSpindlesData?.image || "/product-cards/cnc-router/spindles/spindles-4.png"}
 					/>
 				</div>
 
 				<div className={styles.toolSwitchSection}>
 					<AutomaticToolSwitch
-						title={<span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>}
-						subtitle="Requires no intervention during operation"
+						title={productData.toolSwitchData?.title || <span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>}
+						subtitle={productData.toolSwitchData?.subtitle || "Requires no intervention during operation"}
 						description={
-							<>
+							productData.toolSwitchData?.description ? (
 								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+									{productData.toolSwitchData.description}
+								</Typography>
+							) : (
+								<>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										The automatic tool change system is available only for M3 models, and it speeds up the production 4-5 times and may come with a variety of instruments. This system provides precise and solid installation of the end mills.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular'>
+										The amount of available tools defines the variability and complexity of layouts that may be processed in one go without human interference. Otherwise, the workflow has to be stopped to change the tools in the system.
+									</Typography>
+								</>
+							)
+						}
+						subHeading={productData.toolSwitchData?.subHeading || "Accelerates work up to x8 times"}
+						subDescription={
+							productData.toolSwitchData?.subDescription ? (
+								<Typography tag='p' size='s' weight='regular'>
+									{productData.toolSwitchData.subDescription}
+								</Typography>
+							) : (
+								<Typography tag='p' size='s' weight='regular'>
 									The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
 								</Typography>
-								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									The automatic tool change system is available only for M3 models, and it speeds up the production 4-5 times and may come with a variety of instruments. This system provides precise and solid installation of the end mills.
-								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									The amount of available tools defines the variability and complexity of layouts that may be processed in one go without human interference. Otherwise, the workflow has to be stopped to change the tools in the system.
-								</Typography>
-							</>
+							)
 						}
-						subHeading="Accelerates work up to x8 times"
-						subDescription={
-							<Typography tag='p' size='s' weight='regular'>
-								The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
-							</Typography>
-						}
-						variants={productData.toolSwitchVariants}
-						image='/product-cards/cnc-router/automatic-tool-switch/image.png'
+						variants={productData.toolSwitchData?.variants || productData.toolSwitchVariants}
+						image={productData.toolSwitchData?.image || '/product-cards/cnc-router/automatic-tool-switch/image.png'}
 					/>
 				</div>
 
 				<div className={styles.liquidCoolingSection}>
 					<LiquidCoolingSystem
-						title={<span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>}
-						subtitle="All models supported"
+						title={productData.liquidCoolingData?.title || <span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>}
+						subtitle={productData.liquidCoolingData?.subtitle || "All models supported"}
 						description={
-							<>
+							productData.liquidCoolingData?.description ? (
 								<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-									While milling some materials, especially metals, a lot of heat is being formed. This can damage the instrument, the workpiece itself, or the CNC router. And that's why the cutting fluid system exists—to prevent that from happening. With it, you can process aluminum, copper, brass, acrylic, etc.
+									{productData.liquidCoolingData.description}
 								</Typography>
-								<Typography tag='p' size='s' weight='regular'>
-									The cutting fluid system minimizes the friction between the milling bit and the material. This increases the machining quality and slows down the wear-out process of the instrument 10 times. Additionally, the system removes chips from the working area and eliminates the possibility of corrosion appearance.
-								</Typography>
-							</>
+							) : (
+								<>
+									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
+										While milling some materials, especially metals, a lot of heat is being formed. This can damage the instrument, the workpiece itself, or the CNC router. And that's why the cutting fluid system exists—to prevent that from happening. With it, you can process aluminum, copper, brass, acrylic, etc.
+									</Typography>
+									<Typography tag='p' size='s' weight='regular'>
+										The cutting fluid system minimizes the friction between the milling bit and the material. This increases the machining quality and slows down the wear-out process of the instrument 10 times. Additionally, the system removes chips from the working area and eliminates the possibility of corrosion appearance.
+									</Typography>
+								</>
+							)
 						}
-						types={productData.liquidCoolingTypes}
+						types={productData.liquidCoolingData?.types || productData.liquidCoolingTypes}
 					/>
 				</div>
 

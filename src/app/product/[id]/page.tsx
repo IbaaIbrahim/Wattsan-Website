@@ -71,8 +71,8 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				const fullChars = await getFullCharacteristics()
 				setFullCharacteristics(fullChars || [])
 
-				// Fetch layout base mock data
-				const mockData = await getProductPageData('cnc-router')
+				// Fetch dynamic CMS product page data (falls back to default template if not in CMS)
+				const mockData = await getProductPageData(params.id)
 				setBaseMockData(mockData)
 
 				// Resolve attachments
@@ -385,7 +385,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				</div>
 
 				<div className={styles.faqSection}>
-					<FAQ />
+					<FAQ items={baseMockData.faqData} />
 				</div>
 
 				<div className={styles.advisorSection}>
