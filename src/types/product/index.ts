@@ -95,6 +95,9 @@ export interface TableTypeItem {
     id: string
     title: string
     description: string
+    attachment?: string
+    image?: string
+    videoUrl?: string
     advantagesTitle?: string
     advantages?: string[]
     list?: string[]

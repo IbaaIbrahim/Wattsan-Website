@@ -28,6 +28,19 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 	console.log(order);
 	
 
+	const previews = (order.orderProducts || [])
+		.map((x: any) =>
+			x?.referenceObject?.fileManger?.url ||
+			x?.referenceObject?.attachments?.[0]?.fileManager?.url ||
+			x?.referenceObject?.image ||
+			'/img/catalog/cnc-routes.png'
+		)
+		.filter(Boolean)
+
+	const totalPrice =
+		_.sumBy(order.orderProducts || [], x => (x.price || 0) * (x.quantity || 1)) -
+		(order?.coupon?.maxPurchaseDiscount ?? 0)
+
 	return (
 		<div className={styles.plate}>
 			{title && <div className={styles.title}>{title}</div>}
@@ -38,7 +51,7 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 						from&nbsp;{getOrderDate(order.fromDate)}
 					</div>
 				</div>
-				<div className={styles.price}>$ {_.sumBy(order.orderProducts, x => x.price) - (order?.coupon?.maxPurchaseDiscount ?? 0)}</div>
+				<div className={styles.price}>$ {totalPrice}</div>
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.footer}>
@@ -61,8 +74,8 @@ const OrderPlate: FC<{ title?: string; order: IOrder }> = ({
 				</div>
 				<EquipmentPreview
 					show={isMobile ? 3 : isTablet ? 1 : 3}
-					total={_.size(_.map(order.orderProducts, x => x?.referenceObject?.fileManger?.url))}
-					items={_.map(order.orderProducts, x => x?.referenceObject?.fileManger?.url)}
+					total={previews.length}
+					items={previews}
 				/>
 				{isMobile && (
 					<Button

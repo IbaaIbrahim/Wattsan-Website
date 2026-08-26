@@ -44,11 +44,19 @@ const SelectItems = () => {
 								key={id}
 								id={id}
 								selected={selected}
-								name={referenceObject?.configurationName ?? ''}
+								name={referenceObject?.configurationName || referenceObject?.name || ''}
 								status={status}
-								image={image}
+								image={referenceObject?.fileManger?.url || referenceObject?.image || image || ''}
 								quantity={quantity}
-								price={+(referenceObject?.price ?? 0)}
+								price={
+									+(item?.price && item.price > 0
+										? item.price
+										: referenceObject?.price && referenceObject.price > 0
+										? referenceObject.price
+										: referenceObject?.orderPrice && referenceObject.orderPrice > 0
+										? referenceObject.orderPrice
+										: referenceObject?.series?.startPrice || 1000)
+								}
 								onSelect={(id, selected) =>
 									basketStore.set.changePosition({ id, selected })
 								}

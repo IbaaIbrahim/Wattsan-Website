@@ -2,10 +2,22 @@
     padding: 32px;
     border: 1px solid #DEEBFA;
     border-radius: 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
 }
 
 .allItems {
     margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 12px;
+    }
 }
 
 .divider {
@@ -18,6 +30,12 @@
     display: grid;
     grid-gap: 64px;
     padding-top: 32px;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        grid-gap: 28px;
+        padding-top: 16px;
+    }
 }
 
 .item:not(:last-of-type) {
@@ -30,6 +48,10 @@
         width: 100%;
         height: 1px;
         background-color: #DEEBFA;
+
+        @media (max-width: 768px) {
+            bottom: -14px;
+        }
     }
 }
 
@@ -37,9 +59,18 @@
     position: relative;
     margin-top: 32px;
 
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
+
     &Button {
         margin-top: 16px;
         margin-left: -24px;
+
+        @media (max-width: 768px) {
+            margin-left: -8px;
+            margin-top: 12px;
+        }
     }
 }
 

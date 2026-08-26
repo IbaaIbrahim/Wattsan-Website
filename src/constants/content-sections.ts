@@ -3,6 +3,15 @@ export interface MetaKeyDefinition {
   type: string
   notTranslatable?: boolean
   columns?: { key: string; label: string }[]
+  schema?: Record<string, MetaKeyDefinition>
+  allowed_types?: string[]
+  col?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number }
+  xs?: number
+  sm?: number
+  md?: number
+  lg?: number
+  xl?: number
+  className?: string
 }
 
 export interface SectionDefinition {
@@ -18,9 +27,9 @@ export interface ReferenceTypeDefinition {
   sections: Record<string, SectionDefinition>
 }
 
-export const ProductPageType: ReferenceTypeDefinition = {
-  name: 'Product Page',
-  value: 'product_page',
+export const SeriesPageType: ReferenceTypeDefinition = {
+  name: 'Series Page',
+  value: 'series_page',
   sections: {
     info_cards: {
       name: 'Info Cards & Highlights',
@@ -76,17 +85,15 @@ export const ProductPageType: ReferenceTypeDefinition = {
       value: 'heart_of_machinery',
       maxContentItems: 1,
       keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle', type: 'text' },
-        items: {
-          name: 'Machinery Components',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Component Title' },
-            { key: 'description', label: 'Description' },
-            { key: 'badge', label: 'Badge / Tag' }
-          ]
-        }
+        spindle_title: { name: 'Spindle Title', type: 'text' },
+        spindle_description: { name: 'Spindle Description', type: 'richtext' },
+        spindle_image: { name: 'Spindle Diagram', type: 'image', notTranslatable: true },
+        worktable_title: { name: 'Worktable Title', type: 'text' },
+        worktable_description: { name: 'Worktable Description', type: 'richtext' },
+        worktable_image: { name: 'Worktable Diagram', type: 'image', notTranslatable: true },
+        control_system_title: { name: 'Control System Title', type: 'text' },
+        control_system_description: { name: 'Control System Description', type: 'richtext' },
+        control_system_image: { name: 'Control System Diagram', type: 'image', notTranslatable: true }
       }
     },
     safety_cabin: {
@@ -215,17 +222,17 @@ export const ProductPageType: ReferenceTypeDefinition = {
     table_types: {
       name: 'Table Types',
       value: 'table_types',
-      maxContentItems: 1,
+      maxContentItems: undefined,
       keys: {
-        title: { name: 'Title', type: 'text' },
-        items: {
-          name: 'Table Types',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Table Name' },
-            { key: 'description', label: 'Description' }
-          ]
-        }
+        attachment: {
+          name: 'Media Attachment (Image / Video)',
+          type: 'attachments',
+          allowed_types: ['image', 'video'],
+          notTranslatable: true,
+          col: { xs: 12, md: 12 }
+        },
+        title: { name: 'Title', type: 'text', col: { xs: 12, md: 12 } },
+        content: { name: 'Content (Rich Text)', type: 'richtext', col: { xs: 12, md: 12 } }
       }
     },
     production_process: {
@@ -244,16 +251,15 @@ export const ProductPageType: ReferenceTypeDefinition = {
       value: 'service_and_support',
       maxContentItems: 1,
       keys: {
-        title: { name: 'Title', type: 'text' },
         image: { name: 'Image', type: 'image', notTranslatable: true },
         cards: {
           name: 'Support Cards',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Card Title' },
-            { key: 'description', label: 'Description' },
-            { key: 'icon', label: 'Icon Name' }
-          ]
+          type: 'repeatable',
+          schema: {
+            logo: { name: 'Logo / Icon', type: 'image', notTranslatable: true },
+            title: { name: 'Title', type: 'text' },
+            content: { name: 'Content', type: 'richtext' }
+          }
         }
       }
     },
@@ -280,11 +286,11 @@ export const ProductPageType: ReferenceTypeDefinition = {
       value: 'reviews',
       maxContentItems: undefined,
       keys: {
-        author: { name: 'Author Name', type: 'text' },
-        rating: { name: 'Rating (1 to 5)', type: 'number' },
-        date: { name: 'Date', type: 'date' },
-        content: { name: 'Review Text', type: 'textarea' },
-        avatar: { name: 'Avatar', type: 'image', notTranslatable: true }
+        image: { name: 'Review Photo', type: 'image', notTranslatable: true },
+        content: { name: 'Review Text', type: 'richtext' },
+        reviewed_by_image: { name: 'Reviewer Avatar', type: 'image', notTranslatable: true },
+        reviewed_by_name: { name: 'Reviewer Name', type: 'text' },
+        reviewed_by_type: { name: 'Reviewer Role / Title', type: 'text' }
       }
     },
     product_info_extra: {
@@ -302,8 +308,16 @@ export const ProductPageType: ReferenceTypeDefinition = {
   }
 }
 
+export const ProductPageType: ReferenceTypeDefinition = {
+  ...SeriesPageType,
+  name: 'Product Page',
+  value: 'product_page'
+}
+
 export const ReferenceTypes = {
+  series_page: SeriesPageType,
   product_page: ProductPageType
 }
 
 export default ReferenceTypes
+

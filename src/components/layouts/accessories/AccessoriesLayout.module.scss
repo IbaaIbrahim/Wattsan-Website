@@ -1,5 +1,8 @@
 .container {
+	// 100vh on mobile is the URL-bar-hidden height, while position: fixed follows the visible
+	// viewport. dvh keeps them in sync, so the bottom sheet always sits on the actions panel
 	height: calc(100vh - 48px);
+	height: calc(100dvh - 48px);
 	width: 100%;
 	display: grid;
 	align-items: stretch;

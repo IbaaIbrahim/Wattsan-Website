@@ -71,15 +71,20 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className, image, cards
 
                 <div className={styles.sliderWrapper}>
                     <div className={styles.sliderTrack} ref={trackRef}>
-                        {cards.map((card) => (
+                        {cards.map((card: any) => (
                             <div key={card.id} className={styles.card}>
                                 <div className={styles.cardIcon}>
-                                    <Image src={ICON_MAP[card.icon] || supportIcon} alt="" width={32} height={32} />
+                                    {card.logo ? (
+                                        <img src={card.logo} alt={card.title} width={32} height={32} style={{ objectFit: 'contain' }} />
+                                    ) : (
+                                        <Image src={ICON_MAP[card.icon] || supportIcon} alt="" width={32} height={32} />
+                                    )}
                                 </div>
                                 <h3 className={styles.cardTitle}>{card.title}</h3>
-                                <p className={styles.cardDescription}>
-                                    {card.description}
-                                </p>
+                                <div
+                                    className={styles.cardDescription}
+                                    dangerouslySetInnerHTML={{ __html: card.description || '' }}
+                                />
                             </div>
                         ))}
                     </div>

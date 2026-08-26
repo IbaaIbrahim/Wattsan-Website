@@ -1607,34 +1607,35 @@ const MOCK_PRESS_BRAKES_DATA = {
     ]
 };
 
-export const getProductPageData = async (productId: string, locale: string = 'en'): Promise<ProductPageData> => {
+export const getProductPageData = async (seriesIdOrSlug: string | number, locale: string = 'en'): Promise<ProductPageData> => {
     let baseData: ProductPageData;
+    const key = String(seriesIdOrSlug);
 
-    if (productId === 'laser-co2') {
+    if (key === 'laser-co2') {
         baseData = mappers.mapProductPageData(MOCK_LASER_CO2_DATA);
-    } else if (productId === 'laser-markers') {
+    } else if (key === 'laser-markers') {
         baseData = mappers.mapProductPageData(MOCK_LASER_MARKERS_DATA);
-    } else if (productId === 'metal-cutters') {
+    } else if (key === 'metal-cutters') {
         baseData = mappers.mapProductPageData(MOCK_METAL_CUTTERS_DATA);
-    } else if (productId === 'cleaning-machines') {
+    } else if (key === 'cleaning-machines') {
         baseData = mappers.mapProductPageData(MOCK_CLEANING_MACHINES_DATA);
-    } else if (productId === 'welding-machines') {
+    } else if (key === 'welding-machines') {
         baseData = mappers.mapProductPageData(MOCK_WELDING_MACHINES_DATA);
-    } else if (productId === 'press-brakes') {
+    } else if (key === 'press-brakes') {
         baseData = mappers.mapProductPageData(MOCK_PRESS_BRAKES_DATA);
-    } else if (productId === 'laser-tube-cutters') {
+    } else if (key === 'laser-tube-cutters') {
         baseData = mappers.mapProductPageData(MOCK_LASER_TUBE_CUTTERS_DATA);
     } else {
         baseData = mappers.mapProductPageData(MOCK_CNC_ROUTER_DATA);
     }
 
     try {
-        const cmsSections = await loadProductPageDynamicContent(productId, locale);
+        const cmsSections = await loadProductPageDynamicContent(seriesIdOrSlug, locale);
         if (cmsSections && Object.keys(cmsSections).length > 0) {
             return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections);
         }
     } catch (e) {
-        console.error('Failed to load CMS content for product:', productId, e);
+        console.error('Failed to load CMS content for series/product:', seriesIdOrSlug, e);
     }
 
     return baseData;

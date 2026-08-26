@@ -35,19 +35,23 @@ const OrderView: FC<{ clientId: string; orderId: string }> = ({
 		if (!order) return
 		order?.orderProducts?.forEach(async (product: IOrderInfo) => {
 			const { referenceObject } = product
-			const modelId = referenceObject?.workArea
-			const seriesId = referenceObject?.seriesId
-			const modelName = referenceObject?.modelName
+			const modelId = referenceObject?.workArea || (referenceObject as any)?.id
+			const seriesId = referenceObject?.seriesId || (referenceObject as any)?.series?.id
+			const modelName = referenceObject?.modelName || (referenceObject as any)?.name
 			const seriesName = referenceObject?.series?.name
 
-			const modelYouTubeLink = await getModelYoutubeLink({ modelId, seriesId })
-			setYoutubeLinks((prev) => {
-				return { ...prev, [`${seriesId}-${modelId}`]: modelYouTubeLink }
-			})
+			if (modelId && seriesId) {
+				const modelYouTubeLink = await getModelYoutubeLink({ modelId, seriesId })
+				if (modelYouTubeLink) {
+					setYoutubeLinks((prev) => {
+						return { ...prev, [`${seriesId}-${modelId}`]: modelYouTubeLink }
+					})
+				}
+			}
 
-			const supportAssets: any[] = await getSupportAssetsByTag(`${seriesName}_${modelName}`) || []
-
-			const blogsList: any[] = await getArticlesByTag(`${seriesName}_${modelName}`) || []
+			const tagQuery = seriesName && modelName ? `${seriesName}_${modelName}` : (seriesName || modelName || '')
+			const supportAssets: any[] = tagQuery ? (await getSupportAssetsByTag(tagQuery) || []) : []
+			const blogsList: any[] = tagQuery ? (await getArticlesByTag(tagQuery) || []) : []
 			const formattedBlogs = blogsList.map((blog: any) => ({
 				id: blog.id,
 				image: blog.mainImageUrl,

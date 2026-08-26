@@ -28,6 +28,7 @@ export type TPosition = {
 	quantity: number
 	referenceId: number
 	selected: boolean
+	price?: number
 	referenceObject: TOrderProduct['referenceObject']
 }
 
@@ -134,11 +135,25 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 	.extendActions((set, get) => ({
 		setPositions: positions => {
 			set.positions(
-				positions.map(position => ({
-					...position,
-					selected: true,
-					price: position?.referenceObject?.price
-				}))
+				positions.map(position => {
+					const itemPrice = Number(position?.price)
+					const refPrice = Number(position?.referenceObject?.price)
+					const orderPrice = Number(position?.referenceObject?.orderPrice)
+					const seriesPrice = Number((position?.referenceObject as any)?.series?.startPrice)
+					const resolvedPrice = itemPrice > 0
+						? itemPrice
+						: (refPrice > 0
+							? refPrice
+							: (orderPrice > 0
+								? orderPrice
+								: (seriesPrice > 0 ? seriesPrice : 1000)))
+
+					return {
+						...position,
+						selected: true,
+						price: resolvedPrice
+					}
+				})
 			)
 		},
 		changePosition: (position: Partial<TPosition>) => {
@@ -158,7 +173,7 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 			)
 		},
 		deletePosition: (id: number) => {
-			set.positions(get.positions().filter(position => position.id === id))
+			set.positions(get.positions().filter(position => position.id !== id))
 		}
 	}))
 	.extendSelectors((set, get) => ({
@@ -177,7 +192,18 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 
 			return (
 				selected.reduce((acc, item) => {
-					const sum = item?.quantity * +(item?.referenceObject?.price ?? 0)
+					const itemPrice = Number(item?.price)
+					const refPrice = Number((item?.referenceObject as any)?.price)
+					const orderPrice = Number((item?.referenceObject as any)?.orderPrice)
+					const seriesPrice = Number((item?.referenceObject as any)?.series?.startPrice)
+					const price = itemPrice > 0
+						? itemPrice
+						: (refPrice > 0
+							? refPrice
+							: (orderPrice > 0
+								? orderPrice
+								: (seriesPrice > 0 ? seriesPrice : 1000)))
+					const sum = (item?.quantity || 1) * price
 
 					return acc + sum
 				}, 0) - get.promoDiscount()
@@ -188,17 +214,39 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 
 			return (
 				selected.reduce((acc, item) => {
-					const sum = item?.quantity * +(item?.referenceObject?.price ?? 0)
+					const itemPrice = Number(item?.price)
+					const refPrice = Number((item?.referenceObject as any)?.price)
+					const orderPrice = Number((item?.referenceObject as any)?.orderPrice)
+					const seriesPrice = Number((item?.referenceObject as any)?.series?.startPrice)
+					const price = itemPrice > 0
+						? itemPrice
+						: (refPrice > 0
+							? refPrice
+							: (orderPrice > 0
+								? orderPrice
+								: (seriesPrice > 0 ? seriesPrice : 1000)))
+					const sum = (item?.quantity || 1) * price
 
 					return acc + sum
 				}, 0)
 			)
 		},
 		orderTotalPriceSelector: () => {
-			const products = get.order().orderProducts ?? []
+			const products = get.order()?.orderProducts ?? []
 
 			return products.reduce((acc, item) => {
-				return acc + item?.price
+				const itemPrice = Number(item?.price)
+				const refPrice = Number((item?.referenceObject as any)?.price)
+				const orderPrice = Number((item?.referenceObject as any)?.orderPrice)
+				const seriesPrice = Number((item?.referenceObject as any)?.series?.startPrice)
+				const price = itemPrice > 0
+					? itemPrice
+					: (refPrice > 0
+						? refPrice
+						: (orderPrice > 0
+							? orderPrice
+							: (seriesPrice > 0 ? seriesPrice : 1000)))
+				return acc + price * (item?.quantity || 1)
 			}, 0)
 		}
 	}))

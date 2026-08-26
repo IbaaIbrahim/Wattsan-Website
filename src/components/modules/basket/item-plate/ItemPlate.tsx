@@ -64,7 +64,7 @@ const ItemPlate: FC<{
 				</div>
 				<div className={styles.image}>
 					<Image
-						src={basketItem.referenceObject?.fileManger?.url}
+						src={basketItem?.referenceObject?.fileManger?.url || (basketItem?.referenceObject as any)?.image || image || '/img/catalog/cnc-routes.png'}
 						alt=''
 						fill={true}
 					/>
@@ -75,35 +75,37 @@ const ItemPlate: FC<{
 					<div className={styles.status}>{status}</div>
 				</div>
 			</label>
-			<div className={styles.calculation}>
-				<Quantity
-					quantity={quantity}
-					limit={limit}
-					disabled={!selected}
-					onChange={value => onChangeQuantity(id, value)}
-				/>
-			</div>
-			<div className={styles.total}>
-				<div className={styles.price}>${quantity * price}</div>
-				<div className={styles.actions}>
-					<button
-						className={styles.action}
-						disabled={true}
-					>
-						<Image
-							src={bookmarkIcon}
-							alt=''
-						/>
-					</button>
-					<button
-						className={styles.action}
-						disabled={true}
-					>
-						<Image
-							src={basketIcon}
-							alt=''
-						/>
-					</button>
+			<div className={styles.bottomRow}>
+				<div className={styles.calculation}>
+					<Quantity
+						quantity={quantity}
+						limit={limit}
+						disabled={!selected}
+						onChange={value => onChangeQuantity(id, value)}
+					/>
+				</div>
+				<div className={styles.total}>
+					<div className={styles.price}>${quantity * price}</div>
+					<div className={styles.actions}>
+						<button
+							className={styles.action}
+							disabled={true}
+						>
+							<Image
+								src={bookmarkIcon}
+								alt=''
+							/>
+						</button>
+						<button
+							className={styles.action}
+							disabled={true}
+						>
+							<Image
+								src={basketIcon}
+								alt=''
+							/>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

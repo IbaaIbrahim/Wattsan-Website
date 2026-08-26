@@ -2,7 +2,15 @@
 
 import clsx from 'clsx'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import {
+	FC,
+	ReactNode,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState
+} from 'react'
 
 import styles from './BottomSheet.module.scss'
 
@@ -16,10 +24,45 @@ const BottomSheet: FC<{
 	const headerRef = useRef(null)
 	const contentRef = useRef(null)
 
-	const headerHeight = useMemo(
-		() => headerRef?.current?.getBoundingClientRect?.()?.height,
-		[headerRef.current]
+	const mvOffset = useMotionValue(0)
+	const mvHeaderHeight = useMotionValue(0)
+
+	const [headerHeight, setHeaderHeight] = useState(0)
+
+	// Measured before paint, otherwise the sheet lands at the wrong height on its first frame
+	useLayoutEffect(() => {
+		const header = headerRef.current
+
+		if (header === null) return
+
+		const measure = () => {
+			const height = header.getBoundingClientRect().height
+
+			setHeaderHeight(height)
+			mvHeaderHeight.set(height)
+		}
+
+		measure()
+
+		const observer = new ResizeObserver(measure)
+
+		observer.observe(header)
+
+		return () => observer.disconnect()
+	}, [mvHeaderHeight])
+
+	const [viewportHeight, setViewportHeight] = useState(() =>
+		typeof window === 'undefined' ? 0 : window.innerHeight
 	)
+
+	// Mobile browsers resize the viewport when the url bar shows or hides
+	useEffect(() => {
+		const update = () => setViewportHeight(window.innerHeight)
+
+		window.addEventListener('resize', update)
+
+		return () => window.removeEventListener('resize', update)
+	}, [])
 
 	const [contentHeight, setContentHeight] = useState(0)
 
@@ -35,30 +78,31 @@ const BottomSheet: FC<{
 
 	const [transition, setTransition] = useState(false)
 
-	const mvOffset = useMotionValue(0)
-
 	const bottomOffset = 100
 	const headerOffset = 48
 
-	const mvHeight = useTransform(mvOffset, v => headerHeight - v)
+	const mvHeight = useTransform(
+		[mvOffset, mvHeaderHeight],
+		([offset, header]: number[]) => Math.max(0, header - offset)
+	)
 
 	const topLimit = useMemo(() => {
 		const maximumTopLimit = -(
-			window?.innerHeight -
+			viewportHeight -
 			bottomOffset -
 			headerOffset -
 			headerHeight
 		)
 
 		const page =
-			window?.innerHeight - bottomOffset - headerOffset - headerHeight
+			viewportHeight - bottomOffset - headerOffset - headerHeight
 		const topLimitByContent = -(page - (page - contentHeight - 20))
 
 		if (topLimitByContent > 0 || topLimitByContent < maximumTopLimit)
 			return maximumTopLimit
 
 		return topLimitByContent
-	}, [bottomOffset, headerOffset, headerHeight, contentHeight])
+	}, [bottomOffset, headerOffset, headerHeight, contentHeight, viewportHeight])
 
 	useEffect(() => {
 		if (opened) {
@@ -104,7 +148,8 @@ const BottomSheet: FC<{
 				style={{ y: mvOffset }}
 				drag='y'
 				dragElastic={0.025}
-				dragConstraints={{ top: topLimit, bottom: headerHeight }}
+				// Dragging down collapses to the header, it must not slide below the actions panel
+				dragConstraints={{ top: topLimit, bottom: 0 }}
 				dragMomentum={false}
 				onDragEnd={handleDragEnd}
 			/>

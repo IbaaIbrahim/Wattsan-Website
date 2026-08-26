@@ -10,7 +10,9 @@ export interface TableTypeItem {
     id: string
     title: string
     description: ReactNode
+    attachment?: string
     image?: string
+    videoUrl?: string
     advantagesTitle?: string
     advantages?: (string | ReactNode)[]
     list?: (string | ReactNode)[]
@@ -34,15 +36,33 @@ const TableTypes: FC<TableTypesProps> = ({
             </Typography>
 
             <div className={styles.grid}>
-                {items.map((item) => (
-                    <div key={item.id} className={styles.card}>
-                        <div className={styles.imagePlaceholder}>
-                            <div className={styles.playIcon}>
-                                <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M43.0417 30.5L22.9167 43.1026L22.9167 17.8974L43.0417 30.5Z" fill="#D1D1D1" />
-                                </svg>
+                {items.map((item) => {
+                    const mediaSrc = item.attachment || item.image || item.videoUrl
+                    const isVideo = item.videoUrl || (typeof mediaSrc === 'string' && (/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(mediaSrc) || mediaSrc.includes('youtube') || mediaSrc.includes('vimeo')))
+
+                    return (
+                        <div key={item.id} className={styles.card}>
+                            <div className={styles.imagePlaceholder}>
+                                {isVideo ? (
+                                    <video
+                                        src={mediaSrc}
+                                        controls
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                ) : mediaSrc ? (
+                                    <img
+                                        src={mediaSrc}
+                                        alt={item.title}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                ) : (
+                                    <div className={styles.playIcon}>
+                                        <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M43.0417 30.5L22.9167 43.1026L22.9167 17.8974L43.0417 30.5Z" fill="#D1D1D1" />
+                                        </svg>
+                                    </div>
+                                )}
                             </div>
-                        </div>
 
                         <div className={styles.content}>
                             <Typography tag='h3' size='l' weight='bold' className={styles.title}>
@@ -51,9 +71,10 @@ const TableTypes: FC<TableTypesProps> = ({
 
                             <div className={styles.description}>
                                 {typeof item.description === 'string' ? (
-                                    <Typography tag='p' size='s' weight='regular'>
-                                        {item.description}
-                                    </Typography>
+                                    <div
+                                        className={styles.htmlContent}
+                                        dangerouslySetInnerHTML={{ __html: item.description }}
+                                    />
                                 ) : (
                                     item.description
                                 )}
@@ -93,8 +114,9 @@ const TableTypes: FC<TableTypesProps> = ({
                                 </ul>
                             )}
                         </div>
-                    </div>
-                ))}
+                        </div>
+                    )
+                })}
             </div>
         </section>
     )

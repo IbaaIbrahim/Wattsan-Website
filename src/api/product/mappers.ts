@@ -348,12 +348,46 @@ export const mergeCmsDataIntoProductPageData = (
     // 4. Heart of Machinery
     if (cmsSectionsMap.heart_of_machinery?.[0]) {
         const customHeart = cmsSectionsMap.heart_of_machinery[0].toHeartOfTheMachinery?.();
-        if (customHeart && customHeart.items && customHeart.items.length > 0) {
-            // Keep tabs/content shape or enrich
+        if (customHeart) {
+            const currentContent = merged.heartOfTheMachinery?.content || {};
             merged.heartOfTheMachinery = {
-                ...merged.heartOfTheMachinery,
-                title: customHeart.title || merged.heartOfTheMachinery?.title,
-                subtitle: customHeart.subtitle || merged.heartOfTheMachinery?.subtitle
+                tabs: [
+                    { id: 'spindle', label: 'Spindle' },
+                    { id: 'worktable', label: 'Worktable' },
+                    { id: 'controlSystem', label: 'Control system' }
+                ],
+                content: {
+                    spindle: {
+                        id: 'spindle',
+                        title: customHeart.spindleTitle || currentContent.spindle?.title || 'Powerful spindle with upgrade option',
+                        description: customHeart.spindleDescription || currentContent.spindle?.description || '',
+                        details: currentContent.spindle?.details || [
+                            { label: 'POWER', value: 'from 2,2 kW' },
+                            { label: 'Z AXIS TRAVEL', value: '300 mm' }
+                        ],
+                        image: customHeart.spindleImage || currentContent.spindle?.image || '/product-cards/cnc-router/spindles/spindles-4.png'
+                    },
+                    worktable: {
+                        id: 'worktable',
+                        title: customHeart.worktableTitle || currentContent.worktable?.title || 'Reliable Worktable',
+                        description: customHeart.worktableDescription || currentContent.worktable?.description || '',
+                        details: currentContent.worktable?.details || [
+                            { label: 'TYPE', value: 'Vacuum + T-slots' },
+                            { label: 'ZONES', value: '4-6 zones' }
+                        ],
+                        image: customHeart.worktableImage || currentContent.worktable?.image || '/product-cards/cnc-router/image 11651.png'
+                    },
+                    controlSystem: {
+                        id: 'controlSystem',
+                        title: customHeart.controlSystemTitle || currentContent.controlSystem?.title || 'Advanced Control System',
+                        description: customHeart.controlSystemDescription || currentContent.controlSystem?.description || '',
+                        details: currentContent.controlSystem?.details || [
+                            { label: 'SYSTEM', value: 'DSP A11' },
+                            { label: 'COMPATIBILITY', value: 'Win/Mac/Linux' }
+                        ],
+                        image: customHeart.controlSystemImage || currentContent.controlSystem?.image || '/product-cards/cnc-router/image 11650.png'
+                    }
+                }
             };
         }
     }
@@ -422,10 +456,12 @@ export const mergeCmsDataIntoProductPageData = (
     }
 
     // 11. Table Types
-    if (cmsSectionsMap.table_types?.[0]) {
-        const customTableTypes = cmsSectionsMap.table_types[0].toTableTypes?.();
-        if (customTableTypes && customTableTypes.length > 0) {
-            merged.tableTypes = customTableTypes;
+    if (cmsSectionsMap.table_types && cmsSectionsMap.table_types.length > 0) {
+        const customTableTypes = cmsSectionsMap.table_types
+            .map((c) => c.toTableTypeItem?.())
+            .filter(Boolean);
+        if (customTableTypes.length > 0) {
+            merged.tableTypes = customTableTypes as any;
         }
     }
 
@@ -445,7 +481,7 @@ export const mergeCmsDataIntoProductPageData = (
         if (customService) {
             merged.serviceAndSupport = {
                 image: customService.image || merged.serviceAndSupport?.image || '',
-                cards: customService.cards && customService.cards.length > 0 ? customService.cards : merged.serviceAndSupport?.cards || []
+                cards: customService.cards && customService.cards.length > 0 ? (customService.cards as any) : (merged.serviceAndSupport?.cards || [])
             };
         }
     }
@@ -473,18 +509,7 @@ export const mergeCmsDataIntoProductPageData = (
     // 16. Reviews
     if (cmsSectionsMap.reviews && cmsSectionsMap.reviews.length > 0) {
         const customReviews = cmsSectionsMap.reviews
-            .map((c) => {
-                const item = c.toReviewItem?.();
-                if (!item) return null;
-                return {
-                    id: String(item.id),
-                    quote: item.content,
-                    author: {
-                        name: item.author,
-                        avatar: item.avatar || '/product-cards/cnc-router/reviews/avatar.png'
-                    }
-                };
-            })
+            .map((c) => c.toReviewItem?.())
             .filter(Boolean);
         if (customReviews.length > 0) {
             merged.reviews = customReviews as any;

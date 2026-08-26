@@ -73,6 +73,34 @@ export class Content {
   }
 }
 
+export function parseRichText(val?: string | null): string {
+  if (!val) return ''
+  const trimmed = String(val).trim()
+  if (trimmed.startsWith('{') && trimmed.includes('"blocks"')) {
+    try {
+      const parsed = JSON.parse(trimmed)
+      if (Array.isArray(parsed.blocks)) {
+        return parsed.blocks
+          .map((b: any) => {
+            const text = b.text || ''
+            if (!text.trim()) return ''
+            if (b.type === 'header-one') return `<h1>${text}</h1>`
+            if (b.type === 'header-two') return `<h2>${text}</h2>`
+            if (b.type === 'header-three') return `<h3>${text}</h3>`
+            if (b.type === 'unordered-list-item') return `<li>${text}</li>`
+            if (b.type === 'ordered-list-item') return `<li>${text}</li>`
+            return `<p>${text}</p>`
+          })
+          .filter(Boolean)
+          .join('')
+      }
+    } catch {
+      // fallback
+    }
+  }
+  return val
+}
+
 export type ContentMetaJson = {
   [key: string]: any
 }
@@ -95,18 +123,25 @@ export class ContentJson extends Content {
     )
 
     this.contentMetasJson = content.contentMetas?.reduce((acc, meta) => {
-      if (meta.type === 'image' || meta.type === 'file' || meta.type === 'video') {
+      const hasFileManager = Boolean(meta.filemanager?.url || meta.filemanagerAr?.url)
+      const isMedia =
+        hasFileManager ||
+        ['image', 'file', 'video', 'attachments', 'attachment'].includes(meta.type) ||
+        meta.keyName.includes('image') ||
+        meta.keyName.includes('attachment')
+
+      if (isMedia) {
         const fileUrl =
           locale === 'ar'
             ? meta.filemanagerAr?.url || meta.filemanager?.url
             : meta.filemanager?.url || meta.filemanagerAr?.url
         acc[meta.keyName] = fileUrl || meta.value || ''
       } else {
-        const val =
+        const rawVal =
           locale === 'ar'
             ? meta.valueAr || meta.value
             : meta.value || meta.valueAr
-        acc[meta.keyName] = val
+        acc[meta.keyName] = parseRichText(rawVal)
       }
       acc[`${meta.keyName}--id`] = String(meta.id)
       return acc
@@ -195,20 +230,29 @@ export class ContentJson extends Content {
     return null
   }
 
-  toHeartOfTheMachinery(): { title?: string; subtitle?: string; items?: any[] } | null {
+  toHeartOfTheMachinery(): {
+    spindleTitle?: string
+    spindleDescription?: string
+    spindleImage?: string
+    worktableTitle?: string
+    worktableDescription?: string
+    worktableImage?: string
+    controlSystemTitle?: string
+    controlSystemDescription?: string
+    controlSystemImage?: string
+  } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
-    let itemsList: any[] = []
-    try {
-      itemsList = typeof meta.items === 'string' ? JSON.parse(meta.items) : (meta.items || [])
-    } catch {
-      itemsList = []
-    }
-
     return {
-      title: meta.title || this.title || undefined,
-      subtitle: meta.subtitle || undefined,
-      items: itemsList
+      spindleTitle: meta.spindle_title || undefined,
+      spindleDescription: meta.spindle_description || undefined,
+      spindleImage: meta.spindle_image || undefined,
+      worktableTitle: meta.worktable_title || undefined,
+      worktableDescription: meta.worktable_description || undefined,
+      worktableImage: meta.worktable_image || undefined,
+      controlSystemTitle: meta.control_system_title || undefined,
+      controlSystemDescription: meta.control_system_description || undefined,
+      controlSystemImage: meta.control_system_image || undefined
     }
   }
 
@@ -338,24 +382,19 @@ export class ContentJson extends Content {
     }
   }
 
-  toTableTypes(): TableTypeItem[] | null {
+  toTableTypeItem(): TableTypeItem | null {
     if (!this.contentMetasJson) return null
-    const raw = this.contentMetasJson.items
-    try {
-      const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw
-      if (Array.isArray(parsed)) {
-        return parsed.map((item: any, idx: number) => ({
-          id: String(idx + 1),
-          title: item.title || '',
-          description: item.description || '',
-          advantages: item.advantages || undefined,
-          list: item.list || undefined
-        }))
-      }
-    } catch {
-      // ignore
+    const meta = this.contentMetasJson
+    const rawAttachment = meta.attachment || meta.image || meta.media || undefined
+    const isVideo = typeof rawAttachment === 'string' && (/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(rawAttachment) || rawAttachment.includes('youtube') || rawAttachment.includes('vimeo'))
+    return {
+      id: String(this.id),
+      title: meta.title || this.title || '',
+      description: meta.content || '',
+      attachment: rawAttachment,
+      image: isVideo ? undefined : rawAttachment,
+      videoUrl: isVideo ? rawAttachment : (meta.video_url || undefined)
     }
-    return null
   }
 
   toProductionStep(): ProductionProcessStep | null {
@@ -369,10 +408,10 @@ export class ContentJson extends Content {
     }
   }
 
-  toServiceAndSupport(): { image?: string; cards?: SupportCard[] } | null {
+  toServiceAndSupport(): { image?: string; cards?: Array<{ id: string; logo?: string; icon?: string; title: string; description: string }> } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
-    let cardsList: SupportCard[] = []
+    let cardsList: any[] = []
     try {
       cardsList = typeof meta.cards === 'string' ? JSON.parse(meta.cards) : (meta.cards || [])
     } catch {
@@ -381,7 +420,13 @@ export class ContentJson extends Content {
 
     return {
       image: meta.image || '',
-      cards: cardsList
+      cards: cardsList.map((card: any, idx: number) => ({
+        id: card.id || String(idx + 1),
+        logo: card.logo || undefined,
+        icon: card.icon || undefined,
+        title: card.title || '',
+        description: parseRichText(card.content || card.description || '')
+      }))
     }
   }
 
@@ -405,14 +450,27 @@ export class ContentJson extends Content {
     }
   }
 
-  toReviewItem(): { id: string; content: string; author: string; avatar?: string } | null {
+  toReviewItem(): {
+    id: string
+    image: string
+    quote: string
+    author: {
+      name: string
+      title: string
+      avatar: string
+    }
+  } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
     return {
       id: String(this.id),
-      author: meta.author || this.title || 'Anonymous',
-      content: meta.content || '',
-      avatar: meta.avatar || undefined
+      image: meta.image || '/product-cards/cnc-router/image 11651.png',
+      quote: meta.content || '',
+      author: {
+        name: meta.reviewed_by_name || this.title || 'Client',
+        title: meta.reviewed_by_type || '',
+        avatar: meta.reviewed_by_image || '/img/catalog/cnc-routes.png'
+      }
     }
   }
 }

@@ -3,9 +3,20 @@
     font-size: 40px;
     font-weight: 800;
     line-height: 48px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 20px;
+        font-size: 28px;
+        line-height: 34px;
+        font-weight: 700;
+    }
 }
 
 .orderWrapper {
     display: grid;
     grid-template-columns: 1fr 440px;
+
+    @media (max-width: 1440px) {
+        grid-template-columns: 1fr;
+    }
 }

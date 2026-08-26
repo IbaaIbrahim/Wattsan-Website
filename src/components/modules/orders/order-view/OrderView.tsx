@@ -197,40 +197,36 @@ const OrderView: FC<{
 					<div className={styles.methodWrapper}>
 						<div className={styles.methodTitle}>Delivery method</div>
 						<div className={styles.method}>
-							<span>{order.deliveryMethod.name}</span>
-							<span>China</span>
+							<span>{order?.deliveryMethod?.name ?? 'Standard Delivery'}</span>
+							<span>{(order?.deliveryMethod as any)?.country?.name ?? order?.deliveryMethod?.details ?? 'China'}</span>
 						</div>
 					</div>
 					<div className={styles.priceWrapper}>
 						<div className={styles.price}>
 							<span className={styles.priceTitle}>Total</span>
-							${_.sumBy(order.orderProducts, x => x.price * x.quantity) - (order?.coupon?.maxPurchaseDiscount ?? 0)}
+							${_.sumBy(order?.orderProducts ?? [], x => (x.price || 0) * (x.quantity || 1)) - (order?.coupon?.maxPurchaseDiscount ?? 0)}
 						</div>
 						<div className={styles.deliveryPrice}>
-							{order?.deliveryMethod.cost ?? 'Delivery not included'}
+							{order?.deliveryMethod?.cost ?? 'Delivery not included'}
 						</div>
-						{/*{order.status === PAYMENT_STATUS && (*/}
-						{/*	<Button*/}
-						{/*		className={styles.paymentAction}*/}
-						{/*		view='black'*/}
-						{/*		size='l'*/}
-						{/*		onClick={handlePayOrder}*/}
-						{/*	>*/}
-						{/*		Pay order*/}
-						{/*	</Button>*/}
-						{/*)}*/}
 					</div>
 				</div>
 				<div className={styles.itemsWrapper}>
-					<div className={styles.itemsTitle}>Items</div>
-					{order.orderProducts.map(item => {
-						return (
-							<OrderItemPlate
-								key={item.id}
-								item={item}
-							/>
-						)
-					})}
+					<div className={styles.itemsTitle}>Items ({order?.orderProducts?.length ?? 0})</div>
+					{order?.orderProducts && order.orderProducts.length > 0 ? (
+						order.orderProducts.map(item => {
+							return (
+								<OrderItemPlate
+									key={item.id}
+									item={item}
+								/>
+							)
+						})
+					) : (
+						<div style={{ padding: '24px', background: '#f9f9f9', borderRadius: '12px', color: '#666' }}>
+							No items found for this order.
+						</div>
+					)}
 				</div>
 			</div>
 			{/* <Notifications

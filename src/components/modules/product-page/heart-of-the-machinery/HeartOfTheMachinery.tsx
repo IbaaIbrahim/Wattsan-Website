@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
@@ -12,8 +12,18 @@ interface HeartOfTheMachineryProps {
 }
 
 const HeartOfTheMachinery: FC<HeartOfTheMachineryProps> = ({ className, data }) => {
-    const [activeTab, setActiveTab] = useState(data.tabs[0].id)
-    const activeContent = data.content[activeTab]
+    const [activeTab, setActiveTab] = useState<string>(data?.tabs?.[0]?.id || '')
+
+    useEffect(() => {
+        if (data?.tabs?.[0]?.id && (!activeTab || !data.tabs.some(t => t.id === activeTab))) {
+            setActiveTab(data.tabs[0].id)
+        }
+    }, [data, activeTab])
+
+    if (!data || !data.tabs || data.tabs.length === 0) return null
+
+    const activeContent = data.content?.[activeTab] || data.content?.[data.tabs[0]?.id]
+    if (!activeContent) return null
 
     return (
         <div className={clsx(styles.container, className)}>
@@ -45,30 +55,34 @@ const HeartOfTheMachinery: FC<HeartOfTheMachineryProps> = ({ className, data }) 
                             {activeContent.description}
                         </Typography>
 
-                        <div className={styles.details}>
-                            {activeContent.details.map((detail, index) => (
-                                <div key={index} className={styles.detailItem}>
-                                    <Typography tag='span' size='l' weight='bold' className={styles.detailValue}>
-                                        {detail.value}
-                                    </Typography>
-                                    <div className={styles.detailLine} />
-                                    <Typography tag='span' size='xs' weight='regular' className={styles.detailLabel}>
-                                        {detail.label}
-                                    </Typography>
-                                </div>
-                            ))}
-                        </div>
+                        {activeContent.details && activeContent.details.length > 0 && (
+                            <div className={styles.details}>
+                                {activeContent.details.map((detail, index) => (
+                                    <div key={index} className={styles.detailItem}>
+                                        <Typography tag='span' size='l' weight='bold' className={styles.detailValue}>
+                                            {detail.value}
+                                        </Typography>
+                                        <div className={styles.detailLine} />
+                                        <Typography tag='span' size='xs' weight='regular' className={styles.detailLabel}>
+                                            {detail.label}
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
-                    <div className={styles.imageContent}>
-                        <Image
-                            src={activeContent.image}
-                            alt={activeContent.title}
-                            width={500}
-                            height={500}
-                            className={styles.image}
-                        />
-                    </div>
+                    {activeContent.image && (
+                        <div className={styles.imageContent}>
+                            <Image
+                                src={activeContent.image}
+                                alt={activeContent.title || 'Component'}
+                                width={500}
+                                height={500}
+                                className={styles.image}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

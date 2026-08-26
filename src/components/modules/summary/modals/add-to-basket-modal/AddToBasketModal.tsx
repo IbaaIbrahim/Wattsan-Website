@@ -9,7 +9,16 @@ import { PAGES } from '../../../../../config/pages.url.config'
 
 import styles from './AddToBasketModal.module.scss'
 
-const AddToBasketModal = () => {
+interface IAddToBasketModalProps {
+	itemData?: {
+		title?: string
+		categoryName?: string
+		price?: number | string
+		image?: string | any
+	}
+}
+
+const AddToBasketModal = ({ itemData }: IAddToBasketModalProps) => {
 	const router = useRouter()
 
 	const machineId = configuratorStore.use.machineId()
@@ -19,13 +28,20 @@ const AddToBasketModal = () => {
 
 	const summary = configuratorStore.use.summarySelector(machineId)
 
+	const isProduct = !!itemData
+	const title = isProduct ? 'Item successfully added to your basket' : 'Configuration successfully added to your basket'
+	const categoryName = isProduct ? (itemData?.categoryName || '') : (categoryInfo?.name || '')
+	const itemName = isProduct ? (itemData?.title || '') : (machineInfo?.name || '')
+	const itemPrice = isProduct ? itemData?.price : summary
+	const itemImage = isProduct ? (itemData?.image || '/img/catalog/cnc-routes.png') : machineInfo?.logo
+
 	return (
 		<div>
 			<Typography
 				tag='h2'
 				className={styles.title}
 			>
-				Configuration successfully added to your basket
+				{title}
 			</Typography>
 			<Typography
 				className={styles.subtitle}
@@ -37,41 +53,60 @@ const AddToBasketModal = () => {
 			</Typography>
 			<div className={styles.plate}>
 				<div className={styles.content}>
-					<Image
-						src={machineInfo?.logo}
-						width={100}
-						height={100}
-						alt=''
-					/>
+					{itemImage && (
+						<div style={{ position: 'relative', width: 100, height: 100, flexShrink: 0 }}>
+							{typeof itemImage === 'string' ? (
+								<img
+									src={itemImage}
+									width={100}
+									height={100}
+									alt=''
+									style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+								/>
+							) : (
+								<Image
+									src={itemImage}
+									width={100}
+									height={100}
+									alt=''
+									style={{ objectFit: 'contain' }}
+								/>
+							)}
+						</div>
+					)}
 					<div className={styles.info}>
-						<Typography
-							className={styles.name}
-							tag='p'
-							size='m'
-						>
-							{categoryInfo?.name}
-						</Typography>
+						{categoryName && (
+							<Typography
+								className={styles.name}
+								tag='p'
+								size='m'
+							>
+								{categoryName}
+							</Typography>
+						)}
 						<Typography
 							className={styles.code}
 							tag='p'
 							size='l'
 						>
-							{machineInfo?.name}&nbsp;
-							<Typography
-								tag='p'
-								size='m'
-								weight='regular'
-								discolored={true}
-							>
-								{customName}
-							</Typography>
+							{itemName}&nbsp;
+							{!isProduct && customName && (
+								<Typography
+									tag='p'
+									size='m'
+									weight='regular'
+									discolored={true}
+								>
+									{customName}
+								</Typography>
+							)}
 						</Typography>
 						<Typography
 							tag='p'
 							size='l'
 							discolored={true}
 						>
-							${summary}
+							${itemPrice}
 						</Typography>
 					</div>
 				</div>

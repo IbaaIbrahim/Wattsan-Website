@@ -19,6 +19,7 @@ import { basketForm } from '@store/forms'
 import { modalsStore } from '@store/modals'
 import { STATUSES, requestsStore } from '@store/requests'
 import qs from 'query-string'
+import { getAllProducts, getSeries } from '@/api/product'
 
 import { PAGES } from '../../config/pages.url.config'
 import { pickAll } from '../../utils/helpers'
@@ -28,16 +29,7 @@ export const getBaskets = async () => {
 	try {
 		const clientId = authStore.get.clientId()
 
-		// if (
-		// 	!clientId ||
-		// 	requestsStore.get.statusSelector(API_GET_BASKETS) !== STATUSES.idle
-		// )
-		// 	return
-
-		if (
-			!clientId
-		)
-			return
+		if (!clientId) return
 
 		const response = await authorizedRequest({
 			url: API_GET_BASKETS,
@@ -47,30 +39,96 @@ export const getBaskets = async () => {
 			}
 		})
 
-		basketStore.set.setPositions(response?.data)
+		const rawPositions = response?.data || []
+		const hasProductItems = rawPositions.some((p: any) => p.itemtype === 2)
+
+		if (hasProductItems) {
+			const [allProds, allSeries] = await Promise.all([
+				getAllProducts(),
+				getSeries()
+			])
+			const prodsMap = new Map((allProds || []).map((p: any) => [Number(p.id), p]))
+			const seriesMap = new Map((allSeries || []).map((s: any) => [Number(s.id), s]))
+
+			const enrichedPositions = rawPositions.map((pos: any) => {
+				if (pos.itemtype === 2) {
+					const prod: any = prodsMap.get(Number(pos.referenceId))
+					const seriesId = prod?.seriesId || pos.referenceObject?.seriesId
+					const seriesObj: any = seriesId ? seriesMap.get(Number(seriesId)) : null
+					const basePrice = (prod?.price && Number(prod.price) > 0)
+						? Number(prod.price)
+						: (prod?.orderPrice && Number(prod.orderPrice) > 0)
+							? Number(prod.orderPrice)
+							: (seriesObj?.startPrice && Number(seriesObj.startPrice) > 0)
+								? Number(seriesObj.startPrice)
+								: (Number(pos.referenceObject?.price) > 0 ? Number(pos.referenceObject.price) : 1000)
+
+					const charsSum = (prod?.fullProductCharacteristics || [])
+						.filter((x: any) => x.isActive && Number(x.price) > 0)
+						.reduce((sum: number, pc: any) => sum + Number(pc.price), 0)
+
+					const finalPrice = basePrice + charsSum
+
+					return {
+						...pos,
+						price: finalPrice,
+						referenceObject: {
+							...(pos.referenceObject || {}),
+							name: prod?.name || pos.referenceObject?.name,
+							seriesId: seriesId,
+							series: seriesObj || pos.referenceObject?.series,
+							price: finalPrice,
+							orderPrice: prod?.orderPrice || pos.referenceObject?.orderPrice,
+							attachments: prod?.attachments || pos.referenceObject?.attachments
+						}
+					}
+				}
+				return pos
+			})
+
+			basketStore.set.setPositions(enrichedPositions)
+			return
+		}
+
+		basketStore.set.setPositions(rawPositions)
 	} catch (error) {
 		console.error(error)
 	}
 }
 
-export const createBasket = async () => {
+export interface ICreateBasketParams {
+	referenceId?: number
+	itemtype?: 1 | 2
+	quantity?: number
+	itemData?: {
+		title?: string
+		categoryName?: string
+		price?: number | string
+		image?: string
+	}
+}
+
+export const createBasket = async (params?: ICreateBasketParams) => {
 	try {
 		const clientId = authStore.get.clientId()
-		const referenceId = configuratorStore.get.savedReferenceId()
+		const referenceId = params?.referenceId ?? configuratorStore.get.savedReferenceId()
+		const itemtype = params?.itemtype ?? 1
+		const quantity = params?.quantity ?? 1
 
 		const response = await authorizedRequest({
 			url: API_CREATE_BASKET,
 			method: 'POST',
 			data: {
 				referenceId,
-				/** Хардкод на время разработки, сейчас доступны только целые конфигурации */
-				itemtype: 1,
+				itemtype,
 				clientId,
-				quantity: 1
+				quantity
 			}
 		})
 
-		modalsStore.set.open(MODALS.addToBasketModal)
+		modalsStore.set.open(MODALS.addToBasketModal, {
+			itemData: params?.itemData
+		})
 	} catch (error) {
 		console.error(error)
 	}
@@ -216,6 +274,24 @@ export const createOrder = async (router) => {
 		const positions = basketStore.get.positions()
 		const couponCode = basketStore.get.appliedPromoCode() ?? ''
 
+		const orderProducts = positions
+			.filter(
+				({ selected, quantity }: any) =>
+					selected && (quantity === undefined || quantity > 0)
+			)
+			.map(position => ({
+				itemtype: position.itemtype ?? 1,
+				referenceId: position.referenceId,
+				price: +(
+					(position.price && Number(position.price) > 0)
+						? Number(position.price)
+						: (position.referenceObject?.price && Number(position.referenceObject.price) > 0)
+							? Number(position.referenceObject.price)
+							: ((position.referenceObject as any)?.series?.startPrice || 19000)
+				),
+				quantity: position.quantity ?? 1
+			}))
+
 		console.log({
 			url: API_ORDERS_CREATE,
 			method: 'POST',
@@ -223,14 +299,7 @@ export const createOrder = async (router) => {
 				deliveryMethodId: deliveryMethod as number,
 				clientId,
 				couponCode: couponCode,
-				orderProducts: positions
-					.filter(
-						({ selected, quantity, price }: any) =>
-							selected && quantity > 0 && !!+(price ?? 0)
-					)
-					.map(position =>
-						pickAll(['itemtype', 'referenceId', 'price', 'quantity'], position)
-					)
+				orderProducts
 			}
 		})
 
@@ -241,14 +310,7 @@ export const createOrder = async (router) => {
 				deliveryMethodId: deliveryMethod as number,
 				clientId,
 				couponCode: couponCode,
-				orderProducts: positions
-					.filter(
-						({ selected, quantity, price }: any) =>
-							selected && quantity > 0 && !!+(price ?? 0)
-					)
-					.map(position =>
-						pickAll(['itemtype', 'referenceId', 'price', 'quantity'], position)
-					)
+				orderProducts
 			}
 		})
 

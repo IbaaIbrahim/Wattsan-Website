@@ -11,6 +11,13 @@ import ProductInfoCards from '@components/modules/product-page/product-info-card
 import WattsanFactsSlider from '@components/modules/product-page/wattsan-facts-slider/WattsanFactsSlider'
 import ProductDescription from '@components/modules/product-page/product-description/ProductDescription'
 import HeartOfTheMachinery from '@components/modules/product-page/heart-of-the-machinery/HeartOfTheMachinery'
+import SafetyCabin from '@components/modules/product-page/safety-cabin/SafetyCabin'
+import RotaryDevice from '@components/modules/product-page/rotary-device/RotaryDevice'
+import SeparateRotaryDevice from '@components/modules/product-page/separate-rotary-device/SeparateRotaryDevice'
+import MultiSpindles from '@components/modules/product-page/multi-spindles/MultiSpindles'
+import AutomaticToolSwitch from '@components/modules/product-page/automatic-tool-switch/AutomaticToolSwitch'
+import LiquidCoolingSystem from '@components/modules/product-page/liquid-cooling-system/LiquidCoolingSystem'
+import TableTypes from '@components/modules/product-page/table-types/TableTypes'
 import ProductSpecifications from '@components/modules/product-page/product-specifications/ProductSpecifications'
 import SeriesComparison from '@components/modules/product-page/series-comparison/SeriesComparison'
 import ProductReviews from '@components/modules/product-page/product-reviews/ProductReviews'
@@ -35,12 +42,17 @@ import {
 	getProductsBySeriesId,
 	formatProductModelName
 } from '@api/product'
+import { authStore } from '@store/auth'
+import { modalsStore } from '@store/modals'
+import { MODALS } from '@components/ui/modal/Modal'
+import { createBasket } from '@store/basket/actions'
 import { ProductPageData, ProductParameter } from '@my-types/product'
 
 import styles from './page.module.scss'
 
 const ProductPage = ({ params }: { params: { id: string } }) => {
 	const router = useRouter()
+	const authorized = authStore.use.authorized()
 	const [product, setProduct] = useState<any>(null)
 	const [series, setSeries] = useState<any>(null)
 	const [seriesProducts, setSeriesProducts] = useState<any[]>([])
@@ -88,8 +100,9 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				const fullChars = await getFullCharacteristics()
 				setFullCharacteristics(fullChars || [])
 
-				// 4. Fetch dynamic CMS product page data
-				const mockData = await getProductPageData(params.id)
+				// 4. Fetch dynamic CMS shared series data
+				const targetSeriesId = productData.seriesId || params.id
+				const mockData = await getProductPageData(targetSeriesId)
 				setBaseMockData(mockData)
 
 				// 5. Resolve attachments
@@ -259,15 +272,28 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 		...dynamicCharacteristicsParameters
 	]
 
-	// Calculate total price based on selected characteristics sum
-	const currentPriceValue = Object.entries(selectedOptions).reduce((sum, [codeStr, charId]) => {
+	// Calculate total price based on base product/series price + selected characteristics sum
+	const rawBasePrice = (product?.price && Number(product.price) > 0)
+		? Number(product.price)
+		: (product?.orderPrice && Number(product.orderPrice) > 0)
+			? Number(product.orderPrice)
+			: (series?.startPrice && Number(series.startPrice) > 0)
+				? Number(series.startPrice)
+				: (baseMockData?.productInfo?.currentPrice ? parseInt(baseMockData.productInfo.currentPrice.replace(/\D/g, ''), 10) : 1000)
+
+	const optionsPriceSum = Object.entries(selectedOptions).reduce((sum, [codeStr, charId]) => {
 		const code = parseInt(codeStr, 10)
 		const activeChar = (groupedByCode[code] || []).find((c) => c.characteristicId === charId)
 		return sum + (activeChar?.price || 0)
 	}, 0)
 
+	const currentPriceValue = rawBasePrice + optionsPriceSum
+
 	// Determine initial discount from catalog hint prices
-	const initialDiscount = (product.oldPrice && product.oldPrice > product.price) ? (product.oldPrice - product.price) : 0
+	const initialDiscount = (product.oldPrice && product.oldPrice > product.price)
+		? (product.oldPrice - product.price)
+		: (baseMockData?.productInfo?.discount ? parseInt(baseMockData.productInfo.discount.replace(/\D/g, ''), 10) : 1000)
+
 	const originalPriceValue = currentPriceValue + initialDiscount
 	const discountValue = initialDiscount
 
@@ -344,8 +370,45 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 		{ label: productModelDisplayName }
 	]
 
+	const handleLogin = (nextAction: () => void) => () => {
+		modalsStore.set.open(MODALS.login, {
+			initialScreen: 'LOGIN',
+			closeOnEscape: false,
+			onComplete: nextAction,
+			onError: () => {}
+		})
+	}
+
+	const addProductToBasket = async () => {
+		await createBasket({
+			referenceId: Number(product.id),
+			itemtype: 2,
+			quantity: 1,
+			itemData: {
+				title: fullProductTitle,
+				categoryName: series?.category?.name || seriesDisplayName,
+				price: formattedCurrentPrice.replace('$', ''),
+				image: galleryMain
+			}
+		})
+	}
+
 	const handleAddToBasket = () => {
-		console.log('Add to basket', { productId: product.id, selectedOptions, totalPrice: currentPriceValue })
+		if (authorized) {
+			addProductToBasket()
+		} else {
+			modalsStore.set.open(MODALS.infoModal, {
+				title: 'To add the product to your basket, you need to Log in or Sign up',
+				accentButton: {
+					text: 'Log in or Sign up',
+					onClick: handleLogin(addProductToBasket)
+				},
+				secondaryButton: {
+					text: 'Cancel',
+					onClick: () => modalsStore.set.close()
+				}
+			})
+		}
 	}
 
 	const handleConfiguratorClick = () => {
@@ -428,9 +491,93 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 					/>
 				</div>
 
-				<div className={styles.heartSection}>
-					<HeartOfTheMachinery data={baseMockData.heartOfTheMachinery} />
-				</div>
+				{baseMockData.heartOfTheMachinery && (
+					<div className={styles.heartSection}>
+						<HeartOfTheMachinery data={baseMockData.heartOfTheMachinery} />
+					</div>
+				)}
+
+				{baseMockData.safetyCabinData && (
+					<div className={styles.safetyCabinSection}>
+						<SafetyCabin
+							title={baseMockData.safetyCabinData.title || 'Safety Cabin'}
+							description={baseMockData.safetyCabinData.description || ''}
+							features={baseMockData.safetyCabinData.features || []}
+							image={baseMockData.safetyCabinData.image || ''}
+						/>
+					</div>
+				)}
+
+				{baseMockData.rotaryDeviceData && (
+					<div className={styles.rotaryDeviceSection}>
+						<RotaryDevice
+							subtitle={baseMockData.rotaryDeviceData.subtitle}
+							title={baseMockData.rotaryDeviceData.title || 'Rotary Device'}
+							description={baseMockData.rotaryDeviceData.description || ''}
+							specs={baseMockData.rotaryDeviceData.specs || []}
+							image={baseMockData.rotaryDeviceData.image || ''}
+						/>
+					</div>
+				)}
+
+				{baseMockData.separateRotaryDeviceData && (
+					<div className={styles.separateRotarySection}>
+						<SeparateRotaryDevice
+							title={baseMockData.separateRotaryDeviceData.title || 'Separate Rotary Device'}
+							description={baseMockData.separateRotaryDeviceData.description || ''}
+							featuresTitle={baseMockData.separateRotaryDeviceData.featuresTitle}
+							features={baseMockData.separateRotaryDeviceData.features || []}
+							image={baseMockData.separateRotaryDeviceData.image || ''}
+						/>
+					</div>
+				)}
+
+				{baseMockData.multiSpindlesData && (
+					<div className={styles.multiSpindlesSection}>
+						<MultiSpindles
+							title={baseMockData.multiSpindlesData.title || 'Multi Spindles'}
+							subtitle={baseMockData.multiSpindlesData.subtitle || ''}
+							description1={baseMockData.multiSpindlesData.description1 || ''}
+							description2={baseMockData.multiSpindlesData.description2 || ''}
+							specs={baseMockData.multiSpindlesData.specs || []}
+							image={baseMockData.multiSpindlesData.image}
+						/>
+					</div>
+				)}
+
+				{baseMockData.toolSwitchData && (
+					<div className={styles.toolSwitchSection}>
+						<AutomaticToolSwitch
+							title={baseMockData.toolSwitchData.title || 'Automatic Tool Switch'}
+							subtitle={baseMockData.toolSwitchData.subtitle}
+							description={baseMockData.toolSwitchData.description}
+							image={baseMockData.toolSwitchData.image}
+							subHeading={baseMockData.toolSwitchData.subHeading}
+							subDescription={baseMockData.toolSwitchData.subDescription}
+							variants={baseMockData.toolSwitchData.variants || []}
+						/>
+					</div>
+				)}
+
+				{baseMockData.liquidCoolingData && (
+					<div className={styles.liquidCoolingSection}>
+						<LiquidCoolingSystem
+							title={baseMockData.liquidCoolingData.title || 'Liquid Cooling System'}
+							subtitle={baseMockData.liquidCoolingData.subtitle || ''}
+							description={baseMockData.liquidCoolingData.description || ''}
+							types={baseMockData.liquidCoolingData.types || []}
+						/>
+					</div>
+				)}
+
+				{baseMockData.tableTypes && baseMockData.tableTypes.length > 0 && (
+					<div className={styles.tableTypesSection}>
+						<TableTypes
+							title="Table Types"
+							items={baseMockData.tableTypes}
+						/>
+					</div>
+				)}
 
 				<div className={styles.specsSection} id="specifications-table">
 					<ProductSpecifications categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications} />
