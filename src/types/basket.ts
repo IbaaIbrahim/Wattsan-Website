@@ -12,7 +12,7 @@ export type TBasketItem = {
 
 	"id": string
 	"referenceId": number
-	"itemtype": number
+	"itemtype": 1 | 2 | 3
 	"clientId": string
 	"quantity": number
 	"isActive": boolean
@@ -24,12 +24,14 @@ export type TBasketItem = {
 export type TBasketItems = TBasketItem[]
 
 export type TPopularItem = {
-	id: string
+	id: string | number
+	referenceId?: number
+	itemtype?: 1 | 2 | 3
 	image: string
 	name: string
 	code: string
-	modification: string
-	price: string
+	modification?: string
+	price: string | number
 }
 
 export type TPopularItems = TPopularItem[]

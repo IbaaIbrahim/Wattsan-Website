@@ -29,12 +29,37 @@
 	}
 }
 
+.iconWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .icon {
 	width: 24px;
 	height: 24px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.badge {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	min-width: 16px;
+	height: 16px;
+	padding: 0 4px;
+	background-color: #E63C32;
+	color: #FFFFFF;
+	font-size: 10px;
+	font-weight: 700;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
 }
 
 .text {

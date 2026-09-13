@@ -4,12 +4,13 @@ import { Typography } from '@components/ui/typography/Typography'
 import { signUpHandler } from '@store/auth/actions'
 import { signUpForm } from '@store/forms'
 import { requestsStore } from '@store/requests'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/bootstrap.css'
 
 import Button from '../../../ui/button/Button'
 import Input from '../../../ui/input/Input'
 import FormCheckbox from '../../../ui/inputs/form-checkbox/FormCheckbox'
-// import { FormPhone } from '../../../ui/inputs/form-phone/FormPhone'
 import FormRadio from '../../../ui/inputs/form-radio/FormRadio'
 
 import styles from './SignUp.module.scss'
@@ -21,6 +22,23 @@ const SignUp = () => {
 
 	const values = signUpForm.use.valuesSelector()
 	const errors = signUpForm.use.errorsSelector()
+
+	const [country, setCountry] = useState<string>('us')
+
+	useEffect(() => {
+		let isMounted = true
+		fetch('/api/geo')
+			.then(res => res.json())
+			.then(data => {
+				if (isMounted && data?.country) {
+					setCountry(data.country.toLowerCase())
+				}
+			})
+			.catch(() => {})
+		return () => {
+			isMounted = false
+		}
+	}, [])
 
 	const handleSubmit = () => {
 		signUpHandler(() => {
@@ -67,22 +85,33 @@ const SignUp = () => {
 					onChange={value => signUpForm.set.change('fullName', value)}
 					onBlur={() => signUpForm.set.blur('fullName')}
 				/>
-				<Input
-					className={styles.field}
-					label='Phone'
-					placeholder='Enter your phone number'
-					disabled={loading}
-					value={values?.phone}
-					error={errors?.phone}
-					onChange={value => signUpForm.set.change('phone', value)}
-					onBlur={() => signUpForm.set.blur('phone')}
-				/>
-				{/*<FormPhone*/}
-				{/*	className={styles.field}*/}
-				{/*	name='phone'*/}
-				{/*	label='Phone'*/}
-				{/*	placeholder='Enter your phone number'*/}
-				{/*/>*/}
+				<div className={styles.phoneWrapper}>
+					<label className={styles.phoneLabel}>Phone</label>
+					<PhoneInput
+						country={country}
+						enableSearch={true}
+						disabled={loading}
+						value={String(values?.phone || '')}
+						onChange={(phone: string) => {
+							signUpForm.set.change('phone', phone)
+						}}
+						onBlur={() => signUpForm.set.blur('phone')}
+						inputClass={styles.phoneInput}
+						buttonClass={styles.phoneButton}
+						containerClass={styles.phoneContainer}
+						dropdownClass={styles.phoneDropdown}
+					/>
+					{errors?.phone && (
+						<Typography
+							className={styles.error}
+							tag='p'
+							size='m'
+							weight='regular'
+						>
+							{errors.phone}
+						</Typography>
+					)}
+				</div>
 				<Input
 					className={styles.field}
 					label='E-mail'

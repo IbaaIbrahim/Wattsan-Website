@@ -21,7 +21,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
 
-import { formatProductModelName, getAllProducts, getCategories, getSeries } from '@api/product'
+import { formatProductModelName, getAllProducts, getCategories, getSellableCharacteristics, getSeries } from '@api/product'
 
 import { PAGES } from '../../../../config/pages.url.config'
 
@@ -57,16 +57,18 @@ const CatalogSidebar: FC<{
 	const [categories, setCategories] = useState<any[]>(DEFAULT_CATEGORIES)
 	const [allSeries, setAllSeries] = useState<any[]>([])
 	const [allProducts, setAllProducts] = useState<any[]>([])
+	const [sellableCharacteristics, setSellableCharacteristics] = useState<any[]>([])
 	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
 		const loadData = async () => {
 			setIsLoading(true)
 			try {
-				const [cats, seriesData, productsData] = await Promise.all([
+				const [cats, seriesData, productsData, sellableChars] = await Promise.all([
 					getCategories(),
 					getSeries(),
-					getAllProducts()
+					getAllProducts(),
+					getSellableCharacteristics()
 				])
 
 				if (cats && cats.length > 0) {
@@ -77,6 +79,9 @@ const CatalogSidebar: FC<{
 				}
 				if (productsData && productsData.length > 0) {
 					setAllProducts(productsData)
+				}
+				if (sellableChars && sellableChars.length > 0) {
+					setSellableCharacteristics(sellableChars)
 				}
 			} catch (error) {
 				console.error('Failed to load catalog data', error)
@@ -299,13 +304,21 @@ const CatalogSidebar: FC<{
 
 								{selectedCategory === 'accessories' ? (
 									<div className={styles.productTags}>
-										<Link
-											href='/accessories'
-											className={styles.tag}
-											onClick={handleOverlayClick}
-										>
-											All Accessories
-										</Link>
+										{sellableCharacteristics.length > 0 ? (
+											sellableCharacteristics.map((char: any) => (
+												<div
+													key={char.id}
+													className={styles.tag}
+													title={char.name}
+												>
+													{char.name} {char.unit ? char.unit : ''}
+												</div>
+											))
+										) : (
+											<span className={styles.emptyState}>
+												No sellable accessories available
+											</span>
+										)}
 									</div>
 								) : activeSeries.length > 0 ? (
 									<div className={styles.seriesListContainer}>

@@ -32,3 +32,8 @@ export const API_FILE_MANAGER_READ = `${API_URL}/FileManager/Read`
 export const API_FILE_MANAGER_CREATE = `${API_URL}/FileManager/Create`
 export const API_FILE_MANAGER_UPDATE = `${API_URL}/FileManager/Update`
 export const API_FILE_MANAGER_DELETE = `${API_URL}/FileManager/Delete`
+export const API_GET_FAVORITES = `${API_URL}/Favorites/Read`
+export const API_CREATE_FAVORITE = `${API_URL}/Favorites/Create`
+export const API_DELETE_FAVORITE = `${API_URL}/Favorites/Delete`
+export const API_UPDATE_FAVORITE = `${API_URL}/Favorites/Update`
+

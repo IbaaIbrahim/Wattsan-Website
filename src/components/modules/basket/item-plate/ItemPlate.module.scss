@@ -190,4 +190,16 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transition: transform .15s ease, opacity .15s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.activeFavorite {
+    filter: invert(34%) sepia(85%) saturate(2250%) hue-rotate(345deg) brightness(95%) contrast(92%);
 }

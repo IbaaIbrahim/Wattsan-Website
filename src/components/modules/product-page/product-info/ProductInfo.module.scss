@@ -108,8 +108,47 @@
 	color: #52A94B;
 }
 
-.addToBasket {
+.buttonRow {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
 	margin-top: 8px;
+}
+
+.addToBasket {
+	flex: 1;
+	margin-top: 0;
+}
+
+.favoriteButton {
+	width: 48px;
+	height: 48px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #FFFFFF;
+	border: 1px solid #DEEBFA;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+
+	&:hover {
+		border-color: #92B0D2;
+		transform: scale(1.05);
+	}
+}
+
+.favoriteIcon {
+	width: 24px;
+	height: 24px;
+}
+
+.activeFavoriteIcon {
+	width: 24px;
+	height: 24px;
+	filter: invert(34%) sepia(85%) saturate(2250%) hue-rotate(345deg) brightness(95%) contrast(92%);
 }
 
 .details {

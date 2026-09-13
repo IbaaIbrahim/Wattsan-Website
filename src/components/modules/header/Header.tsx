@@ -15,7 +15,7 @@ import rightArrow from '@public/img/icons/right-arrow.svg'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { PAGES } from '../../../config/pages.url.config'
@@ -30,6 +30,8 @@ import PersonalDd from './personal-dd/Personal-dd'
 // TODO Скрыть каталог для конфигуратора
 const Header = () => {
 	const pathname = usePathname()
+	const router = useRouter()
+	const [searchQuery, setSearchQuery] = useState<string>('')
 
 	const isConfiguratorPage =
 		pathname === '/configurator' ||
@@ -227,7 +229,22 @@ const Header = () => {
 						<FormAutocomplete
 							className={styles.catalogFormSearch}
 							name='catalogSearch'
-							value=''
+							value={searchQuery}
+							onChange={setSearchQuery}
+							onKeyDown={e => {
+								if (e.key === 'Enter' && searchQuery.trim()) {
+									router.push(
+										`/search-results?search=${encodeURIComponent(searchQuery.trim())}`
+									)
+								}
+							}}
+							onSelect={option => {
+								if (option?.value) {
+									router.push(
+										`/search-results?search=${encodeURIComponent(option.value)}`
+									)
+								}
+							}}
 							size='l'
 							placeholder='Search items'
 						/>

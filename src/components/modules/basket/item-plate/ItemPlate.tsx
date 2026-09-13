@@ -7,11 +7,10 @@ import checkIcon from '@public/img/icons/check.svg';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { FC } from 'react';
-
-
+import { useFavoritesStore, TFavoriteItem } from '@store/favoritesStore';
+import { basketStore } from '@store/basket';
 
 import styles from './ItemPlate.module.scss';
-
 
 const ItemPlate: FC<{
 	className?: string
@@ -35,13 +34,42 @@ const ItemPlate: FC<{
 	name,
 	code,
 	status,
-	quantity,
-	price,
+	quantity = 1,
+	price = 0,
 	limit,
 	onSelect,
 	onChangeQuantity,
 	basketItem
 }) => {
+	const isFavorite = useFavoritesStore(state =>
+		state.isFavorite(basketItem?.referenceId ?? id ?? 0, (basketItem?.itemtype as 1 | 2 | 3) ?? 2)
+	)
+	const toggleFavorite = useFavoritesStore(state => state.toggleFavorite)
+
+	const handleToggleFavorite = (e: React.MouseEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		const itemToFav: TFavoriteItem = {
+			id: String(basketItem?.referenceId || id),
+			referenceId: Number(basketItem?.referenceId || id || 0),
+			itemtype: (basketItem?.itemtype as 1 | 2 | 3) || 2,
+			name: name || '',
+			code: code || '',
+			price: price || 0,
+			image: image || '/img/catalog/cnc-routes.png',
+			available: true
+		}
+		toggleFavorite(itemToFav)
+	}
+
+	const handleDelete = (e: React.MouseEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		if (id) {
+			basketStore.set.deletePosition(id)
+		}
+	}
+
 	return (
 		<div
 			className={clsx(
@@ -54,7 +82,7 @@ const ItemPlate: FC<{
 				<input
 					type='checkbox'
 					className={styles.hidden}
-					onChange={() => onSelect(id, !selected)}
+					onChange={() => id !== undefined && onSelect(id, !selected)}
 				/>
 				<div className={styles.checkbox}>
 					<Image
@@ -81,15 +109,17 @@ const ItemPlate: FC<{
 						quantity={quantity}
 						limit={limit}
 						disabled={!selected}
-						onChange={value => onChangeQuantity(id, value)}
+						onChange={value => id !== undefined && onChangeQuantity(id, value)}
 					/>
 				</div>
 				<div className={styles.total}>
-					<div className={styles.price}>${quantity * price}</div>
+					<div className={styles.price}>${(quantity * price).toLocaleString()}</div>
 					<div className={styles.actions}>
 						<button
-							className={styles.action}
-							disabled={true}
+							className={clsx(styles.action, isFavorite && styles.activeFavorite)}
+							onClick={handleToggleFavorite}
+							title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							type='button'
 						>
 							<Image
 								src={bookmarkIcon}
@@ -98,7 +128,9 @@ const ItemPlate: FC<{
 						</button>
 						<button
 							className={styles.action}
-							disabled={true}
+							onClick={handleDelete}
+							title='Delete from cart'
+							type='button'
 						>
 							<Image
 								src={basketIcon}

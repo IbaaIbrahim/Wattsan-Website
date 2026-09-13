@@ -1,0 +1,117 @@
+.section {
+	width: 100%;
+	padding: 40px 24px 80px;
+	background: #ffffff;
+
+	@media (max-width: 768px) {
+		padding: 24px 16px 48px;
+	}
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 1380px;
+	width: 100%;
+}
+
+.banner {
+	position: relative;
+	background: #1b0c54;
+	border-radius: 36px;
+	padding: 64px 56px;
+	overflow: hidden;
+	color: #ffffff;
+
+	@media (max-width: 768px) {
+		padding: 40px 24px;
+		border-radius: 24px;
+	}
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60%;
+	height: 100%;
+	background: radial-gradient(ellipse at top right, rgba(79, 38, 233, 0.45) 0%, rgba(27, 12, 84, 0) 70%);
+	pointer-events: none;
+}
+
+.content {
+	position: relative;
+	z-index: 1;
+	max-width: 760px;
+}
+
+.tag {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: 700;
+	color: #a5b4fc;
+	background: rgba(255, 255, 255, 0.1);
+	padding: 4px 14px;
+	border-radius: 20px;
+	margin-bottom: 20px;
+}
+
+.title {
+	font-size: 42px;
+	font-weight: 800;
+	line-height: 1.2;
+	margin-bottom: 28px;
+	color: #ffffff;
+
+	@media (max-width: 768px) {
+		font-size: 28px;
+	}
+}
+
+.pillsRow {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 28px;
+}
+
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 24px;
+	font-size: 14px;
+	font-weight: 500;
+	color: #ffffff;
+}
+
+.pillCheck {
+	color: #34d399;
+	font-weight: 800;
+}
+
+.description {
+	font-size: 16px;
+	line-height: 1.6;
+	color: #cbd5e1;
+	margin-bottom: 36px;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.secondaryBtn {
+	border-color: rgba(255, 255, 255, 0.3) !important;
+	color: #ffffff !important;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.1) !important;
+		border-color: #ffffff !important;
+	}
+}

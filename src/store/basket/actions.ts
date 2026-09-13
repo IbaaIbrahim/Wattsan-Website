@@ -19,7 +19,7 @@ import { basketForm } from '@store/forms'
 import { modalsStore } from '@store/modals'
 import { STATUSES, requestsStore } from '@store/requests'
 import qs from 'query-string'
-import { getAllProducts, getSeries } from '@/api/product'
+import { getAllProducts, getSeries, getSellableCharacteristics, getFullCharacteristics, getClientConfigurations } from '@/api/product'
 
 import { PAGES } from '../../config/pages.url.config'
 import { pickAll } from '../../utils/helpers'
@@ -41,14 +41,20 @@ export const getBaskets = async () => {
 
 		const rawPositions = response?.data || []
 		const hasProductItems = rawPositions.some((p: any) => p.itemtype === 2)
+		const hasCharItems = rawPositions.some((p: any) => p.itemtype === 3)
+		const hasConfigItems = rawPositions.some((p: any) => p.itemtype === 1)
 
-		if (hasProductItems) {
-			const [allProds, allSeries] = await Promise.all([
-				getAllProducts(),
-				getSeries()
+		if (hasProductItems || hasCharItems || hasConfigItems) {
+			const [allProds, allSeries, allChars, allConfigs] = await Promise.all([
+				hasProductItems ? getAllProducts() : Promise.resolve([]),
+				hasProductItems ? getSeries() : Promise.resolve([]),
+				hasCharItems ? getSellableCharacteristics() : Promise.resolve([]),
+				hasConfigItems ? getClientConfigurations() : Promise.resolve([])
 			])
 			const prodsMap = new Map((allProds || []).map((p: any) => [Number(p.id), p]))
 			const seriesMap = new Map((allSeries || []).map((s: any) => [Number(s.id), s]))
+			const charsMap = new Map((allChars || []).map((c: any) => [Number(c.id), c]))
+			const configsMap = new Map((allConfigs || []).map((c: any) => [Number(c.id), c]))
 
 			const enrichedPositions = rawPositions.map((pos: any) => {
 				if (pos.itemtype === 2) {
@@ -83,6 +89,60 @@ export const getBaskets = async () => {
 						}
 					}
 				}
+
+				if (pos.itemtype === 3) {
+					const charObj: any = charsMap.get(Number(pos.referenceId))
+					const charPrice = (charObj?.price && Number(charObj.price) > 0)
+						? Number(charObj.price)
+						: (Number(pos.referenceObject?.price) > 0
+							? Number(pos.referenceObject.price)
+							: (Number(pos.price) > 0 ? Number(pos.price) : 1000))
+
+					const charImg = charObj?.fileManager?.url ||
+						charObj?.fileManger?.url ||
+						charObj?.image ||
+						pos.referenceObject?.fileManger?.url ||
+						pos.referenceObject?.image ||
+						'/img/catalog/cnc-routes.png'
+
+					return {
+						...pos,
+						price: charPrice,
+						referenceObject: {
+							...(pos.referenceObject || {}),
+							name: charObj?.name ? `${charObj.name} ${charObj.unit || ''}`.trim() : (pos.referenceObject?.name || 'Characteristic'),
+							price: charPrice,
+							image: charImg,
+							fileManger: charObj?.fileManager || pos.referenceObject?.fileManger
+						}
+					}
+				}
+
+				if (pos.itemtype === 1) {
+					const configObj: any = configsMap.get(Number(pos.referenceId))
+					if (configObj) {
+						const seriesName = configObj?.series?.name || configObj?.configurationName?.trim() || 'Wattsan Configurator'
+						const modelName = configObj?.modelName ? `${configObj.modelName}` : ''
+						const title = `${seriesName} ${modelName}`.trim()
+						const configPrice = (configObj?.price && Number(configObj.price) > 0)
+							? Number(configObj.price)
+							: (Number(pos.price) > 0 ? Number(pos.price) : (Number(pos.referenceObject?.price) > 0 ? Number(pos.referenceObject.price) : 5000))
+						const configImg = configObj?.fileManger?.url || configObj?.fileManger?.thumbnail || pos.referenceObject?.fileManger?.url || '/img/catalog/cnc-routes.png'
+
+						return {
+							...pos,
+							price: configPrice,
+							referenceObject: {
+								...(pos.referenceObject || {}),
+								configurationName: title,
+								price: configPrice,
+								fileManger: configObj?.fileManger || pos.referenceObject?.fileManger || { url: configImg },
+								series: configObj?.series || pos.referenceObject?.series
+							}
+						}
+					}
+				}
+
 				return pos
 			})
 
@@ -98,7 +158,7 @@ export const getBaskets = async () => {
 
 export interface ICreateBasketParams {
 	referenceId?: number
-	itemtype?: 1 | 2
+	itemtype?: 1 | 2 | 3
 	quantity?: number
 	itemData?: {
 		title?: string

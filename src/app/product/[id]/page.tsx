@@ -46,6 +46,7 @@ import { authStore } from '@store/auth'
 import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
 import { createBasket } from '@store/basket/actions'
+import { useFavoritesStore, TFavoriteItem } from '@store/favoritesStore'
 import { ProductPageData, ProductParameter } from '@my-types/product'
 
 import styles from './page.module.scss'
@@ -53,6 +54,11 @@ import styles from './page.module.scss'
 const ProductPage = ({ params }: { params: { id: string } }) => {
 	const router = useRouter()
 	const authorized = authStore.use.authorized()
+	const toggleFavorite = useFavoritesStore(state => state.toggleFavorite)
+	const isProductFavorite = useFavoritesStore(state =>
+		state.isFavorite(Number(params.id), 2)
+	)
+
 	const [product, setProduct] = useState<any>(null)
 	const [series, setSeries] = useState<any>(null)
 	const [seriesProducts, setSeriesProducts] = useState<any[]>([])
@@ -411,6 +417,23 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 		}
 	}
 
+	const handleToggleFavorite = () => {
+		if (!product) return
+		const item: TFavoriteItem = {
+			id: `prod-${product.id}`,
+			referenceId: Number(product.id),
+			itemtype: 2,
+			name: fullProductTitle,
+			code: productModelDisplayName,
+			categoryName: series?.category?.name || seriesDisplayName,
+			price: formattedCurrentPrice,
+			oldPrice: formattedOriginalPrice,
+			image: galleryMain,
+			available: product.isActive !== false
+		}
+		toggleFavorite(item)
+	}
+
 	const handleConfiguratorClick = () => {
 		router.push('/configurator')
 	}
@@ -462,6 +485,8 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							activeDeliveryMethod="EXW"
 							onDeliveryMethodClick={(method) => console.log('Delivery method selected:', method)}
 							deliveryNote={baseMockData.productInfo.deliveryNote}
+							isFavorite={isProductFavorite}
+							onToggleFavorite={handleToggleFavorite}
 							onAddToBasket={handleAddToBasket}
 							onViewSpecifications={() => {
 								const element = document.getElementById('specifications-table')

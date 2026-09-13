@@ -3,7 +3,9 @@
 import { FC } from 'react'
 import Button from '@components/ui/button/Button'
 import { Typography } from '@components/ui/typography/Typography'
+import Image from 'next/image'
 import clsx from 'clsx'
+import favoritesIcon from '@public/img/icons/favorites.svg'
 
 import styles from './ProductInfo.module.scss'
 
@@ -22,6 +24,8 @@ interface ProductInfoProps {
 	deliveryMethods?: string[]
 	activeDeliveryMethod?: string
 	deliveryNote?: string
+	isFavorite?: boolean
+	onToggleFavorite?: () => void
 	onAddToBasket?: () => void
 	onViewSpecifications?: () => void
 	onDeliveryMethodClick?: (method: string) => void
@@ -43,6 +47,8 @@ const ProductInfo: FC<ProductInfoProps> = ({
 	deliveryMethods = [],
 	activeDeliveryMethod,
 	deliveryNote,
+	isFavorite = false,
+	onToggleFavorite,
 	onAddToBasket,
 	onViewSpecifications,
 	onDeliveryMethodClick,
@@ -112,15 +118,32 @@ const ProductInfo: FC<ProductInfoProps> = ({
 				)}
 			</div>
 
-			<Button
-				view='red'
-				size='l'
-				block
-				className={styles.addToBasket}
-				onClick={onAddToBasket}
-			>
-				Add to basket
-			</Button>
+			<div className={styles.buttonRow}>
+				<Button
+					view='red'
+					size='l'
+					block
+					className={styles.addToBasket}
+					onClick={onAddToBasket}
+				>
+					Add to basket
+				</Button>
+				{onToggleFavorite && (
+					<button
+						className={styles.favoriteButton}
+						onClick={onToggleFavorite}
+						type='button'
+						title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+						aria-label='Toggle favorite'
+					>
+						<Image
+							src={favoritesIcon}
+							alt=''
+							className={isFavorite ? styles.activeFavoriteIcon : styles.favoriteIcon}
+						/>
+					</button>
+				)}
+			</div>
 
 			<div className={styles.details}>
 				<div className={styles.detailItem}>

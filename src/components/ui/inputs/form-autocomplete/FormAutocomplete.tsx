@@ -31,6 +31,7 @@ type TProps = {
 	options?: { id: string; value: string; content?: ReactNode }[]
 	onChange?: (value: string) => void
 	onSelect?: (params: { id: string; value: string }) => void
+	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 const FormAutocomplete: FC<TProps> = ({
@@ -47,6 +48,7 @@ const FormAutocomplete: FC<TProps> = ({
 	rightAddon = null,
 	onChange,
 	onSelect,
+	onKeyDown,
 	options = []
 }) => {
 	const ref = useRef() as any
@@ -166,6 +168,7 @@ const FormAutocomplete: FC<TProps> = ({
 						onChange={handleChange}
 						onFocus={handleFocus}
 						onBlur={handleBlur}
+						onKeyDown={onKeyDown}
 					/>
 					{rightAddon && <div className={styles.rightAddon}>{rightAddon}</div>}
 				</div>

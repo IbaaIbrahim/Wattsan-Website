@@ -26,7 +26,7 @@ const AuthModal: FC<{
 	onError: () => void
 }> = ({
 		  onlyInitialScreen = false,
-		  initialScreen = 'SIGN_UP',
+		  initialScreen = 'LOGIN',
 		  onComplete,
 		  onError
 	  }) => {

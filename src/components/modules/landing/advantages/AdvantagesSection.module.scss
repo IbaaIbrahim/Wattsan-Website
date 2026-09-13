@@ -1,0 +1,131 @@
+.section {
+	width: 100%;
+	padding: 80px 24px;
+	background: #ffffff;
+
+	@media (max-width: 768px) {
+		padding: 48px 16px;
+	}
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 1380px;
+	width: 100%;
+}
+
+.leadBox {
+	text-align: center;
+	max-width: 1020px;
+	margin: 0 auto 56px;
+}
+
+.tag {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: 700;
+	color: #4f26e9;
+	background: rgba(79, 38, 233, 0.08);
+	padding: 4px 14px;
+	border-radius: 20px;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.mainHeading {
+	font-size: 34px;
+	font-weight: 700;
+	line-height: 1.35;
+	color: #12141d;
+
+	@media (max-width: 768px) {
+		font-size: 24px;
+	}
+}
+
+.cardsGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 28px;
+	margin-bottom: 56px;
+
+	@media (max-width: 900px) {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+}
+
+.advCard {
+	background: #f8f9fd;
+	border: 1px solid #DEEBFA;
+	border-radius: 24px;
+	padding: 36px 32px;
+	display: flex;
+	flex-direction: column;
+	transition: transform 0.2s ease, border-color 0.2s ease;
+
+	&:hover {
+		transform: translateY(-4px);
+		border-color: #4f26e9;
+	}
+}
+
+.numberBadge {
+	font-size: 32px;
+	font-weight: 800;
+	color: #4f26e9;
+	margin-bottom: 16px;
+	opacity: 0.8;
+}
+
+.cardTitle {
+	font-size: 20px;
+	font-weight: 700;
+	color: #12141d;
+	margin-bottom: 12px;
+}
+
+.cardDesc {
+	font-size: 15px;
+	line-height: 1.6;
+	color: #64748b;
+}
+
+.formulaBanner {
+	background: linear-gradient(135deg, #ede9fe 0%, #dbeafe 100%);
+	border-radius: 24px;
+	padding: 36px 24px;
+	text-align: center;
+	border: 1px solid #c7d2fe;
+}
+
+.formulaText {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	flex-wrap: wrap;
+	font-size: 22px;
+	font-weight: 700;
+	color: #1e1b4b;
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+		gap: 8px;
+	}
+}
+
+.formulaPart {
+	color: #1e1b4b;
+}
+
+.formulaSymbol {
+	color: #4f26e9;
+	font-weight: 800;
+}
+
+.formulaHighlight {
+	color: #4f26e9;
+	font-weight: 800;
+}

@@ -1,19 +1,31 @@
 .card {
     padding: 32px;
-    border: 1px solid #92B0D2;
+    border: 1px solid #DEEBFA;
     border-radius: 16px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        border-color: #92B0D2;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
 
     @media (max-width: 768px) {
-        padding: 24px;
+        padding: 20px;
+        border-radius: 12px;
     }
 }
 
 .unavailable {
-    opacity: .4;
+    opacity: .5;
 }
 
 .button {
     opacity: 1;
+    margin-top: auto;
 }
 
 .image {
@@ -21,9 +33,12 @@
     margin-bottom: 16px;
     width: 100%;
     height: 220px;
+    border-radius: 8px;
+    overflow: hidden;
 
     @media (max-width: 768px) {
-        margin-bottom: 8px;
+        height: 180px;
+        margin-bottom: 12px;
     }
 
     img {
@@ -31,51 +46,98 @@
     }
 }
 
+.imageLink {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 .status {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 8px;
+    right: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
+    z-index: 2;
 }
 
 .tooltip {
     padding: 8px 16px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 21px;
+    line-height: 20px;
     color: #FFFFFF;
     white-space: nowrap;
     background-color: #414141;
     border-radius: 8px;
-    box-shadow: 0 8px 32px -8px #00000052;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.32);
 }
 
 .action {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.actionActive {
+    filter: invert(34%) sepia(85%) saturate(2250%) hue-rotate(345deg) brightness(95%) contrast(92%);
 }
 
 .name {
     margin-bottom: 8px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 21px;
+    color: #000000;
+    opacity: 0.7;
+
+    @media (max-width: 768px) {
+        font-size: 13px;
+        line-height: 18px;
+        margin-bottom: 4px;
+    }
 }
 
 .code {
-    margin-bottom: 32px;
-    display: inline-grid;
+    margin-bottom: 24px;
+    display: block;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 28px;
+    color: #000000;
 
     @media (max-width: 768px) {
-        margin-bottom: 24px;
+        font-size: 17px;
+        line-height: 24px;
+        margin-bottom: 16px;
+    }
+}
+
+.overflowLink {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        color: #6C99CC;
     }
 }
 
@@ -88,13 +150,13 @@
 .price {
     margin-bottom: 16px;
     font-size: 24px;
-    font-weight: 500;
-    line-height: 33.6px;
-    opacity: .4;
+    font-weight: 600;
+    line-height: 34px;
+    color: #000000;
 
     @media (max-width: 768px) {
-        margin-bottom: 8px;
+        font-size: 20px;
+        line-height: 28px;
+        margin-bottom: 12px;
     }
 }
-
-

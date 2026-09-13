@@ -1,41 +1,134 @@
 .page {
     padding: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 
     @media (max-width: 768px) {
-        padding: 20px;
+        padding: 24px 16px 100px;
     }
 }
 
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
 .title {
+    margin: 0;
     font-size: 40px;
     font-weight: 800;
     line-height: 48px;
+    color: #000000;
+
+    @media (max-width: 768px) {
+        font-size: 30px;
+        line-height: 36px;
+    }
+}
+
+.counterBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 21px;
+    height: 18px;
+    padding: 0 6px;
+    background-color: #E63C32;
+    border-radius: 1000px;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    transform: translateY(-8px);
 }
 
 .pageSelect {
-    margin: 16px 0 40px;
+    margin: 16px 0 28px;
     display: flex;
     align-items: center;
     gap: 32px;
+    border-bottom: 1px solid #E1E8EE;
 
     &Button {
-        padding: 8px 0;
-        font-size: 15px;
+        padding: 12px 4px;
+        font-size: 16px;
         font-weight: 600;
-        line-height: 21px;
-        color: #999999;
+        line-height: 22px;
+        color: #788A9B;
+        background: transparent;
+        border: none;
         border-bottom: 2px solid transparent;
-        transition: color .3s ease, border-color .3s ease;
+        cursor: pointer;
+        transition: color .2s ease, border-color .2s ease;
+
+        &:hover {
+            color: #000000;
+        }
 
         &Selected {
             color: #000000;
-            border-color: #000000;
+            border-bottom: 2px solid #000000;
+        }
+    }
+}
+
+.tagsWrapper {
+    margin-bottom: 32px;
+}
+
+.emptyContainer {
+    width: 100%;
+}
+
+.popular {
+    margin-top: 60px;
+
+    @media (max-width: 768px) {
+        margin-top: 40px;
+    }
+
+    &Title {
+        margin: 0 0 24px 0;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 38.4px;
+        color: #000000;
+
+        @media (max-width: 768px) {
+            font-size: 24px;
+            line-height: 29px;
+            margin-bottom: 16px;
+        }
+    }
+
+    &Grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 24px;
+        width: 100%;
+
+        @media (max-width: 1280px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 16px;
+        }
+
+        @media (max-width: 540px) {
+            grid-template-columns: 1fr;
+            grid-gap: 16px;
         }
     }
 }
 
 .cards {
-    margin-top: 40px;
+    margin-top: 32px;
     margin-bottom: 32px;
     display: grid;
     grid-template-columns: 200px repeat(4, 1fr);

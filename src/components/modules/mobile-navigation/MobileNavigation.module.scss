@@ -1,6 +1,6 @@
 .wrapper {
     position: fixed;
-    z-index: 10;
+    z-index: 100;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -11,7 +11,7 @@
     gap: 16px;
     background-color: #FFFFFF;
     border-radius: 16px 16px 0 0;
-    box-shadow: 0 8px 32px -8px #00000052;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.32);
 
     @media (min-width: 768px) {
         display: none;
@@ -20,18 +20,47 @@
 
 .button {
     display: flex;
-    min-width: 60px;
+    min-width: 54px;
     flex-direction: column;
     align-items: center;
-    font-size: 10px;
-    font-weight: 400;
+    font-size: 11px;
+    font-weight: 500;
     line-height: 14px;
     text-decoration: none;
     color: #000000;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.iconWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon {
     margin-bottom: 4px;
     width: 24px;
     height: 24px;
+}
+
+.badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    background-color: #E63C32;
+    color: #FFFFFF;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }

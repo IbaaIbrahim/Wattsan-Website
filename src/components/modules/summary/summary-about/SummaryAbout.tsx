@@ -24,6 +24,8 @@ import { modalsStore } from '@store/modals'
 import Image from 'next/image'
 import { useState } from 'react'
 
+import { useFavoritesStore } from '@store/favoritesStore'
+
 import { countKeysDiff } from '../../../../utils/helpers'
 
 import styles from './SummaryAbout.module.scss'
@@ -32,6 +34,7 @@ const SummaryAbout = () => {
 	const machineId = configuratorStore.use.machineId()
 	const categoryId = configuratorStore.use.categoryId()
 	const configuratorId = configuratorStore.use.configuratorId()
+	const savedReferenceId = configuratorStore.use.savedReferenceId()
 	const summary = configuratorStore.use.summarySelector(machineId)
 	const machineName = configuratorStore.use.configurationNameSelector()
 	const customConfiguration = configuratorStore.use.isCustomConfiguration()
@@ -49,6 +52,32 @@ const SummaryAbout = () => {
 	const { translations }: { translations: ILanguage } = useLang()
 
 	const [compare, setCompare] = useState<boolean>(true)
+
+	const toggleFavorite = useFavoritesStore(state => state.toggleFavorite)
+	const isConfigFavorite = useFavoritesStore(state =>
+		savedReferenceId ? state.isFavorite(savedReferenceId, 1) : false
+	)
+
+	const handleToggleFavorite = async () => {
+		let currentRefId = savedReferenceId
+		if (!currentRefId) {
+			await savePersonalConfiguration(machineId, categoryId, configuratorId)
+			currentRefId = configuratorStore.get.savedReferenceId()
+		}
+
+		if (currentRefId) {
+			await toggleFavorite({
+				id: `fav-conf-${currentRefId}`,
+				referenceId: Number(currentRefId),
+				itemtype: 1,
+				name: customName || machineName || 'Configured Machine',
+				categoryName: categoryInfo?.name || 'Configurator Build',
+				price: `$${summary}`,
+				image: '/img/catalog/cnc-routes.png',
+				available: true
+			})
+		}
+	}
 
 	const openRenamingModal = () => {
 		modalsStore.set.open(MODALS.configNameModal, {})
@@ -125,18 +154,32 @@ const SummaryAbout = () => {
 						>
 							{categoryInfo.name}
 						</Typography>
-						{/*<div className={styles['overview-top__icons']}>*/}
-						{/*	<Image*/}
-						{/*		className={`${styles['overview-icon']} ${styles['compare-icon']}`}*/}
-						{/*		src={twoCirclesIcon}*/}
-						{/*		alt=''*/}
-						{/*	/>*/}
-						{/*	<Image*/}
-						{/*		className={styles['overview-icon']}*/}
-						{/*		src={bookmarkIcon}*/}
-						{/*		alt=''*/}
-						{/*	/>*/}
-						{/*</div>*/}
+						<div className={styles['overview-top__icons']}>
+							<button
+								type='button'
+								onClick={handleToggleFavorite}
+								style={{
+									background: 'none',
+									border: 'none',
+									cursor: 'pointer',
+									padding: 0,
+									display: 'flex',
+									alignItems: 'center'
+								}}
+								aria-label={isConfigFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							>
+								<Image
+									className={styles['overview-icon']}
+									src={bookmarkIcon}
+									alt=''
+									style={{
+										filter: isConfigFavorite
+											? 'brightness(0) saturate(100%) invert(18%) sepia(88%) saturate(5462%) hue-rotate(354deg) brightness(97%) contrast(116%)'
+											: 'none'
+									}}
+								/>
+							</button>
+						</div>
 					</div>
 					<div className={styles['overview-bottom']}>
 						<Typography

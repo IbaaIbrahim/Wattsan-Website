@@ -21,6 +21,61 @@
   margin-bottom: 16px;
 }
 
+.phoneWrapper {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.phoneLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.phoneContainer {
+  width: 100% !important;
+  font-family: inherit !important;
+}
+
+.phoneInput {
+  width: 100% !important;
+  height: 48px !important;
+  border: 1px solid #92b0d2 !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  color: #000000 !important;
+  padding-left: 54px !important;
+  background-color: #ffffff !important;
+
+  &:focus {
+    border-color: #1470DA !important;
+    box-shadow: 0 0 0 1px #1470DA !important;
+  }
+}
+
+.phoneButton {
+  border: 1px solid #92b0d2 !important;
+  border-right: none !important;
+  border-radius: 8px 0 0 8px !important;
+  background-color: #ffffff !important;
+  padding: 0 4px !important;
+}
+
+.phoneDropdown {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e0e0e0 !important;
+  z-index: 9999 !important;
+}
+
+.error {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #ff3b30;
+}
+
 .signUpButton {
   margin-top: 24px;
   margin-bottom: 16px;
@@ -30,3 +85,4 @@
 .checkbox {
   margin-bottom: 8px;
 }
+

@@ -194,7 +194,7 @@ const PersonalDd: FC<{
 					size='s'
 					onClick={() =>
 						modalsStore.set.open(MODALS.login, {
-							initialScreen: 'SIGN_UP',
+							initialScreen: 'LOGIN',
 							closeOnEscape: false,
 							onComplete: ({ type }) => {
 								if (type === 'register') {
@@ -240,7 +240,7 @@ const PersonalDd: FC<{
 					size='s'
 					onClick={() =>
 						modalsStore.set.open(MODALS.login, {
-							initialScreen: 'SIGN_UP',
+							initialScreen: 'LOGIN',
 							closeOnEscape: false,
 							onComplete: ({ type }) => {
 								if (type === 'register') {

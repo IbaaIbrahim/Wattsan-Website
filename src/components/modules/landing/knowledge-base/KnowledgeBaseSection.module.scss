@@ -1,0 +1,173 @@
+.section {
+	width: 100%;
+	padding: 80px 24px;
+	background: #ffffff;
+
+	@media (max-width: 768px) {
+		padding: 48px 16px;
+	}
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 1380px;
+	width: 100%;
+}
+
+.layout {
+	display: flex;
+	gap: 48px;
+
+	@media (max-width: 960px) {
+		flex-direction: column;
+		gap: 36px;
+	}
+}
+
+.articlesCol {
+	flex: 2;
+}
+
+.header {
+	margin-bottom: 32px;
+}
+
+.subtitle {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: #4f26e9;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 8px;
+}
+
+.title {
+	font-size: 38px;
+	font-weight: 800;
+	color: #12141d;
+	line-height: 1.2;
+
+	@media (max-width: 768px) {
+		font-size: 28px;
+	}
+}
+
+.articlesList {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.articleCard {
+	background: #f8f9fd;
+	border: 1px solid #DEEBFA;
+	border-radius: 20px;
+	padding: 28px;
+	transition: transform 0.2s ease, border-color 0.2s ease;
+	cursor: pointer;
+
+	&:hover {
+		transform: translateY(-2px);
+		border-color: #4f26e9;
+	}
+}
+
+.cardHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+}
+
+.category {
+	font-size: 12px;
+	font-weight: 700;
+	color: #4f26e9;
+	background: #ede9fe;
+	padding: 4px 10px;
+	border-radius: 12px;
+}
+
+.date {
+	font-size: 13px;
+	color: #94a3b8;
+}
+
+.articleTitle {
+	font-size: 20px;
+	font-weight: 700;
+	color: #12141d;
+	margin-bottom: 10px;
+	line-height: 1.4;
+}
+
+.articleDesc {
+	font-size: 14px;
+	line-height: 1.6;
+	color: #64748b;
+	margin-bottom: 16px;
+}
+
+.readMore {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 700;
+	color: #4f26e9;
+}
+
+.topicsCol {
+	flex: 1;
+}
+
+.topicsCard {
+	background: #f8f9fd;
+	border: 1px solid #DEEBFA;
+	border-radius: 24px;
+	padding: 32px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.topicsTitle {
+	font-size: 20px;
+	font-weight: 700;
+	color: #12141d;
+	margin-bottom: 24px;
+}
+
+.topicsList {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	flex: 1;
+}
+
+.topicItem {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #334155;
+	transition: color 0.2s ease;
+	cursor: pointer;
+
+	&:hover {
+		color: #4f26e9;
+	}
+}
+
+.topicBullet {
+	color: #4f26e9;
+	font-size: 18px;
+}
+
+.allArticlesBtn {
+	width: 100%;
+	justify-content: center;
+}

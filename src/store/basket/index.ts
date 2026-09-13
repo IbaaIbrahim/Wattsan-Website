@@ -24,7 +24,7 @@ export type TPosition = {
 	clientId: string
 	id: number
 	isActive: boolean
-	itemtype: 1 | 2
+	itemtype: 1 | 2 | 3
 	quantity: number
 	referenceId: number
 	selected: boolean
@@ -37,7 +37,7 @@ export type TOrderProduct = {
 	price: number
 	quantity: number
 	referenceId: number
-	itemtype: 1 | 2
+	itemtype: 1 | 2 | 3
 	orderId: number
 	order: any
 	statusCategory: number
