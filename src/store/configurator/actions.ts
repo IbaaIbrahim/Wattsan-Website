@@ -1,7 +1,7 @@
 'use client';
 
 import { MODALS } from '@components/ui/modal/Modal';
-import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS, API_UPDATE_CONFIGURATION } from '@constants/api';
+import { API_CONFIGURATION_BY_SERIES, API_CONFIGURATION_BY_SERIES_AND_MODEL, API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS, API_GET_CONFIGURATION_IMAGES, API_SAVE_CONFIGURATION, API_START_PARAMETERS, API_UPDATE_CONFIGURATION, API_URL } from '@constants/api';
 import { FORMS_FIELDS, mapConfiguratorWithForm } from '@constants/forms';
 import { IConfiguration } from '@my-types/configurations';
 import { authStore } from '@store/auth';
@@ -46,6 +46,47 @@ export const getStartParameters = async ({
 			configuratorStore.set.categories(response?.content?.category as any)
 			configuratorStore.set.categoryId(response?.content?.category?.[1].id)
 		} else {
+			if (categoryId && response?.content?.series) {
+				try {
+					const seriesRes: any = await request({
+						url: `${API_URL}/Series/Read`,
+						method: 'GET',
+						query: { filter: `categoryId~eq~'${categoryId}'` }
+					})
+					const seriesWithLogos = seriesRes?.data || []
+					if (seriesWithLogos.length > 0) {
+						const logoMap = new Map<number, any>(seriesWithLogos.map((s: any) => [s.id, s.logo]))
+						const fileIdsToFetch: string[] = []
+
+						response.content.series.forEach((s: any) => {
+							const dbLogo = logoMap.get(s.id)
+							if (typeof dbLogo === 'string' && dbLogo) {
+								s.logo = dbLogo
+								if (!dbLogo.startsWith('http') && !dbLogo.startsWith('/')) {
+									fileIdsToFetch.push(dbLogo)
+								}
+							}
+						})
+
+						if (fileIdsToFetch.length > 0) {
+							const filterQuery = fileIdsToFetch.map(id => `id~eq~'${id}'`).join('~or~')
+							const fmRes: any = await request({
+								url: `${API_URL}/FileManager/Read`,
+								method: 'GET',
+								query: { filter: fileIdsToFetch.length === 1 ? `id~eq~'${fileIdsToFetch[0]}'` : `(${filterQuery})` }
+							})
+							const urlMap = new Map<string, string>((fmRes?.data || []).map((f: any) => [f.id, f.url]))
+							response.content.series.forEach((s: any) => {
+								if (s.logo && typeof s.logo === 'string' && urlMap.has(s.logo)) {
+									s.logo = urlMap.get(s.logo)
+								}
+							})
+						}
+					}
+				} catch (e) {
+					console.error('Failed to augment series logos', e)
+				}
+			}
 			configuratorStore.set.setStartParameters(categoryId, response?.content)
 		}
 		return response

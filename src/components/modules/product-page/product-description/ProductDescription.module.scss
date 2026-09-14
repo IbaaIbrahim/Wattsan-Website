@@ -3,23 +3,16 @@
 	width: 100%;
 }
 
-.sectionTitle {
-	margin-bottom: 60px;
-	
-	span {
-		color: #E31E24; // Wattsan Red
-	}
-}
-
 .content {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 80px;
-	align-items: start;
+	align-items: center;
 
 	@media (max-width: 968px) {
 		grid-template-columns: 1fr;
 		gap: 40px;
+		align-items: start;
 	}
 }
 
@@ -37,39 +30,71 @@
 	object-fit: contain;
 }
 
-.features {
+.rightColumn {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 }
 
+.header {
+	margin-bottom: 48px;
+}
+
+.subtitle {
+	display: block;
+	color: #E31E24; // Wattsan Red
+	text-transform: uppercase;
+	margin-bottom: 12px;
+	letter-spacing: 0.05em;
+}
+
+.sectionTitle {
+	margin-bottom: 0;
+	color: #1A1A1A;
+	line-height: 1.2;
+	
+	span {
+		color: #E31E24; // Wattsan Red
+	}
+}
+
+.redHighlight {
+	color: #E31E24;
+}
+
+.features {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border-top: 1px solid #1A1A1A;
+}
+
 .featureItem {
 	display: grid;
-	grid-template-columns: 140px 1fr;
+	grid-template-columns: 180px 1fr;
 	gap: 32px;
 	padding: 24px 0;
-	border-bottom: 1px solid #E5E5E5;
-
-	&:first-child {
-		padding-top: 0;
-	}
+	border-bottom: 1px solid #1A1A1A;
 
 	&:last-child {
-		padding-bottom: 0;
 		border-bottom: none;
 	}
 
 	@media (max-width: 576px) {
 		grid-template-columns: 1fr;
 		gap: 12px;
+		padding: 16px 0;
 	}
 }
 
 .featureTitle {
 	width: 100%;
+	color: #1A1A1A;
 }
 
 .featureDescription {
-	color: #4A4A4A;
+	color: #333333;
 	line-height: 1.6;
+	font-size: 14px;
 }
+

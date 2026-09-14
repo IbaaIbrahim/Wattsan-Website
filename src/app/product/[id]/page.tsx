@@ -42,6 +42,7 @@ import {
 	getProductsBySeriesId,
 	formatProductModelName
 } from '@api/product'
+import { formatMediaUrl } from '@/utils/helpers'
 import { authStore } from '@store/auth'
 import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
@@ -131,10 +132,11 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							}
 
 							if (url) {
+								const formattedUrl = formatMediaUrl(url)
 								if (att.type === 1) { // Video
-									foundVideoUrl = url
+									foundVideoUrl = formattedUrl
 								} else { // Image
-									imageList.push(url)
+									imageList.push(formattedUrl)
 								}
 							}
 						})
@@ -510,9 +512,14 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 
 				<div className={styles.powerSection}>
 					<ProductDescription
-						title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
-						image={galleryMain}
-						features={baseMockData.machineFeatures}
+						title={
+							baseMockData.powerOfMachineData?.title || (
+								<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>
+							)
+						}
+						subtitle={baseMockData.powerOfMachineData?.subtitle}
+						image={baseMockData.powerOfMachineData?.image || galleryMain}
+						features={baseMockData.powerOfMachineData?.features || baseMockData.machineFeatures}
 					/>
 				</div>
 

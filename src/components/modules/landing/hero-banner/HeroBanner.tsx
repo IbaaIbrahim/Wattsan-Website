@@ -1,132 +1,177 @@
 'use client'
 
-import Button from '@components/ui/button/Button'
-import { MODALS } from '@components/ui/modal/Modal'
-import { modalsStore } from '@store/modals'
 import Image from 'next/image'
-import { FC, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { FC, useCallback, useEffect, useState } from 'react'
 
+import { loadHomeHeroSlider } from '@/services/content.service'
 import styles from './HeroBanner.module.scss'
 
-interface SlideData {
-	id: number
-	tag: string
-	titleLine1: string
-	titleHighlight1: string
-	titleHighlight2: string
+export interface SlideData {
+	id: number | string
+	title: string
 	subtitle: string
-	buttonText: string
-	statBadge: string
-	statLabel: string
-	machineName: string
-	machineType: string
-	workArea: string
-	laserPower: string
-	imageSrc: string
+	learnMoreHref: string
+	desktopImage: string
+	alt: string
 }
 
-const SLIDES: SlideData[] = [
+const DEFAULT_SLIDES: SlideData[] = [
 	{
 		id: 0,
-		tag: 'Demonstrating equipment operation',
-		titleLine1: 'Demonstration of machines',
-		titleHighlight1: 'ONLINE',
-		titleHighlight2: 'OFFLINE',
-		subtitle: 'In more than 50 partner cities or via live interactive video demonstration',
-		buttonText: 'Book a demonstration',
-		statBadge: '50+',
-		statLabel: 'cities worldwide',
-		machineName: 'WATTSAN 1610 Conveyor',
-		machineType: 'Large-Format CO2 Laser',
-		workArea: '1600 × 1000 mm',
-		laserPower: '100W – 150W Reci',
-		imageSrc: '/img/grid-machines/icon-for-mini-equipment.png'
+		title: 'Fiber Laser Metal Cutting Machines',
+		subtitle:
+			'Wattsan machines are designed with a special extruded aluminium gantry. It has high strength characteristics and low weight.',
+		learnMoreHref: '/product/metal-cutters',
+		desktopImage: '/img/banners/fiber-laser-1920.png',
+		alt: 'Wattsan Fiber Laser Metal Cutting Machines'
 	},
 	{
 		id: 1,
-		tag: 'Industrial precision & reliability',
-		titleLine1: 'High-precision cutting & engraving',
-		titleHighlight1: 'WATTSAN',
-		titleHighlight2: 'SERIES',
-		subtitle: 'Industrial machines for acrylic, plywood, plastics, leather, and metal alloys',
-		buttonText: 'Explore CO2 Lasers',
-		statBadge: '0.01mm',
-		statLabel: 'repeat accuracy',
-		machineName: 'WATTSAN 6040 ST',
-		machineType: 'Universal CO2 Laser',
-		workArea: '600 × 400 mm',
-		laserPower: '80W – 100W',
-		imageSrc: '/img/grid-machines/icon-for-m1-equipment.png'
+		title: 'The New Ultraviolet Laser Marking Machine',
+		subtitle:
+			'More than you need. UV marker with a wide range of applications.',
+		learnMoreHref: '/product/laser-markers',
+		desktopImage: '/img/banners/uv-marker-768.png',
+		alt: 'Wattsan Ultraviolet Laser Marking Machine'
 	},
 	{
 		id: 2,
-		tag: 'Mass production & 3D nesting',
-		titleLine1: 'Heavy-duty CNC milling & routing',
-		titleHighlight1: 'ACCURACY',
-		titleHighlight2: 'SPEED',
-		subtitle: 'Equipped with heavy cast beds, vacuum clamping, and high-frequency spindles',
-		buttonText: 'Open Configurator',
-		statBadge: '2 Years',
-		statLabel: 'comprehensive warranty',
-		machineName: 'WATTSAN A1 1325',
-		machineType: 'Industrial CNC Router',
-		workArea: '1300 × 2500 mm',
-		laserPower: '3.2 kW – 9.0 kW',
-		imageSrc: '/img/grid-machines/icon-for-a1-equipment.png'
+		title: 'High-Precision CO2 Laser Machines',
+		subtitle:
+			'Wattsan CO2 laser machines for cutting and engraving acrylic, plywood, plastics, and leather.',
+		learnMoreHref: '/product/laser-co2',
+		desktopImage: '/img/banners/fiber-laser-1440.png',
+		alt: 'Wattsan High-Precision CO2 Laser Machines'
 	}
 ]
 
-export const HeroBanner: FC = () => {
+interface HeroBannerProps {
+	initialSlides?: SlideData[]
+}
+
+export const HeroBanner: FC<HeroBannerProps> = ({ initialSlides }) => {
+	const [slides, setSlides] = useState<SlideData[] | null>(() => {
+		if (initialSlides && initialSlides.length > 0) return initialSlides
+		return null
+	})
 	const [currentSlide, setCurrentSlide] = useState<number>(0)
 	const [isPaused, setIsPaused] = useState<boolean>(false)
 
-	const nextSlide = () => {
-		setCurrentSlide(prev => (prev + 1) % SLIDES.length)
-	}
+	useEffect(() => {
+		let isMounted = true
+		loadHomeHeroSlider()
+			.then((items) => {
+				if (!isMounted) return
+				if (items && items.length > 0) {
+					const dynamicSlides: SlideData[] = items
+						.filter((item) => Boolean(item.image))
+						.map((item, idx) => ({
+							id: item.id || idx,
+							title: item.title || 'Wattsan Equipment',
+							subtitle: '',
+							learnMoreHref: item.link || '/product/metal-cutters',
+							desktopImage: item.image,
+							alt: item.title || 'Wattsan Equipment'
+						}))
 
-	const prevSlide = () => {
-		setCurrentSlide(prev => (prev - 1 + SLIDES.length) % SLIDES.length)
-	}
+					if (dynamicSlides.length > 0) {
+						setSlides(dynamicSlides)
+						setCurrentSlide(0)
+						return
+					}
+				}
+				// Fallback to default slides only if CMS has no configured slides
+				setSlides(DEFAULT_SLIDES)
+			})
+			.catch((error) => {
+				console.error('Error fetching home hero slider dynamic content:', error)
+				if (isMounted) {
+					setSlides(DEFAULT_SLIDES)
+				}
+			})
+
+		return () => {
+			isMounted = false
+		}
+	}, [])
+
+	const nextSlide = useCallback(() => {
+		setSlides((current) => {
+			if (!current || current.length <= 1) return current
+			setCurrentSlide((prev) => (prev + 1) % current.length)
+			return current
+		})
+	}, [])
+
+	const prevSlide = useCallback(() => {
+		setSlides((current) => {
+			if (!current || current.length <= 1) return current
+			setCurrentSlide((prev) => (prev - 1 + current.length) % current.length)
+			return current
+		})
+	}, [])
 
 	useEffect(() => {
-		if (isPaused) return
+		if (isPaused || !slides || slides.length <= 1) return
 		const timer = setInterval(() => {
-			setCurrentSlide(prev => (prev + 1) % SLIDES.length)
+			nextSlide()
 		}, 6000)
 		return () => clearInterval(timer)
-	}, [isPaused])
+	}, [isPaused, nextSlide, slides])
 
-	const handleAction = () => {
-		if (currentSlide === 0) {
-			modalsStore.set.open(MODALS.requestCallback, {
-				title: 'Book a Machine Demonstration',
-				subtitle: 'Choose between showroom visit or online video demonstration with our CNC experts.'
-			})
-		} else if (currentSlide === 1) {
-			window.location.href = '/product/laser-co2'
-		} else {
-			window.location.href = '/configurator'
-		}
+	// Render skeleton with switcher arrows already placed while loading
+	if (!slides || slides.length === 0) {
+		return (
+			<section className={styles.heroSection} aria-label='Hero Equipment Showcase'>
+				<button className={`${styles.arrowBtn} ${styles.prevArrow}`} disabled aria-label='Previous slide'>
+					<svg width='18' height='18' viewBox='0 0 16 16' fill='none'>
+						<path
+							d='M10 13L5 8L10 3'
+							stroke='#222222'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
+						/>
+					</svg>
+				</button>
+				<button className={`${styles.arrowBtn} ${styles.nextArrow}`} disabled aria-label='Next slide'>
+					<svg width='18' height='18' viewBox='0 0 16 16' fill='none'>
+						<path
+							d='M6 3L11 8L6 13'
+							stroke='#222222'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
+						/>
+					</svg>
+				</button>
+				<div className={styles.slideWrapper}>
+					<div className={styles.skeletonContainer} />
+				</div>
+			</section>
+		)
 	}
 
-	const slide = SLIDES[currentSlide]
+	const slide = slides[currentSlide] || slides[0]
 
 	return (
 		<section
 			className={styles.heroSection}
 			onMouseEnter={() => setIsPaused(true)}
 			onMouseLeave={() => setIsPaused(false)}
+			aria-label='Hero Equipment Showcase'
 		>
-			{/* Left Arrow */}
+			{/* Left Arrow - always visible */}
 			<button
 				className={`${styles.arrowBtn} ${styles.prevArrow}`}
 				onClick={prevSlide}
 				aria-label='Previous slide'
 			>
-				<svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
+				<svg width='18' height='18' viewBox='0 0 16 16' fill='none'>
 					<path
 						d='M10 13L5 8L10 3'
-						stroke='#3E1EB5'
+						stroke='#222222'
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'
@@ -134,16 +179,16 @@ export const HeroBanner: FC = () => {
 				</svg>
 			</button>
 
-			{/* Right Arrow */}
+			{/* Right Arrow - always visible */}
 			<button
 				className={`${styles.arrowBtn} ${styles.nextArrow}`}
 				onClick={nextSlide}
 				aria-label='Next slide'
 			>
-				<svg width='16' height='16' viewBox='0 0 16 16' fill='none'>
+				<svg width='18' height='18' viewBox='0 0 16 16' fill='none'>
 					<path
 						d='M6 3L11 8L6 13'
-						stroke='#3E1EB5'
+						stroke='#222222'
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'
@@ -151,105 +196,45 @@ export const HeroBanner: FC = () => {
 				</svg>
 			</button>
 
-			<div className={styles.container}>
-				<div className={styles.contentCol}>
-					<div className={styles.badge}>
-						<span className={styles.badgeDot} />
-						{slide.tag}
+			{/* Slide Content */}
+			<div className={styles.slideWrapper}>
+				<Link
+					href={slide.learnMoreHref}
+					className={styles.slideLink}
+					aria-label={`${slide.title} - Learn more`}
+				>
+					<div className={styles.imageContainer}>
+						<Image
+							key={slide.id}
+							src={slide.desktopImage}
+							alt={slide.alt}
+							fill
+							priority
+							className={styles.bannerImage}
+							sizes='100vw'
+							unoptimized={slide.desktopImage.startsWith('http')}
+						/>
 					</div>
+				</Link>
 
-					<h1 className={styles.title}>
-						{slide.titleLine1}{' '}
-						<span className={styles.highlight}>{slide.titleHighlight1}</span>{' '}
-						<span className={styles.highlight}>{slide.titleHighlight2}</span>
-					</h1>
-
-					<p className={styles.description}>{slide.subtitle}</p>
-
-					<div className={styles.actions}>
-						<Button
-							view='blue'
-							size='l'
-							className={styles.ctaBtn}
-							onClick={handleAction}
-						>
-							{slide.buttonText}
-						</Button>
-						<Button
-							view='bordered'
-							size='l'
-							className={styles.configBtn}
-							href='/configurator'
-						>
-							Open Configurator
-						</Button>
-					</div>
-
-					<div className={styles.statsRow}>
-						<div className={styles.statItem}>
-							<div className={styles.statNumber}>{slide.statBadge}</div>
-							<div className={styles.statLabel}>{slide.statLabel}</div>
-						</div>
-						<div className={styles.statDivider} />
-						<div className={styles.statItem}>
-							<div className={styles.statNumber}>24/7</div>
-							<div className={styles.statLabel}>Engineer support</div>
-						</div>
-						<div className={styles.statDivider} />
-						<div className={styles.statItem}>
-							<div className={styles.statNumber}>100%</div>
-							<div className={styles.statLabel}>Pre-shipment calibration</div>
-						</div>
-					</div>
-				</div>
-
-				<div className={styles.imageCol}>
-					<div className={styles.machineCard}>
-						<div className={styles.cityBadge}>
-							<span className={styles.cityBadgeNumber}>{slide.statBadge}</span>
-							<span className={styles.cityBadgeText}>{slide.statLabel}</span>
-						</div>
-
-						<div className={styles.floatingBadgeTop}>
-							<span>{slide.machineName}</span>
-							<span className={styles.accentBadge}>{slide.machineType}</span>
-						</div>
-
-						<div className={styles.imageWrapper}>
-							<Image
-								key={slide.id}
-								src={slide.imageSrc}
-								alt={slide.machineName}
-								width={520}
-								height={360}
-								priority
-								className={styles.machineImage}
-							/>
-						</div>
-
-						<div className={styles.floatingBadgeBottom}>
-							<div className={styles.specItem}>
-								<span className={styles.specKey}>Work area:</span>
-								<span className={styles.specVal}>{slide.workArea}</span>
-							</div>
-							<div className={styles.specItem}>
-								<span className={styles.specKey}>Power rating:</span>
-								<span className={styles.specVal}>{slide.laserPower}</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				{/* Accessible Hotspot / Direct CTA link */}
+				<Link
+					href={slide.learnMoreHref}
+					className={styles.learnMoreOverlay}
+				>
+					Learn more
+				</Link>
 			</div>
 
-			{/* Bottom Pagination Dots */}
+			{/* Dash Pagination Indicators */}
 			<div className={styles.pagination}>
-				<div className={styles.paginationPill}>
-					{SLIDES.map((_, idx) => (
+				<div className={styles.dashTrack}>
+					{slides.map((_, idx) => (
 						<button
 							key={idx}
-							className={`${styles.dot} ${currentSlide === idx ? styles.activeDot : ''}`}
+							className={`${styles.dash} ${currentSlide === idx ? styles.activeDash : ''}`}
 							onClick={() => setCurrentSlide(idx)}
-							aria-label={`Go to slide ${idx + 1}`}
+							aria-label={`Slide ${idx + 1} of ${slides.length}`}
 						/>
 					))}
 				</div>
@@ -259,3 +244,4 @@ export const HeroBanner: FC = () => {
 }
 
 export default HeroBanner
+

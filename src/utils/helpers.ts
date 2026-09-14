@@ -56,4 +56,21 @@ const setUrlParamSilently = (key: string, value: string) => {
 	window.history.replaceState({}, '', url.toString())
 }
 
+export const formatMediaUrl = (url?: string | null): string => {
+	if (!url || typeof url !== 'string') return ''
+	const trimmed = url.trim()
+	if (!trimmed) return ''
+	if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+		return trimmed
+	}
+	if (trimmed.startsWith('Attachments/') || trimmed.startsWith('/Attachments/')) {
+		const cleanPath = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
+		return `https://api.wattsancnc.com/${cleanPath}`
+	}
+	if (trimmed.startsWith('/')) {
+		return trimmed
+	}
+	return `/${trimmed}`
+}
+
 export { pickAll, setUrlParamSilently }

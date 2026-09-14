@@ -348,6 +348,12 @@ export interface ProductPageData {
         cards: SupportCard[]
     }
     packageList: PackageItem[]
+    powerOfMachineData?: {
+        title?: string
+        subtitle?: string
+        image?: string
+        features?: ProductFeature[]
+    }
     safetyCabinData?: {
         title?: string
         description?: string

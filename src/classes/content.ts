@@ -1,4 +1,5 @@
 import { ContentMeta, ContentMetaDto } from './content-meta'
+import { formatMediaUrl } from '../utils/helpers'
 import type {
   ProductInfoCardData,
   WattsanFactCardData,
@@ -135,7 +136,7 @@ export class ContentJson extends Content {
           locale === 'ar'
             ? meta.filemanagerAr?.url || meta.filemanager?.url
             : meta.filemanager?.url || meta.filemanagerAr?.url
-        acc[meta.keyName] = fileUrl || meta.value || ''
+        acc[meta.keyName] = formatMediaUrl(fileUrl || meta.value) || ''
       } else {
         const rawVal =
           locale === 'ar'
@@ -210,6 +211,38 @@ export class ContentJson extends Content {
       imageUrl: meta.image || undefined,
       backgroundColor: meta.bg_color || undefined,
       certifications: certificationsList
+    }
+  }
+
+  toPowerOfMachine(): {
+    title?: string
+    subtitle?: string
+    image?: string
+    features?: ProductFeature[]
+  } | null {
+    if (!this.contentMetasJson) return null
+    const meta = this.contentMetasJson
+    let featuresList: ProductFeature[] | undefined = undefined
+
+    if (meta.features) {
+      try {
+        const parsed = typeof meta.features === 'string' ? JSON.parse(meta.features) : meta.features
+        if (Array.isArray(parsed)) {
+          featuresList = parsed.map((item: any) => ({
+            title: item.title || '',
+            description: item.description || ''
+          }))
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    return {
+      title: meta.title || this.title || undefined,
+      subtitle: meta.subtitle || undefined,
+      image: meta.image || undefined,
+      features: featuresList
     }
   }
 
@@ -471,6 +504,23 @@ export class ContentJson extends Content {
         title: meta.reviewed_by_type || '',
         avatar: meta.reviewed_by_image || '/img/catalog/cnc-routes.png'
       }
+    }
+  }
+
+  toHeroSliderItem(): {
+    id: number
+    title: string
+    image: string
+    link: string
+    displayOrder: number
+  } {
+    const meta = this.contentMetasJson || {}
+    return {
+      id: this.id,
+      title: this.title || '',
+      image: meta.image || '',
+      link: meta.link || '',
+      displayOrder: Number(this.displayOrder) || 1
     }
   }
 }

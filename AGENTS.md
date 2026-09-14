@@ -39,6 +39,7 @@ Defines the `product_page` reference type and all supported sections (`info_card
 - **`ContentJson`**: Extends `Content`, reducing all `contentMetas` into a clean dictionary `contentMetasJson[keyName]` with automatic locale and filemanager URL resolution. Provides typed conversion methods:
   - `toProductInfoCards()`
   - `toFactsCard()`
+  - `toPowerOfMachine()`
   - `toMachineFeatures()`
   - `toHeartOfTheMachinery()`
   - `toSafetyCabin()`

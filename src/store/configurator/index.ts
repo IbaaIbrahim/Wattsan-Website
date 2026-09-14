@@ -77,11 +77,9 @@ export const configuratorStore = createStore(
 			const modified = {
 				...parameters,
 				series: parameters.series.map(series => {
-					console.log(series);
-
 					return {
 						...series,
-						logo: IMAGES_PLACEHOLDER[series.name] ?? null
+						logo: series.logo || IMAGES_PLACEHOLDER[series.name] || null
 					}
 				})
 			}

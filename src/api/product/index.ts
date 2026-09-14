@@ -1642,19 +1642,19 @@ export const getProductPageData = async (seriesIdOrSlug: string | number, locale
 };
 
 export const getProductById = async (id: string | number) => {
-	try {
-		const response = await request({
-			url: `${API_URL}/Products/Read`,
-			method: 'GET',
-			query: {
-				filter: `id~eq~'${id}'`
-			}
-		});
-		return response?.data?.[0] || null;
-	} catch (error) {
-		console.error('Error fetching product by ID', error);
-		return null;
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/Products/Read`,
+            method: 'GET',
+            query: {
+                filter: `id~eq~'${id}'`
+            }
+        });
+        return response?.data?.[0] || null;
+    } catch (error) {
+        console.error('Error fetching product by ID', error);
+        return null;
+    }
 };
 
 // In-memory cache & promise deduplication for static/catalog data
@@ -1676,263 +1676,263 @@ let seriesCacheMap = new Map<string, { data: any[]; timestamp: number }>()
 const CACHE_TTL_MS = 60 * 1000 // 1 minute cache
 
 export const getClientConfigurations = async (forceRefresh = false) => {
-	if (!forceRefresh && clientConfigurationsCache && (Date.now() - clientConfigurationsCache.timestamp < CACHE_TTL_MS)) {
-		return clientConfigurationsCache.data
-	}
-	if (!forceRefresh && clientConfigurationsPromise) {
-		return clientConfigurationsPromise
-	}
+    if (!forceRefresh && clientConfigurationsCache && (Date.now() - clientConfigurationsCache.timestamp < CACHE_TTL_MS)) {
+        return clientConfigurationsCache.data
+    }
+    if (!forceRefresh && clientConfigurationsPromise) {
+        return clientConfigurationsPromise
+    }
 
-	clientConfigurationsPromise = (async () => {
-		try {
-			const response = await request({
-				url: `${API_URL}/ClientConfiguration/ReadWithDetails`,
-				method: 'GET',
-				query: {
-					pageSize: 100
-				}
-			})
-			const result = response?.data || []
-			clientConfigurationsCache = { data: result, timestamp: Date.now() }
-			return result
-		} catch (error) {
-			console.error('Error fetching client configurations', error)
-			return []
-		} finally {
-			clientConfigurationsPromise = null
-		}
-	})()
+    clientConfigurationsPromise = (async () => {
+        try {
+            const response = await request({
+                url: `${API_URL}/ClientConfiguration/ReadWithDetails`,
+                method: 'GET',
+                query: {
+                    pageSize: 100
+                }
+            })
+            const result = response?.data || []
+            clientConfigurationsCache = { data: result, timestamp: Date.now() }
+            return result
+        } catch (error) {
+            console.error('Error fetching client configurations', error)
+            return []
+        } finally {
+            clientConfigurationsPromise = null
+        }
+    })()
 
-	return clientConfigurationsPromise
+    return clientConfigurationsPromise
 }
 
 export const getSellableCharacteristics = async (forceRefresh = false) => {
-	if (!forceRefresh && sellableCharacteristicsCache && (Date.now() - sellableCharacteristicsCache.timestamp < CACHE_TTL_MS)) {
-		return sellableCharacteristicsCache.data
-	}
-	if (!forceRefresh && sellableCharacteristicsPromise) {
-		return sellableCharacteristicsPromise
-	}
+    if (!forceRefresh && sellableCharacteristicsCache && (Date.now() - sellableCharacteristicsCache.timestamp < CACHE_TTL_MS)) {
+        return sellableCharacteristicsCache.data
+    }
+    if (!forceRefresh && sellableCharacteristicsPromise) {
+        return sellableCharacteristicsPromise
+    }
 
-	sellableCharacteristicsPromise = (async () => {
-		try {
-			const response = await request({
-				url: `${API_URL}/FullCharacteristics/Read`,
-				method: 'GET',
-				query: {
-					pageSize: 100,
-					filter: 'isSellable~eq~true'
-				}
-			})
-			const result = response?.data || []
-			sellableCharacteristicsCache = { data: result, timestamp: Date.now() }
-			return result
-		} catch (error) {
-			console.error('Error fetching sellable characteristics', error)
-			return []
-		} finally {
-			sellableCharacteristicsPromise = null
-		}
-	})()
+    sellableCharacteristicsPromise = (async () => {
+        try {
+            const response = await request({
+                url: `${API_URL}/FullCharacteristics/Read`,
+                method: 'GET',
+                query: {
+                    pageSize: 100,
+                    filter: 'isSellable~eq~true'
+                }
+            })
+            const result = response?.data || []
+            sellableCharacteristicsCache = { data: result, timestamp: Date.now() }
+            return result
+        } catch (error) {
+            console.error('Error fetching sellable characteristics', error)
+            return []
+        } finally {
+            sellableCharacteristicsPromise = null
+        }
+    })()
 
-	return sellableCharacteristicsPromise
+    return sellableCharacteristicsPromise
 }
 
 export const getFullCharacteristics = async (forceRefresh = false) => {
-	if (!forceRefresh && fullCharacteristicsCache && (Date.now() - fullCharacteristicsCache.timestamp < CACHE_TTL_MS)) {
-		return fullCharacteristicsCache.data
-	}
-	if (!forceRefresh && fullCharacteristicsPromise) {
-		return fullCharacteristicsPromise
-	}
+    if (!forceRefresh && fullCharacteristicsCache && (Date.now() - fullCharacteristicsCache.timestamp < CACHE_TTL_MS)) {
+        return fullCharacteristicsCache.data
+    }
+    if (!forceRefresh && fullCharacteristicsPromise) {
+        return fullCharacteristicsPromise
+    }
 
-	fullCharacteristicsPromise = (async () => {
-		try {
-			const response = await request({
-				url: `${API_URL}/FullCharacteristics/Read`,
-				method: 'GET',
-				query: {
-					pageSize: 5000
-				}
-			})
-			const result = response?.data || []
-			fullCharacteristicsCache = { data: result, timestamp: Date.now() }
-			return result
-		} catch (error) {
-			console.error('Error fetching full characteristics', error)
-			return []
-		} finally {
-			fullCharacteristicsPromise = null
-		}
-	})()
+    fullCharacteristicsPromise = (async () => {
+        try {
+            const response = await request({
+                url: `${API_URL}/FullCharacteristics/Read`,
+                method: 'GET',
+                query: {
+                    pageSize: 5000
+                }
+            })
+            const result = response?.data || []
+            fullCharacteristicsCache = { data: result, timestamp: Date.now() }
+            return result
+        } catch (error) {
+            console.error('Error fetching full characteristics', error)
+            return []
+        } finally {
+            fullCharacteristicsPromise = null
+        }
+    })()
 
-	return fullCharacteristicsPromise
+    return fullCharacteristicsPromise
 }
 
 export const getCharacteristicsEnums = async () => {
-	try {
-		const response = await request({
-			url: `${API_URL}/api/CharacteristicsEnums/all`,
-			method: 'GET'
-		})
-		return response || null
-	} catch (error) {
-		console.error('Error fetching characteristics enums', error)
-		return null
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/api/CharacteristicsEnums/all`,
+            method: 'GET'
+        })
+        return response || null
+    } catch (error) {
+        console.error('Error fetching characteristics enums', error)
+        return null
+    }
 }
 
 export const getFileManagerItem = async (id: string) => {
-	try {
-		const response = await request({
-			url: `${API_URL}/FileManager/Read`,
-			method: 'GET',
-			query: {
-				filter: `id~eq~'${id}'`
-			}
-		})
-		return response?.data?.[0] || null
-	} catch (error) {
-		console.error('Error fetching file manager item', error)
-		return null
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/FileManager/Read`,
+            method: 'GET',
+            query: {
+                filter: `id~eq~'${id}'`
+            }
+        })
+        return response?.data?.[0] || null
+    } catch (error) {
+        console.error('Error fetching file manager item', error)
+        return null
+    }
 }
 
 export const formatProductModelName = (name: string): string => {
-	if (!name) return ''
-	const clean = name.trim()
-	const map: Record<string, string> = {
-		'0404': '400*400 mm',
-		'0609': '600*900 mm',
-		'6090': '600*900 mm',
-		'1313': '1300*1300 mm',
-		'1313 S4': '1300*1300 S4 mm',
-		'1325': '1300*2500 mm',
-		'1616': '1600*1600 mm',
-		'2030': '2000*3000 mm',
-		'2040': '2000*4000 mm',
-		'2060': '2000*6000 mm'
-	}
-	if (map[clean]) return map[clean]
-	if (clean.includes('*') || clean.includes('x') || clean.includes('X')) {
-		return clean.endsWith('mm') ? clean : `${clean} mm`
-	}
-	return clean
+    if (!name) return ''
+    const clean = name.trim()
+    const map: Record<string, string> = {
+        '0404': '400*400 mm',
+        '0609': '600*900 mm',
+        '6090': '600*900 mm',
+        '1313': '1300*1300 mm',
+        '1313 S4': '1300*1300 S4 mm',
+        '1325': '1300*2500 mm',
+        '1616': '1600*1600 mm',
+        '2030': '2000*3000 mm',
+        '2040': '2000*4000 mm',
+        '2060': '2000*6000 mm'
+    }
+    if (map[clean]) return map[clean]
+    if (clean.includes('*') || clean.includes('x') || clean.includes('X')) {
+        return clean.endsWith('mm') ? clean : `${clean} mm`
+    }
+    return clean
 }
 
 export const getCategories = async () => {
-	try {
-		const response = await request({
-			url: `${API_URL}/Categories/Read`,
-			method: 'GET',
-			query: { pageSize: 100 }
-		})
-		return response?.data || []
-	} catch (error) {
-		console.error('Error fetching categories', error)
-		return []
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/Categories/Read`,
+            method: 'GET',
+            query: { pageSize: 100 }
+        })
+        return response?.data || []
+    } catch (error) {
+        console.error('Error fetching categories', error)
+        return []
+    }
 }
 
 export const getSeries = async (categoryId?: string | number, forceRefresh = false) => {
-	const cacheKey = categoryId ? `cat_${categoryId}` : 'all'
-	const cached = seriesCacheMap.get(cacheKey)
+    const cacheKey = categoryId ? `cat_${categoryId}` : 'all'
+    const cached = seriesCacheMap.get(cacheKey)
 
-	if (!forceRefresh && cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
-		return cached.data
-	}
+    if (!forceRefresh && cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
+        return cached.data
+    }
 
-	if (!forceRefresh && seriesPromiseMap.has(cacheKey)) {
-		return seriesPromiseMap.get(cacheKey)!
-	}
+    if (!forceRefresh && seriesPromiseMap.has(cacheKey)) {
+        return seriesPromiseMap.get(cacheKey)!
+    }
 
-	const promise = (async () => {
-		try {
-			const query: Record<string, any> = { pageSize: 100 }
-			if (categoryId) {
-				query.filter = `categoryId~eq~${categoryId}`
-			}
-			const response = await request({
-				url: `${API_URL}/Series/Read`,
-				method: 'GET',
-				query
-			})
-			const result = response?.data || []
-			seriesCacheMap.set(cacheKey, { data: result, timestamp: Date.now() })
-			return result
-		} catch (error) {
-			console.error('Error fetching series', error)
-			return []
-		} finally {
-			seriesPromiseMap.delete(cacheKey)
-		}
-	})()
+    const promise = (async () => {
+        try {
+            const query: Record<string, any> = { pageSize: 100 }
+            if (categoryId) {
+                query.filter = `categoryId~eq~${categoryId}`
+            }
+            const response = await request({
+                url: `${API_URL}/Series/Read`,
+                method: 'GET',
+                query
+            })
+            const result = response?.data || []
+            seriesCacheMap.set(cacheKey, { data: result, timestamp: Date.now() })
+            return result
+        } catch (error) {
+            console.error('Error fetching series', error)
+            return []
+        } finally {
+            seriesPromiseMap.delete(cacheKey)
+        }
+    })()
 
-	seriesPromiseMap.set(cacheKey, promise)
-	return promise
+    seriesPromiseMap.set(cacheKey, promise)
+    return promise
 }
 
 export const getSeriesById = async (id: string | number) => {
-	try {
-		const response = await request({
-			url: `${API_URL}/Series/Read`,
-			method: 'GET',
-			query: {
-				filter: `id~eq~${id}`
-			}
-		})
-		return response?.data?.[0] || null
-	} catch (error) {
-		console.error('Error fetching series by ID', error)
-		return null
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/Series/Read`,
+            method: 'GET',
+            query: {
+                filter: `id~eq~${id}`
+            }
+        })
+        return response?.data?.[0] || null
+    } catch (error) {
+        console.error('Error fetching series by ID', error)
+        return null
+    }
 }
 
 export const getProductsBySeriesId = async (seriesId: string | number) => {
-	try {
-		const response = await request({
-			url: `${API_URL}/Products/Read`,
-			method: 'GET',
-			query: {
-				filter: `seriesId~eq~${seriesId}`,
-				pageSize: 100
-			}
-		})
-		return response?.data || []
-	} catch (error) {
-		console.error('Error fetching products by series ID', error)
-		return []
-	}
+    try {
+        const response = await request({
+            url: `${API_URL}/Products/Read`,
+            method: 'GET',
+            query: {
+                filter: `seriesId~eq~${seriesId}`,
+                // pageSize: 100
+            }
+        })
+        return response?.data || []
+    } catch (error) {
+        console.error('Error fetching products by series ID', error)
+        return []
+    }
 }
 
 export const getAllProducts = async (forceRefresh = false) => {
-	if (!forceRefresh && allProductsCache && (Date.now() - allProductsCache.timestamp < CACHE_TTL_MS)) {
-		return allProductsCache.data
-	}
+    if (!forceRefresh && allProductsCache && (Date.now() - allProductsCache.timestamp < CACHE_TTL_MS)) {
+        return allProductsCache.data
+    }
 
-	if (!forceRefresh && allProductsPromise) {
-		return allProductsPromise
-	}
+    if (!forceRefresh && allProductsPromise) {
+        return allProductsPromise
+    }
 
-	allProductsPromise = (async () => {
-		try {
-			const response = await request({
-				url: `${API_URL}/Products/Read`,
-				method: 'GET',
-				query: { pageSize: 200 }
-			})
-			const result = response?.data || []
-			allProductsCache = { data: result, timestamp: Date.now() }
-			return result
-		} catch (error) {
-			console.error('Error fetching all products', error)
-			return []
-		} finally {
-			allProductsPromise = null
-		}
-	})()
+    allProductsPromise = (async () => {
+        try {
+            const response = await request({
+                url: `${API_URL}/Products/Read`,
+                method: 'GET',
+                // query: { pageSize: 200 }
+            })
+            const result = response?.data || []
+            allProductsCache = { data: result, timestamp: Date.now() }
+            return result
+        } catch (error) {
+            console.error('Error fetching all products', error)
+            return []
+        } finally {
+            allProductsPromise = null
+        }
+    })()
 
-	return allProductsPromise
+    return allProductsPromise
 }
 
 

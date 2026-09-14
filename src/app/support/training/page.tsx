@@ -109,36 +109,58 @@ const TRAINING_MATERIALS = [
 const Page = () => {
 	const [equipmentType, setEquipmentType] = useState<string>('')
 	const [equipment, setEquipment] = useState<string>('')
-	const [materials, setMaterials] = useState<string>('01')
+	const [materials, setMaterials] = useState<string>('1')
 
 	const [data, setData] = useState([])
 
 	const equipmentInfo: any = useMemo(() => {
-		const supportAsset = data?.find(({ id }) => id === equipmentType)?.supportAssets?.find(
-			({ id }) => id === equipment
+		const currentEquipment = data?.find(({ id }: any) => id === equipmentType) as any
+		const supportAsset = currentEquipment?.supportAssets?.find(
+			({ id }: any) => id === equipment
 		) ?? {}
 		if(supportAsset.id > 0) {
-			const files = supportAsset.supportFiles.filter(x => x.categoryType === (materials == '1' ? 1 : 2))
-			const sections = files.filter(x => x.parentId === null)
+			const files = supportAsset.supportFiles?.filter((x: any) => x.categoryType === (materials == '1' ? 1 : 2)) || []
+			const sections = files.filter((x: any) => x.parentId === null)
+
+			const fullTitle = (supportAsset.title || '').trim()
+			const catName = (currentEquipment?.name || '').trim()
+			let titleName = fullTitle
+			let titleCodes = ''
+
+			if (catName && fullTitle.toLowerCase().startsWith(catName.toLowerCase())) {
+				titleName = fullTitle.slice(0, catName.length).trim()
+				titleCodes = fullTitle.slice(catName.length).trim()
+			} else {
+				const match = fullTitle.match(/^(.+?)\s+((?:[A-Z]\d|\d{2,4}).*)$/i)
+				if (match) {
+					titleName = match[1].trim()
+					titleCodes = match[2].trim()
+				} else if (catName && catName.toLowerCase() !== fullTitle.toLowerCase()) {
+					titleName = catName
+					titleCodes = fullTitle
+				}
+			}
+
 			return {
 				id: supportAsset.id,
-				name: supportAsset.title,
-				files: sections.map(section => ({
+				name: titleName,
+				codes: titleCodes,
+				files: sections.map((section: any) => ({
 					id: section.id,
 					name: section.title,
 					description: section.stepName,
-					links: files.filter(x => x.parentId === section.id).map(x => ({
+					links: files.filter((x: any) => x.parentId === section.id).map((x: any) => ({
 						id: x.id,
 						icon: x.fileType === 1 ? imageIcon : (x.fileType === 2 ? videoIcon : fileIcon),
 						name: x.title,
 						description: x.stepName,
-						url: x?.fileManager?.url ?? ''
+						url: x?.fileManger?.url ?? x?.fileManager?.url ?? ''
 					}))
 				}))
 			}
 		}
 		return {}
-	}, [equipmentType, equipment, materials])
+	}, [equipmentType, equipment, materials, data])
 
 	useEffect(() => {
 		const getData = async() => {
@@ -147,6 +169,15 @@ const Page = () => {
 				method: 'GET'
 			})
 			setData(response.data)
+			if (response?.data?.length > 0) {
+				const firstWithAssets = response.data.find((item: any) => item.supportAssets && item.supportAssets.length > 0) || response.data[0]
+				if (firstWithAssets) {
+					setEquipmentType(firstWithAssets.id)
+					if (firstWithAssets.supportAssets?.length > 0) {
+						setEquipment(firstWithAssets.supportAssets[0].id)
+					}
+				}
+			}
 		}
 		getData().then(() => {})
 	}, [])
@@ -222,8 +253,12 @@ const Page = () => {
 			<div className={styles.content}>
 				{equipmentInfo?.name && (
 					<>
-						<div className={styles.title}>{equipmentInfo?.name}</div>
-						{/*<div className={styles.subtitle}>{equipmentInfo?.codes}</div>*/}
+						<div className={styles.titleWrapper}>
+							<div className={styles.title}>{equipmentInfo?.name}</div>
+							{equipmentInfo?.codes ? (
+								<div className={styles.subtitle}>{equipmentInfo?.codes}</div>
+							) : null}
+						</div>
 						<div className={styles.tabs}>
 							<Tags
 								selected={[materials]}

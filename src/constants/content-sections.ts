@@ -314,9 +314,26 @@ export const ProductPageType: ReferenceTypeDefinition = {
   value: 'product_page'
 }
 
+export const HomeType: ReferenceTypeDefinition = {
+  name: 'Home Page',
+  value: 'home',
+  sections: {
+    hero_slider: {
+      name: 'Hero Slider',
+      value: 'hero_slider',
+      maxContentItems: undefined,
+      keys: {
+        image: { name: 'Image', type: 'image', notTranslatable: true },
+        link: { name: 'Link URL', type: 'text', notTranslatable: true }
+      }
+    }
+  }
+}
+
 export const ReferenceTypes = {
   series_page: SeriesPageType,
-  product_page: ProductPageType
+  product_page: ProductPageType,
+  home: HomeType
 }
 
 export default ReferenceTypes

@@ -172,3 +172,27 @@ export async function loadProductPageDynamicContent(
   return loadSeriesDynamicContent(referenceId, locale)
 }
 
+/**
+ * Load hero slider dynamic content for the home page.
+ */
+export async function loadHomeHeroSlider(locale: string = 'en') {
+  try {
+    const contents = await readContentAsJsonByFilter(
+      {
+        referenceType: 'home',
+        referenceId: '0',
+        section: 'hero_slider'
+      },
+      locale
+    )
+
+    return contents
+      .filter((item) => item.isActive !== false)
+      .sort((a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0))
+      .map((item) => item.toHeroSliderItem())
+  } catch (error) {
+    console.error('Error loading home hero slider dynamic content:', error)
+    return []
+  }
+}
+

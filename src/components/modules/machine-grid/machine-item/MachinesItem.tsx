@@ -54,12 +54,16 @@ const MachinesItem = ({
 		)
 	}
 
+	const logoSrc = (typeof machineData.logo === 'string' && machineData.logo.length > 0)
+		? machineData.logo
+		: (machineData.logo?.src || '/img/grid-machines/icon-for-mini-equipment.png')
+
 	return (
 		<article className={styles.container}>
 			<div className={styles['main-content']}>
 				<div className={styles['main-content__img']}>
 					<Image
-						src={machineData.logo?.src ?? '/img/grid-machines/icon-for-mini-equipment.png'}
+						src={logoSrc}
 						alt=''
 						fill
 						sizes='(max-width: 120px)'

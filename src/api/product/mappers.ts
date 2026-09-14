@@ -339,9 +339,12 @@ export const mergeCmsDataIntoProductPageData = (
 
     // 3. Power of Machine (Features)
     if (cmsSectionsMap.power_of_machine?.[0]) {
-        const customFeatures = cmsSectionsMap.power_of_machine[0].toMachineFeatures?.();
-        if (customFeatures && customFeatures.length > 0) {
-            merged.machineFeatures = customFeatures;
+        const customPower = cmsSectionsMap.power_of_machine[0].toPowerOfMachine?.();
+        if (customPower) {
+            merged.powerOfMachineData = customPower;
+            if (customPower.features && customPower.features.length > 0) {
+                merged.machineFeatures = customPower.features;
+            }
         }
     }
 
