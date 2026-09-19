@@ -38,13 +38,13 @@ export async function GET(request: Request) {
 		data['cfCountry'] = request.headers.get('cf-ipcountry')
 		const cfCountry = request.headers.get('cf-ipcountry')
 		if (cfCountry && cfCountry.length === 2 && cfCountry !== 'XX') {
-			return NextResponse.json({ country: cfCountry.toLowerCase() })
+			return NextResponse.json({ country: cfCountry.toLowerCase(), data })
 		}
 
 		data['vercelCountry'] = request.headers.get('x-vercel-ip-country')
 		const vercelCountry = request.headers.get('x-vercel-ip-country')
 		if (vercelCountry && vercelCountry.length === 2) {
-			return NextResponse.json({ country: vercelCountry.toLowerCase() })
+			return NextResponse.json({ country: vercelCountry.toLowerCase(), data })
 		}
 
 		// 2. Extract and sanitize client IP (strips IPv4-mapped IPv6 prefix `::ffff:`)
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 		// 3. Return cached result if available
 		if (clientIp && geoCache.has(clientIp)) {
 			data['geoCache'] = geoCache.get(clientIp)
-			return NextResponse.json({ country: geoCache.get(clientIp), ip: clientIp })
+			return NextResponse.json({ country: geoCache.get(clientIp), ip: clientIp, data })
 		}
 
 		// 4. If public IP, query geolocation provider
