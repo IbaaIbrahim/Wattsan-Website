@@ -32,36 +32,39 @@ function extractCountryFromAcceptLanguage(header: string | null): string | null 
 }
 
 export async function GET(request: Request) {
-	let data: any;
+	let data: any = {};
 	try {
 		// 1. Check CDN / Proxy country headers (fastest & most reliable in production)
-		data['cfCountry'] = request.headers.get('cf-ipcountry')
 		const cfCountry = request.headers.get('cf-ipcountry')
+		data['cfCountry'] = cfCountry || ""
 		if (cfCountry && cfCountry.length === 2 && cfCountry !== 'XX') {
 			return NextResponse.json({ country: cfCountry.toLowerCase(), data })
 		}
 
-		data['vercelCountry'] = request.headers.get('x-vercel-ip-country')
 		const vercelCountry = request.headers.get('x-vercel-ip-country')
+		data['vercelCountry'] = vercelCountry || ""
 		if (vercelCountry && vercelCountry.length === 2) {
 			return NextResponse.json({ country: vercelCountry.toLowerCase(), data })
 		}
 
 		// 2. Extract and sanitize client IP (strips IPv4-mapped IPv6 prefix `::ffff:`)
-		data['xff'] = request.headers.get('x-forwarded-for')
-		data['xrealip'] = request.headers.get('x-real-ip')
+		const xff = request.headers.get('x-forwarded-for')
+		const xrealip = request.headers.get('x-real-ip')
+		data['xff'] = xff || ""
+		data['xrealip'] = xrealip || ""
 		const rawIp =
-			request.headers.get('x-forwarded-for')?.split(',')?.[0]?.trim() ||
-			request.headers.get('x-real-ip') ||
+			xff?.split(',')?.[0]?.trim() ||
+			xrealip ||
 			''
 
 		const clientIp = rawIp.replace(/^::ffff:/, '')
-		data['clientIp'] = clientIp
+		data['clientIp'] = clientIp || ""
 
 		// 3. Return cached result if available
 		if (clientIp && geoCache.has(clientIp)) {
-			data['geoCache'] = geoCache.get(clientIp)
-			return NextResponse.json({ country: geoCache.get(clientIp), ip: clientIp, data })
+			const country = geoCache.get(clientIp) as string
+			data['geoCache'] = country || ""
+			return NextResponse.json({ country, ip: clientIp, data })
 		}
 
 		// 4. If public IP, query geolocation provider
@@ -77,10 +80,10 @@ export async function GET(request: Request) {
 				clearTimeout(timeoutId)
 
 				if (res.ok) {
-					const data = await res.json()
-					if (data?.success && data?.country_code) {
-						const country = data.country_code.toLowerCase()
-						data['country'] = country
+					const ipWhoIsData: any = await res.json()
+					if (ipWhoIsData?.success && ipWhoIsData?.country_code) {
+						const country = ipWhoIsData.country_code.toLowerCase()
+						data['ipWhoIsData'] = ipWhoIsData || {}
 						// Cache result
 						if (geoCache.size > CACHE_LIMIT) {
 							geoCache.clear()
@@ -96,13 +99,15 @@ export async function GET(request: Request) {
 		}
 
 		// 5. Fallback: try parsing region from Accept-Language header (e.g. en-GB -> gb)
-		data['langCountry'] = extractCountryFromAcceptLanguage(request.headers.get('accept-language'))
 		const langCountry = extractCountryFromAcceptLanguage(request.headers.get('accept-language'))
+		data['langCountry'] = langCountry || ""
 		if (langCountry) {
 			return NextResponse.json({ country: langCountry, data })
 		}
-	} catch {
+	} catch (error: any) {
+		data['error'] = error.message
 		// Fallback gracefully on unexpected errors
+		return NextResponse.json({ country: 'us', data })
 	}
 
 	return NextResponse.json({ country: 'us', data })
