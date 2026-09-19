@@ -118,7 +118,7 @@ const Page = () => {
 		const supportAsset = currentEquipment?.supportAssets?.find(
 			({ id }: any) => id === equipment
 		) ?? {}
-		if(supportAsset.id > 0) {
+		if (supportAsset.id > 0) {
 			const files = supportAsset.supportFiles?.filter((x: any) => x.categoryType === (materials == '1' ? 1 : 2)) || []
 			const sections = files.filter((x: any) => x.parentId === null)
 
@@ -163,7 +163,7 @@ const Page = () => {
 	}, [equipmentType, equipment, materials, data])
 
 	useEffect(() => {
-		const getData = async() => {
+		const getData = async () => {
 			const response = await request({
 				url: API_GET_SUPPORT_TRAINING_FILES,
 				method: 'GET'
@@ -179,7 +179,7 @@ const Page = () => {
 				}
 			}
 		}
-		getData().then(() => {})
+		getData().then(() => { })
 	}, [])
 
 	return (

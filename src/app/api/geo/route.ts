@@ -25,9 +25,9 @@ export async function GET(request: Request) {
 
 		const ipQuery =
 			clientIp &&
-			!clientIp.startsWith('127.') &&
-			!clientIp.startsWith('192.168.') &&
-			clientIp !== '::1'
+				!clientIp.startsWith('127.') &&
+				!clientIp.startsWith('192.168.') &&
+				clientIp !== '::1'
 				? `https://ipapi.co/${clientIp}/json/`
 				: 'https://ipapi.co/json/'
 

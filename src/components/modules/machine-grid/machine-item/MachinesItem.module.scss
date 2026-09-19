@@ -80,22 +80,8 @@
 	border-radius: 12px;
 	background: #f7f7f7;
 	margin: 16px 8px 0 0;
-	text-decoration: none;
-	transition: all 0.2s ease;
-	cursor: pointer;
 
 	&__text {
 		opacity: 40%;
-		font-size: 13px;
-		color: #000000;
-		transition: all 0.2s ease;
-	}
-
-	&:hover {
-		background: #000000;
-		.area-value__text {
-			color: #ffffff;
-			opacity: 1;
-		}
 	}
 }

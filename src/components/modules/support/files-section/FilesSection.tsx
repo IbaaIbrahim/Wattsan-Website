@@ -45,7 +45,7 @@ const FilesSection = ({ info }) => {
 							</div>
 							<div>
 								<div className={styles.linkName}>{link.name}</div>
-								<div className={styles.linkUrl}>{link.url}</div>
+								<div className={styles.linkUrl}>{link.description}</div>
 							</div>
 							<Link
 								className={styles.link}
