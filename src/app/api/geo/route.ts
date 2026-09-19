@@ -87,7 +87,7 @@ export async function GET(request: Request) {
 						}
 						geoCache.set(clientIp, country)
 
-						return NextResponse.json({ country, ip: clientIp })
+						return NextResponse.json({ country, ip: clientIp, data })
 					}
 				}
 			} catch {
