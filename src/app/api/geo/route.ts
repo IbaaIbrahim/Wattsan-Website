@@ -32,28 +32,35 @@ function extractCountryFromAcceptLanguage(header: string | null): string | null 
 }
 
 export async function GET(request: Request) {
+	let data: any;
 	try {
 		// 1. Check CDN / Proxy country headers (fastest & most reliable in production)
+		data['cfCountry'] = request.headers.get('cf-ipcountry')
 		const cfCountry = request.headers.get('cf-ipcountry')
 		if (cfCountry && cfCountry.length === 2 && cfCountry !== 'XX') {
 			return NextResponse.json({ country: cfCountry.toLowerCase() })
 		}
 
+		data['vercelCountry'] = request.headers.get('x-vercel-ip-country')
 		const vercelCountry = request.headers.get('x-vercel-ip-country')
 		if (vercelCountry && vercelCountry.length === 2) {
 			return NextResponse.json({ country: vercelCountry.toLowerCase() })
 		}
 
 		// 2. Extract and sanitize client IP (strips IPv4-mapped IPv6 prefix `::ffff:`)
+		data['xff'] = request.headers.get('x-forwarded-for')
+		data['xrealip'] = request.headers.get('x-real-ip')
 		const rawIp =
 			request.headers.get('x-forwarded-for')?.split(',')?.[0]?.trim() ||
 			request.headers.get('x-real-ip') ||
 			''
 
 		const clientIp = rawIp.replace(/^::ffff:/, '')
+		data['clientIp'] = clientIp
 
 		// 3. Return cached result if available
 		if (clientIp && geoCache.has(clientIp)) {
+			data['geoCache'] = geoCache.get(clientIp)
 			return NextResponse.json({ country: geoCache.get(clientIp), ip: clientIp })
 		}
 
@@ -73,7 +80,7 @@ export async function GET(request: Request) {
 					const data = await res.json()
 					if (data?.success && data?.country_code) {
 						const country = data.country_code.toLowerCase()
-
+						data['country'] = country
 						// Cache result
 						if (geoCache.size > CACHE_LIMIT) {
 							geoCache.clear()
@@ -89,13 +96,14 @@ export async function GET(request: Request) {
 		}
 
 		// 5. Fallback: try parsing region from Accept-Language header (e.g. en-GB -> gb)
+		data['langCountry'] = extractCountryFromAcceptLanguage(request.headers.get('accept-language'))
 		const langCountry = extractCountryFromAcceptLanguage(request.headers.get('accept-language'))
 		if (langCountry) {
-			return NextResponse.json({ country: langCountry })
+			return NextResponse.json({ country: langCountry, data })
 		}
 	} catch {
 		// Fallback gracefully on unexpected errors
 	}
 
-	return NextResponse.json({ country: 'us' })
+	return NextResponse.json({ country: 'us', data })
 }
