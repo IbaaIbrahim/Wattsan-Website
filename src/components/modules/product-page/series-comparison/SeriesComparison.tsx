@@ -1,6 +1,7 @@
 'use client'
 
 import { FC, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { Typography } from '@components/ui/typography/Typography'
 import Image from 'next/image'
 import clsx from 'clsx'
@@ -14,6 +15,7 @@ export interface ComparisonSeries {
     tagline: string
     price: string
     active?: boolean // Highlighted state (e.g. M1 series)
+    firstProductId?: number | string
     specs: {
         workspace: string
         spindle: string
@@ -25,6 +27,11 @@ export interface ComparisonSeries {
         lubrication: string
         aspiration: string
     }
+    dynamicSpecs?: {
+        label: string
+        value: string
+        highlight?: boolean
+    }[]
 }
 
 interface SeriesComparisonProps {
@@ -34,10 +41,12 @@ interface SeriesComparisonProps {
 
 const SeriesComparison: FC<SeriesComparisonProps> = ({ seriesData, className }) => {
     const gridRef = useRef<HTMLDivElement>(null)
+    const router = useRouter()
 
     const scroll = (direction: 'left' | 'right') => {
         if (gridRef.current) {
-            const scrollAmount = 340 // Card width + gap
+            const cardWidth = gridRef.current.children[0]?.clientWidth || 320
+            const scrollAmount = cardWidth + 20 // Card width + gap
             gridRef.current.scrollBy({
                 left: direction === 'left' ? -scrollAmount : scrollAmount,
                 behavior: 'smooth'
@@ -97,49 +106,70 @@ const SeriesComparison: FC<SeriesComparisonProps> = ({ seriesData, className }) 
                                 </Typography>
                             </div>
                             {series.active && (
-                                <button className={styles.learnMoreBtn}>
+                                <button
+                                    type="button"
+                                    className={styles.learnMoreBtn}
+                                    onClick={() => {
+                                        if (series.firstProductId) {
+                                            router.push(`/product/${series.firstProductId}`)
+                                        }
+                                    }}
+                                >
                                     Learn more
                                 </button>
                             )}
                         </div>
 
                         <div className={styles.specsList}>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Workspace</span>
-                                <span className={styles.specValue}>{series.specs.workspace}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Spindle</span>
-                                <span className={styles.specValue}>{series.specs.spindle}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Motor</span>
-                                <span className={styles.specValue}>{series.specs.motor}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Control system</span>
-                                <span className={styles.specValue}>{series.specs.control}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Liquid cooling system</span>
-                                <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.cooling}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Removable instrument sensor</span>
-                                <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.sensorRemovable}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Built-in instrument sensor</span>
-                                <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.sensorBuiltIn}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Lubrication system</span>
-                                <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.lubrication}</span>
-                            </div>
-                            <div className={styles.specRow}>
-                                <span className={styles.specLabel}>Aspiration</span>
-                                <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.aspiration}</span>
-                            </div>
+                            {series.dynamicSpecs && series.dynamicSpecs.length > 0 ? (
+                                series.dynamicSpecs.map((spec, idx) => (
+                                    <div key={idx} className={styles.specRow}>
+                                        <span className={styles.specLabel}>{spec.label}</span>
+                                        <span className={clsx(styles.specValue, spec.highlight && styles.highlight)}>
+                                            {spec.value}
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Workspace</span>
+                                        <span className={styles.specValue}>{series.specs.workspace}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Spindle</span>
+                                        <span className={styles.specValue}>{series.specs.spindle}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Motor</span>
+                                        <span className={styles.specValue}>{series.specs.motor}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Control system</span>
+                                        <span className={styles.specValue}>{series.specs.control}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Liquid cooling system</span>
+                                        <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.cooling}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Removable instrument sensor</span>
+                                        <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.sensorRemovable}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Built-in instrument sensor</span>
+                                        <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.sensorBuiltIn}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Lubrication system</span>
+                                        <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.lubrication}</span>
+                                    </div>
+                                    <div className={styles.specRow}>
+                                        <span className={styles.specLabel}>Aspiration</span>
+                                        <span className={clsx(styles.specValue, styles.highlight)}>{series.specs.aspiration}</span>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -149,3 +179,4 @@ const SeriesComparison: FC<SeriesComparisonProps> = ({ seriesData, className }) 
 }
 
 export default SeriesComparison
+

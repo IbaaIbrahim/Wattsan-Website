@@ -60,14 +60,22 @@ const MultiSpindles: FC<MultiSpindlesProps> = ({
 
                 <div className={styles.descriptionColumn}>
                     <div className={styles.descriptionItem}>
-                        <Typography tag='p' size='s' weight='regular'>
-                            {description1}
-                        </Typography>
+                        {typeof description1 === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description1 }} />
+                        ) : (
+                            <Typography tag='p' size='s' weight='regular'>
+                                {description1}
+                            </Typography>
+                        )}
                     </div>
                     <div className={styles.descriptionItem}>
-                        <Typography tag='p' size='s' weight='regular'>
-                            {description2}
-                        </Typography>
+                        {typeof description2 === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description2 }} />
+                        ) : (
+                            <Typography tag='p' size='s' weight='regular'>
+                                {description2}
+                            </Typography>
+                        )}
                     </div>
                 </div>
             </div>

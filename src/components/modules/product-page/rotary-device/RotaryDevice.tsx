@@ -44,7 +44,11 @@ const RotaryDevice: FC<RotaryDeviceProps> = ({
                     </Typography>
 
                     <div className={styles.description}>
-                        {description}
+                        {typeof description === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description }} />
+                        ) : (
+                            description
+                        )}
                     </div>
 
                     <div className={styles.specs}>

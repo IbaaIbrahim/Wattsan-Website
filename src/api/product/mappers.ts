@@ -96,6 +96,9 @@ export const mapToolSwitchVariants = (data: any[]): ProductTypes.ToolSwitchVaria
         description: item.description,
         thumbnail: item.thumbnail,
         footerLabel: item.footerLabel,
+        warning: item.warning,
+        video: item.video,
+        videoUrl: item.videoUrl || item.video,
         isWarning: item.isWarning
     }));
 };
@@ -103,7 +106,9 @@ export const mapToolSwitchVariants = (data: any[]): ProductTypes.ToolSwitchVaria
 export const mapLiquidCoolingTypes = (data: any[]): ProductTypes.LiquidCoolingType[] => {
     return data.map(item => ({
         title: item.title,
-        description: item.description
+        description: item.description,
+        videoUrl: item.videoUrl,
+        media: item.media || item.videoUrl
     }));
 };
 
@@ -141,6 +146,7 @@ export const mapReviews = (data: any[]): ProductTypes.Review[] => {
 export const mapProductionProcess = (data: any[]): ProductTypes.ProductionProcessStep[] => {
     return data.map(item => ({
         id: item.id,
+        step_number: item.step_number || item.id,
         title: item.title,
         description: item.description,
         image: item.image
@@ -214,6 +220,7 @@ export const mapHeartOfTheMachinery = (data: any): ProductTypes.HeartOfTheMachin
 };
 
 export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
+    const mappedMaterialsProcessing = mapMaterialsProcessing(data.materialsProcessing || data.materialsProcessingData || {});
     return {
         breadcrumbs: mapBreadcrumbs(data.breadcrumbs || []),
         infoCards: mapInfoCards(data.infoCards || []),
@@ -232,12 +239,14 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
         supportCards: mapSupportCards(data.supportCards || []),
         interestedProducts: mapInterestedProducts(data.interestedProducts || []),
         heartOfTheMachinery: mapHeartOfTheMachinery(data.heartOfTheMachinery || { tabs: [], content: {} }),
-        materialsProcessing: mapMaterialsProcessing(data.materialsProcessing || {}),
+        materialsProcessing: mappedMaterialsProcessing,
+        materialsProcessingData: mappedMaterialsProcessing,
         twoLaserHeads: data.twoLaserHeads ? mapTwoLaserHeads(data.twoLaserHeads) : undefined,
         aspirationSystem: data.aspirationSystem ? {
             title: data.aspirationSystem.title || [],
             subtitle: data.aspirationSystem.subtitle || '',
-            descriptions: data.aspirationSystem.descriptions || []
+            descriptions: data.aspirationSystem.descriptions || [],
+            videoUrl: data.aspirationSystem.videoUrl
         } : undefined,
         purifierWelderComparisonData: data.purifierWelderComparisonData ? {
             title: data.purifierWelderComparisonData.title || '',
@@ -283,26 +292,36 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
             shipment: data.productInfo?.shipment || '',
             delivery: data.productInfo?.delivery || '',
             deliveryMethods: data.productInfo?.deliveryMethods || [],
-            deliveryNote: data.productInfo?.deliveryNote || ''
+            deliveryNote: data.productInfo?.deliveryNote || '',
+            warranty: data.productInfo?.warranty || ''
         },
         madeWithWattsan: {
-            image: data.madeWithWattsan?.image || ''
+            image: data.madeWithWattsan?.image || '',
+            slides: data.madeWithWattsan?.slides || undefined
         },
         serviceAndSupport: {
             image: data.serviceAndSupport?.image || '',
-            cards: data.serviceAndSupport?.cards?.map(card => ({
+            cards: data.serviceAndSupport?.cards?.map((card: any) => ({
                 id: card.id,
                 title: card.title,
                 description: card.description,
                 icon: card.icon // Pass icon identifier (string) through
             })) || []
         },
-        packageList: data.packageList?.map(item => ({
+        packageList: data.packageList?.map((item: any) => ({
             id: item.id,
             image: item.image,
             label: item.label
-        })) || []
+        })) || [],
+        additionalContent: data.additionalContent || undefined
     };
+};
+
+const getActiveSorted = (items?: any[]): any[] => {
+    if (!Array.isArray(items)) return [];
+    return items
+        .filter((c) => c && c.isActive !== false)
+        .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
 };
 
 /**
@@ -320,16 +339,18 @@ export const mergeCmsDataIntoProductPageData = (
     const merged = { ...baseData };
 
     // 1. Info Cards
-    if (cmsSectionsMap.info_cards?.[0]) {
-        const customInfoCards = cmsSectionsMap.info_cards[0].toProductInfoCards?.();
+    const infoCardsRows = getActiveSorted(cmsSectionsMap.info_cards);
+    if (infoCardsRows[0]) {
+        const customInfoCards = infoCardsRows[0].toProductInfoCards?.();
         if (customInfoCards && customInfoCards.length > 0) {
             merged.infoCards = customInfoCards;
         }
     }
 
     // 2. Facts Cards
-    if (cmsSectionsMap.facts_cards && cmsSectionsMap.facts_cards.length > 0) {
-        const customFacts = cmsSectionsMap.facts_cards
+    const factsCardsRows = getActiveSorted(cmsSectionsMap.facts_cards);
+    if (factsCardsRows.length > 0) {
+        const customFacts = factsCardsRows
             .map((c) => c.toFactsCard?.())
             .filter(Boolean);
         if (customFacts.length > 0) {
@@ -338,8 +359,9 @@ export const mergeCmsDataIntoProductPageData = (
     }
 
     // 3. Power of Machine (Features)
-    if (cmsSectionsMap.power_of_machine?.[0]) {
-        const customPower = cmsSectionsMap.power_of_machine[0].toPowerOfMachine?.();
+    const powerRows = getActiveSorted(cmsSectionsMap.power_of_machine);
+    if (powerRows[0]) {
+        const customPower = powerRows[0].toPowerOfMachine?.();
         if (customPower) {
             merged.powerOfMachineData = customPower;
             if (customPower.features && customPower.features.length > 0) {
@@ -348,56 +370,107 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 4. Heart of Machinery
-    if (cmsSectionsMap.heart_of_machinery?.[0]) {
-        const customHeart = cmsSectionsMap.heart_of_machinery[0].toHeartOfTheMachinery?.();
-        if (customHeart) {
-            const currentContent = merged.heartOfTheMachinery?.content || {};
-            merged.heartOfTheMachinery = {
-                tabs: [
-                    { id: 'spindle', label: 'Spindle' },
-                    { id: 'worktable', label: 'Worktable' },
-                    { id: 'controlSystem', label: 'Control system' }
-                ],
-                content: {
-                    spindle: {
-                        id: 'spindle',
-                        title: customHeart.spindleTitle || currentContent.spindle?.title || 'Powerful spindle with upgrade option',
-                        description: customHeart.spindleDescription || currentContent.spindle?.description || '',
-                        details: currentContent.spindle?.details || [
-                            { label: 'POWER', value: 'from 2,2 kW' },
-                            { label: 'Z AXIS TRAVEL', value: '300 mm' }
-                        ],
-                        image: customHeart.spindleImage || currentContent.spindle?.image || '/product-cards/cnc-router/spindles/spindles-4.png'
-                    },
-                    worktable: {
-                        id: 'worktable',
-                        title: customHeart.worktableTitle || currentContent.worktable?.title || 'Reliable Worktable',
-                        description: customHeart.worktableDescription || currentContent.worktable?.description || '',
-                        details: currentContent.worktable?.details || [
-                            { label: 'TYPE', value: 'Vacuum + T-slots' },
-                            { label: 'ZONES', value: '4-6 zones' }
-                        ],
-                        image: customHeart.worktableImage || currentContent.worktable?.image || '/product-cards/cnc-router/image 11651.png'
-                    },
-                    controlSystem: {
-                        id: 'controlSystem',
-                        title: customHeart.controlSystemTitle || currentContent.controlSystem?.title || 'Advanced Control System',
-                        description: customHeart.controlSystemDescription || currentContent.controlSystem?.description || '',
-                        details: currentContent.controlSystem?.details || [
-                            { label: 'SYSTEM', value: 'DSP A11' },
-                            { label: 'COMPATIBILITY', value: 'Win/Mac/Linux' }
-                        ],
-                        image: customHeart.controlSystemImage || currentContent.controlSystem?.image || '/product-cards/cnc-router/image 11650.png'
-                    }
+    // 4. Heart of Machinery (Multi-item tabs, with legacy single-item fallback)
+    const heartRows = getActiveSorted(cmsSectionsMap.heart_of_machinery);
+    if (heartRows.length > 0) {
+        const firstMeta = heartRows[0]?.contentMetasJson || {};
+        const hasNewTabFormat = heartRows.some((c) => {
+            const m = c?.contentMetasJson || {};
+            return Boolean(m.tab_label || m.title || m.details);
+        });
+
+        if (hasNewTabFormat) {
+            const tabs: ProductTypes.MachineTab[] = [];
+            const content: Record<string, ProductTypes.MachineTabContent> = {};
+            heartRows.forEach((c) => {
+                const tabItem = c.toHeartOfMachineryTab?.();
+                if (tabItem) {
+                    tabs.push({ id: tabItem.id, label: tabItem.tab_label });
+                    content[tabItem.id] = {
+                        id: tabItem.id,
+                        title: tabItem.title,
+                        description: tabItem.description,
+                        details: tabItem.details || [],
+                        image: tabItem.image
+                    };
                 }
-            };
+            });
+            if (tabs.length > 0) {
+                merged.heartOfTheMachinery = { tabs, content };
+            }
+        } else if (firstMeta.spindle_title || firstMeta.worktable_title || firstMeta.control_system_title) {
+            const customHeart = heartRows[0].toHeartOfTheMachinery?.();
+            if (customHeart) {
+                const currentContent = merged.heartOfTheMachinery?.content || {};
+                merged.heartOfTheMachinery = {
+                    tabs: [
+                        { id: 'spindle', label: 'Spindle' },
+                        { id: 'worktable', label: 'Worktable' },
+                        { id: 'controlSystem', label: 'Control system' }
+                    ],
+                    content: {
+                        spindle: {
+                            id: 'spindle',
+                            title: customHeart.spindleTitle || currentContent.spindle?.title || 'Powerful spindle with upgrade option',
+                            description: customHeart.spindleDescription || currentContent.spindle?.description || '',
+                            details: currentContent.spindle?.details || [
+                                { label: 'POWER', value: 'from 2,2 kW' },
+                                { label: 'Z AXIS TRAVEL', value: '300 mm' }
+                            ],
+                            image: customHeart.spindleImage || currentContent.spindle?.image || '/product-cards/cnc-router/spindles/spindles-4.png'
+                        },
+                        worktable: {
+                            id: 'worktable',
+                            title: customHeart.worktableTitle || currentContent.worktable?.title || 'Reliable Worktable',
+                            description: customHeart.worktableDescription || currentContent.worktable?.description || '',
+                            details: currentContent.worktable?.details || [
+                                { label: 'TYPE', value: 'Vacuum + T-slots' },
+                                { label: 'ZONES', value: '4-6 zones' }
+                            ],
+                            image: customHeart.worktableImage || currentContent.worktable?.image || '/product-cards/cnc-router/image 11651.png'
+                        },
+                        controlSystem: {
+                            id: 'controlSystem',
+                            title: customHeart.controlSystemTitle || currentContent.controlSystem?.title || 'Advanced Control System',
+                            description: customHeart.controlSystemDescription || currentContent.controlSystem?.description || '',
+                            details: currentContent.controlSystem?.details || [
+                                { label: 'SYSTEM', value: 'DSP A11' },
+                                { label: 'COMPATIBILITY', value: 'Win/Mac/Linux' }
+                            ],
+                            image: customHeart.controlSystemImage || currentContent.controlSystem?.image || '/product-cards/cnc-router/image 11650.png'
+                        }
+                    }
+                };
+            }
         }
     }
 
-    // 5. Safety Cabin
-    if (cmsSectionsMap.safety_cabin?.[0]) {
-        const customCabin = cmsSectionsMap.safety_cabin[0].toSafetyCabin?.();
+    // 5. Materials Processing (Plenty of Materials)
+    const materialsRows = getActiveSorted(cmsSectionsMap.materials_processing);
+    if (materialsRows[0]) {
+        const customMaterials = materialsRows[0].toMaterialsProcessing?.();
+        if (customMaterials) {
+            const existingMp = merged.materialsProcessingData || merged.materialsProcessing;
+            const nextMp: ProductTypes.MaterialsProcessingData = {
+                title: existingMp?.title?.length
+                    ? existingMp.title
+                    : [{ text: 'Plenty of materials', color: '#E31E24' }, { text: 'for processing' }],
+                images: customMaterials.images && customMaterials.images.length > 0
+                    ? customMaterials.images
+                    : (existingMp?.images || []),
+                materials: customMaterials.materials && customMaterials.materials.length > 0
+                    ? customMaterials.materials
+                    : (existingMp?.materials || [])
+            };
+            merged.materialsProcessing = nextMp;
+            merged.materialsProcessingData = nextMp;
+        }
+    }
+
+    // 6. Safety Cabin
+    const safetyCabinRows = getActiveSorted(cmsSectionsMap.safety_cabin);
+    if (safetyCabinRows[0]) {
+        const customCabin = safetyCabinRows[0].toSafetyCabin?.();
         if (customCabin) {
             merged.safetyCabinData = customCabin;
             if (customCabin.features && customCabin.features.length > 0) {
@@ -406,9 +479,10 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 6. Rotary Device
-    if (cmsSectionsMap.rotary_device?.[0]) {
-        const customRotary = cmsSectionsMap.rotary_device[0].toRotaryDevice?.();
+    // 7. Rotary Device
+    const rotaryRows = getActiveSorted(cmsSectionsMap.rotary_device);
+    if (rotaryRows[0]) {
+        const customRotary = rotaryRows[0].toRotaryDevice?.();
         if (customRotary) {
             merged.rotaryDeviceData = customRotary;
             if (customRotary.specs && customRotary.specs.length > 0) {
@@ -417,17 +491,19 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 7. Separate Rotary Device
-    if (cmsSectionsMap.separate_rotary_device?.[0]) {
-        const customSeparateRotary = cmsSectionsMap.separate_rotary_device[0].toSeparateRotaryDevice?.();
+    // 8. Separate Rotary Device
+    const separateRotaryRows = getActiveSorted(cmsSectionsMap.separate_rotary_device);
+    if (separateRotaryRows[0]) {
+        const customSeparateRotary = separateRotaryRows[0].toSeparateRotaryDevice?.();
         if (customSeparateRotary) {
             merged.separateRotaryDeviceData = customSeparateRotary;
         }
     }
 
-    // 8. Multi Spindles
-    if (cmsSectionsMap.multi_spindles?.[0]) {
-        const customSpindles = cmsSectionsMap.multi_spindles[0].toMultiSpindles?.();
+    // 9. Multi Spindles
+    const multiSpindlesRows = getActiveSorted(cmsSectionsMap.multi_spindles);
+    if (multiSpindlesRows[0]) {
+        const customSpindles = multiSpindlesRows[0].toMultiSpindles?.();
         if (customSpindles) {
             merged.multiSpindlesData = customSpindles;
             if (customSpindles.specs && customSpindles.specs.length > 0) {
@@ -436,9 +512,10 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 9. Tool Switch
-    if (cmsSectionsMap.automatic_tool_switch?.[0]) {
-        const customToolSwitch = cmsSectionsMap.automatic_tool_switch[0].toToolSwitch?.();
+    // 10. Tool Switch
+    const toolSwitchRows = getActiveSorted(cmsSectionsMap.automatic_tool_switch);
+    if (toolSwitchRows[0]) {
+        const customToolSwitch = toolSwitchRows[0].toToolSwitch?.();
         if (customToolSwitch) {
             merged.toolSwitchData = customToolSwitch;
             if (customToolSwitch.variants && customToolSwitch.variants.length > 0) {
@@ -447,9 +524,10 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 10. Liquid Cooling
-    if (cmsSectionsMap.liquid_cooling?.[0]) {
-        const customCooling = cmsSectionsMap.liquid_cooling[0].toLiquidCooling?.();
+    // 11. Liquid Cooling
+    const liquidCoolingRows = getActiveSorted(cmsSectionsMap.liquid_cooling);
+    if (liquidCoolingRows[0]) {
+        const customCooling = liquidCoolingRows[0].toLiquidCooling?.();
         if (customCooling) {
             merged.liquidCoolingData = customCooling;
             if (customCooling.types && customCooling.types.length > 0) {
@@ -458,9 +536,19 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 11. Table Types
-    if (cmsSectionsMap.table_types && cmsSectionsMap.table_types.length > 0) {
-        const customTableTypes = cmsSectionsMap.table_types
+    // 12. Aspiration System
+    const aspirationRows = getActiveSorted(cmsSectionsMap.aspiration_system);
+    if (aspirationRows[0]) {
+        const customAspiration = aspirationRows[0].toAspiration?.();
+        if (customAspiration) {
+            merged.aspirationData = customAspiration;
+        }
+    }
+
+    // 13. Table Types
+    const tableTypesRows = getActiveSorted(cmsSectionsMap.table_types);
+    if (tableTypesRows.length > 0) {
+        const customTableTypes = tableTypesRows
             .map((c) => c.toTableTypeItem?.())
             .filter(Boolean);
         if (customTableTypes.length > 0) {
@@ -468,9 +556,24 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 12. Production Process
-    if (cmsSectionsMap.production_process && cmsSectionsMap.production_process.length > 0) {
-        const customProcess = cmsSectionsMap.production_process
+    // 14. Made with Wattsan
+    const madeWithWattsanRows = getActiveSorted(cmsSectionsMap.made_with_wattsan);
+    if (madeWithWattsanRows.length > 0) {
+        const customSlides = madeWithWattsanRows
+            .map((c) => c.toMadeWithWattsanSlide?.())
+            .filter((s) => s && s.image);
+        if (customSlides.length > 0) {
+            merged.madeWithWattsan = {
+                image: customSlides[0].image,
+                slides: customSlides
+            };
+        }
+    }
+
+    // 15. Production Process
+    const productionProcessRows = getActiveSorted(cmsSectionsMap.production_process);
+    if (productionProcessRows.length > 0) {
+        const customProcess = productionProcessRows
             .map((c) => c.toProductionStep?.())
             .filter(Boolean);
         if (customProcess.length > 0) {
@@ -478,20 +581,24 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 13. Service and Support
-    if (cmsSectionsMap.service_and_support?.[0]) {
-        const customService = cmsSectionsMap.service_and_support[0].toServiceAndSupport?.();
+    // 16. Service and Support
+    const serviceRows = getActiveSorted(cmsSectionsMap.service_and_support);
+    if (serviceRows[0]) {
+        const customService = serviceRows[0].toServiceAndSupport?.();
         if (customService) {
             merged.serviceAndSupport = {
                 image: customService.image || merged.serviceAndSupport?.image || '',
-                cards: customService.cards && customService.cards.length > 0 ? (customService.cards as any) : (merged.serviceAndSupport?.cards || [])
+                cards: customService.cards && customService.cards.length > 0
+                    ? (customService.cards as any)
+                    : (merged.serviceAndSupport?.cards || [])
             };
         }
     }
 
-    // 14. Package List
-    if (cmsSectionsMap.package_list && cmsSectionsMap.package_list.length > 0) {
-        const customPackageList = cmsSectionsMap.package_list
+    // 17. Package List
+    const packageListRows = getActiveSorted(cmsSectionsMap.package_list);
+    if (packageListRows.length > 0) {
+        const customPackageList = packageListRows
             .map((c) => c.toPackageListItem?.())
             .filter(Boolean);
         if (customPackageList.length > 0) {
@@ -499,9 +606,21 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 15. FAQ
-    if (cmsSectionsMap.faq && cmsSectionsMap.faq.length > 0) {
-        const customFaq = cmsSectionsMap.faq
+    // 18. Additional Content
+    const additionalContentRows = getActiveSorted(cmsSectionsMap.additional_content);
+    if (additionalContentRows.length > 0) {
+        const customAdditional = additionalContentRows
+            .map((c) => c.toAdditionalContentItem?.())
+            .filter(Boolean);
+        if (customAdditional.length > 0) {
+            merged.additionalContent = customAdditional;
+        }
+    }
+
+    // 19. FAQ
+    const faqRows = getActiveSorted(cmsSectionsMap.faq);
+    if (faqRows.length > 0) {
+        const customFaq = faqRows
             .map((c) => c.toFAQItem?.())
             .filter(Boolean);
         if (customFaq.length > 0) {
@@ -509,9 +628,10 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 16. Reviews
-    if (cmsSectionsMap.reviews && cmsSectionsMap.reviews.length > 0) {
-        const customReviews = cmsSectionsMap.reviews
+    // 20. Reviews
+    const reviewRows = getActiveSorted(cmsSectionsMap.reviews);
+    if (reviewRows.length > 0) {
+        const customReviews = reviewRows
             .map((c) => c.toReviewItem?.())
             .filter(Boolean);
         if (customReviews.length > 0) {
@@ -519,14 +639,16 @@ export const mergeCmsDataIntoProductPageData = (
         }
     }
 
-    // 17. Product Info Extra (notes, shipment, delivery)
-    if (cmsSectionsMap.product_info_extra?.[0]) {
-        const meta = cmsSectionsMap.product_info_extra[0].contentMetasJson || {};
+    // 21. Product Info Extra (notes, shipment, delivery, warranty)
+    const productInfoExtraRows = getActiveSorted(cmsSectionsMap.product_info_extra);
+    if (productInfoExtraRows[0]) {
+        const meta = productInfoExtraRows[0].contentMetasJson || {};
         merged.productInfo = {
             ...merged.productInfo,
             shipment: meta.shipment || merged.productInfo?.shipment,
             delivery: meta.delivery || merged.productInfo?.delivery,
             deliveryNote: meta.delivery_note || merged.productInfo?.deliveryNote,
+            warranty: meta.warranty || merged.productInfo?.warranty,
             deliveryMethods: meta.delivery_methods
                 ? String(meta.delivery_methods).split(',').map((s) => s.trim()).filter(Boolean)
                 : merged.productInfo?.deliveryMethods
@@ -535,4 +657,5 @@ export const mergeCmsDataIntoProductPageData = (
 
     return merged;
 };
+
 

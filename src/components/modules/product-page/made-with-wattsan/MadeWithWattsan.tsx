@@ -1,24 +1,60 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import ContactSection from '@components/modules/common/contact-section/ContactSection'
 import arrowIcon from '@public/img/icons/arrow-left.svg'
+import { MadeWithWattsanSlide } from '@my-types/product'
 import styles from './MadeWithWattsan.module.scss'
 
 interface MadeWithWattsanProps {
+    image?: string
+    slides?: MadeWithWattsanSlide[]
     className?: string
 }
 
-const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ className }) => {
-    const imagePath = '/product-cards/cnc-router/image 11680.png'
+const DEFAULT_SLIDES: MadeWithWattsanSlide[] = [
+    {
+        id: '1',
+        image: '/product-cards/cnc-router/image 11680.png',
+        author: 'Jose Rodriguez',
+        tag: 'CNC routing by Wattsan'
+    }
+]
+
+const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className }) => {
+    const [activeIndex, setActiveIndex] = useState(0)
+
+    const effectiveSlides: MadeWithWattsanSlide[] =
+        slides && slides.length > 0
+            ? slides
+            : image
+            ? [{ id: '1', image, author: 'Jose Rodriguez', tag: 'CNC routing by Wattsan' }]
+            : DEFAULT_SLIDES
+
+    const safeIndex = activeIndex % effectiveSlides.length
+    const currentSlide = effectiveSlides[safeIndex] || DEFAULT_SLIDES[0]
+
+    const handlePrev = () => {
+        setActiveIndex((prev) => (prev - 1 + effectiveSlides.length) % effectiveSlides.length)
+    }
+
+    const handleNext = () => {
+        setActiveIndex((prev) => (prev + 1) % effectiveSlides.length)
+    }
+
+    const authorLabel = currentSlide.author
+        ? currentSlide.author.toLowerCase().startsWith('author')
+            ? currentSlide.author
+            : `Author: ${currentSlide.author}`
+        : ''
 
     const renderLeftContent = () => (
         <div className={styles.imageColumn}>
             <Image
-                src={imagePath}
-                alt="Dinosaur skeleton model made with Wattsan CNC machine"
+                src={currentSlide.image || '/product-cards/cnc-router/image 11680.png'}
+                alt={currentSlide.tag || 'Made with Wattsan CNC machine'}
                 fill
                 sizes="(max-width: 968px) 100vw, 50vw"
                 style={{ objectFit: 'cover' }}
@@ -26,19 +62,31 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ className }) => {
 
             {/* Navigation Arrows */}
             <div className={styles.sliderControls}>
-                <button className={clsx(styles.navButton, styles.prevButton)} aria-label="Previous image">
+                <button
+                    type="button"
+                    className={clsx(styles.navButton, styles.prevButton)}
+                    onClick={handlePrev}
+                    aria-label="Previous image"
+                >
                     <Image src={arrowIcon} alt="Previous" width={24} height={24} />
                 </button>
-                <button className={clsx(styles.navButton, styles.nextButton)} aria-label="Next image">
+                <button
+                    type="button"
+                    className={clsx(styles.navButton, styles.nextButton)}
+                    onClick={handleNext}
+                    aria-label="Next image"
+                >
                     <Image src={arrowIcon} alt="Next" width={24} height={24} />
                 </button>
             </div>
 
             {/* Bottom Tags */}
-            <div className={styles.imageTags}>
-                <span className={styles.tagAuthor}>Author: Jose Rodriguez</span>
-                <span className={styles.tagType}>CNC routing by Wattsan</span>
-            </div>
+            {(authorLabel || currentSlide.tag) && (
+                <div className={styles.imageTags}>
+                    {authorLabel && <span className={styles.tagAuthor}>{authorLabel}</span>}
+                    {currentSlide.tag && <span className={styles.tagType}>{currentSlide.tag}</span>}
+                </div>
+            )}
         </div>
     )
 
@@ -52,3 +100,4 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ className }) => {
 }
 
 export default MadeWithWattsan
+

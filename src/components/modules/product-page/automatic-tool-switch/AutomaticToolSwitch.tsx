@@ -11,9 +11,11 @@ export interface ToolSwitchVariant {
     id: string
     title: string
     description: string
-    thumbnail: string
+    thumbnail?: string
+    video?: string
     videoUrl?: string
     footerLabel?: string
+    warning?: string
     isWarning?: boolean
 }
 
@@ -53,7 +55,11 @@ const AutomaticToolSwitch: FC<AutomaticToolSwitchProps> = ({
                     )}
 
                     <div className={styles.description}>
-                        {description}
+                        {typeof description === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description }} />
+                        ) : (
+                            description
+                        )}
                     </div>
 
                     {subHeading && (
@@ -64,7 +70,11 @@ const AutomaticToolSwitch: FC<AutomaticToolSwitchProps> = ({
 
                     {subDescription && (
                         <div className={styles.subDescription}>
-                            {subDescription}
+                            {typeof subDescription === 'string' ? (
+                                <div dangerouslySetInnerHTML={{ __html: subDescription }} />
+                            ) : (
+                                subDescription
+                            )}
                         </div>
                     )}
                 </div>
@@ -85,43 +95,66 @@ const AutomaticToolSwitch: FC<AutomaticToolSwitchProps> = ({
             </div>
 
             <div className={styles.variantsGrid}>
-                {variants.map((variant) => (
-                    <div key={variant.id} className={styles.variantCard}>
-                        <div className={styles.thumbnailWrapper}>
-                            <div className={styles.placeholderThumbnail}>
-                                <div className={styles.playButton}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8 5V19L19 12L8 5Z" fill="white" />
-                                    </svg>
-                                </div>
+                {variants.map((variant) => {
+                    const videoSrc = variant.video || variant.videoUrl
+                    return (
+                        <div key={variant.id} className={styles.variantCard}>
+                            <div className={styles.thumbnailWrapper}>
+                                {videoSrc ? (
+                                    <video
+                                        src={videoSrc}
+                                        controls
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                ) : (
+                                    <div className={styles.placeholderThumbnail}>
+                                        <div className={styles.playButton}>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8 5V19L19 12L8 5Z" fill="white" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className={styles.cardContent}>
+                                <Typography tag='h4' size='m' weight='bold' className={styles.variantTitle}>
+                                    {variant.title}
+                                </Typography>
+
+                                <Typography tag='p' size='s' weight='regular' className={styles.variantDescription}>
+                                    {variant.description}
+                                </Typography>
+
+                                {variant.footerLabel && (
+                                    <Typography
+                                        tag='p'
+                                        size='xs'
+                                        weight='regular'
+                                        className={clsx(styles.footerLabel, !variant.warning && variant.isWarning && styles.warning)}
+                                    >
+                                        {variant.footerLabel}
+                                    </Typography>
+                                )}
+
+                                {variant.warning && (
+                                    <Typography
+                                        tag='p'
+                                        size='xs'
+                                        weight='regular'
+                                        className={clsx(styles.footerLabel, styles.warning)}
+                                    >
+                                        {variant.warning}
+                                    </Typography>
+                                )}
                             </div>
                         </div>
-
-                        <div className={styles.cardContent}>
-                            <Typography tag='h4' size='m' weight='bold' className={styles.variantTitle}>
-                                {variant.title}
-                            </Typography>
-
-                            <Typography tag='p' size='s' weight='regular' className={styles.variantDescription}>
-                                {variant.description}
-                            </Typography>
-
-                            {variant.footerLabel && (
-                                <Typography
-                                    tag='p'
-                                    size='xs'
-                                    weight='regular'
-                                    className={clsx(styles.footerLabel, variant.isWarning && styles.warning)}
-                                >
-                                    {variant.footerLabel}
-                                </Typography>
-                            )}
-                        </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
         </section>
     )
 }
 
 export default AutomaticToolSwitch
+

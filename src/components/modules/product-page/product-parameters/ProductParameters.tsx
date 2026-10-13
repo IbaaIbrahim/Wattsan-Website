@@ -18,8 +18,8 @@ interface ProductParametersProps {
 const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }) => {
 	return (
 		<div className={clsx(styles.parameters, className)}>
-			<Typography tag='h2' size='l' weight='semi-bold' className={styles.title}>
-				Choose Parameters
+			<Typography tag='p' size='l' weight='semi-bold' className={styles.title}>
+				Choose parameters
 			</Typography>
 			<div className={styles.list}>
 				{parameters.map((param) => (
@@ -31,6 +31,7 @@ const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }
 								options={param.options as ProductParameterOption[]}
 								onSelect={(value) => param.onChange && param.onChange(value)}
 								size='l'
+								variant='product'
 								bordered
 							/>
 						) : (
@@ -38,6 +39,7 @@ const ProductParameters: FC<ProductParametersProps> = ({ parameters, className }
 								label={param.label}
 								value={param.value}
 								options={param.options as ProductParameterOption[]}
+								columns={param.columns || 1}
 								onChange={(value) => param.onChange && param.onChange(value)}
 							/>
 						)}

@@ -1,3 +1,37 @@
+.breadcrumbsBar {
+	width: 100%;
+	height: 48px;
+	background-color: #F5F8FB;
+	display: flex;
+	align-items: center;
+
+	@media (max-width: 768px) {
+		height: auto;
+		min-height: 44px;
+		padding: 8px 0;
+	}
+}
+
+.inner {
+	max-width: 1920px;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+
+	@media (max-width: 968px) {
+		padding: 0 24px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 0 16px;
+	}
+}
+
 .breadcrumbs {
 	display: flex;
 	align-items: center;
@@ -17,7 +51,7 @@
 
 .link {
 	text-decoration: none;
-	color: inherit;
+	color: #000000;
 	transition: opacity 0.2s ease;
 
 	&:hover {
@@ -25,6 +59,42 @@
 	}
 }
 
+.inactive {
+	opacity: 0.4;
+	color: #000000;
+}
+
+.active {
+	opacity: 1;
+	color: #000000;
+}
+
 .separator {
 	opacity: 0.4;
+	color: #000000;
 }
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.actionBtn {
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	background: none;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: opacity 0.2s ease;
+
+	&:hover {
+		opacity: 0.7;
+	}
+}
+

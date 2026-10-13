@@ -16,8 +16,6 @@ interface FAQProps {
 }
 
 const FAQ: FC<FAQProps> = ({ items = [], className }) => {
-    const [openItems, setOpenItems] = useState<string[]>(['1']) // Default first item open as in screenshot
-
     const defaultItems: FAQItem[] = [
         {
             id: '1',
@@ -52,6 +50,7 @@ const FAQ: FC<FAQProps> = ({ items = [], className }) => {
     ]
 
     const displayItems = items.length > 0 ? items : defaultItems
+    const [openItems, setOpenItems] = useState<string[]>([displayItems[0]?.id || '1'])
 
     const toggleItem = (id: string) => {
         setOpenItems(prev =>
@@ -97,9 +96,10 @@ const FAQ: FC<FAQProps> = ({ items = [], className }) => {
                                         </button>
                                         <div className={styles.accordionContent}>
                                             <div className={styles.contentInner}>
-                                                <Typography tag='p' size='s' weight='regular' className={styles.answer}>
-                                                    {item.answer}
-                                                </Typography>
+                                                <div
+                                                    className={styles.answer}
+                                                    dangerouslySetInnerHTML={{ __html: item.answer || '' }}
+                                                />
                                             </div>
                                         </div>
                                     </div>

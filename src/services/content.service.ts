@@ -53,21 +53,38 @@ export async function readContentAsJsonByFilter(
       }
     }
 
-    // Automatically resolve missing filemanager objects for attachments / images
-    const GUID_REGEX = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+    // Automatically resolve missing filemanager objects for attachments / images (including inside JSON repeatable fields)
+    const GUID_EXACT_REGEX = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+    const GUID_GLOBAL_REGEX = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g
     const unresolvedFileIds = new Set<string>()
     contentItems.forEach((item) => {
       item.contentMetas?.forEach((meta: any) => {
         const val = meta.value
-        if (val && typeof val === 'string' && GUID_REGEX.test(val.trim())) {
-          if (!meta.filemanager) {
-            unresolvedFileIds.add(val.trim())
+        if (val && typeof val === 'string') {
+          const trimmed = val.trim()
+          if (GUID_EXACT_REGEX.test(trimmed)) {
+            if (!meta.filemanager) {
+              unresolvedFileIds.add(trimmed)
+            }
+          } else if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+            const matches = trimmed.match(GUID_GLOBAL_REGEX)
+            if (matches) {
+              matches.forEach((guid) => unresolvedFileIds.add(guid))
+            }
           }
         }
         const valAr = meta.valueAr
-        if (valAr && typeof valAr === 'string' && GUID_REGEX.test(valAr.trim())) {
-          if (!meta.filemanagerAr) {
-            unresolvedFileIds.add(valAr.trim())
+        if (valAr && typeof valAr === 'string') {
+          const trimmedAr = valAr.trim()
+          if (GUID_EXACT_REGEX.test(trimmedAr)) {
+            if (!meta.filemanagerAr) {
+              unresolvedFileIds.add(trimmedAr)
+            }
+          } else if (trimmedAr.startsWith('[') || trimmedAr.startsWith('{')) {
+            const matchesAr = trimmedAr.match(GUID_GLOBAL_REGEX)
+            if (matchesAr) {
+              matchesAr.forEach((guid) => unresolvedFileIds.add(guid))
+            }
           }
         }
       })
@@ -90,16 +107,35 @@ export async function readContentAsJsonByFilter(
         const files = fileResult?.data || []
         const fileMap: Record<string, any> = {}
         files.forEach((f: any) => {
-          fileMap[f.id] = f
+          if (f?.id) {
+            fileMap[String(f.id).toLowerCase()] = f
+            fileMap[String(f.id)] = f
+          }
         })
 
         contentItems.forEach((item) => {
           item.contentMetas?.forEach((meta: any) => {
-            if (meta.value && fileMap[meta.value.trim()]) {
-              meta.filemanager = fileMap[meta.value.trim()]
+            if (meta.value && typeof meta.value === 'string') {
+              const trimmed = meta.value.trim()
+              if (fileMap[trimmed] || fileMap[trimmed.toLowerCase()]) {
+                meta.filemanager = fileMap[trimmed] || fileMap[trimmed.toLowerCase()]
+              } else if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                meta.value = meta.value.replace(GUID_GLOBAL_REGEX, (match: string) => {
+                  const found = fileMap[match] || fileMap[match.toLowerCase()]
+                  return found?.url || match
+                })
+              }
             }
-            if (meta.valueAr && fileMap[meta.valueAr.trim()]) {
-              meta.filemanagerAr = fileMap[meta.valueAr.trim()]
+            if (meta.valueAr && typeof meta.valueAr === 'string') {
+              const trimmedAr = meta.valueAr.trim()
+              if (fileMap[trimmedAr] || fileMap[trimmedAr.toLowerCase()]) {
+                meta.filemanagerAr = fileMap[trimmedAr] || fileMap[trimmedAr.toLowerCase()]
+              } else if (trimmedAr.startsWith('[') || trimmedAr.startsWith('{')) {
+                meta.valueAr = meta.valueAr.replace(GUID_GLOBAL_REGEX, (match: string) => {
+                  const found = fileMap[match] || fileMap[match.toLowerCase()]
+                  return found?.url || match
+                })
+              }
             }
           })
         })

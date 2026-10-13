@@ -12,6 +12,7 @@ interface ProductParameterRadioProps {
 	label: string
 	value: string | number
 	options: ProductParameterOption[]
+	columns?: 1 | 2
 	onChange: (value: string | number) => void
 	className?: string
 }
@@ -20,6 +21,7 @@ const ProductParameterRadio: FC<ProductParameterRadioProps> = ({
 	label,
 	value,
 	options,
+	columns = 1,
 	onChange,
 	className
 }) => {
@@ -28,18 +30,16 @@ const ProductParameterRadio: FC<ProductParameterRadioProps> = ({
 			<Typography tag='p' size='m' weight='semi-bold' className={styles.label}>
 				{label}
 			</Typography>
-			<div className={styles.options}>
+			<div className={clsx(styles.options, columns === 2 && styles.twoColumns)}>
 				{options.map((option) => {
 					const isSelected = option.value === value
-					const isNotIncluded = option.text.toLowerCase().includes('not included')
 
 					return (
 						<label
 							key={option.value}
 							className={clsx(
 								styles.option,
-								isSelected && styles.selected,
-								isSelected && isNotIncluded && styles.notIncluded
+								isSelected && styles.selected
 							)}
 						>
 							<input

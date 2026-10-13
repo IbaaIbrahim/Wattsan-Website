@@ -71,11 +71,13 @@
 
 .comparisonGrid {
     display: flex;
+    flex-wrap: nowrap;
     gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
     padding-bottom: 24px;
     scroll-snap-type: x mandatory;
+    width: 100%;
     /* Enable snapping */
 
     /* Hide scrollbar */
@@ -84,14 +86,6 @@
 
     &::-webkit-scrollbar {
         display: none;
-    }
-
-    // Desktop: Use grid for strict spacing and full width
-    @media (min-width: 1200px) {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        overflow: visible;
-        width: 100%;
     }
 }
 
@@ -111,11 +105,10 @@
         // Styles removed to match screenshot where all cards look similar
     }
 
-    // Desktop: Let grid handle sizing
+    // Desktop: 4 cards per row width while remaining horizontally scrollable
     @media (min-width: 1200px) {
-        flex: unset;
-        width: auto;
-        max-width: none;
+        flex: 0 0 calc((100% - 60px) / 4);
+        min-width: 300px;
     }
 
     transition: all 0.3s ease;

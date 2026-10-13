@@ -215,8 +215,6 @@ export class ContentJson extends Content {
   }
 
   toPowerOfMachine(): {
-    title?: string
-    subtitle?: string
     image?: string
     features?: ProductFeature[]
   } | null {
@@ -239,8 +237,6 @@ export class ContentJson extends Content {
     }
 
     return {
-      title: meta.title || this.title || undefined,
-      subtitle: meta.subtitle || undefined,
       image: meta.image || undefined,
       features: featuresList
     }
@@ -263,6 +259,46 @@ export class ContentJson extends Content {
     return null
   }
 
+  toHeartOfMachineryTab(): {
+    id: string
+    label: string
+    title: string
+    description: string
+    details: { label: string; value: string }[]
+    image: string
+  } | null {
+    if (!this.contentMetasJson) return null
+    const meta = this.contentMetasJson
+    if (!meta.tab_label && !meta.title && !meta.description && !meta.image) {
+      return null
+    }
+
+    let detailsList: { label: string; value: string }[] = []
+    if (meta.details) {
+      try {
+        const parsed = typeof meta.details === 'string' ? JSON.parse(meta.details) : meta.details
+        if (Array.isArray(parsed)) {
+          detailsList = parsed.map((d: any) => ({
+            label: d.label || '',
+            value: d.value || ''
+          }))
+        }
+      } catch {
+        detailsList = []
+      }
+    }
+
+    const tabId = `tab-${this.id}`
+    return {
+      id: tabId,
+      label: meta.tab_label || meta.title || this.title || 'Component',
+      title: meta.title || meta.tab_label || this.title || '',
+      description: meta.description || '',
+      details: detailsList,
+      image: meta.image || ''
+    }
+  }
+
   toHeartOfTheMachinery(): {
     spindleTitle?: string
     spindleDescription?: string
@@ -276,6 +312,14 @@ export class ContentJson extends Content {
   } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
+    if (
+      !meta.spindle_title &&
+      !meta.spindle_description &&
+      !meta.worktable_title &&
+      !meta.control_system_title
+    ) {
+      return null
+    }
     return {
       spindleTitle: meta.spindle_title || undefined,
       spindleDescription: meta.spindle_description || undefined,
@@ -286,6 +330,44 @@ export class ContentJson extends Content {
       controlSystemTitle: meta.control_system_title || undefined,
       controlSystemDescription: meta.control_system_description || undefined,
       controlSystemImage: meta.control_system_image || undefined
+    }
+  }
+
+  toMaterialsProcessing(): {
+    images: string[]
+    materials: { id: string; name: string; action: string; icon: string }[]
+  } | null {
+    if (!this.contentMetasJson) return null
+    const meta = this.contentMetasJson
+    const images = [
+      meta.image_1,
+      meta.image_2,
+      meta.image_3,
+      meta.image_4,
+      meta.image_5
+    ].filter((img): img is string => Boolean(img && String(img).trim()))
+
+    let materialsList: { id: string; name: string; action: string; icon: string }[] = []
+    if (meta.materials) {
+      try {
+        const parsed = typeof meta.materials === 'string' ? JSON.parse(meta.materials) : meta.materials
+        if (Array.isArray(parsed)) {
+          materialsList = parsed.map((m: any, idx: number) => ({
+            id: m.id || `mat-${idx + 1}`,
+            name: m.name || '',
+            action: m.action || '',
+            icon: formatMediaUrl(m.icon) || ''
+          }))
+        }
+      } catch {
+        materialsList = []
+      }
+    }
+
+    if (images.length === 0 && materialsList.length === 0) return null
+    return {
+      images,
+      materials: materialsList
     }
   }
 
@@ -332,7 +414,7 @@ export class ContentJson extends Content {
     let featuresList: string[] = []
     try {
       const parsed = typeof meta.features === 'string' ? JSON.parse(meta.features) : (meta.features || [])
-      featuresList = parsed.map((item: any) => (typeof item === 'string' ? item : item.text || item.title || ''))
+      featuresList = parsed.map((item: any) => (typeof item === 'string' ? item : item.text || item.feature || item.title || ''))
     } catch {
       featuresList = []
     }
@@ -349,11 +431,31 @@ export class ContentJson extends Content {
   toMultiSpindles(): { title?: string; subtitle?: string; description1?: string; description2?: string; specs?: any[]; image?: string } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
-    let specsList: any[] = []
-    try {
-      specsList = typeof meta.specs === 'string' ? JSON.parse(meta.specs) : (meta.specs || [])
-    } catch {
-      specsList = []
+    const extraSpecs = [
+      meta.extra_title1 || meta.extra_details1
+        ? { title: meta.extra_title1 || '', description: meta.extra_details1 || '' }
+        : null,
+      meta.extra_title2 || meta.extra_details2
+        ? { title: meta.extra_title2 || '', description: meta.extra_details2 || '' }
+        : null,
+      meta.extra_title3 || meta.extra_details3
+        ? { title: meta.extra_title3 || '', description: meta.extra_details3 || '' }
+        : null
+    ].filter(Boolean)
+
+    let specsList: any[] = extraSpecs
+    if (specsList.length === 0 && meta.specs) {
+      try {
+        const parsed = typeof meta.specs === 'string' ? JSON.parse(meta.specs) : (meta.specs || [])
+        if (Array.isArray(parsed)) {
+          specsList = parsed.map((s: any) => ({
+            title: s.title || s.label || '',
+            description: s.description || s.value || ''
+          }))
+        }
+      } catch {
+        specsList = []
+      }
     }
 
     return {
@@ -371,7 +473,20 @@ export class ContentJson extends Content {
     const meta = this.contentMetasJson
     let variantsList: ToolSwitchVariant[] = []
     try {
-      variantsList = typeof meta.variants === 'string' ? JSON.parse(meta.variants) : (meta.variants || [])
+      const parsed = typeof meta.variants === 'string' ? JSON.parse(meta.variants) : (meta.variants || [])
+      if (Array.isArray(parsed)) {
+        variantsList = parsed.map((v: any, idx: number) => ({
+          id: v.id || String(idx + 1),
+          title: v.title || '',
+          description: v.description || '',
+          thumbnail: formatMediaUrl(v.thumbnail) || '',
+          footerLabel: v.warning || v.footerLabel || '',
+          warning: v.warning || undefined,
+          video: formatMediaUrl(v.video || v.videoUrl) || undefined,
+          videoUrl: formatMediaUrl(v.video || v.videoUrl) || undefined,
+          isWarning: Boolean(v.warning || v.isWarning)
+        }))
+      }
     } catch {
       variantsList = []
     }
@@ -392,7 +507,15 @@ export class ContentJson extends Content {
     const meta = this.contentMetasJson
     let typesList: LiquidCoolingType[] = []
     try {
-      typesList = typeof meta.types === 'string' ? JSON.parse(meta.types) : (meta.types || [])
+      const parsed = typeof meta.types === 'string' ? JSON.parse(meta.types) : (meta.types || [])
+      if (Array.isArray(parsed)) {
+        typesList = parsed.map((t: any) => ({
+          title: t.title || '',
+          description: t.description || '',
+          videoUrl: formatMediaUrl(t.videoUrl || t.video) || undefined,
+          media: formatMediaUrl(t.videoUrl || t.video || t.media) || undefined
+        }))
+      }
     } catch {
       typesList = []
     }
@@ -405,13 +528,14 @@ export class ContentJson extends Content {
     }
   }
 
-  toAspiration(): { title?: string; subtitle?: string; description?: string } | null {
+  toAspiration(): { title?: string; subtitle?: string; description?: string; videoUrl?: string } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
     return {
       title: meta.title || this.title || undefined,
       subtitle: meta.subtitle || undefined,
-      description: meta.description || undefined
+      description: meta.description || undefined,
+      videoUrl: meta.videoUrl || undefined
     }
   }
 
@@ -430,14 +554,27 @@ export class ContentJson extends Content {
     }
   }
 
+  toMadeWithWattsanSlide(): { id: string; image: string; author?: string; tag?: string } | null {
+    if (!this.contentMetasJson) return null
+    const meta = this.contentMetasJson
+    if (!meta.image && !meta.author && !meta.tag) return null
+    return {
+      id: String(this.id),
+      image: meta.image || '/product-cards/cnc-router/image 11680.png',
+      author: meta.author || '',
+      tag: meta.tag || ''
+    }
+  }
+
   toProductionStep(): ProductionProcessStep | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
     return {
       id: String(this.id),
+      step_number: meta.step_number !== undefined && meta.step_number !== null ? String(meta.step_number) : '',
       title: meta.title || this.title || '',
       description: meta.description || '',
-      image: meta.image || ''
+      image: meta.image || '/product-cards/cnc-router/production-process/image 10.png'
     }
   }
 
@@ -455,7 +592,7 @@ export class ContentJson extends Content {
       image: meta.image || '',
       cards: cardsList.map((card: any, idx: number) => ({
         id: card.id || String(idx + 1),
-        logo: card.logo || undefined,
+        logo: formatMediaUrl(card.logo) || undefined,
         icon: card.icon || undefined,
         title: card.title || '',
         description: parseRichText(card.content || card.description || '')
@@ -470,6 +607,63 @@ export class ContentJson extends Content {
       id: String(this.id),
       image: meta.image || '/img/catalog/cnc-routes.png',
       label: meta.label || this.title || ''
+    }
+  }
+
+  toAdditionalContentItem(): {
+    id: string
+    type: 'video' | 'pdf' | 'image'
+    title: string
+    subtitle: string
+    link: string
+  } | null {
+    if (!this.contentMetasJson) return null
+    const meta = this.contentMetasJson
+    const rawType = String(meta.type || '').trim().toLowerCase()
+    const attachmentUrl = String(meta.attachment || '').trim()
+    const linkUrl = String(meta.link || '').trim()
+
+    const isVideoExt = (url: string) => /\.(mp4|webm|ogg|mov|m4v|avi|mkv)(\?.*)?$/i.test(url)
+    const isImageExt = (url: string) => /\.(jpg|jpeg|png|webp|gif|svg|bmp|avif)(\?.*)?$/i.test(url)
+    const isDocExt = (url: string) => /\.(pdf|doc|docx|xls|xlsx|txt|zip|rar)(\?.*)?$/i.test(url)
+
+    let resolvedType: 'video' | 'pdf' | 'image' | null = null
+    let resolvedLink = ''
+
+    if (rawType === 'video') {
+      if (!attachmentUrl || !isVideoExt(attachmentUrl)) return null
+      resolvedType = 'video'
+      resolvedLink = attachmentUrl
+    } else if (rawType === 'image') {
+      if (!attachmentUrl || !isImageExt(attachmentUrl)) return null
+      resolvedType = 'image'
+      resolvedLink = attachmentUrl
+    } else if (rawType === 'pdf') {
+      if (!attachmentUrl || !isDocExt(attachmentUrl)) return null
+      resolvedType = 'pdf'
+      resolvedLink = attachmentUrl
+    } else if (rawType === 'external_video') {
+      if (!linkUrl) return null
+      resolvedType = 'video'
+      resolvedLink = linkUrl
+    } else if (rawType === 'external_image') {
+      if (!linkUrl) return null
+      resolvedType = 'image'
+      resolvedLink = linkUrl
+    } else if (rawType === 'external_pdf') {
+      if (!linkUrl) return null
+      resolvedType = 'pdf'
+      resolvedLink = linkUrl
+    } else {
+      return null
+    }
+
+    return {
+      id: String(this.id),
+      type: resolvedType,
+      title: meta.title || this.title || '',
+      subtitle: meta.subtitle || '',
+      link: resolvedLink
     }
   }
 

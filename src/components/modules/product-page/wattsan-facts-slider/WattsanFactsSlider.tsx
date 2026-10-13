@@ -45,7 +45,7 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, titleHighlight
 					<div className={styles.gradientOverlay} />
 				</div>
 			)}
-			{card.id === 'reputation' && card.type === 'solid' && (
+			{(card.id === 'reputation' || card.subtitle?.toLowerCase().includes('reputation')) && card.type === 'solid' && (
 				<div className={styles.worldMap}>
 					<svg
 						width="464"

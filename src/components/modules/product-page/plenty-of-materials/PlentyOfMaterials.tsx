@@ -62,7 +62,7 @@ const PlentyOfMaterials: React.FC<PlentyOfMaterialsProps> = ({ data }) => {
                             >
                                 <div className={styles.materialIcon}>
                                     <Image
-                                        src={material.icon || data.images[0]}
+                                        src={!material.icon || material.icon.startsWith('/image ') ? data.images[0] : material.icon}
                                         alt={material.name}
                                         fill
                                         style={{ objectFit: 'cover' }}

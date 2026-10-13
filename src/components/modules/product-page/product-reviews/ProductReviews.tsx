@@ -111,9 +111,10 @@ const ProductReviews: FC<ProductReviewsProps> = ({ reviews = [], className }) =>
 							/>
 						</div>
 						<div className={styles.reviewContent}>
-							<p className={styles.quote}>
-								{review.quote}
-							</p>
+							<div
+								className={styles.quote}
+								dangerouslySetInnerHTML={{ __html: review.quote || '' }}
+							/>
 							<div className={styles.author}>
 								<div className={styles.avatar}>
 									<Image

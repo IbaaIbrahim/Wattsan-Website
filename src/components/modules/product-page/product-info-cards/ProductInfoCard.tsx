@@ -10,6 +10,7 @@ import styles from './ProductInfoCard.module.scss'
 export interface MaterialColor {
 	color: string
 	name?: string
+	image?: string
 }
 
 interface ProductInfoCardProps {
@@ -31,56 +32,52 @@ const ProductInfoCard: FC<ProductInfoCardProps> = ({
 }) => {
 	return (
 		<div className={clsx(styles.card, className)}>
-			<Typography tag='p' size='s' weight='regular' className={styles.title}>
-				{title}
-			</Typography>
-
-			{content !== undefined && (
-				<Typography tag='p' size='l' weight='semi-bold' className={styles.content}>
-					{typeof content === 'number' ? content.toString() : content}
+			<div className={styles.topContent}>
+				<Typography tag='p' size='s' weight='regular' className={styles.title}>
+					{title}
 				</Typography>
-			)}
 
-			{materials.length > 0 && (
-				<div className={styles.materials}>
+				{content !== undefined && (
+					<Typography tag='p' size='xl' weight='semi-bold' className={styles.content}>
+						{typeof content === 'number' ? content.toString() : content}
+					</Typography>
+				)}
+
+				{materials.length > 0 && (
 					<div className={styles.materialsList}>
 						{materials.map((material, index) => (
 							<div
 								key={index}
 								className={styles.materialCircle}
-								style={{ backgroundColor: material.color }}
+								style={{
+									backgroundColor: material.color,
+									backgroundImage: material.image ? `url(${material.image})` : undefined
+								}}
 								title={material.name}
 							/>
 						))}
 					</div>
-					{(viewAllLink || onViewAllClick) && (
-						viewAllLink ? (
-							<Link href={viewAllLink} className={styles.viewAllLink}>
-								<Typography tag='p' size='s' weight='regular'>
-									View all
-								</Typography>
-							</Link>
-						) : (
-							<button
-								className={styles.viewAllLink}
-								onClick={onViewAllClick}
-								type='button'
-							>
-								<Typography tag='p' size='s' weight='regular'>
-									View all
-								</Typography>
-							</button>
-						)
-					)}
-				</div>
-			)}
+				)}
+			</div>
 
-			{content === undefined && materials.length === 0 && viewAllLink && (
-				<Link href={viewAllLink} className={styles.viewAllLink}>
-					<Typography tag='p' size='s' weight='regular'>
-						View all
-					</Typography>
-				</Link>
+			{(viewAllLink || onViewAllClick) && (
+				viewAllLink ? (
+					<Link href={viewAllLink} className={styles.viewAllLink}>
+						<Typography tag='p' size='s' weight='semi-bold'>
+							View all
+						</Typography>
+					</Link>
+				) : (
+					<button
+						className={styles.viewAllLink}
+						onClick={onViewAllClick}
+						type='button'
+					>
+						<Typography tag='p' size='s' weight='semi-bold'>
+							View all
+						</Typography>
+					</button>
+				)
 			)}
 		</div>
 	)

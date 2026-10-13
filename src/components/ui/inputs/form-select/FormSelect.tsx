@@ -11,6 +11,7 @@ import styles from './FormSelect.module.scss'
 const FormSelect: FC<{
 	className?: string
 	size?: 'l' | 'm'
+	variant?: 'default' | 'product'
 	bordered?: boolean
 	name?: string
 	value: any
@@ -22,6 +23,7 @@ const FormSelect: FC<{
 }> = ({
 	className,
 	size = 'l',
+	variant = 'default',
 	bordered = false,
 	name,
 	value,
@@ -105,6 +107,7 @@ const FormSelect: FC<{
 				className={clsx(
 					styles.field,
 					styles[size],
+					variant === 'product' && styles.productVariant,
 					open && styles.opened,
 					bordered && styles.bordered,
 					className && className
@@ -120,6 +123,7 @@ const FormSelect: FC<{
 						placeholder={placeholder}
 						value={mappedValue}
 						onClick={handleFocus}
+						readOnly
 					/>
 					<div className={styles.select}>
 						{!value && !!placeholder ? (
@@ -131,10 +135,16 @@ const FormSelect: FC<{
 						)}
 					</div>
 					<div className={styles.icon}>
-						<Image
-							src={arrowRightIcon}
-							alt=''
-						/>
+						{variant === 'product' ? (
+							<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+								<path d='M6 9L12.5 15.5L19 9' stroke='black' />
+							</svg>
+						) : (
+							<Image
+								src={arrowRightIcon}
+								alt=''
+							/>
+						)}
 					</div>
 				</div>
 			</label>

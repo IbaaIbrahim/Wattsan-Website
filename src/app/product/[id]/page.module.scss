@@ -1,16 +1,16 @@
 .productPage {
 	width: 100%;
 	min-height: 100vh;
-	padding: 40px;
+	padding: 0 0 80px 0;
 	background-color: #ffffff;
 	overflow-x: hidden;
 
 	@media (max-width: 968px) {
-		padding: 24px;
+		padding: 0 0 48px 0;
 	}
 
 	@media (max-width: 768px) {
-		padding: 16px;
+		padding: 0 0 32px 0;
 	}
 }
 
@@ -24,39 +24,41 @@
 }
 
 .container {
-	max-width: 1800px;
+	max-width: 1920px;
 	margin: 0 auto;
+	padding: 40px 40px 0 40px;
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	gap: 32px;
+	gap: 0;
 
 	@media (max-width: 968px) {
-		gap: 24px;
+		padding: 24px 24px 0 24px;
 	}
 
 	@media (max-width: 768px) {
-		gap: 20px;
+		padding: 16px 16px 0 16px;
 	}
 }
 
 .breadcrumbs {
-	margin-bottom: 8px;
+	margin-bottom: 0;
 }
 
 .content {
 	display: grid;
-	grid-template-columns: 1.4fr 1fr 0.8fr;
-	gap: 40px;
+	grid-template-columns: calc(50% - 12px) calc(25% - 18px) calc(25% - 18px);
+	gap: 24px;
 	align-items: start;
 
 	@media (max-width: 1400px) {
-		grid-template-columns: 1.2fr 1fr 0.8fr;
-		gap: 32px;
+		grid-template-columns: 1.2fr 1fr 0.9fr;
+		gap: 24px;
 	}
 
 	@media (max-width: 1200px) {
 		grid-template-columns: 1fr 1fr;
-		gap: 32px;
+		gap: 24px;
 	}
 
 	@media (max-width: 968px) {
@@ -81,6 +83,7 @@
 .centerColumn {
 	display: flex;
 	flex-direction: column;
+	gap: 32px;
 
 	@media (max-width: 1200px) {
 		grid-column: 1;
@@ -105,33 +108,24 @@
 }
 
 .ctaSection {
-	margin-top: 32px;
-	max-width: 600px;
-	margin-left: auto;
-	margin-right: auto;
 	width: 100%;
-
-	@media (max-width: 968px) {
-		max-width: 100%;
-		margin-top: 24px;
-	}
 }
 
 .infoCardsSection {
-	margin-top: 32px;
+	margin-top: 80px;
 	width: 100%;
 
 	@media (max-width: 968px) {
-		margin-top: 24px;
+		margin-top: 48px;
 	}
 
 	@media (max-width: 768px) {
-		margin-top: 20px;
+		margin-top: 32px;
 	}
 }
 
 .factsSliderSection {
-	margin-top: 0;
+	margin-top: 40px;
 	width: auto;
 	margin-left: -40px;
 	margin-right: -40px;

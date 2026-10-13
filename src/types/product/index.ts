@@ -74,7 +74,13 @@ export interface ComparisonSeries {
     tagline: string
     price: string
     active?: boolean
+    firstProductId?: number | string
     specs: ComparisonSpecs
+    dynamicSpecs?: {
+        label: string
+        value: string
+        highlight?: boolean
+    }[]
 }
 
 export interface ToolSwitchVariant {
@@ -83,12 +89,17 @@ export interface ToolSwitchVariant {
     description: string
     thumbnail: string
     footerLabel: string
+    warning?: string
+    video?: string
+    videoUrl?: string
     isWarning?: boolean
 }
 
 export interface LiquidCoolingType {
     title: string
     description: string
+    videoUrl?: string
+    media?: string
 }
 
 export interface TableTypeItem {
@@ -112,12 +123,14 @@ export interface ProductParameterOption {
     value: string | number
     text: string
     price?: string
+    priceValue?: number
 }
 
 export interface ProductParameter {
     id: string
     label: string
     type: 'select' | 'radio'
+    columns?: 1 | 2
     value: string | number
     options: ProductParameterOption[]
     onChange?: (value: string | number) => void
@@ -138,6 +151,7 @@ export interface Review {
 
 export interface ProductionProcessStep {
     id: string
+    step_number?: string
     title: string
     description: string
     image: string
@@ -148,6 +162,7 @@ export interface SupportCard {
     title: string
     description: string
     icon: any // specific type depends on SVG import
+    logo?: string
 }
 
 export interface InterestedProduct {
@@ -172,10 +187,15 @@ export interface MachineTabContent {
     image: string
 }
 
+export interface MachineTab {
+    id: string
+    label: string
+}
+
 export interface HeartOfTheMachineryData {
     title?: string
     subtitle?: string
-    tabs: { id: string; label: string }[]
+    tabs: MachineTab[]
     content: Record<string, MachineTabContent>
 }
 
@@ -248,6 +268,7 @@ export interface AspirationSystemData {
     title: TitlePart[]
     subtitle: string
     descriptions: string[]
+    videoUrl?: string
 }
 
 // Purifier/Welder Comparison Data
@@ -294,6 +315,21 @@ export interface WeldingComparisonData {
     columns: WeldingComparisonColumn[]
 }
 
+export interface MadeWithWattsanSlide {
+    id: string
+    image: string
+    author?: string
+    tag?: string
+}
+
+export interface AdditionalContentItem {
+    id: string
+    type: 'video' | 'pdf' | 'image'
+    title: string
+    subtitle: string
+    link: string
+}
+
 // Aggregated Page Data Interface
 export interface ProductPageData {
     breadcrumbs: BreadcrumbItem[]
@@ -314,10 +350,17 @@ export interface ProductPageData {
     interestedProducts: InterestedProduct[]
     heartOfTheMachinery: HeartOfTheMachineryData
     materialsProcessing: MaterialsProcessingData
+    materialsProcessingData?: MaterialsProcessingData
     twoLaserHeads?: TwoLaserHeadsData
     laserTypesData?: LaserTypesData
     mopaComparisonData?: MopaComparisonData
     aspirationSystem?: AspirationSystemData
+    aspirationData?: {
+        title?: string
+        subtitle?: string
+        description?: string
+        videoUrl?: string
+    }
     purifierWelderComparisonData?: PurifierWelderComparisonData
     stitchesComparisonData?: StitchesComparisonData
     weldingComparisonData?: WeldingComparisonData
@@ -339,10 +382,13 @@ export interface ProductPageData {
         delivery: string
         deliveryMethods: string[]
         deliveryNote: string
+        warranty?: string
     }
     madeWithWattsan: {
         image: string
+        slides?: MadeWithWattsanSlide[]
     }
+    additionalContent?: AdditionalContentItem[]
     serviceAndSupport: {
         image: string
         cards: SupportCard[]

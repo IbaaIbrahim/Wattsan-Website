@@ -10,6 +10,7 @@ interface AspirationSystemProps {
     title: ReactNode
     subtitle: string
     description: ReactNode
+    videoUrl?: string
     className?: string
 }
 
@@ -17,6 +18,7 @@ const AspirationSystem: FC<AspirationSystemProps> = ({
     title,
     subtitle,
     description,
+    videoUrl,
     className
 }) => {
     return (
@@ -30,16 +32,28 @@ const AspirationSystem: FC<AspirationSystemProps> = ({
                         {subtitle}
                     </Typography>
                     <div className={styles.description}>
-                        {description}
+                        {typeof description === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description }} />
+                        ) : (
+                            description
+                        )}
                     </div>
                 </div>
 
                 <div className={styles.mediaWrapper}>
-                    <div className={styles.playIcon}>
-                        <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M43.0417 30.5L22.9167 43.1026L22.9167 17.8974L43.0417 30.5Z" fill="#D1D1D1" />
-                        </svg>
-                    </div>
+                    {videoUrl ? (
+                        <video
+                            src={videoUrl}
+                            controls
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    ) : (
+                        <div className={styles.playIcon}>
+                            <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M43.0417 30.5L22.9167 43.1026L22.9167 17.8974L43.0417 30.5Z" fill="#D1D1D1" />
+                            </svg>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
@@ -47,3 +61,4 @@ const AspirationSystem: FC<AspirationSystemProps> = ({
 }
 
 export default AspirationSystem
+

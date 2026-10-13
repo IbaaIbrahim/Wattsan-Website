@@ -147,3 +147,52 @@
         background-color: #DEEBFA;
     }
 }
+
+.productVariant {
+    display: block;
+
+    .label {
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 21px;
+        color: #000000;
+        opacity: 1;
+    }
+
+    &.bordered .wrapper,
+    .wrapper {
+        height: 48px;
+        border: 1px solid #CACACA;
+        border-radius: 8px;
+    }
+
+    .select {
+        padding: 0 52px 0 20px;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 21px;
+        color: #000000;
+    }
+
+    .value {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 21px;
+        color: #000000;
+    }
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        right: 20px;
+        top: 50%;
+        margin-top: -12px;
+        transform: rotate(0deg);
+    }
+
+    &.opened .icon {
+        transform: rotate(180deg);
+    }
+}
+

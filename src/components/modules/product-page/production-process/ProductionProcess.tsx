@@ -53,12 +53,13 @@ const ProductionProcess: FC<ProductionProcessProps> = ({ className, steps }) => 
                 {steps.map((step) => (
                     <div key={step.id} className={styles.card}>
                         <div className={styles.cardHeader}>
-                            <div className={styles.stepNumber}>{step.id}</div>
+                            <div className={styles.stepNumber}>{step.step_number || step.id}</div>
                             <h3 className={styles.stepTitle}>{step.title}</h3>
                         </div>
-                        <p className={styles.stepDescription}>
-                            {step.description}
-                        </p>
+                        <div
+                            className={styles.stepDescription}
+                            dangerouslySetInnerHTML={{ __html: step.description || '' }}
+                        />
                         <div className={styles.imageContainer}>
                             <Image
                                 src={step.image}

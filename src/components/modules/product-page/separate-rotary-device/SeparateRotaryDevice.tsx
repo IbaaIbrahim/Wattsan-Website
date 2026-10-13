@@ -33,7 +33,11 @@ const SeparateRotaryDevice: FC<SeparateRotaryDeviceProps> = ({
                     </Typography>
 
                     <div className={styles.description}>
-                        {description}
+                        {typeof description === 'string' ? (
+                            <div dangerouslySetInnerHTML={{ __html: description }} />
+                        ) : (
+                            description
+                        )}
                     </div>
 
                     {featuresTitle && (
@@ -45,9 +49,16 @@ const SeparateRotaryDevice: FC<SeparateRotaryDeviceProps> = ({
                     <div className={styles.features}>
                         {features.map((feature, index) => (
                             <div key={index} className={styles.featureItem}>
-                                <Typography tag='p' size='s' weight='regular' className={styles.featureText}>
-                                    {feature}
-                                </Typography>
+                                {typeof feature === 'string' ? (
+                                    <div
+                                        className={styles.featureText}
+                                        dangerouslySetInnerHTML={{ __html: feature }}
+                                    />
+                                ) : (
+                                    <Typography tag='p' size='s' weight='regular' className={styles.featureText}>
+                                        {feature}
+                                    </Typography>
+                                )}
                             </div>
                         ))}
                     </div>
