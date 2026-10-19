@@ -8,7 +8,7 @@ import Link from 'next/link'
 import styles from './ProductInfoCard.module.scss'
 
 export interface MaterialColor {
-	color: string
+	color?: string
 	name?: string
 	image?: string
 }

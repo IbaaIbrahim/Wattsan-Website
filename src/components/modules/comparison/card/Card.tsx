@@ -5,6 +5,7 @@ import compareIcon from '@public/img/icons/compare-icon.svg'
 import favoritesIcon from '@public/img/icons/favorites.svg'
 import { TComparisonItem } from '@/types/comparison'
 import { useFavoritesStore } from '@store/favoritesStore'
+import { formatMediaUrl } from '@/utils/helpers'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -72,7 +73,7 @@ const Card: FC<CardProps> = ({
 						{itemLink ? (
 							<Link href={itemLink} className={styles.imageLink}>
 								<Image
-									src={item.image || '/img/catalog/cnc-routes.png'}
+									src={formatMediaUrl(item.image) || '/img/catalog/cnc-routes.png'}
 									alt={item.name || 'Equipment'}
 									fill={true}
 									sizes='(max-width: 768px) 100vw, 280px'
@@ -80,7 +81,7 @@ const Card: FC<CardProps> = ({
 							</Link>
 						) : (
 							<Image
-								src={item.image || '/img/catalog/cnc-routes.png'}
+								src={formatMediaUrl(item.image) || '/img/catalog/cnc-routes.png'}
 								alt={item.name || 'Equipment'}
 								fill={true}
 								sizes='(max-width: 768px) 100vw, 280px'

@@ -636,23 +636,25 @@ export default function ComparisonPage() {
 			</div>
 
 			{isCategoryEmpty ? (
-				<div className={styles.emptyContainer}>
-					<BlankContent
-						image={emptyComparisonImage}
-						title={
-							<>
-								Comparison list is empty <br /> at the moment
-							</>
-						}
-						description={
-							<>
-								Visit the Home page and explore our catalog to <br /> select
-								items and add them to comparison.
-							</>
-						}
-						action='Go to the Home page'
-						onClick={() => router.push('/')}
-					/>
+				<>
+					<div className={styles.emptyContainer}>
+						<BlankContent
+							image={emptyComparisonImage}
+							title={
+								<>
+									Comparison list is empty <br /> at the moment
+								</>
+							}
+							description={
+								<>
+									Visit the Home page and explore our catalog to <br /> select
+									items and add them to comparison.
+								</>
+							}
+							action='Go to the Home page'
+							onClick={() => router.push('/')}
+						/>
+					</div>
 
 					{popularRecommendations.length > 0 && (
 						<div className={styles.popular}>
@@ -671,7 +673,7 @@ export default function ComparisonPage() {
 							</div>
 						</div>
 					)}
-				</div>
+				</>
 			) : (
 				<>
 					<div className={styles.cards}>

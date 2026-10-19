@@ -8,6 +8,7 @@ import {
 import { authStore } from '@store/auth'
 import { authorizedRequest } from '@/utils/request'
 import { getAllProducts, getSeries, getSellableCharacteristics, getFullCharacteristics, getClientConfigurations } from '@/api/product'
+import { formatMediaUrl } from '@/utils/helpers'
 
 export interface TFavoriteItem {
 	id: string | number
@@ -133,10 +134,12 @@ export const useFavoritesStore = create<TFavoritesStore>()(
 									.reduce((sum: number, pc: any) => sum + Number(pc.price), 0)
 
 								const finalPrice = basePrice + charsSum
-								const imgUrl = prod?.attachments?.[0]?.fileManager?.url ||
+								const rawImg = prod?.attachments?.[0]?.fileManager?.url ||
+									prod?.attachments?.[0]?.fileManager?.thumbnail ||
 									fav.referenceObject?.attachments?.[0]?.fileManager?.url ||
 									fav.referenceObject?.fileManger?.url ||
 									'/img/catalog/cnc-routes.png'
+								const imgUrl = formatMediaUrl(rawImg) || '/img/catalog/cnc-routes.png'
 
 								enrichedFavorites.push({
 									id: `fav-${fav.id}`,
@@ -157,10 +160,12 @@ export const useFavoritesStore = create<TFavoritesStore>()(
 										? Number(fav.referenceObject.price)
 										: 1000)
 
-								const charImg = charObj?.fileManager?.url ||
+								const rawCharImg = charObj?.fileManager?.url ||
+									charObj?.fileManager?.thumbnail ||
 									charObj?.fileManger?.url ||
 									fav.referenceObject?.fileManger?.url ||
 									'/img/catalog/cnc-routes.png'
+								const charImg = formatMediaUrl(rawCharImg) || '/img/catalog/cnc-routes.png'
 
 								enrichedFavorites.push({
 									id: `fav-${fav.id}`,
@@ -183,7 +188,8 @@ export const useFavoritesStore = create<TFavoritesStore>()(
 								const configPrice = (configObj?.price && Number(configObj.price) > 0)
 									? Number(configObj.price)
 									: (Number(fav.referenceObject?.price) > 0 ? Number(fav.referenceObject.price) : 5000)
-								const configImg = configObj?.fileManger?.url || configObj?.fileManger?.thumbnail || fav.referenceObject?.fileManger?.url || '/img/catalog/cnc-routes.png'
+								const rawConfigImg = configObj?.fileManger?.url || configObj?.fileManger?.thumbnail || fav.referenceObject?.fileManger?.url || '/img/catalog/cnc-routes.png'
+								const configImg = formatMediaUrl(rawConfigImg) || '/img/catalog/cnc-routes.png'
 
 								enrichedFavorites.push({
 									id: `fav-${fav.id}`,
@@ -225,8 +231,13 @@ export const useFavoritesStore = create<TFavoritesStore>()(
 						(i.itemtype ?? 2) === (item.itemtype ?? 2)
 				)
 
+				const sanitizedItem: TFavoriteItem = {
+					...item,
+					image: formatMediaUrl(item.image) || '/img/catalog/cnc-routes.png'
+				}
+
 				set({
-					items: exists ? currentItems : [item, ...currentItems],
+					items: exists ? currentItems : [sanitizedItem, ...currentItems],
 					deletedKeys: updatedDeletedKeys
 				})
 
@@ -342,7 +353,15 @@ export const useFavoritesStore = create<TFavoritesStore>()(
 		}),
 		{
 			name: 'wattsan_favorites',
-			storage: createJSONStorage(() => localStorage)
+			storage: createJSONStorage(() => localStorage),
+			onRehydrateStorage: () => (state) => {
+				if (state && Array.isArray(state.items)) {
+					state.items = state.items.map(i => ({
+						...i,
+						image: formatMediaUrl(i.image) || '/img/catalog/cnc-routes.png'
+					}))
+				}
+			}
 		}
 	)
 )

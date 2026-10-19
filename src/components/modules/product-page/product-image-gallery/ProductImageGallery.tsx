@@ -34,17 +34,12 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({
 		setSelectedIndex(0)
 	}, [mainImage])
 
-	const allThumbnails = thumbnails.length >= 4
-		? thumbnails.slice(0, 4)
-		: [
-			mainImage,
-			thumbnails[1] || mainImage,
-			thumbnails[2] || mainImage,
-			thumbnails[3] || mainImage
-		]
+	const validThumbnails = (thumbnails && thumbnails.length > 0)
+		? thumbnails
+		: (mainImage ? [mainImage] : [])
 
-	const firstThumb = allThumbnails[0]
-	const remainingThumbs = allThumbnails.slice(1, 4)
+	const firstThumb = validThumbnails[0]
+	const remainingThumbs = validThumbnails.slice(1, 4)
 
 	return (
 		<div className={styles.gallery}>

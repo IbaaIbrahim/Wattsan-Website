@@ -75,6 +75,20 @@
 	gap: 32px;
 	padding: 24px 0;
 	border-bottom: 1px solid #1A1A1A;
+	transition: all 0.2s ease;
+
+	&.activeFeature {
+		padding-left: 8px;
+		.featureTitle h4 {
+			color: #E31E24;
+		}
+	}
+
+	&:hover {
+		.featureTitle h4 {
+			color: #E31E24;
+		}
+	}
 
 	&:last-child {
 		border-bottom: none;

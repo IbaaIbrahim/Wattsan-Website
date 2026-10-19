@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { useFavoritesStore, TFavoriteItem } from '@store/favoritesStore'
 import { useComparisonStore } from '@store/comparisonStore'
+import { formatMediaUrl } from '@/utils/helpers'
 
 import styles from './FavoriteItem.module.scss'
 
@@ -63,13 +64,15 @@ const FavoriteItem: FC<FavoriteItemProps> = ({
 		}
 	}
 
+	const imageSrc = formatMediaUrl(item.image) || '/img/catalog/cnc-routes.png'
+
 	return (
 		<div className={clsx(styles.card, !isAvailable && styles.unavailable)}>
 			<div className={styles.image}>
 				{productLink ? (
 					<Link href={productLink} className={styles.imageLink}>
 						<Image
-							src={item.image || '/img/catalog/cnc-routes.png'}
+							src={imageSrc}
 							fill={true}
 							alt={item.name || 'Product'}
 							sizes='(max-width: 768px) 100vw, 322px'
@@ -77,7 +80,7 @@ const FavoriteItem: FC<FavoriteItemProps> = ({
 					</Link>
 				) : (
 					<Image
-						src={item.image || '/img/catalog/cnc-routes.png'}
+						src={imageSrc}
 						fill={true}
 						alt={item.name || 'Product'}
 						sizes='(max-width: 768px) 100vw, 322px'

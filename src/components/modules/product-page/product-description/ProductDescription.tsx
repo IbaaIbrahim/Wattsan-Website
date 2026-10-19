@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useState } from 'react'
 import Image from 'next/image'
 import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
@@ -42,15 +42,19 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
 	features = [],
 	className
 }) => {
-	const imageSrc = formatMediaUrl(image)
+	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+	const baseImageSrc = formatMediaUrl(image)
+	const activeImage = (selectedIndex !== null && features[selectedIndex]?.image)
+		? formatMediaUrl(features[selectedIndex].image)
+		: baseImageSrc
 
 	return (
 		<div className={clsx(styles.container, className)}>
 			<div className={styles.content}>
-				{imageSrc ? (
+				{activeImage ? (
 					<div className={styles.imageWrapper}>
 						<Image
-							src={imageSrc}
+							src={activeImage}
 							alt="Machine overview"
 							width={650}
 							height={650}
@@ -76,7 +80,13 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
 
 					<div className={styles.features}>
 						{features.map((feature, index) => (
-							<div key={index} className={styles.featureItem}>
+							<div
+								key={index}
+								className={clsx(styles.featureItem, selectedIndex === index && styles.activeFeature)}
+								onMouseEnter={() => feature.image && setSelectedIndex(index)}
+								onClick={() => feature.image && setSelectedIndex(index)}
+								style={{ cursor: feature.image ? 'pointer' : 'default' }}
+							>
 								<div className={styles.featureTitle}>
 									<Typography tag='h4' size='m' weight='bold'>
 										{feature.title}

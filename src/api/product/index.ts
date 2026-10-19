@@ -1631,14 +1631,11 @@ export const getProductPageData = async (seriesIdOrSlug: string | number, locale
 
     try {
         const cmsSections = await loadProductPageDynamicContent(seriesIdOrSlug, locale);
-        if (cmsSections && Object.keys(cmsSections).length > 0) {
-            return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections);
-        }
+        return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections || {});
     } catch (e) {
         console.error('Failed to load CMS content for series/product:', seriesIdOrSlug, e);
+        return mappers.mergeCmsDataIntoProductPageData(baseData, {});
     }
-
-    return baseData;
 };
 
 export const getProductById = async (id: string | number) => {

@@ -42,9 +42,9 @@ const ProductInfo: FC<ProductInfoProps> = ({
 	originalPrice,
 	discount,
 	discountPercent,
-	availability = 'In stock',
-	shipment = '2 days',
-	delivery = 'from 20 days',
+	availability,
+	shipment,
+	delivery,
 	warranty,
 	deliveryMethods = [],
 	activeDeliveryMethod,
@@ -182,30 +182,36 @@ const ProductInfo: FC<ProductInfoProps> = ({
 
 			<div className={styles.infoBottom}>
 				<div className={styles.details}>
-					<div className={styles.detailItem}>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
-							Availability
-						</Typography>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
-							{availability}
-						</Typography>
-					</div>
-					<div className={styles.detailItem}>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
-							Shipment
-						</Typography>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
-							{shipment}
-						</Typography>
-					</div>
-					<div className={styles.detailItem}>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
-							Delivery
-						</Typography>
-						<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
-							{delivery}
-						</Typography>
-					</div>
+					{availability && (
+						<div className={styles.detailItem}>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
+								Availability
+							</Typography>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
+								{availability}
+							</Typography>
+						</div>
+					)}
+					{shipment && (
+						<div className={styles.detailItem}>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
+								Shipment
+							</Typography>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
+								{shipment}
+							</Typography>
+						</div>
+					)}
+					{delivery && (
+						<div className={styles.detailItem}>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>
+								Delivery
+							</Typography>
+							<Typography tag='p' size='m' weight='regular' className={styles.detailValue}>
+								{delivery}
+							</Typography>
+						</div>
+					)}
 					{warranty && (
 						<div className={styles.detailItem}>
 							<Typography tag='p' size='m' weight='regular' className={styles.detailLabel}>

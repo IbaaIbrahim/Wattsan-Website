@@ -63,9 +63,14 @@ export const formatMediaUrl = (url?: string | null): string => {
 	if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
 		return trimmed
 	}
-	if (trimmed.startsWith('Attachments/') || trimmed.startsWith('/Attachments/')) {
+	const lower = trimmed.toLowerCase()
+	if (lower.startsWith('attachments/') || lower.startsWith('/attachments/')) {
 		const cleanPath = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
 		return `https://api.wattsancnc.com/${cleanPath}`
+	}
+	if (lower.startsWith('thumbnails/') || lower.startsWith('/thumbnails/')) {
+		const cleanPath = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
+		return `https://api.wattsancnc.com/Attachments/${cleanPath}`
 	}
 	if (trimmed.startsWith('/')) {
 		return trimmed

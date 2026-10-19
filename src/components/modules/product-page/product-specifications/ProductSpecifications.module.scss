@@ -32,18 +32,13 @@
 
 .tabs {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
 	gap: 12px;
-	min-width: 280px;
+	width: 280px;
 	flex-shrink: 0;
 
 	@media (max-width: 968px) {
-		flex-direction: row;
-		overflow-x: auto;
 		width: 100%;
-		padding-bottom: 8px;
-		min-width: auto;
-		flex-shrink: 1;
 	}
 }
 

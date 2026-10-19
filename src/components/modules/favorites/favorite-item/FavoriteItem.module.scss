@@ -7,6 +7,9 @@
     flex-direction: column;
     justify-content: space-between;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 
     &:hover {
         border-color: #92B0D2;
@@ -109,6 +112,10 @@
     line-height: 21px;
     color: #000000;
     opacity: 0.7;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     @media (max-width: 768px) {
         font-size: 13px;
@@ -124,6 +131,8 @@
     font-weight: 600;
     line-height: 28px;
     color: #000000;
+    min-width: 0;
+    width: 100%;
 
     @media (max-width: 768px) {
         font-size: 17px;
@@ -135,6 +144,9 @@
 .overflowLink {
     text-decoration: none;
     color: inherit;
+    display: block;
+    min-width: 0;
+    width: 100%;
 
     &:hover {
         color: #6C99CC;
@@ -145,6 +157,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
+    width: 100%;
+    display: block;
 }
 
 .price {

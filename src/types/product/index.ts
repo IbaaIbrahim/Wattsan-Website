@@ -6,8 +6,9 @@ export interface BreadcrumbItem {
 }
 
 export interface MaterialColor {
-    color: string
+    color?: string
     name: string
+    image?: string
 }
 
 export interface ProductInfoCardData {
@@ -31,6 +32,7 @@ export interface WattsanFactCardData {
 export interface ProductFeature {
     title: string
     description: string
+    image?: string
 }
 
 export interface SafetyCabinFeature {

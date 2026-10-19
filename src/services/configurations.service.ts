@@ -2,6 +2,7 @@ import { TGetConfigurations } from '@my-types/configurations'
 
 import configurationsMock from './mocks/configurations/configurations.json'
 import { authorizedRequest, request } from '../utils/request'
+import { formatMediaUrl } from '../utils/helpers'
 import {
 	API_GET_CONFIGURATIONS, API_GET_CONFIGURATIONS_WITH_DETAILS,
 	API_GET_CONFIGURATOR_CHARACTERISTIC_CODE_CONTENT,
@@ -53,9 +54,9 @@ class ConfigurationsService {
 
 		return {
 			data: images.map(x => ({
-				url: x?.fileManger?.url,
+				url: formatMediaUrl(x?.fileManger?.url),
 				isVideo: false,
-				placeholder: x?.fileManger?.url
+				placeholder: formatMediaUrl(x?.fileManger?.url)
 			}))
 		}
 	}
@@ -72,10 +73,10 @@ class ConfigurationsService {
 
 		return {
 			data: videos.map(x => ({
-				url: x?.fileManger?.url,
+				url: formatMediaUrl(x?.fileManger?.url),
 				isVideo: true,
-				placeholder: x?.fileManger?.url,
-				videoPoster: x?.fileManger?.thumbnail
+				placeholder: formatMediaUrl(x?.fileManger?.url),
+				videoPoster: formatMediaUrl(x?.fileManger?.thumbnail)
 			}))
 		}
 	}

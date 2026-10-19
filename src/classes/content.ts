@@ -168,19 +168,6 @@ export class ContentJson extends Content {
         content: meta.economy
       })
     }
-    if (meta.materials) {
-      let materialsList: any[] = []
-      try {
-        materialsList = typeof meta.materials === 'string' ? JSON.parse(meta.materials) : meta.materials
-      } catch {
-        materialsList = []
-      }
-      cards.push({
-        id: 'materials',
-        title: 'Materials',
-        materials: materialsList
-      })
-    }
     if (meta.expert_reviews) {
       cards.push({
         id: 'expert-reviews',
@@ -228,7 +215,8 @@ export class ContentJson extends Content {
         if (Array.isArray(parsed)) {
           featuresList = parsed.map((item: any) => ({
             title: item.title || '',
-            description: item.description || ''
+            description: item.description || '',
+            image: item.image || undefined
           }))
         }
       } catch {
@@ -295,7 +283,7 @@ export class ContentJson extends Content {
       title: meta.title || meta.tab_label || this.title || '',
       description: meta.description || '',
       details: detailsList,
-      image: meta.image || ''
+      image: meta.image ? formatMediaUrl(meta.image) : ''
     }
   }
 
@@ -345,7 +333,7 @@ export class ContentJson extends Content {
       meta.image_3,
       meta.image_4,
       meta.image_5
-    ].filter((img): img is string => Boolean(img && String(img).trim()))
+    ].filter((img): img is string => Boolean(img && String(img).trim())).map((img) => formatMediaUrl(img))
 
     let materialsList: { id: string; name: string; action: string; icon: string }[] = []
     if (meta.materials) {

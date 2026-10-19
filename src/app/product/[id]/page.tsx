@@ -550,17 +550,10 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 			.filter(Boolean) as ComparisonSeries[]
 	})()
 
-	// Resolve gallery inputs (4 image thumbnails + 1 video play tile = 5 tiles matching Figma 498:2223)
+	// Resolve gallery inputs
 	const defaultImage = '/img/catalog/cnc-routes.png'
 	const galleryMain = galleryImages[0] || defaultImage
-	const galleryThumbs = galleryImages.length >= 4
-		? galleryImages.slice(0, 4)
-		: [
-			galleryMain,
-			galleryImages[1] || defaultImage,
-			galleryImages[2] || defaultImage,
-			galleryImages[3] || defaultImage
-		]
+	const galleryThumbs = galleryImages
 
 	// Formatted product title and breadcrumbs matching Figma 498:2211 & 498:2379
 	const seriesDisplayName = series?.name || 'M1'
@@ -580,10 +573,6 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 		if (card.id === 'materials') {
 			return {
 				...card,
-				materials: (card.materials || []).map((mat, idx) => ({
-					...mat,
-					image: `/product-cards/cnc-router/materials/material-${(idx % 6) + 1}.png`
-				})),
 				onViewAllClick: () => {
 					document.getElementById('materials-section')?.scrollIntoView({ behavior: 'smooth' })
 				}
@@ -679,9 +668,9 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 						<ProductImageGallery
 							mainImage={galleryMain}
 							thumbnails={galleryThumbs}
-							hasVideo={true}
-							has360View={true}
-							badge="New"
+							hasVideo={Boolean(videoUrl)}
+							has360View={false}
+							badge={product.isNew ? 'New' : undefined}
 							onVideoClick={() => setIsVideoOpen(true)}
 							on360ViewClick={() => { }}
 						/>
@@ -724,274 +713,221 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 					</div>
 				</div>
 
-				<div className={styles.infoCardsSection}>
-					<ProductInfoCards cards={infoCardsWithActions} />
-				</div>
-				<div className={styles.factsSliderSection}>
-					<WattsanFactsSlider cards={baseMockData.factsCards} />
-				</div>
+				{infoCardsWithActions && infoCardsWithActions.length > 0 && (
+					<div className={styles.infoCardsSection}>
+						<ProductInfoCards cards={infoCardsWithActions} />
+					</div>
+				)}
 
-				<div className={styles.powerSection}>
-					<ProductDescription
-						title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
-						image={baseMockData.powerOfMachineData?.image || galleryMain}
-						features={baseMockData.powerOfMachineData?.features || baseMockData.machineFeatures}
-					/>
-				</div>
+				{baseMockData.factsCards && baseMockData.factsCards.length > 0 && (
+					<div className={styles.factsSliderSection}>
+						<WattsanFactsSlider cards={baseMockData.factsCards} />
+					</div>
+				)}
 
-				{baseMockData.heartOfTheMachinery && (
+				{((baseMockData.powerOfMachineData?.features && baseMockData.powerOfMachineData.features.length > 0) || (baseMockData.machineFeatures && baseMockData.machineFeatures.length > 0)) && (
+					<div className={styles.powerSection}>
+						<ProductDescription
+							title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
+							image={baseMockData.powerOfMachineData?.image || galleryMain}
+							features={baseMockData.powerOfMachineData?.features || baseMockData.machineFeatures}
+						/>
+					</div>
+				)}
+
+				{baseMockData.heartOfTheMachinery && baseMockData.heartOfTheMachinery.tabs && baseMockData.heartOfTheMachinery.tabs.length > 0 && (
 					<div className={styles.heartSection}>
 						<HeartOfTheMachinery data={baseMockData.heartOfTheMachinery} />
 					</div>
 				)}
 
-				{materialsProcessingData && (
+				{materialsProcessingData && ((materialsProcessingData.materials && materialsProcessingData.materials.length > 0) || (materialsProcessingData.images && materialsProcessingData.images.length > 0)) && (
 					<div className={styles.materialsSection} id="materials-section">
 						<PlentyOfMaterials data={materialsProcessingData} />
 					</div>
 				)}
 
-				<div className={styles.specsSection} id="specifications-table">
-					<ProductSpecifications categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications} />
-				</div>
+				{(dynamicSpecifications.length > 0 || (baseMockData.specifications && baseMockData.specifications.length > 0)) && (
+					<div className={styles.specsSection} id="specifications-table">
+						<ProductSpecifications categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications} />
+					</div>
+				)}
 
-				<div className={styles.comparisonSection}>
-					<SeriesComparison seriesData={dynamicSeriesComparison.length > 0 ? dynamicSeriesComparison : baseMockData.seriesComparison} />
-				</div>
+				{(dynamicSeriesComparison.length > 0 || (baseMockData.seriesComparison && baseMockData.seriesComparison.length > 0)) && (
+					<div className={styles.comparisonSection}>
+						<SeriesComparison seriesData={dynamicSeriesComparison.length > 0 ? dynamicSeriesComparison : baseMockData.seriesComparison} />
+					</div>
+				)}
 
-				<div className={styles.reviewsSection} id="reviews-section">
-					<ProductReviews reviews={baseMockData.reviews} />
-				</div>
+				{baseMockData.reviews && baseMockData.reviews.length > 0 && (
+					<div className={styles.reviewsSection} id="reviews-section">
+						<ProductReviews reviews={baseMockData.reviews} />
+					</div>
+				)}
 
-				<div className={styles.madeWithSection}>
-					<MadeWithWattsan
-						image={baseMockData.madeWithWattsan?.image}
-						slides={baseMockData.madeWithWattsan?.slides}
-					/>
-				</div>
+				{baseMockData.madeWithWattsan && (baseMockData.madeWithWattsan.slides?.length > 0 || baseMockData.madeWithWattsan.image) && (
+					<div className={styles.madeWithSection}>
+						<MadeWithWattsan
+							image={baseMockData.madeWithWattsan?.image}
+							slides={baseMockData.madeWithWattsan?.slides}
+						/>
+					</div>
+				)}
 
-				<div className={styles.productionSection}>
-					<ProductionProcess steps={baseMockData.productionProcess} />
-				</div>
+				{baseMockData.productionProcess && baseMockData.productionProcess.length > 0 && (
+					<div className={styles.productionSection}>
+						<ProductionProcess steps={baseMockData.productionProcess} />
+					</div>
+				)}
 
-				<div className={styles.serviceSection}>
-					<ServiceAndSupport
-						image={baseMockData.serviceAndSupport.image}
-						cards={baseMockData.serviceAndSupport.cards}
-					/>
-				</div>
+				{baseMockData.serviceAndSupport && baseMockData.serviceAndSupport.cards && baseMockData.serviceAndSupport.cards.length > 0 && (
+					<div className={styles.serviceSection}>
+						<ServiceAndSupport
+							image={baseMockData.serviceAndSupport.image}
+							cards={baseMockData.serviceAndSupport.cards}
+						/>
+					</div>
+				)}
 
 				<div className={styles.reviewsAndQuestionsSection}>
 					<ProductReviewsAndQuestions />
 				</div>
 
-				<div className={styles.packageListSection}>
-					<PackageList items={baseMockData.packageList} />
-				</div>
+				{baseMockData.packageList && baseMockData.packageList.length > 0 && (
+					<div className={styles.packageListSection}>
+						<PackageList items={baseMockData.packageList} />
+					</div>
+				)}
 
-				<div className={styles.additionalContentSection}>
-					<AdditionalContent items={baseMockData.additionalContent} />
-				</div>
+				{baseMockData.additionalContent && (
+					<div className={styles.additionalContentSection}>
+						<AdditionalContent items={baseMockData.additionalContent} />
+					</div>
+				)}
 
-				<div className={styles.faqSection}>
-					<FAQ items={baseMockData.faqData} />
-				</div>
+				{baseMockData.faqData && baseMockData.faqData.length > 0 && (
+					<div className={styles.faqSection}>
+						<FAQ items={baseMockData.faqData} />
+					</div>
+				)}
 
 				<div className={styles.advisorSection}>
 					<MachineAdvisor />
 				</div>
 
-				<div className={styles.interestedSection}>
-					<InterestedProducts products={baseMockData.interestedProducts} />
-				</div>
+				{baseMockData.interestedProducts && baseMockData.interestedProducts.length > 0 && (
+					<div className={styles.interestedSection}>
+						<InterestedProducts products={baseMockData.interestedProducts} />
+					</div>
+				)}
 
 				<div className={styles.blogSection}>
 					<ProductBlog />
 				</div>
 
-				<div className={styles.safetyCabinSection}>
-					<SafetyCabin
-						title={
-							baseMockData.safetyCabinData?.title || (
-								<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>
-							)
-						}
-						description={
-							baseMockData.safetyCabinData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										The cabin is a robust protective enclosure that ensures a safe working environment. Its design maintains optimal conditions for machining, enhancing precision, boosting productivity, and supporting compliance with safety standards. This option is suitable for 0404 mini and 0609 mini CNC router machines.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										The cabin&apos;s design minimizes exposure to dust, noise, and debris, shielding both operators and equipment. Also, it provides effective sealing to enhance operator safety and reduce noise levels.
-									</Typography>
-								</>
-							)
-						}
-						features={baseMockData.safetyCabinData?.features || baseMockData.safetyCabinFeatures}
-						image={baseMockData.safetyCabinData?.image || '/product-cards/cnc-router/safety-cabin/sc-1.png'}
-					/>
-				</div>
+				{baseMockData.safetyCabinData && (
+					<div className={styles.safetyCabinSection}>
+						<SafetyCabin
+							title={
+								baseMockData.safetyCabinData?.title || (
+									<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>
+								)
+							}
+							description={baseMockData.safetyCabinData?.description}
+							features={baseMockData.safetyCabinData?.features || baseMockData.safetyCabinFeatures}
+							image={baseMockData.safetyCabinData?.image || '/product-cards/cnc-router/safety-cabin/sc-1.png'}
+						/>
+					</div>
+				)}
 
-				<div className={styles.rotaryDeviceSection}>
-					<RotaryDevice
-						subtitle={baseMockData.rotaryDeviceData?.subtitle || 'WATTSAN RD Rotary Device'}
-						title={baseMockData.rotaryDeviceData?.title || 'Precision Multi-Sided Machining with Integrated Fourth Axis'}
-						description={
-							baseMockData.rotaryDeviceData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										The WATTSAN RD rotary device is an integrated fourth axis for CNC routers that enables automatic rotation of workpieces during milling. This allows multi-sided machining without manual repositioning, saving time and improving accuracy. It supports workpieces up to 2510 mm long, making it ideal for cylindrical and complex shaped parts.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										Controlled via CNC, it synchronizes rotation with other axes for precise, repeatable operations. This feature boosts productivity and expands capabilities, perfect for furniture manufacturers and decorative element producers needing efficient multi-face processing.
-									</Typography>
-								</>
-							)
-						}
-						specs={baseMockData.rotaryDeviceData?.specs || baseMockData.rotaryDeviceSpecs}
-						image={baseMockData.rotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
-					/>
-				</div>
+				{baseMockData.rotaryDeviceData && (
+					<div className={styles.rotaryDeviceSection}>
+						<RotaryDevice
+							subtitle={baseMockData.rotaryDeviceData?.subtitle || 'WATTSAN RD Rotary Device'}
+							title={baseMockData.rotaryDeviceData?.title || 'Precision Multi-Sided Machining with Integrated Fourth Axis'}
+							description={baseMockData.rotaryDeviceData?.description}
+							specs={baseMockData.rotaryDeviceData?.specs || baseMockData.rotaryDeviceSpecs}
+							image={baseMockData.rotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
+						/>
+					</div>
+				)}
 
-				<div className={styles.separateRotaryDeviceSection}>
-					<SeparateRotaryDevice
-						title={
-							baseMockData.separateRotaryDeviceData?.title || (
-								<span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>
-							)
-						}
-						description={
-							baseMockData.separateRotaryDeviceData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										Expand the capabilities of your Wattsan CNC router with a standalone rotary device designed for precise 4-axis machining of cylindrical and complex parts. This add-on is ideal for woodworking, engraving, and 3D shaping tasks that require rotation along the A-axis.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										Up to 4 rotary devices can be installed on the M1 S model.
-									</Typography>
-								</>
-							)
-						}
-						featuresTitle={baseMockData.separateRotaryDeviceData?.featuresTitle || 'Key Features'}
-						features={
-							baseMockData.separateRotaryDeviceData?.features || [
-								<>Available with processing lengths <b>from 600 to 3000 mm</b></>,
-								<>Maximum Z-axis height is <b>up to 300 mm</b></>,
-								<>Compatible exclusively with the <b>DSP A18 controller</b></>,
-								<>Robust construction for <b>high-precision rotation and stability</b></>
-							]
-						}
-						image={baseMockData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
-					/>
-				</div>
+				{baseMockData.separateRotaryDeviceData && (
+					<div className={styles.separateRotaryDeviceSection}>
+						<SeparateRotaryDevice
+							title={
+								baseMockData.separateRotaryDeviceData?.title || (
+									<span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>
+								)
+							}
+							description={baseMockData.separateRotaryDeviceData?.description}
+							featuresTitle={baseMockData.separateRotaryDeviceData?.featuresTitle || 'Key Features'}
+							features={baseMockData.separateRotaryDeviceData?.features || []}
+							image={baseMockData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
+						/>
+					</div>
+				)}
 
-				<div className={styles.multiSpindlesSection}>
-					<MultiSpindles
-						title={baseMockData.multiSpindlesData?.title || '4 spindles'}
-						subtitle={baseMockData.multiSpindlesData?.subtitle || 'x4 productivity'}
-						description1={
-							baseMockData.multiSpindlesData?.description1 || (
-								<>
-									Wattsan milling machines with <b>4 synchronized spindles</b> increase productivity by 4 times while maintaining high accuracy and repeatability. This saves changeover time, reduces personnel and equipment costs, and optimizes shop floor space utilization.
-								</>
-							)
-						}
-						description2={
-							baseMockData.multiSpindlesData?.description2 || (
-								<>
-									Wattsan provides equipment matching clients manufacturing needs, due to which a CNC router machine can have a singular spindle or multiple. This parameter defines speed and production volume. For example, with several spindles, you can simultaneously make 4 balusters.
-								</>
-							)
-						}
-						specs={baseMockData.multiSpindlesData?.specs || baseMockData.multiSpindlesSpecs}
-						image={baseMockData.multiSpindlesData?.image || '/product-cards/cnc-router/spindles/spindles-4.png'}
-					/>
-				</div>
+				{baseMockData.multiSpindlesData && (
+					<div className={styles.multiSpindlesSection}>
+						<MultiSpindles
+							title={baseMockData.multiSpindlesData?.title || '4 spindles'}
+							subtitle={baseMockData.multiSpindlesData?.subtitle || 'x4 productivity'}
+							description1={baseMockData.multiSpindlesData?.description1}
+							description2={baseMockData.multiSpindlesData?.description2}
+							specs={baseMockData.multiSpindlesData?.specs || baseMockData.multiSpindlesSpecs}
+							image={baseMockData.multiSpindlesData?.image || '/product-cards/cnc-router/spindles/spindles-4.png'}
+						/>
+					</div>
+				)}
 
-				<div className={styles.toolSwitchSection}>
-					<AutomaticToolSwitch
-						title={
-							baseMockData.toolSwitchData?.title || (
-								<span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>
-							)
-						}
-						subtitle={baseMockData.toolSwitchData?.subtitle || 'Requires no intervention during operation'}
-						description={
-							baseMockData.toolSwitchData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										The automatic tool change system is available only for M3 models, and it speeds up the production 4-5 times and may come with a variety of instruments. This system provides precise and solid installation of the end mills.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										The amount of available tools defines the variability and complexity of layouts that may be processed in one go without human interference. Otherwise, the workflow has to be stopped to change the tools in the system.
-									</Typography>
-								</>
-							)
-						}
-						subHeading={baseMockData.toolSwitchData?.subHeading || 'Accelerates work up to x8 times'}
-						subDescription={
-							baseMockData.toolSwitchData?.subDescription || (
-								<Typography tag='p' size='s' weight='regular'>
-									The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.
-								</Typography>
-							)
-						}
-						variants={baseMockData.toolSwitchData?.variants || baseMockData.toolSwitchVariants}
-						image={baseMockData.toolSwitchData?.image || '/product-cards/cnc-router/automatic-tool-switch/image.png'}
-					/>
-				</div>
+				{baseMockData.toolSwitchData && (
+					<div className={styles.toolSwitchSection}>
+						<AutomaticToolSwitch
+							title={
+								baseMockData.toolSwitchData?.title || (
+									<span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>
+								)
+							}
+							subtitle={baseMockData.toolSwitchData?.subtitle || 'Requires no intervention during operation'}
+							description={baseMockData.toolSwitchData?.description}
+							subHeading={baseMockData.toolSwitchData?.subHeading}
+							subDescription={baseMockData.toolSwitchData?.subDescription}
+							variants={baseMockData.toolSwitchData?.variants || baseMockData.toolSwitchVariants}
+							image={baseMockData.toolSwitchData?.image || '/product-cards/cnc-router/automatic-tool-switch/image.png'}
+						/>
+					</div>
+				)}
 
-				<div className={styles.liquidCoolingSection}>
-					<LiquidCoolingSystem
-						title={
-							baseMockData.liquidCoolingData?.title || (
-								<span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>
-							)
-						}
-						subtitle={baseMockData.liquidCoolingData?.subtitle || 'All models supported'}
-						description={
-							baseMockData.liquidCoolingData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										While milling some materials, especially metals, a lot of heat is being formed. This can damage the instrument, the workpiece itself, or the CNC router. And that&apos;s why the cutting fluid system exists—to prevent that from happening. With it, you can process aluminum, copper, brass, acrylic, etc.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										The cutting fluid system minimizes the friction between the milling bit and the material. This increases the machining quality and slows down the wear-out process of the instrument 10 times. Additionally, the system removes chips from the working area and eliminates the possibility of corrosion appearance.
-									</Typography>
-								</>
-							)
-						}
-						types={baseMockData.liquidCoolingData?.types || baseMockData.liquidCoolingTypes}
-					/>
-				</div>
+				{baseMockData.liquidCoolingData && (
+					<div className={styles.liquidCoolingSection}>
+						<LiquidCoolingSystem
+							title={
+								baseMockData.liquidCoolingData?.title || (
+									<span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>
+								)
+							}
+							subtitle={baseMockData.liquidCoolingData?.subtitle || 'All models supported'}
+							description={baseMockData.liquidCoolingData?.description}
+							types={baseMockData.liquidCoolingData?.types || baseMockData.liquidCoolingTypes}
+						/>
+					</div>
+				)}
 
-				<div className={styles.aspirationSection}>
-					<AspirationSystem
-						title={
-							baseMockData.aspirationData?.title || (
-								<span><span style={{ color: '#E31E24' }}>Aspiration</span> System</span>
-							)
-						}
-						subtitle={baseMockData.aspirationData?.subtitle || 'All models supported'}
-						description={
-							baseMockData.aspirationData?.description || (
-								<>
-									<Typography tag='p' size='s' weight='regular' style={{ marginBottom: '16px' }}>
-										Aspiration systems are designed to efficiently remove dust, chips, and debris created during machining. This improves air quality in the workspace, ensures a cleaner environment, and reduces the risk of tool wear and clogging. It also helps maintain precision and prolongs the machine&apos;s lifespan.
-									</Typography>
-									<Typography tag='p' size='s' weight='regular'>
-										Airflow rate, filter capacity, and suction efficiency affect dust removal, tool longevity, and workspace cleanliness, ensuring optimal machine performance and safety.
-									</Typography>
-								</>
-							)
-						}
-						videoUrl={baseMockData.aspirationData?.videoUrl || baseMockData.aspirationSystem?.videoUrl}
-					/>
-				</div>
+				{baseMockData.aspirationData && (
+					<div className={styles.aspirationSection}>
+						<AspirationSystem
+							title={
+								baseMockData.aspirationData?.title || (
+									<span><span style={{ color: '#E31E24' }}>Aspiration</span> System</span>
+								)
+							}
+							subtitle={baseMockData.aspirationData?.subtitle || 'All models supported'}
+							description={baseMockData.aspirationData?.description}
+							videoUrl={baseMockData.aspirationData?.videoUrl || baseMockData.aspirationSystem?.videoUrl}
+						/>
+					</div>
+				)}
 
 				{baseMockData.tableTypes && baseMockData.tableTypes.length > 0 && (
 					<div className={styles.tableTypesSection}>

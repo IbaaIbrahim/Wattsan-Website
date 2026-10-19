@@ -1,4 +1,5 @@
 import * as ProductTypes from '@my-types/product';
+import { formatMediaUrl } from '@/utils/helpers';
 
 // Simulated raw API types (could be 'any' or defined loosely)
 // For now, we assume the API returns roughly the correct shape, 
@@ -332,18 +333,75 @@ export const mergeCmsDataIntoProductPageData = (
     baseData: ProductTypes.ProductPageData,
     cmsSectionsMap: Record<string, any[]>
 ): ProductTypes.ProductPageData => {
+    const merged = { ...baseData };
+
+    // Clear all placeholder sections so that only sections with real CMS ContentMeta
+    // are shown (per client directive: when content meta does not exist we shouldn't show anything instead)
+    merged.infoCards = [];
+    merged.factsCards = [];
+    merged.powerOfMachineData = undefined;
+    merged.machineFeatures = [];
+    merged.heartOfTheMachinery = undefined;
+    merged.materialsProcessing = undefined;
+    merged.materialsProcessingData = undefined;
+    merged.safetyCabinData = undefined;
+    merged.safetyCabinFeatures = [];
+    merged.rotaryDeviceData = undefined;
+    merged.rotaryDeviceSpecs = [];
+    merged.separateRotaryDeviceData = undefined;
+    merged.multiSpindlesData = undefined;
+    merged.multiSpindlesSpecs = [];
+    merged.toolSwitchData = undefined;
+    merged.toolSwitchVariants = [];
+    merged.liquidCoolingData = undefined;
+    merged.liquidCoolingTypes = [];
+    merged.aspirationData = undefined;
+    merged.tableTypes = undefined;
+    merged.madeWithWattsan = undefined;
+    merged.productionProcess = [];
+    merged.serviceAndSupport = { image: '', cards: [] };
+    merged.packageList = [];
+    merged.additionalContent = undefined;
+    merged.faqData = [];
+    merged.reviews = [];
+    merged.productInfo = {
+        ...merged.productInfo,
+        shipment: '',
+        delivery: '',
+        deliveryNote: '',
+        deliveryMethods: []
+    };
+
     if (!cmsSectionsMap || Object.keys(cmsSectionsMap).length === 0) {
-        return baseData;
+        return merged;
     }
 
-    const merged = { ...baseData };
+    // Materials shown on the page are always sourced from the materials_processing section
+    const materialsRows = getActiveSorted(cmsSectionsMap.materials_processing);
+    const customMaterialsProcessing = materialsRows[0]?.toMaterialsProcessing?.() || null;
 
     // 1. Info Cards
     const infoCardsRows = getActiveSorted(cmsSectionsMap.info_cards);
     if (infoCardsRows[0]) {
         const customInfoCards = infoCardsRows[0].toProductInfoCards?.();
         if (customInfoCards && customInfoCards.length > 0) {
-            merged.infoCards = customInfoCards;
+            const infoCards = customInfoCards.filter((card: any) => card.id !== 'materials');
+
+            const infoCardMaterials = (customMaterialsProcessing?.materials || []).map((mat: any) => ({
+                name: mat.name,
+                image: mat.icon || undefined
+            }));
+            if (infoCardMaterials.length > 0) {
+                const materialsCard = { id: 'materials', title: 'Materials', materials: infoCardMaterials };
+                const economyIdx = infoCards.findIndex((card: any) => card.id === 'economy');
+                if (economyIdx >= 0) {
+                    infoCards.splice(economyIdx + 1, 0, materialsCard);
+                } else {
+                    infoCards.push(materialsCard);
+                }
+            }
+
+            merged.infoCards = infoCards;
         }
     }
 
@@ -352,7 +410,11 @@ export const mergeCmsDataIntoProductPageData = (
     if (factsCardsRows.length > 0) {
         const customFacts = factsCardsRows
             .map((c) => c.toFactsCard?.())
-            .filter(Boolean);
+            .filter(Boolean)
+            .map((f: any) => ({
+                ...f,
+                imageUrl: f.imageUrl ? formatMediaUrl(f.imageUrl) : undefined
+            }));
         if (customFacts.length > 0) {
             merged.factsCards = customFacts;
         }
@@ -363,9 +425,16 @@ export const mergeCmsDataIntoProductPageData = (
     if (powerRows[0]) {
         const customPower = powerRows[0].toPowerOfMachine?.();
         if (customPower) {
-            merged.powerOfMachineData = customPower;
-            if (customPower.features && customPower.features.length > 0) {
-                merged.machineFeatures = customPower.features;
+            merged.powerOfMachineData = {
+                ...customPower,
+                image: customPower.image ? formatMediaUrl(customPower.image) : undefined,
+                features: (customPower.features || []).map((f: any) => ({
+                    ...f,
+                    image: f.image ? formatMediaUrl(f.image) : undefined
+                }))
+            };
+            if (merged.powerOfMachineData.features && merged.powerOfMachineData.features.length > 0) {
+                merged.machineFeatures = merged.powerOfMachineData.features;
             }
         }
     }
@@ -385,7 +454,7 @@ export const mergeCmsDataIntoProductPageData = (
             heartRows.forEach((c) => {
                 const tabItem = c.toHeartOfMachineryTab?.();
                 if (tabItem) {
-                    tabs.push({ id: tabItem.id, label: tabItem.tab_label });
+                    tabs.push({ id: tabItem.id, label: tabItem.label || tabItem.title });
                     content[tabItem.id] = {
                         id: tabItem.id,
                         title: tabItem.title,
@@ -446,25 +515,17 @@ export const mergeCmsDataIntoProductPageData = (
     }
 
     // 5. Materials Processing (Plenty of Materials)
-    const materialsRows = getActiveSorted(cmsSectionsMap.materials_processing);
-    if (materialsRows[0]) {
-        const customMaterials = materialsRows[0].toMaterialsProcessing?.();
-        if (customMaterials) {
-            const existingMp = merged.materialsProcessingData || merged.materialsProcessing;
-            const nextMp: ProductTypes.MaterialsProcessingData = {
-                title: existingMp?.title?.length
-                    ? existingMp.title
-                    : [{ text: 'Plenty of materials', color: '#E31E24' }, { text: 'for processing' }],
-                images: customMaterials.images && customMaterials.images.length > 0
-                    ? customMaterials.images
-                    : (existingMp?.images || []),
-                materials: customMaterials.materials && customMaterials.materials.length > 0
-                    ? customMaterials.materials
-                    : (existingMp?.materials || [])
-            };
-            merged.materialsProcessing = nextMp;
-            merged.materialsProcessingData = nextMp;
-        }
+    if (customMaterialsProcessing && ((customMaterialsProcessing.materials && customMaterialsProcessing.materials.length > 0) || (customMaterialsProcessing.images && customMaterialsProcessing.images.length > 0))) {
+        const nextMp: ProductTypes.MaterialsProcessingData = {
+            title: [
+                { text: 'Plenty of materials', color: '#E31E24' },
+                { text: 'available for processing' }
+            ],
+            images: customMaterialsProcessing.images,
+            materials: customMaterialsProcessing.materials
+        };
+        merged.materialsProcessing = nextMp;
+        merged.materialsProcessingData = nextMp;
     }
 
     // 6. Safety Cabin
@@ -472,7 +533,10 @@ export const mergeCmsDataIntoProductPageData = (
     if (safetyCabinRows[0]) {
         const customCabin = safetyCabinRows[0].toSafetyCabin?.();
         if (customCabin) {
-            merged.safetyCabinData = customCabin;
+            merged.safetyCabinData = {
+                ...customCabin,
+                image: customCabin.image ? formatMediaUrl(customCabin.image) : undefined
+            };
             if (customCabin.features && customCabin.features.length > 0) {
                 merged.safetyCabinFeatures = customCabin.features;
             }
@@ -484,7 +548,10 @@ export const mergeCmsDataIntoProductPageData = (
     if (rotaryRows[0]) {
         const customRotary = rotaryRows[0].toRotaryDevice?.();
         if (customRotary) {
-            merged.rotaryDeviceData = customRotary;
+            merged.rotaryDeviceData = {
+                ...customRotary,
+                image: customRotary.image ? formatMediaUrl(customRotary.image) : undefined
+            };
             if (customRotary.specs && customRotary.specs.length > 0) {
                 merged.rotaryDeviceSpecs = customRotary.specs;
             }
@@ -496,7 +563,10 @@ export const mergeCmsDataIntoProductPageData = (
     if (separateRotaryRows[0]) {
         const customSeparateRotary = separateRotaryRows[0].toSeparateRotaryDevice?.();
         if (customSeparateRotary) {
-            merged.separateRotaryDeviceData = customSeparateRotary;
+            merged.separateRotaryDeviceData = {
+                ...customSeparateRotary,
+                image: customSeparateRotary.image ? formatMediaUrl(customSeparateRotary.image) : undefined
+            };
         }
     }
 
@@ -505,7 +575,10 @@ export const mergeCmsDataIntoProductPageData = (
     if (multiSpindlesRows[0]) {
         const customSpindles = multiSpindlesRows[0].toMultiSpindles?.();
         if (customSpindles) {
-            merged.multiSpindlesData = customSpindles;
+            merged.multiSpindlesData = {
+                ...customSpindles,
+                image: customSpindles.image ? formatMediaUrl(customSpindles.image) : undefined
+            };
             if (customSpindles.specs && customSpindles.specs.length > 0) {
                 merged.multiSpindlesSpecs = customSpindles.specs;
             }
@@ -517,9 +590,16 @@ export const mergeCmsDataIntoProductPageData = (
     if (toolSwitchRows[0]) {
         const customToolSwitch = toolSwitchRows[0].toToolSwitch?.();
         if (customToolSwitch) {
-            merged.toolSwitchData = customToolSwitch;
+            merged.toolSwitchData = {
+                ...customToolSwitch,
+                image: customToolSwitch.image ? formatMediaUrl(customToolSwitch.image) : undefined,
+                variants: (customToolSwitch.variants || []).map((v: any) => ({
+                    ...v,
+                    thumbnail: v.thumbnail ? formatMediaUrl(v.thumbnail) : undefined
+                }))
+            };
             if (customToolSwitch.variants && customToolSwitch.variants.length > 0) {
-                merged.toolSwitchVariants = customToolSwitch.variants;
+                merged.toolSwitchVariants = merged.toolSwitchData.variants || [];
             }
         }
     }
@@ -561,7 +641,11 @@ export const mergeCmsDataIntoProductPageData = (
     if (madeWithWattsanRows.length > 0) {
         const customSlides = madeWithWattsanRows
             .map((c) => c.toMadeWithWattsanSlide?.())
-            .filter((s) => s && s.image);
+            .filter((s) => s && s.image)
+            .map((s) => ({
+                ...s,
+                image: formatMediaUrl(s.image)
+            }));
         if (customSlides.length > 0) {
             merged.madeWithWattsan = {
                 image: customSlides[0].image,
@@ -587,10 +671,10 @@ export const mergeCmsDataIntoProductPageData = (
         const customService = serviceRows[0].toServiceAndSupport?.();
         if (customService) {
             merged.serviceAndSupport = {
-                image: customService.image || merged.serviceAndSupport?.image || '',
+                image: customService.image ? formatMediaUrl(customService.image) : '',
                 cards: customService.cards && customService.cards.length > 0
                     ? (customService.cards as any)
-                    : (merged.serviceAndSupport?.cards || [])
+                    : []
             };
         }
     }
@@ -600,7 +684,11 @@ export const mergeCmsDataIntoProductPageData = (
     if (packageListRows.length > 0) {
         const customPackageList = packageListRows
             .map((c) => c.toPackageListItem?.())
-            .filter(Boolean);
+            .filter(Boolean)
+            .map((item) => ({
+                ...item,
+                image: item.image ? formatMediaUrl(item.image) : ''
+            }));
         if (customPackageList.length > 0) {
             merged.packageList = customPackageList;
         }
@@ -640,7 +728,7 @@ export const mergeCmsDataIntoProductPageData = (
     }
 
     // 21. Product Info Extra (notes, shipment, delivery, warranty)
-    const productInfoExtraRows = getActiveSorted(cmsSectionsMap.product_info_extra);
+    const productInfoExtraRows = getActiveSorted(cmsSectionsMap.product_info_extra || cmsSectionsMap.delivery_pricing_notes);
     if (productInfoExtraRows[0]) {
         const meta = productInfoExtraRows[0].contentMetasJson || {};
         merged.productInfo = {

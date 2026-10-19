@@ -12,6 +12,7 @@ import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
 import { createBasket } from '@store/basket/actions'
 import { formatProductModelName, getAllProducts, getClientConfigurations, getSellableCharacteristics } from '@api/product'
+import { formatMediaUrl } from '@/utils/helpers'
 
 interface ICustomWindow extends Window {
 	dataLayer: any[]
@@ -97,7 +98,7 @@ export default function FavoritesPage() {
 						const seriesName = c.series?.name || c.configurationName?.trim() || 'Configurator'
 						const modelName = c.modelName ? `${c.modelName}` : ''
 						const title = `${seriesName} ${modelName}`.trim()
-						const imgUrl = c.fileManger?.url || c.fileManger?.thumbnail || '/img/grid-machines/M3.png'
+						const imgUrl = formatMediaUrl(c.fileManger?.url || c.fileManger?.thumbnail) || '/img/grid-machines/M3.png'
 						const priceVal = c.price && Number(c.price) > 0 ? c.price : 5000
 
 						return {
@@ -120,7 +121,7 @@ export default function FavoritesPage() {
 						.filter((p: any) => p.isActive !== false)
 						.map((p: any) => {
 							const priceVal = p.price && Number(p.price) > 0 ? p.price : (p.orderPrice || 5000)
-							const imgUrl = p.attachments?.[0]?.fileManager?.url || '/img/grid-machines/M3.png'
+							const imgUrl = formatMediaUrl(p.attachments?.[0]?.fileManager?.url || p.attachments?.[0]?.fileManager?.thumbnail) || '/img/grid-machines/M3.png'
 							return {
 								id: `pop-prod-${p.id}`,
 								referenceId: Number(p.id),
@@ -141,7 +142,7 @@ export default function FavoritesPage() {
 						.filter((c: any) => c.isActive !== false)
 						.map((c: any) => {
 							const charPrice = (c.price && Number(c.price) > 0) ? Number(c.price) : 2000
-							const imgUrl = c.fileManager?.url || '/img/catalog/cnc-routes.png'
+							const imgUrl = formatMediaUrl(c.fileManager?.url || c.fileManager?.thumbnail) || '/img/catalog/cnc-routes.png'
 							return {
 								id: `pop-char-${c.id}`,
 								referenceId: Number(c.id),
