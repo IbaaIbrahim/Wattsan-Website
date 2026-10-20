@@ -728,7 +728,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				{((baseMockData.powerOfMachineData?.features && baseMockData.powerOfMachineData.features.length > 0) || (baseMockData.machineFeatures && baseMockData.machineFeatures.length > 0)) && (
 					<div className={styles.powerSection}>
 						<ProductDescription
-							title={<span><span style={{ color: '#E31E24' }}>The power</span> of machine</span>}
+							title={<><span style={{ color: '#E31E24' }}>The power</span> of machine</>}
 							image={baseMockData.powerOfMachineData?.image || galleryMain}
 							features={baseMockData.powerOfMachineData?.features || baseMockData.machineFeatures}
 						/>

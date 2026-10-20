@@ -56,8 +56,8 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
 						<Image
 							src={activeImage}
 							alt="Machine overview"
-							width={650}
-							height={650}
+							width={800}
+							height={800}
 							priority
 							className={styles.image}
 						/>
@@ -88,7 +88,7 @@ const ProductDescription: FC<ProductDescriptionProps> = ({
 								style={{ cursor: feature.image ? 'pointer' : 'default' }}
 							>
 								<div className={styles.featureTitle}>
-									<Typography tag='h4' size='m' weight='bold'>
+									<Typography tag='h3' size='l' weight='semi-bold'>
 										{feature.title}
 									</Typography>
 								</div>
