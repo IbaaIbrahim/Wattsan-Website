@@ -9,13 +9,14 @@ type PropType = {
     options?: EmblaOptionsType
     renderItem: (item: any, index: number) => ReactNode
     className?: string
+    containerClassName?: string
     slideClassName?: string
     minHeight?: string | number
     matchHeight?: boolean
 }
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
-    const { slides, options, renderItem, className, slideClassName, minHeight, matchHeight } = props
+    const { slides, options, renderItem, className, containerClassName, slideClassName, minHeight, matchHeight } = props
     const [emblaRef] = useEmblaCarousel(options, [Autoplay()])
 
     const containerStyles = matchHeight ? { alignItems: 'stretch' } : {}
@@ -24,7 +25,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     return (
         <div className={`${styles.embla} ${className || ''}`}>
             <div className={styles.embla__viewport} ref={emblaRef} style={viewportStyles}>
-                <div className={styles.embla__container} style={containerStyles}>
+                <div className={`${styles.embla__container} ${containerClassName || ''}`} style={containerStyles}>
                     {slides.map((item, index) => (
                         <div className={`${styles.embla__slide} ${slideClassName || ''}`} key={index}>
                             {renderItem(item, index)}

@@ -138,6 +138,7 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({
 					slides={cards}
 					renderItem={(card) => renderCard(card as WattsanFactCardData)}
 					options={{ align: 'start', loop: true }}
+					containerClassName={styles.carouselContainer}
 					slideClassName={styles.carouselSlide}
 					matchHeight={true}
 				/>
