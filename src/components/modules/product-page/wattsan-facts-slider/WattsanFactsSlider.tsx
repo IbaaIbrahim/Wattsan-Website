@@ -9,9 +9,10 @@ export interface WattsanFactCardData {
 	id: string
 	subtitle: string
 	title: string
-	type: 'image' | 'solid'
+	type: 'image' | 'video' | 'background' | 'solid'
 	backgroundColor?: string
 	imageUrl?: string
+	videoUrl?: string
 	certifications?: string[]
 }
 
@@ -21,71 +22,111 @@ interface WattsanFactsSliderProps {
 	className?: string
 }
 
-const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({ cards, titleHighlight = 'Wattsan CNC routers', className }) => {
-	const renderCard = (card: WattsanFactCardData) => (
-		<div
-			key={card.id}
-			id={card.id}
-			className={`${styles.card} ${card.type === 'image' ? styles.cardImage : styles.cardSolid}`}
-			style={
-				card.type === 'solid' && card.backgroundColor
-					? { backgroundColor: card.backgroundColor }
-					: undefined
-			}
-		>
-			{card.type === 'image' && card.imageUrl && (
-				<div className={styles.imageContainer}>
-					<Image
-						src={card.imageUrl}
-						alt={card.title}
-						fill
-						className={styles.image}
-						objectFit="cover"
-					/>
-					<div className={styles.gradientOverlay} />
-				</div>
-			)}
-			{(card.id === 'reputation' || card.subtitle?.toLowerCase().includes('reputation')) && card.type === 'solid' && (
-				<div className={styles.worldMap}>
-					<svg
-						width="464"
-						height="246"
-						viewBox="0 0 464 246"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						className={styles.worldMapSvg}
-						preserveAspectRatio="xMidYMid meet"
-					>
-						<g opacity="0.3" stroke="white" strokeWidth="1" fill="none">
-							<circle cx="100" cy="80" r="2" fill="white" />
-							<circle cx="150" cy="120" r="2" fill="white" />
-							<circle cx="220" cy="70" r="2" fill="white" />
-							<circle cx="260" cy="140" r="2" fill="white" />
-							<circle cx="350" cy="90" r="2" fill="white" />
-							<circle cx="380" cy="160" r="2" fill="white" />
-							<path d="M 80 80 Q 150 50 200 80 T 350 90" strokeDasharray="4 4" />
-							<path d="M 120 140 Q 200 110 280 140 T 380 160" strokeDasharray="4 4" />
-						</g>
-					</svg>
-				</div>
-			)}
-			<div className={styles.cardContent}>
-				<p className={styles.subtitle}>{card.subtitle}</p>
-				<h3 className={styles.cardTitle}>{card.title}</h3>
-				{card.certifications && card.certifications.length > 0 && (
-					<div className={styles.certifications}>
-						{card.certifications.map((cert, index) => (
-							<span key={index} className={styles.certificationTag}>
-								{cert}
-							</span>
-						))}
+const isHexDark = (hex?: string) => {
+	if (!hex || typeof hex !== 'string') return true
+	const clean = hex.replace('#', '').trim()
+	if (clean.length !== 6 && clean.length !== 3) return true
+	const r = parseInt(clean.length === 3 ? clean[0] + clean[0] : clean.substring(0, 2), 16)
+	const g = parseInt(clean.length === 3 ? clean[1] + clean[1] : clean.substring(2, 4), 16)
+	const b = parseInt(clean.length === 3 ? clean[2] + clean[2] : clean.substring(4, 6), 16)
+	if (isNaN(r) || isNaN(g) || isNaN(b)) return true
+	const brightness = (r * 299 + g * 587 + b * 114) / 1000
+	return brightness < 180
+}
+
+const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({
+	cards,
+	titleHighlight = 'Wattsan CNC routers',
+	className
+}) => {
+	const renderCard = (card: WattsanFactCardData) => {
+		const isReputation =
+			card.id === 'reputation' ||
+			card.subtitle?.toLowerCase().includes('reputation') ||
+			card.title?.toLowerCase().includes('continent')
+		const isSafety =
+			card.id === 'safety' ||
+			card.subtitle?.toLowerCase().includes('safety') ||
+			card.title?.toLowerCase().includes('certifications')
+
+		const isBackground = card.type === 'background' || card.type === 'solid'
+		const defaultBg = isReputation ? '#335198' : isSafety ? '#deebfa' : '#f5f8fb'
+		const bgColor = card.backgroundColor || defaultBg
+
+		const isDark =
+			card.type === 'image' ||
+			card.type === 'video' ||
+			(isBackground && isHexDark(bgColor))
+
+		return (
+			<div
+				key={card.id}
+				id={card.id}
+				className={`${styles.card} ${
+					card.type === 'image'
+						? styles.cardImage
+						: card.type === 'video'
+							? styles.cardVideo
+							: styles.cardSolid
+				} ${isDark ? styles.cardDark : styles.cardLight}`}
+				style={isBackground ? { backgroundColor: bgColor } : undefined}
+			>
+				{card.type === 'image' && card.imageUrl && (
+					<div className={styles.imageContainer}>
+						<Image
+							src={card.imageUrl}
+							alt={card.title}
+							fill
+							className={styles.image}
+							style={{ objectFit: 'cover' }}
+						/>
+						<div className={styles.gradientOverlay} />
 					</div>
 				)}
+
+				{card.type === 'video' && (card.videoUrl || card.imageUrl) && (
+					<div className={styles.imageContainer}>
+						<video
+							src={card.videoUrl || card.imageUrl}
+							autoPlay
+							muted
+							loop
+							playsInline
+							className={styles.video}
+						/>
+						<div className={styles.gradientOverlay} />
+					</div>
+				)}
+
+				{isReputation && isBackground && (
+					<div className={styles.worldMap}>
+						<Image
+							src="/img/world-map-dots.svg"
+							alt="World map"
+							width={442}
+							height={246}
+							className={styles.worldMapSvg}
+							priority={false}
+						/>
+					</div>
+				)}
+
+				<div className={styles.cardContent}>
+					<p className={styles.subtitle}>{card.subtitle}</p>
+					<h3 className={styles.cardTitle}>{card.title}</h3>
+					{card.certifications && card.certifications.length > 0 && (
+						<div className={styles.certifications}>
+							{card.certifications.map((cert, index) => (
+								<span key={index} className={styles.certificationTag}>
+									{cert}
+								</span>
+							))}
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
-	)
-
-
+		)
+	}
 
 	return (
 		<section className={`${styles.section} ${className || ''}`}>

@@ -190,13 +190,24 @@ export class ContentJson extends Content {
         .filter(Boolean)
     }
 
+    const rawType = (meta.type || '').toLowerCase().trim()
+    let type: 'image' | 'video' | 'background' = 'image'
+    if (rawType === 'video') {
+      type = 'video'
+    } else if (rawType === 'background' || rawType === 'solid' || rawType === 'backgound') {
+      type = 'background'
+    } else {
+      type = 'image'
+    }
+
     return {
       id: String(this.id),
       subtitle: meta.subtitle || '',
       title: meta.title || this.title || '',
-      type: meta.type === 'solid' ? 'solid' : 'image',
+      type,
       imageUrl: meta.image || undefined,
-      backgroundColor: meta.bg_color || undefined,
+      videoUrl: meta.video || meta.video_url || (type === 'video' ? meta.image : undefined),
+      backgroundColor: type === 'background' ? (meta.bg_color || undefined) : undefined,
       certifications: certificationsList
     }
   }

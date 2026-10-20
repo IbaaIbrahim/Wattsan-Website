@@ -23,8 +23,9 @@ export interface WattsanFactCardData {
     id: string
     subtitle: string
     title: string
-    type: 'image' | 'solid'
+    type: 'image' | 'video' | 'background' | 'solid'
     imageUrl?: string
+    videoUrl?: string
     backgroundColor?: string
     certifications?: string[]
 }

@@ -33,12 +33,12 @@ const ProductInfoCard: FC<ProductInfoCardProps> = ({
 	return (
 		<div className={clsx(styles.card, className)}>
 			<div className={styles.topContent}>
-				<Typography tag='p' size='s' weight='regular' className={styles.title}>
+				<Typography tag='p' size='m' weight='regular' className={styles.title}>
 					{title}
 				</Typography>
 
 				{content !== undefined && (
-					<Typography tag='p' size='xl' weight='semi-bold' className={styles.content}>
+					<Typography tag='p' size='xxl' weight='semi-bold' className={styles.content}>
 						{typeof content === 'number' ? content.toString() : content}
 					</Typography>
 				)}
@@ -63,7 +63,7 @@ const ProductInfoCard: FC<ProductInfoCardProps> = ({
 			{(viewAllLink || onViewAllClick) && (
 				viewAllLink ? (
 					<Link href={viewAllLink} className={styles.viewAllLink}>
-						<Typography tag='p' size='s' weight='semi-bold'>
+						<Typography tag='p' size='m' weight='semi-bold' className={styles.viewAllText}>
 							View all
 						</Typography>
 					</Link>
@@ -73,7 +73,7 @@ const ProductInfoCard: FC<ProductInfoCardProps> = ({
 						onClick={onViewAllClick}
 						type='button'
 					>
-						<Typography tag='p' size='s' weight='semi-bold'>
+						<Typography tag='p' size='m' weight='semi-bold' className={styles.viewAllText}>
 							View all
 						</Typography>
 					</button>

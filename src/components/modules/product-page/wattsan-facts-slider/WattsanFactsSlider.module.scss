@@ -4,13 +4,13 @@
 	justify-content: center;
 	align-items: flex-start;
 	padding: 80px 0;
-	gap: 60px;
+	gap: 80px;
 	width: 100%;
-	background: #FFFFFF;
+	background: #ffffff;
 
 	@media (max-width: 1200px) {
 		padding: 60px 0;
-		gap: 40px;
+		gap: 48px;
 	}
 
 	@media (max-width: 968px) {
@@ -26,46 +26,46 @@
 
 .title {
 	width: 100%;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 40px;
-	line-height: 120%;
+	line-height: 48px;
+	letter-spacing: 0;
 	color: #000000;
 	margin: 0;
 
 	@media (max-width: 968px) {
 		font-size: 32px;
+		line-height: 38.4px;
 	}
 
 	@media (max-width: 768px) {
 		font-size: 24px;
+		line-height: 28.8px;
 	}
 }
 
 .titleHighlight {
-	color: #E63C32;
+	color: #e63c32;
 }
 
 .carouselWrapper {
 	width: 100%;
-	margin-top: 20px;
-	min-height: 600px;
+	min-height: 520px;
 
 	:global(.carousel) {
 		height: 100%;
-		overflow: hidden; // Hidden to prevent horizontal scroll
+		overflow: hidden;
 	}
 
 	:global(.carousel__view-zone) {
 		height: 100%;
 		border-radius: 0;
-		padding-bottom: 20px;
-		overflow: visible; // Show overflow
+		overflow: visible;
 	}
 
 	:global(.carousel-items) {
-		// Gap is handled by carousel-item padding in new version
 		margin-left: -24px;
 		align-items: stretch;
 	}
@@ -74,18 +74,6 @@
 		padding-left: 24px;
 		height: 100%;
 	}
-
-	// @media (max-width: 1400px) {
-	// 	height: 550px;
-	// }
-
-	// @media (max-width: 1200px) {
-	// 	height: 500px;
-	// }
-
-	// @media (max-width: 768px) {
-	// 	height: 480px;
-	// }
 }
 
 .card {
@@ -93,38 +81,40 @@
 	flex-direction: column;
 	align-items: flex-start;
 	padding: 32px;
-	gap: 16px;
 	position: relative;
 	isolation: isolate;
 	flex: none;
 	width: 100%;
-	height: 100%;
-	border-radius: 24px; // Increased radius for premium feel
+	height: 520px;
+	border-radius: 16px;
 	overflow: hidden;
 	box-sizing: border-box;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	background: #F5F5F7; // Default light background
+	background: #f5f8fb;
 
 	&:hover {
-		transform: translateY(-8px);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 	}
 
 	@media (max-width: 968px) {
-		padding: 32px;
+		padding: 24px;
+		height: 440px;
 	}
 
 	@media (max-width: 768px) {
-		padding: 24px;
+		padding: 20px;
+		height: 400px;
 	}
 }
 
 .cardImage {
 	background: #282829;
-	color: #FFFFFF;
 }
 
-
+.cardSolid {
+	background: #f5f8fb;
+}
 
 .imageContainer {
 	position: absolute;
@@ -146,39 +136,23 @@
 	width: 100%;
 	height: 100%;
 	z-index: 1;
-}
-
-.cardImage .gradientOverlay {
-	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.9) 100%);
-}
-
-/* Specific gradients for better readability */
-.cardImage:nth-of-type(1) .gradientOverlay {
-	background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.85) 100%);
-}
-
-.cardImage:nth-of-type(2) .gradientOverlay {
-	background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.85) 100%);
+	background: linear-gradient(180deg, rgba(40, 40, 41, 0.85) 0%, rgba(40, 40, 41, 0.4) 40%, rgba(40, 40, 41, 0) 75%);
 }
 
 .worldMap {
 	position: absolute;
-	bottom: 30px;
-	/* Lifted up slightly */
-	left: 50%;
-	transform: translateX(-50%);
-	width: 90%;
-	/* Responsive width */
+	bottom: 0;
+	left: 0;
+	width: 100%;
 	height: auto;
-	aspect-ratio: 464/246;
 	z-index: 1;
 	pointer-events: none;
-	opacity: 0.8;
 }
 
 .worldMapSvg {
 	width: 100%;
-	height: 100%;
+	height: auto;
+	display: block;
 }
 
 .cardContent {
@@ -186,79 +160,64 @@
 	flex-direction: column;
 	align-items: flex-start;
 	padding: 0;
-	gap: 12px;
+	gap: 16px;
 	width: 100%;
+	height: 100%;
 	position: relative;
 	z-index: 2;
 	flex: 1;
 	justify-content: flex-start;
-	/* Default align top */
-}
-
-/* Solid cards align content to be distributed */
-.cardSolid .cardContent {
-	justify-content: space-between;
 }
 
 .subtitle {
 	width: 100%;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 12px;
-	line-height: 140%;
+	font-size: 15px;
+	line-height: 21px;
+	letter-spacing: 0;
+	text-transform: none;
 	margin: 0;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	opacity: 0.8;
-}
-
-.cardImage .subtitle {
-	color: #FFFFFF;
-}
-
-.cardSolid .subtitle {
-	color: #000000;
-}
-
-.cardSolid[id='reputation'] .subtitle,
-.cardSolid[id='reputation'] .cardTitle {
-	color: #FFFFFF;
 }
 
 .cardTitle {
 	width: 100%;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-style: normal;
-	font-weight: 700;
-	font-size: 28px;
-	line-height: 120%;
+	font-weight: 600;
+	font-size: 32px;
+	line-height: 38.4px;
+	letter-spacing: -0.01em;
 	margin: 0;
 	word-wrap: break-word;
+	overflow-wrap: break-word;
 	z-index: 2;
 
-	@media (max-width: 968px) {
-		font-size: 24px;
+	@media (max-width: 1750px) {
+		font-size: 28px;
+		line-height: 33.6px;
 	}
 
-	@media (max-width: 480px) {
-		font-size: 20px;
+	@media (max-width: 1400px) {
+		font-size: 26px;
+		line-height: 31.2px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 22px;
+		line-height: 26.4px;
 	}
 }
 
-.cardImage .cardTitle {
-	color: #FFFFFF;
-	margin-top: 4px;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.cardDark .subtitle,
+.cardDark .cardTitle {
+	color: #ffffff;
 }
 
-.cardSolid .cardTitle {
+.cardLight .subtitle,
+.cardLight .cardTitle {
 	color: #000000;
-}
-
-.card[id='reputation'] .subtitle,
-.card[id='reputation'] .cardTitle {
-	color: #FFFFFF;
 }
 
 .certifications {
@@ -268,26 +227,40 @@
 	align-items: flex-start;
 	align-content: flex-start;
 	padding: 0;
-	gap: 8px;
-	/* Reduced gap */
+	gap: 12px;
 	width: 100%;
 	margin-top: auto;
 }
 
 .certificationTag {
-	display: flex;
-	flex-direction: row;
+	display: inline-flex;
 	align-items: center;
-	padding: 6px 14px;
-	background: #E63C32;
+	justify-content: center;
+	height: 58px;
+	padding: 0 24px;
+	background: #e63c32;
 	border-radius: 100px;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-style: normal;
 	font-weight: 600;
-	font-size: 13px;
-	line-height: 140%;
-	color: #FFFFFF;
+	font-size: 24px;
+	line-height: 33.6px;
+	color: #ffffff;
 	white-space: nowrap;
+
+	@media (max-width: 968px) {
+		height: 44px;
+		padding: 0 16px;
+		font-size: 18px;
+		line-height: 24px;
+	}
+
+	@media (max-width: 768px) {
+		height: 38px;
+		padding: 0 14px;
+		font-size: 15px;
+		line-height: 21px;
+	}
 }
 
 .carouselSlide {
@@ -296,10 +269,10 @@
 	height: 100%;
 
 	@media (max-width: 1200px) {
-		flex: 0 0 320px;
+		flex: 0 0 360px;
 	}
 
 	@media (max-width: 768px) {
-		flex: 0 0 280px;
+		flex: 0 0 300px;
 	}
 }

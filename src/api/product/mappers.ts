@@ -30,6 +30,7 @@ export const mapFactsCards = (data: any[]): ProductTypes.WattsanFactCardData[] =
         title: item.title,
         type: item.type,
         imageUrl: item.imageUrl,
+        videoUrl: item.videoUrl,
         backgroundColor: item.backgroundColor,
         certifications: item.certifications
     }));
@@ -413,7 +414,8 @@ export const mergeCmsDataIntoProductPageData = (
             .filter(Boolean)
             .map((f: any) => ({
                 ...f,
-                imageUrl: f.imageUrl ? formatMediaUrl(f.imageUrl) : undefined
+                imageUrl: f.imageUrl ? formatMediaUrl(f.imageUrl) : undefined,
+                videoUrl: f.videoUrl ? formatMediaUrl(f.videoUrl) : undefined
             }));
         if (customFacts.length > 0) {
             merged.factsCards = customFacts;

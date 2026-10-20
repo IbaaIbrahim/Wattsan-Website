@@ -28,22 +28,29 @@
 }
 
 .title {
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-size: 15px !important;
 	font-weight: 400 !important;
 	line-height: 21px !important;
 	color: #000000;
-	opacity: 0.4;
 	margin: 0;
 }
 
 .content {
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
 	font-size: 32px !important;
 	font-weight: 600 !important;
 	line-height: 38.4px !important;
+	letter-spacing: -0.01em;
 	color: #000000;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	margin: 0;
+
+	@media (max-width: 1750px) {
+		font-size: 28px !important;
+		line-height: 33.6px !important;
+	}
 
 	@media (max-width: 1400px) {
 		font-size: 26px !important;
@@ -61,8 +68,11 @@
 	width: 48px;
 	height: 48px;
 	border-radius: 48px;
+	background-color: #deebfa;
 	background-size: cover;
 	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
 	flex-shrink: 0;
 
 	&:not(:first-child) {
@@ -84,23 +94,19 @@
 	opacity: 1;
 	transition: opacity 0.2s ease;
 	width: fit-content;
-	text-decoration: underline;
-	color: #000000;
 	display: inline-block;
-	font-family: inherit;
-	font-size: 15px;
-	line-height: 21px;
 
 	&:hover {
 		opacity: 0.7;
 	}
+}
 
-	p {
-		font-size: 15px !important;
-		font-weight: 600 !important;
-		line-height: 21px !important;
-		color: #000000;
-		text-decoration: underline;
-		margin: 0;
-	}
+.viewAllText {
+	font-family: 'Roboto', var(--font-roboto), sans-serif;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	line-height: 21px !important;
+	color: #000000;
+	text-decoration: underline;
+	margin: 0;
 }
