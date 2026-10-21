@@ -1,96 +1,170 @@
 .container {
-	padding: 60px 0;
 	width: 100%;
 }
 
 .sectionTitle {
 	margin-bottom: 40px;
-}
+	color: #000000;
+	font-size: 40px !important;
+	font-weight: 800 !important;
+	line-height: 48px !important;
+	letter-spacing: 0;
 
-.redText {
-	color: #E31E24;
+	.redHighlight,
+	.redText {
+		color: #e63c32; // Wattsan Red
+	}
+
+	@media (max-width: 968px) {
+		font-size: 30px !important;
+		font-weight: 800 !important;
+		line-height: 36px !important;
+		margin-bottom: 40px;
+	}
+
+	@media (max-width: 576px) {
+		font-size: 22px !important;
+		font-weight: 800 !important;
+		line-height: 26.4px !important;
+		margin-bottom: 40px;
+	}
 }
 
 .contentWrapper {
+	background-color: #f5f8fb;
+	border-radius: 16px;
+	padding: 40px;
 	display: flex;
-	gap: 60px;
+	gap: 24px;
 	align-items: flex-start;
-	background-color: #F8F9FA;
-	border-radius: 24px;
-	padding: 60px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@media (max-width: 1566px) {
+		flex-direction: column;
+		padding: 32px;
+		gap: 20px;
+	}
 
 	@media (max-width: 968px) {
 		flex-direction: column;
-		gap: 32px;
-		padding: 32px;
+		gap: 40px;
+		padding: 40px;
 	}
 
-	@media (max-width: 768px) {
-		padding: 24px;
+	@media (max-width: 576px) {
+		gap: 32px;
+		padding: 32px 24px;
+		border-radius: 16px;
 	}
 }
 
 .tabs {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
-	width: 280px;
+	gap: 16px;
+	width: 451px;
 	flex-shrink: 0;
+	box-sizing: border-box;
+
+	@media (max-width: 1566px) {
+		width: 380px;
+		width: 100%;
+	}
 
 	@media (max-width: 968px) {
 		width: 100%;
+		gap: 8px;
+	}
+
+	@media (max-width: 576px) {
+		width: 100%;
+		gap: 8px;
 	}
 }
 
 .tab {
-	padding: 16px 24px;
-	border-radius: 100px;
-	background: #FFFFFF;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 16px;
+	height: 50px;
+	border-radius: 1000px;
+	background-color: #ffffff;
+	color: #999999;
 	border: none;
 	cursor: pointer;
-	transition: all 0.2s;
-	color: #666666;
-	text-align: left;
+	white-space: nowrap;
+	width: fit-content;
+	box-sizing: border-box;
+	font-size: 24px;
 	font-weight: 600;
-	font-size: 16px;
-	width: fit-content; // Let them size naturally or utilize full width? fit-content looks like pills
+	line-height: 33.6px;
+	transition: background-color 0.2s ease, color 0.2s ease;
 
-	&:hover {
-		color: #333;
-		background: #FFFFFF;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	&:hover:not(.activeTab) {
+		color: #000000;
+		background-color: #ffffff;
+	}
+
+	&.activeTab {
+		background-color: #e63c32;
+		color: #ffffff;
+		cursor: default;
+
+		&:hover {
+			background-color: #e63c32;
+			color: #ffffff;
+		}
+	}
+
+	@media (max-width: 968px) {
+		height: 41px;
+		font-size: 18px;
+		line-height: 25.2px;
+	}
+
+	@media (max-width: 576px) {
+		height: 38px;
+		font-size: 16px;
+		line-height: 22.4px;
 	}
 }
 
-.activeTab {
-	background-color: #E31E24;
-	color: white;
-	box-shadow: 0px 4px 12px rgba(227, 30, 36, 0.2);
-
-	&:hover {
-		color: white;
-		background-color: #E31E24;
-	}
+.tabText {
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	color: inherit;
 }
 
 .specsCard {
 	flex: 1;
-	background: #FFFFFF;
-	border-radius: 20px;
+	width: 100%;
+	background-color: #ffffff;
+	border-radius: 8px;
 	padding: 40px;
 	display: grid;
-	grid-template-columns: 1.2fr 1fr;
-	gap: 60px;
-	width: 100%;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 40px;
+	align-items: stretch;
+	box-sizing: border-box;
 
 	@media (max-width: 1200px) {
-		grid-template-columns: 1fr;
-		gap: 40px;
+		padding: 32px;
+		gap: 24px;
 	}
 
-	@media (max-width: 768px) {
-		padding: 24px;
-		gap: 24px;
+	@media (max-width: 968px) {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		padding: 40px;
+	}
+
+	@media (max-width: 576px) {
+		gap: 32px;
+		padding: 32px 24px;
 	}
 }
 
@@ -103,9 +177,11 @@
 .specItem {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
-	padding: 18px 0;
-	border-bottom: 1px solid #EEEEEE;
+	align-items: flex-start;
+	gap: 16px;
+	padding: 8px 0;
+	border-bottom: 1px solid #ececec;
+	box-sizing: border-box;
 
 	&:first-child {
 		padding-top: 0;
@@ -115,12 +191,41 @@
 		border-bottom: none;
 		padding-bottom: 0;
 	}
+
+	@media (max-width: 968px) {
+		padding: 4px 0;
+
+		&:first-child {
+			padding-top: 0;
+		}
+
+		&:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+	}
+
+	@media (max-width: 576px) {
+		padding: 4px 0;
+
+		&:first-child {
+			padding-top: 0;
+		}
+
+		&:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+	}
 }
 
 .specLabel {
-	color: #888888;
+	color: #999999;
 	font-weight: 400;
-	font-size: 16px;
+	font-size: 14px;
+	line-height: 19.6px;
+	text-align: left;
+	flex: 1;
 }
 
 .specDots {
@@ -129,28 +234,33 @@
 
 .specValue {
 	text-align: right;
-	color: #1A1A1A;
-	font-weight: 500;
-	font-size: 16px;
+	color: #000000;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 19.6px;
+	flex: 1;
 }
 
 .specUnit {
-	font-weight: 400;
-	font-size: 0.9em;
-	color: #666;
+	font-size: inherit;
+	font-weight: inherit;
+	color: inherit;
 }
 
 .specsVisual {
-	background-color: #F8F9FA; // Restore background for the visual area
-	border-radius: 12px;
-	min-height: 100%;
+	background-color: #f5f8fb;
+	border-radius: 4px;
+	min-height: 476px;
 	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	box-sizing: border-box;
 
-	@media (max-width: 1200px) {
-		min-height: 300px;
-		display: none;
+	@media (max-width: 968px) {
+		min-height: 320px;
+		height: 320px;
+	}
+
+	@media (max-width: 576px) {
+		min-height: 240px;
+		height: 240px;
 	}
 }

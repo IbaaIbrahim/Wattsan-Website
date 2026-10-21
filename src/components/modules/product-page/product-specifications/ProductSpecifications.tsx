@@ -27,43 +27,46 @@ const ProductSpecifications: FC<ProductSpecificationsProps> = ({
 	categories,
 	className
 }) => {
-	const [activeTabId, setActiveTabId] = useState(categories[0]?.id)
+	const [activeTabId, setActiveTabId] = useState(categories?.[0]?.id)
 
-	const activeCategory = categories.find(c => c.id === activeTabId) || categories[0]
+	const activeCategory = categories?.find(c => c.id === activeTabId) || categories?.[0]
+	const currentActiveId = activeCategory?.id
 
 	return (
 		<div className={clsx(styles.container, className)}>
 			<Typography tag='h2' size='xxl' weight='bold' className={styles.sectionTitle}>
-				<span className={styles.redText}>Tech</span> specs
+				<span className={styles.redHighlight}>Tech</span> specs
 			</Typography>
 
 			<div className={styles.contentWrapper}>
-				<div className={styles.tabs}>
-					{categories.map((category) => (
+				<div className={styles.tabs} role='tablist'>
+					{categories?.map((category) => (
 						<button
 							key={category.id}
-							className={clsx(styles.tab, activeTabId === category.id && styles.activeTab)}
+							type='button'
+							role='tab'
+							aria-selected={currentActiveId === category.id}
+							className={clsx(styles.tab, currentActiveId === category.id && styles.activeTab)}
 							onClick={() => setActiveTabId(category.id)}
 						>
-							<Typography tag='span' size='s' weight='semi-bold'>
+							<span className={styles.tabText}>
 								{category.label}
-							</Typography>
+							</span>
 						</button>
 					))}
 				</div>
 
 				<div className={styles.specsCard}>
 					<div className={styles.specificationsList}>
-						{activeCategory?.items.map((item, index) => (
+						{activeCategory?.items?.map((item, index) => (
 							<div key={index} className={styles.specItem}>
-								<Typography tag='span' size='m' weight='regular' className={styles.specLabel}>
+								<span className={styles.specLabel}>
 									{item.label}
-								</Typography>
-								<div className={styles.specDots} />
-								<Typography tag='span' size='m' weight='bold' className={styles.specValue}>
+								</span>
+								<span className={styles.specValue}>
 									{item.value}
 									{item.unit && <span className={styles.specUnit}> {item.unit}</span>}
-								</Typography>
+								</span>
 							</div>
 						))}
 					</div>
