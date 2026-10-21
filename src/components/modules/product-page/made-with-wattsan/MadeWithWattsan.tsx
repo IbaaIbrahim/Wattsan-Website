@@ -53,11 +53,14 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className })
     const renderLeftContent = () => (
         <div className={styles.imageColumn}>
             <Image
+                key={currentSlide.id || safeIndex}
                 src={currentSlide.image || '/product-cards/cnc-router/image 11680.png'}
                 alt={currentSlide.tag || 'Made with Wattsan CNC machine'}
                 fill
                 sizes="(max-width: 968px) 100vw, 50vw"
                 style={{ objectFit: 'cover' }}
+                priority
+                className={styles.slideImage}
             />
 
             {/* Navigation Arrows */}
@@ -68,7 +71,7 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className })
                     onClick={handlePrev}
                     aria-label="Previous image"
                 >
-                    <Image src={arrowIcon} alt="Previous" width={24} height={24} />
+                    <Image src={arrowIcon} alt="Previous" width={18} height={12} />
                 </button>
                 <button
                     type="button"
@@ -76,7 +79,7 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className })
                     onClick={handleNext}
                     aria-label="Next image"
                 >
-                    <Image src={arrowIcon} alt="Next" width={24} height={24} />
+                    <Image src={arrowIcon} alt="Next" width={18} height={12} />
                 </button>
             </div>
 
@@ -100,4 +103,3 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className })
 }
 
 export default MadeWithWattsan
-
