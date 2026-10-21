@@ -5,24 +5,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-bottom: 80px;
-    gap: 60px;
+    padding: 80px 0;
+    gap: 40px;
     width: 100%;
     background: #FFFFFF;
 
-    @media (max-width: 1200px) {
-        padding-bottom: 60px;
+    @media (max-width: 968px) {
+        padding: 40px 0;
         gap: 40px;
     }
 
-    @media (max-width: 968px) {
-        padding-bottom: 40px;
-        gap: 32px;
-    }
-
     @media (max-width: 768px) {
-        padding-bottom: 32px;
-        gap: 24px;
+        padding: 40px 0;
+        gap: 40px;
     }
 }
 
@@ -32,16 +27,19 @@
     font-style: normal;
     font-weight: 800;
     font-size: 40px;
-    line-height: 120%;
+    line-height: 48px;
     color: #000000;
     margin: 0;
 
     @media (max-width: 968px) {
-        font-size: 32px;
+        font-size: 30px;
+        line-height: 36px;
     }
 
     @media (max-width: 768px) {
-        font-size: 24px;
+        font-weight: 600;
+        font-size: 22px;
+        line-height: 26.4px;
     }
 }
 
@@ -55,11 +53,11 @@
     gap: 24px;
     width: 100%;
 
-    @media (max-width: 968px) {
+    @media (max-width: 1100px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
         grid-template-columns: 1fr;
     }
 }
@@ -67,12 +65,14 @@
 .card {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    justify-content: space-between;
+    padding: 32px;
     background: #FFFFFF;
-    border: 1px solid #DEEBFA;
-    border-radius: 12px;
-    gap: 16px;
+    border: 1px solid #92B0D2;
+    border-radius: 16px;
+    gap: 32px;
     height: 100%;
+    box-sizing: border-box;
     transition: all 0.3s ease;
 
     &:hover {
@@ -82,21 +82,29 @@
     }
 
     @media (max-width: 768px) {
-        padding: 16px;
-        gap: 12px;
+        padding: 32px 24px;
+        gap: 24px;
     }
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
 }
 
 .imageWrapper {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #F4F7FB;
+    height: 220px;
+    background: #F5F8FB;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     img {
         width: 100%;
@@ -104,22 +112,50 @@
         object-fit: cover;
     }
 
+    .video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
     .placeholder {
         width: 100%;
         height: 100%;
-        background: #F4F7FB;
+        background: #F5F8FB;
     }
+}
+
+.tagsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
 }
 
 .tag {
     display: inline-flex;
-    padding: 4px 12px;
-    background: #F4F7FB;
-    border-radius: 100px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #4A4A4A;
+    align-items: center;
+    justify-content: center;
+    height: 37px;
+    padding: 8px 16px;
+    background: #F5F8FB;
+    border-radius: 1000px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #000000;
     width: fit-content;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        height: 36px;
+        padding: 8px 16px;
+        font-size: 14px;
+        line-height: 19.6px;
+    }
 }
 
 .cardContent {
@@ -130,27 +166,57 @@
 }
 
 .cardTitle {
+    font-family: 'Roboto', sans-serif;
     font-size: 20px;
-    font-weight: 700;
-    line-height: 130%;
+    font-weight: 600;
+    line-height: 28px;
     color: #000000;
+    margin: 0;
 
     @media (max-width: 768px) {
         font-size: 18px;
+        line-height: 25.2px;
     }
 }
 
 .cardDescription {
-    font-size: 14px;
-    line-height: 150%;
-    color: #666666;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #000000;
+    margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    p {
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        line-height: 19.6px;
+    }
 }
 
 .button {
     margin-top: auto;
     width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+        height: 46px;
+        font-size: 14px;
+        line-height: 22.4px;
+    }
 }

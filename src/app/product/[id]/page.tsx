@@ -825,7 +825,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				)}
 
 				<div className={styles.blogSection}>
-					<ProductBlog />
+					<ProductBlog articles={baseMockData.blogArticles} />
 				</div>
 
 				{baseMockData.safetyCabinData && (

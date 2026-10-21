@@ -367,6 +367,7 @@ export const mergeCmsDataIntoProductPageData = (
     merged.additionalContent = undefined;
     merged.faqData = [];
     merged.machineAdvisor = undefined;
+    merged.blogArticles = undefined;
     merged.reviews = [];
     merged.productInfo = {
         ...merged.productInfo,
@@ -725,6 +726,17 @@ export const mergeCmsDataIntoProductPageData = (
     const machineAdvisorRows = getActiveSorted(cmsSectionsMap.machine_advisor);
     if (machineAdvisorRows[0]) {
         merged.machineAdvisor = machineAdvisorRows[0].toMachineAdvisor?.();
+    }
+
+    // Product Blog
+    const blogRows = getActiveSorted(cmsSectionsMap.product_blog || cmsSectionsMap.blog);
+    if (blogRows.length > 0) {
+        const customBlogArticles = blogRows
+            .map((c) => c.toProductBlogItem?.())
+            .filter(Boolean);
+        if (customBlogArticles.length > 0) {
+            merged.blogArticles = customBlogArticles as any;
+        }
     }
 
     // 20. Reviews

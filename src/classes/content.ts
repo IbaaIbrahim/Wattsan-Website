@@ -14,7 +14,8 @@ import type {
   HeartOfTheMachineryData,
   ToolSwitchVariant,
   LiquidCoolingType,
-  MachineAdvisorData
+  MachineAdvisorData,
+  BlogCardData
 } from '../types/product'
 
 export type ContentDto = {
@@ -684,6 +685,25 @@ export class ContentJson extends Content {
       title: meta.title || this.title || '',
       image: rawImage ? formatMediaUrl(rawImage) : '',
       videoUrl: meta.videoUrl || meta.video_url || ''
+    }
+  }
+
+  toProductBlogItem(): BlogCardData {
+    const meta = this.contentMetasJson || {}
+    const rawVideo = meta.video_url || meta.videoUrl || meta.video || ''
+    const rawImage = meta.image || meta.imageUrl || ''
+    const categoriesRaw = meta.categories || meta.category || meta.tag || ''
+    const contentBody = meta.content || meta.description || ''
+    return {
+      id: String(this.id),
+      tag: categoriesRaw,
+      categories: categoriesRaw,
+      title: meta.title || this.title || '',
+      description: contentBody,
+      content: contentBody,
+      imageUrl: rawImage ? formatMediaUrl(rawImage) : '',
+      videoUrl: rawVideo ? formatMediaUrl(rawVideo) : '',
+      href: meta.link || meta.external_link || meta.href || '#'
     }
   }
 

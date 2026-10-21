@@ -12,6 +12,7 @@ export interface MetaKeyDefinition {
   lg?: number
   xl?: number
   className?: string
+  hint?: string
 }
 
 export interface SectionDefinition {
@@ -289,6 +290,37 @@ export const SeriesPageType: ReferenceTypeDefinition = {
         title: { name: 'Title', type: 'text' },
         image: { name: 'Image', type: 'image', notTranslatable: true },
         videoUrl: { name: 'Video URL', type: 'text', notTranslatable: true }
+      }
+    },
+    product_blog: {
+      name: 'Product Blog & Videos',
+      value: 'product_blog',
+      maxContentItems: undefined,
+      keys: {
+        categories: {
+          name: 'Categories',
+          type: 'text',
+          hint: 'Comma-separated categories (e.g. Event, Software, Education)'
+        },
+        title: {
+          name: 'Title',
+          type: 'text'
+        },
+        video_url: {
+          name: 'Video URL',
+          type: 'attachment',
+          allowed_types: ['video', 'image'],
+          notTranslatable: true
+        },
+        link: {
+          name: 'View Details Link',
+          type: 'text',
+          notTranslatable: true
+        },
+        content: {
+          name: 'Content (Rich Text)',
+          type: 'richtext'
+        }
       }
     },
     reviews: {

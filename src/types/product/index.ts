@@ -454,6 +454,19 @@ export interface ProductPageData {
         answer: string
     }[]
     machineAdvisor?: MachineAdvisorData
+    blogArticles?: BlogCardData[]
+}
+
+export interface BlogCardData {
+    id: string
+    tag?: string
+    categories?: string | string[]
+    title?: string
+    description?: string
+    content?: string
+    imageUrl?: string
+    videoUrl?: string
+    href: string
 }
 
 export interface MachineAdvisorData {
