@@ -2,12 +2,18 @@
 
 import { FC, useRef, useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import clsx from 'clsx'
 import styles from './ProductReviews.module.scss'
 import arrowIcon from '@public/img/icons/arrow-left.svg'
 
+const VideoPlayer = dynamic(() => import('@components/ui/video-player/VideoPlayer'), {
+	ssr: false
+})
+
 export interface IReview {
 	id: string
+	media?: string
 	image?: string
 	videoUrl?: string
 	quote?: string
@@ -21,6 +27,17 @@ export interface IReview {
 interface ProductReviewsProps {
 	reviews?: IReview[]
 	className?: string
+}
+
+const isVideoUrl = (url?: string): boolean => {
+	if (!url || typeof url !== 'string') return false
+	const clean = url.trim().toLowerCase()
+	return (
+		/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(clean) ||
+		clean.includes('youtube.com') ||
+		clean.includes('youtu.be') ||
+		clean.includes('vimeo.com')
+	)
 }
 
 const ProductReviews: FC<ProductReviewsProps> = ({ reviews, className }) => {
@@ -45,6 +62,20 @@ const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
 
 	const initialIndex = reviews.length > 1 ? 1 : 0
 	const [activeIndex, setActiveIndex] = useState<number>(initialIndex)
+	const [activeVideoSrc, setActiveVideoSrc] = useState<string | null>(null)
+
+	// Close video modal on ESC key
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				setActiveVideoSrc(null)
+			}
+		}
+		if (activeVideoSrc) {
+			window.addEventListener('keydown', handleKeyDown)
+			return () => window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [activeVideoSrc])
 
 	const scrollToCard = useCallback((index: number, smooth: boolean = true) => {
 		const track = trackRef.current
@@ -165,6 +196,15 @@ const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
 								review.author.title?.trim())
 					)
 
+					const rawMedia = (review.media || review.image || review.videoUrl || '').trim()
+					const hasVideoUrl = Boolean(review.videoUrl && review.videoUrl.trim() !== '')
+					const isVideo = hasVideoUrl || isVideoUrl(rawMedia)
+					const videoSrc = review.videoUrl?.trim() || (isVideo ? rawMedia : undefined)
+					const imageSrc = !isVideo
+						? (review.image?.trim() || (rawMedia && !isVideoUrl(rawMedia) ? rawMedia : undefined))
+						: (review.image?.trim() && !isVideoUrl(review.image) ? review.image.trim() : undefined)
+					const hasMedia = Boolean(imageSrc || videoSrc)
+
 					return (
 						<article
 							key={review.id || index}
@@ -179,28 +219,66 @@ const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
 							}}
 							aria-current={isActive ? 'true' : undefined}
 						>
-							{review.image && review.image.trim() !== '' && (
-								<div className={styles.imageWrapper}>
-									<Image
-										src={review.image}
-										alt={review.author?.name ? `Review by ${review.author.name}` : 'Review'}
-										width={800}
-										height={450}
-										priority={isActive || index === 0}
-									/>
-									<div className={styles.playButton} aria-hidden="true">
-										<svg
-											viewBox="0 0 24 24"
-											fill="none"
-											xmlns="http://www.w3.org/2000/svg"
-											className={styles.playIcon}
+							{hasMedia && (
+								<div
+									className={styles.imageWrapper}
+									onClick={(e) => {
+										if (isVideo && videoSrc && isActive) {
+											e.stopPropagation()
+											setActiveVideoSrc(videoSrc)
+										}
+									}}
+									style={{ cursor: isVideo && isActive ? 'pointer' : undefined }}
+								>
+									{imageSrc ? (
+										<Image
+											src={imageSrc}
+											alt={review.author?.name ? `Review by ${review.author.name}` : 'Review'}
+											width={800}
+											height={450}
+											priority={isActive || index === 0}
+										/>
+									) : isVideo && videoSrc ? (
+										<video
+											src={videoSrc}
+											preload="metadata"
+											muted
+											playsInline
+											className={styles.videoPreview}
+										/>
+									) : null}
+
+									{isVideo && videoSrc && (
+										<button
+											type="button"
+											className={styles.playButton}
+											onClick={(e) => {
+												e.stopPropagation()
+												if (!isActive) {
+													setActiveIndex(index)
+												}
+												setActiveVideoSrc(videoSrc)
+											}}
+											aria-label={
+												review.author?.name
+													? `Play video review by ${review.author.name}`
+													: 'Play video review'
+											}
 										>
-											<path
-												d="M7.4746 4.1494C7.7694 3.9673 8.1374 3.9505 8.4473 4.1055L19.4473 9.6055C19.786 9.7749 20 10.1212 20 10.5C20 10.8788 19.786 11.2251 19.4473 11.3945L8.4473 16.8945C8.1374 17.0495 7.7694 17.0327 7.4746 16.8506C7.1798 16.6684 7 16.3466 7 16V5C7 4.6534 7.1798 4.3316 7.4746 4.1494Z"
-												fill="currentColor"
-											/>
-										</svg>
-									</div>
+											<svg
+												viewBox="0 0 24 24"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+												className={styles.playIcon}
+												aria-hidden="true"
+											>
+												<path
+													d="M7.4746 4.1494C7.7694 3.9673 8.1374 3.9505 8.4473 4.1055L19.4473 9.6055C19.786 9.7749 20 10.1212 20 10.5C20 10.8788 19.786 11.2251 19.4473 11.3945L8.4473 16.8945C8.1374 17.0495 7.7694 17.0327 7.4746 16.8506C7.1798 16.6684 7 16.3466 7 16V5C7 4.6534 7.1798 4.3316 7.4746 4.1494Z"
+													fill="currentColor"
+												/>
+											</svg>
+										</button>
+									)}
 								</div>
 							)}
 
@@ -243,6 +321,32 @@ const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
 					)
 				})}
 			</div>
+
+			{/* Video Review Modal Overlay */}
+			{activeVideoSrc && (
+				<div
+					className={styles.videoOverlay}
+					onClick={() => setActiveVideoSrc(null)}
+					role="dialog"
+					aria-modal="true"
+					aria-label="Video review player"
+				>
+					<div
+						className={styles.videoModalWrapper}
+						onClick={(e) => e.stopPropagation()}
+					>
+						<button
+							type="button"
+							className={styles.closeButton}
+							onClick={() => setActiveVideoSrc(null)}
+							aria-label="Close video player"
+						>
+							&times;
+						</button>
+						<VideoPlayer videoSrc={activeVideoSrc} />
+					</div>
+				</div>
+			)}
 		</section>
 	)
 }

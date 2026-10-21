@@ -140,16 +140,18 @@ export interface ProductParameter {
 }
 
 export interface ReviewAuthor {
-    name: string
-    title: string
-    avatar: string
+    name?: string
+    title?: string
+    avatar?: string
 }
 
 export interface Review {
     id: string
-    image: string
-    quote: string
-    author: ReviewAuthor
+    media?: string
+    image?: string
+    videoUrl?: string
+    quote?: string
+    author?: ReviewAuthor
 }
 
 export interface ProductionProcessStep {

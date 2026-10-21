@@ -135,13 +135,15 @@ export const mapMultiSpindlesSpecs = (data: any[]): ProductTypes.MultiSpindlesSp
 export const mapReviews = (data: any[]): ProductTypes.Review[] => {
     return data.map(item => ({
         id: item.id,
+        media: item.media || item.image || item.videoUrl,
         image: item.image,
+        videoUrl: item.videoUrl,
         quote: item.quote,
-        author: {
+        author: item.author ? {
             name: item.author.name,
             title: item.author.title,
             avatar: item.author.avatar
-        }
+        } : undefined
     }));
 };
 

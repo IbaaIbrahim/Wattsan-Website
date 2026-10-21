@@ -341,6 +341,7 @@ export const MOCK_CNC_ROUTER_DATA = {
         {
             id: '1',
             image: '/product-cards/cnc-router/image 11651.png',
+            videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             quote: '"I\'m extremely happy with the device! Its powerful reinforced frame reduces wobbling which is perfect for engraving at high speeds. I\'ve been using it for acrylic glass and the results look really cool."',
             author: {
                 name: 'Heinrich Schuur',
@@ -351,6 +352,7 @@ export const MOCK_CNC_ROUTER_DATA = {
         {
             id: '2',
             image: '/product-cards/cnc-router/image 11650.png',
+            videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
             quote: '"The precision of this machine is unmatched in this price range. It fits perfectly in our workshop and the support team was super helpful during setup."',
             author: {
                 name: 'David Miller',

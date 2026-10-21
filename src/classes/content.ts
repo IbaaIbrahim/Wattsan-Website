@@ -678,25 +678,53 @@ export class ContentJson extends Content {
 
   toReviewItem(): {
     id: string
-    image: string
-    quote: string
-    author: {
-      name: string
-      title: string
-      avatar: string
+    media?: string
+    image?: string
+    videoUrl?: string
+    quote?: string
+    author?: {
+      name?: string
+      title?: string
+      avatar?: string
     }
   } | null {
     if (!this.contentMetasJson) return null
     const meta = this.contentMetasJson
+
+    const rawMedia = meta.media || meta.image || meta.attachment || meta.video || meta.videoUrl || ''
+    const isVideo =
+      typeof rawMedia === 'string' &&
+      (/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(rawMedia) ||
+        rawMedia.includes('youtube') ||
+        rawMedia.includes('youtu.be') ||
+        rawMedia.includes('vimeo'))
+
+    const videoUrl = meta.videoUrl || (isVideo ? rawMedia : undefined)
+    const image = !isVideo
+      ? rawMedia
+      : meta.image && meta.image !== rawMedia
+      ? meta.image
+      : undefined
+
+    const hasAuthor = Boolean(
+      (meta.reviewed_by_name && String(meta.reviewed_by_name).trim()) ||
+        (meta.reviewed_by_type && String(meta.reviewed_by_type).trim()) ||
+        (meta.reviewed_by_image && String(meta.reviewed_by_image).trim())
+    )
+
     return {
       id: String(this.id),
-      image: meta.image || '/product-cards/cnc-router/image 11651.png',
+      media: rawMedia || undefined,
+      image: image || undefined,
+      videoUrl: videoUrl || undefined,
       quote: meta.content || '',
-      author: {
-        name: meta.reviewed_by_name || this.title || 'Client',
-        title: meta.reviewed_by_type || '',
-        avatar: meta.reviewed_by_image || '/img/catalog/cnc-routes.png'
-      }
+      author: hasAuthor
+        ? {
+            name: meta.reviewed_by_name ? String(meta.reviewed_by_name).trim() : '',
+            title: meta.reviewed_by_type ? String(meta.reviewed_by_type).trim() : '',
+            avatar: meta.reviewed_by_image ? String(meta.reviewed_by_image).trim() : ''
+          }
+        : undefined
     }
   }
 
