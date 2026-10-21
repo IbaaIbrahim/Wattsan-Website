@@ -1,8 +1,10 @@
 'use client'
 
 import { FC, useState } from 'react'
+import Image from 'next/image'
 import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
+import { formatMediaUrl } from '@/utils/helpers'
 
 import styles from './ProductSpecifications.module.scss'
 
@@ -20,17 +22,21 @@ export interface SpecificationCategory {
 
 interface ProductSpecificationsProps {
 	categories: SpecificationCategory[]
+	image?: string
 	className?: string
 }
 
 const ProductSpecifications: FC<ProductSpecificationsProps> = ({
 	categories,
+	image,
 	className
 }) => {
 	const [activeTabId, setActiveTabId] = useState(categories?.[0]?.id)
 
 	const activeCategory = categories?.find(c => c.id === activeTabId) || categories?.[0]
 	const currentActiveId = activeCategory?.id
+
+	const imageSrc = formatMediaUrl(image) || '/img/catalog/cnc-routes.png'
 
 	return (
 		<div className={clsx(styles.container, className)}>
@@ -71,7 +77,15 @@ const ProductSpecifications: FC<ProductSpecificationsProps> = ({
 						))}
 					</div>
 					<div className={styles.specsVisual}>
-						{/* Placeholder for technical drawing or visualization */}
+						{imageSrc && (
+							<Image
+								src={imageSrc}
+								alt="Product technical specifications visual"
+								width={600}
+								height={600}
+								className={styles.visualImage}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

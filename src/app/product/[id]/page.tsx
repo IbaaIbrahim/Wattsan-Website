@@ -749,7 +749,10 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 
 				{(dynamicSpecifications.length > 0 || (baseMockData.specifications && baseMockData.specifications.length > 0)) && (
 					<div className={styles.specsSection} id="specifications-table">
-						<ProductSpecifications categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications} />
+						<ProductSpecifications
+							categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications}
+							image={galleryMain}
+						/>
 					</div>
 				)}
 
