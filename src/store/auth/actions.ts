@@ -219,7 +219,7 @@ export const verifyHandler = async (code, onComplete, onError) => {
 export const checkAuthorize = async () => {
 	try {
 		const { token = null, clientId = null, user = {} } = Object(
-			JSON.parse(Cookie.get('wattsan_data') ?? '')
+			JSON.parse(Cookie.get('wattsan_data') || '{}')
 		)
 
 		if (token) {

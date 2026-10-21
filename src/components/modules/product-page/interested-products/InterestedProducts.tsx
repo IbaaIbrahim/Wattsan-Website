@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import PopularItem from '@components/modules/basket/popular-item/PopularItem'
 import { TPopularItem } from '@my-types/basket'
 import { getAllProducts, getClientConfigurations, getSellableCharacteristics } from '@api/product'
@@ -9,6 +9,7 @@ import styles from './InterestedProducts.module.scss'
 interface InterestedProductsProps {
 	className?: string
 	products?: TPopularItem[]
+	title?: ReactNode
 }
 
 const DEFAULT_INTERESTED: TPopularItem[] = [
@@ -16,43 +17,50 @@ const DEFAULT_INTERESTED: TPopularItem[] = [
 		id: 1,
 		referenceId: 1,
 		itemtype: 2,
-		image: '/img/catalog/cnc-routes.png',
+		image: '/product-cards/cnc-router/image 11649.png',
 		name: 'Accessories for CNC Router Machines',
-		code: 'Accessory 1',
-		price: '2000'
+		code: 'Spindle SDK GDZ120x103-4.5',
+		price: 5000
 	},
 	{
 		id: 2,
 		referenceId: 2,
 		itemtype: 2,
-		image: '/img/catalog/cnc-routes.png',
-		name: 'CNC Routers',
-		code: 'Wattsan 0404 Mini',
-		price: '3250'
+		image: '/product-cards/cnc-router/image 11650.png',
+		name: 'Laser Cutting Engraving Machine',
+		code: '6040 ST',
+		modification: 'modified',
+		price: 5000
 	},
 	{
 		id: 3,
 		referenceId: 3,
 		itemtype: 2,
-		image: '/img/catalog/cnc-routes.png',
-		name: 'Laser machines',
-		code: 'Wattsan 6090 LT',
-		price: '7200'
+		image: '/product-cards/cnc-router/image 11651.png',
+		name: 'Accessories for CNC Router Machines',
+		code: 'Spindle SDK GDZ120x103-4.5',
+		price: 5000
 	},
 	{
 		id: 4,
 		referenceId: 4,
 		itemtype: 2,
-		image: '/img/catalog/cnc-routes.png',
-		name: 'Laser markers',
-		code: 'Wattsan FL TT',
-		price: '4100'
+		image: '/product-cards/cnc-router/image 11680.png',
+		name: 'Laser Cutting Engraving Machine',
+		code: '6040 ST',
+		modification: 'modified',
+		price: 5000
 	}
 ]
 
 const InterestedProducts: FC<InterestedProductsProps> = ({
 	className,
-	products: initialProducts
+	products: initialProducts,
+	title = (
+		<>
+			You might be <span className={styles.titleHighlight}>interested</span>
+		</>
+	)
 }) => {
 	const [dynamicProducts, setDynamicProducts] = useState<TPopularItem[]>(
 		initialProducts && initialProducts.length > 0
@@ -61,7 +69,10 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 	)
 
 	useEffect(() => {
-		if (initialProducts && initialProducts.length > 0) return
+		if (initialProducts && initialProducts.length > 0) {
+			setDynamicProducts(initialProducts)
+			return
+		}
 
 		const loadInterested = async () => {
 			try {
@@ -77,8 +88,8 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 					const configItems = clientConfigs.slice(0, 2).map((c: any) => {
 						const seriesName = c.series?.name || c.configurationName?.trim() || 'Configurator'
 						const modelName = c.modelName ? `${c.modelName}` : ''
-						const title = `${seriesName} ${modelName}`.trim()
-						const imgUrl = c.fileManger?.url || c.fileManger?.thumbnail || '/img/grid-machines/M3.png'
+						const itemTitle = `${seriesName} ${modelName}`.trim()
+						const imgUrl = c.fileManger?.url || c.fileManger?.thumbnail || '/product-cards/cnc-router/image 11649.png'
 						const priceVal = c.price && Number(c.price) > 0 ? c.price : 5000
 
 						return {
@@ -87,7 +98,7 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 							itemtype: 1 as const,
 							image: imgUrl,
 							name: c.series?.name ? `${c.series.name} Series` : 'Configurator Build',
-							code: title || 'Custom Configuration',
+							code: itemTitle || 'Custom Configuration',
 							price: Number(priceVal)
 						}
 					})
@@ -97,7 +108,7 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 				if (prods && prods.length > 0) {
 					const prodItems = prods.slice(0, 3).map((p: any) => {
 						const priceVal = p.price && Number(p.price) > 0 ? p.price : (p.orderPrice || 5000)
-						const imgUrl = p.attachments?.[0]?.fileManager?.url || '/img/catalog/cnc-routes.png'
+						const imgUrl = p.attachments?.[0]?.fileManager?.url || '/product-cards/cnc-router/image 11650.png'
 						return {
 							id: `prod-${p.id}`,
 							referenceId: Number(p.id),
@@ -114,7 +125,7 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 				if (sellableChars && sellableChars.length > 0) {
 					const charItems = sellableChars.slice(0, 2).map((c: any) => {
 						const charPrice = (c.price && Number(c.price) > 0) ? Number(c.price) : 2000
-						const imgUrl = c.fileManager?.url || '/img/catalog/cnc-routes.png'
+						const imgUrl = c.fileManager?.url || '/product-cards/cnc-router/image 11651.png'
 						return {
 							id: `char-${c.id}`,
 							referenceId: Number(c.id),
@@ -141,9 +152,7 @@ const InterestedProducts: FC<InterestedProductsProps> = ({
 
 	return (
 		<section className={`${styles.section} ${className || ''}`}>
-			<h2 className={styles.title}>
-				You might be <span className={styles.titleHighlight}>interested</span>
-			</h2>
+			<h2 className={styles.title}>{title}</h2>
 			<div className={styles.grid}>
 				{dynamicProducts.map((item) => (
 					<PopularItem key={item.id} item={item} />

@@ -16,7 +16,7 @@ import clsx from 'clsx'
 
 import styles from './PopularItem.module.scss'
 
-const PopularItem: FC<{ item: TPopularItem }> = ({ item }) => {
+const PopularItem: FC<{ item: TPopularItem; className?: string }> = ({ item, className }) => {
 	const refId = item.referenceId ? Number(item.referenceId) : parseInt(String(item.id).replace(/\D/g, ''), 10) || 1
 	const itemtype = (item.itemtype as 1 | 2 | 3) || 2
 	const authorized = authStore.use.authorized()
@@ -105,62 +105,73 @@ const PopularItem: FC<{ item: TPopularItem }> = ({ item }) => {
 	}
 
 	return (
-		<div className={styles.wrapper}>
-			<div className={styles.image}>
-				<Image
-					src={item.image || '/img/catalog/cnc-routes.png'}
-					fill={true}
-					alt={item.name || ''}
-				/>
-				<div className={styles.actions}>
-					<button
-						className={clsx(styles.action, isCompared && styles.actionActive)}
-						type='button'
-						onClick={handleToggleCompare}
-						aria-label={isCompared ? 'Remove from comparison' : 'Add to comparison'}
-					>
-						<Image
-							src={comparisonIcon}
-							alt=''
-							style={{
-								filter: isCompared
-									? 'brightness(0) saturate(100%) invert(18%) sepia(88%) saturate(5462%) hue-rotate(354deg) brightness(97%) contrast(116%)'
-									: 'none'
-							}}
-						/>
-					</button>
-					<button
-						className={clsx(styles.action, isFavorited && styles.actionActive)}
-						type='button'
-						onClick={handleToggleFavorite}
-						aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-					>
-						<Image
-							src={favoritesIcon}
-							alt=''
-							style={{
-								filter: isFavorited
-									? 'brightness(0) saturate(100%) invert(18%) sepia(88%) saturate(5462%) hue-rotate(354deg) brightness(97%) contrast(116%)'
-									: 'none'
-							}}
-						/>
-					</button>
+		<div className={clsx(styles.wrapper, className)}>
+			<div className={styles.contentTop}>
+				<div className={styles.image}>
+					<Image
+						src={item.image || '/img/catalog/cnc-routes.png'}
+						fill={true}
+						alt={item.name || ''}
+						className={styles.productImg}
+					/>
+					<div className={styles.actions}>
+						<button
+							className={clsx(styles.action, isCompared && styles.actionActive)}
+							type='button'
+							onClick={handleToggleCompare}
+							aria-label={isCompared ? 'Remove from comparison' : 'Add to comparison'}
+						>
+							<Image
+								src={comparisonIcon}
+								alt=''
+								width={24}
+								height={24}
+								className={styles.actionIcon}
+								style={{
+									filter: isCompared
+										? 'brightness(0) saturate(100%) invert(18%) sepia(88%) saturate(5462%) hue-rotate(354deg) brightness(97%) contrast(116%)'
+										: 'none'
+								}}
+							/>
+						</button>
+						<button
+							className={clsx(styles.action, isFavorited && styles.actionActive)}
+							type='button'
+							onClick={handleToggleFavorite}
+							aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+						>
+							<Image
+								src={favoritesIcon}
+								alt=''
+								width={24}
+								height={24}
+								className={styles.actionIcon}
+								style={{
+									filter: isFavorited
+										? 'brightness(0) saturate(100%) invert(18%) sepia(88%) saturate(5462%) hue-rotate(354deg) brightness(97%) contrast(116%)'
+										: 'none'
+								}}
+							/>
+						</button>
+					</div>
+				</div>
+				<div className={styles.name}>{item.name}</div>
+				<div className={styles.code}>
+					{item.code}
+					{item.modification && <span className={styles.modification}>{item.modification}</span>}
 				</div>
 			</div>
-			<div className={styles.name}>{item.name}</div>
-			<div className={styles.code}>
-				{item.code}
-				{item.modification && <div className={styles.modification}>{item.modification}</div>}
+			<div className={styles.contentBottom}>
+				<div className={styles.price}>${isNaN(rawPrice) ? item.price : rawPrice.toLocaleString()}</div>
+				<Button
+					className={styles.addToBasket}
+					view='red'
+					size='l'
+					onClick={handleAddToBasket}
+				>
+					Add to basket
+				</Button>
 			</div>
-			<div className={styles.price}>${isNaN(rawPrice) ? item.price : rawPrice.toLocaleString()}</div>
-			<Button
-				className={styles.addToBasket}
-				view='red'
-				size='l'
-				onClick={handleAddToBasket}
-			>
-				Add to basket
-			</Button>
 		</div>
 	)
 }
