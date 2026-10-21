@@ -366,6 +366,7 @@ export const mergeCmsDataIntoProductPageData = (
     merged.packageList = [];
     merged.additionalContent = undefined;
     merged.faqData = [];
+    merged.machineAdvisor = undefined;
     merged.reviews = [];
     merged.productInfo = {
         ...merged.productInfo,
@@ -718,6 +719,12 @@ export const mergeCmsDataIntoProductPageData = (
         if (customFaq.length > 0) {
             merged.faqData = customFaq;
         }
+    }
+
+    // Machine Advisor
+    const machineAdvisorRows = getActiveSorted(cmsSectionsMap.machine_advisor);
+    if (machineAdvisorRows[0]) {
+        merged.machineAdvisor = machineAdvisorRows[0].toMachineAdvisor?.();
     }
 
     // 20. Reviews

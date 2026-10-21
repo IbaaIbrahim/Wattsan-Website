@@ -13,7 +13,8 @@ import type {
   Review,
   HeartOfTheMachineryData,
   ToolSwitchVariant,
-  LiquidCoolingType
+  LiquidCoolingType,
+  MachineAdvisorData
 } from '../types/product'
 
 export type ContentDto = {
@@ -673,6 +674,16 @@ export class ContentJson extends Content {
       id: String(this.id),
       question: meta.question || this.title || '',
       answer: meta.answer || ''
+    }
+  }
+
+  toMachineAdvisor(): MachineAdvisorData {
+    const meta = this.contentMetasJson || {}
+    const rawImage = meta.image || ''
+    return {
+      title: meta.title || this.title || '',
+      image: rawImage ? formatMediaUrl(rawImage) : '',
+      videoUrl: meta.videoUrl || meta.video_url || ''
     }
   }
 

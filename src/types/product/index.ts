@@ -453,6 +453,13 @@ export interface ProductPageData {
         question: string
         answer: string
     }[]
+    machineAdvisor?: MachineAdvisorData
+}
+
+export interface MachineAdvisorData {
+    title?: string
+    image?: string
+    videoUrl?: string
 }
 
 export interface PackageItem {

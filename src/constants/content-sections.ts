@@ -281,6 +281,16 @@ export const SeriesPageType: ReferenceTypeDefinition = {
         answer: { name: 'Answer', type: 'richtext' }
       }
     },
+    machine_advisor: {
+      name: 'Machine Advisor',
+      value: 'machine_advisor',
+      maxContentItems: 1,
+      keys: {
+        title: { name: 'Title', type: 'text' },
+        image: { name: 'Image', type: 'image', notTranslatable: true },
+        videoUrl: { name: 'Video URL', type: 'text', notTranslatable: true }
+      }
+    },
     reviews: {
       name: 'Product Reviews',
       value: 'reviews',

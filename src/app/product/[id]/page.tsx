@@ -815,7 +815,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 				)}
 
 				<div className={styles.advisorSection}>
-					<MachineAdvisor />
+					<MachineAdvisor data={baseMockData.machineAdvisor} />
 				</div>
 
 				{baseMockData.interestedProducts && baseMockData.interestedProducts.length > 0 && (
