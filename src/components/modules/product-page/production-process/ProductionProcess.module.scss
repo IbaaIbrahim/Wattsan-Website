@@ -5,56 +5,85 @@
     margin-top: 80px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 80px;
+    box-sizing: border-box;
 
     @media (max-width: 968px) {
         margin-top: 60px;
-        gap: 24px;
+        gap: 40px;
+    }
+
+    @media (max-width: 576px) {
+        margin-top: 40px;
+        gap: 0; // On mobile, gap is handled by individual elements
     }
 }
 
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
 }
 
 .title {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 800; // Extra Bold
+    font-family: 'Roboto', var(--font-roboto), sans-serif;
+    font-weight: 800; // ExtraBold
     font-size: 40px;
-    line-height: 120%;
+    line-height: 48px; // 120%
+    letter-spacing: 0;
     color: #000000;
     margin: 0;
 
-    @media (max-width: 768px) {
-        font-size: 32px;
+    @media (max-width: 968px) {
+        font-weight: 600; // SemiBold
+        font-size: 30px;
+        line-height: 36px;
+    }
+
+    @media (max-width: 576px) {
+        font-weight: 800; // ExtraBold
+        font-size: 22px;
+        line-height: 26.4px;
+        margin-bottom: 40px;
     }
 }
 
 .redText {
-    color: #E31E24;
+    color: #e63c32; // Wattsan Red
 }
 
 .controls {
     display: flex;
     gap: 16px;
-    margin-left: auto; // Push to right if in header flex
+    align-items: center;
+    margin-left: auto;
+
+    @media (max-width: 576px) {
+        display: none;
+    }
 }
 
 .controlButton {
     width: 48px;
     height: 48px;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
     border-radius: 8px;
-    background: none;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    padding: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+
+    img {
+        transition: filter 0.2s ease;
+        display: block;
+    }
 
     &:hover {
         background: #000000;
-        color: #ffffff;
 
         img {
             filter: invert(1);
@@ -63,6 +92,12 @@
 
     &:active {
         transform: scale(0.95);
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 }
 
@@ -74,12 +109,82 @@
     transform: rotate(180deg);
 }
 
+// Mobile Step Navigator Tabs
+.mobileTabs {
+    display: none;
+    width: 100%;
+    gap: 8px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+
+    @media (max-width: 576px) {
+        display: flex;
+    }
+}
+
+.tabItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.tabIndicator {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #d9d9d9;
+    transition: background-color 0.2s ease;
+
+    .activeTab & {
+        background-color: #000000;
+    }
+}
+
+.tabBadge {
+    width: 100%;
+    max-width: 50px;
+    height: 37px;
+    border-radius: 1000px;
+    background-color: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: 'Roboto', var(--font-roboto), sans-serif;
+    font-weight: 600; // SemiBold
+    font-size: 15px;
+    line-height: 21px;
+    letter-spacing: 0;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+
+    .activeTab & {
+        background-color: #e63c32; // Wattsan Red
+    }
+
+    .tabItem:active & {
+        transform: scale(0.95);
+    }
+}
+
+// Slider Track
 .sliderTrack {
     display: flex;
-    gap: 24px;
+    gap: 80px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding-bottom: 24px;
+    padding-bottom: 16px;
+    box-sizing: border-box;
+
+    // Right margin breakout so scrolling reaches container bounds smoothly
+    margin-right: -40px;
+    padding-right: 40px;
 
     /* Hide scrollbar */
     -ms-overflow-style: none;
@@ -88,21 +193,71 @@
     &::-webkit-scrollbar {
         display: none;
     }
-}
 
-.card {
-    flex: 0 0 600px; // Wide cards
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    @media (max-width: 1200px) {
-        flex: 0 0 500px;
+    @media (max-width: 968px) {
+        gap: 40px;
+        margin-right: -24px;
+        padding-right: 24px;
     }
 
-    @media (max-width: 768px) {
-        flex: 0 0 320px;
+    @media (max-width: 576px) {
         gap: 16px;
+        margin-right: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+// Cards
+.card {
+    flex: 0 0 748px;
+    width: 748px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    box-sizing: border-box;
+
+    @media (max-width: 1200px) {
+        flex: 0 0 clamp(569px, 45vw, 748px);
+        width: clamp(569px, 45vw, 748px);
+    }
+
+    @media (max-width: 968px) {
+        flex: 0 0 569px;
+        width: 569px;
+        gap: 24px;
+    }
+
+    @media (max-width: 576px) {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 100%;
+        gap: 0;
+        scroll-snap-align: start;
+    }
+}
+
+// Text container wrapping Header and Description
+.cardText {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 137px; // Exact Figma Frame 2087327117 height
+    min-height: 137px;
+    box-sizing: border-box;
+
+    @media (max-width: 968px) {
+        height: auto;
+        min-height: 128px;
+    }
+
+    @media (max-width: 576px) {
+        order: 2;
+        height: auto;
+        min-height: auto;
+        gap: 8px;
     }
 }
 
@@ -110,65 +265,127 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    height: 37px;
+    flex-shrink: 0;
+
+    @media (max-width: 576px) {
+        height: auto;
+    }
 }
 
 .stepNumber {
-    width: 48px;
-    height: 48px;
-    background: #E31E24;
-    border-radius: 50%;
+    width: 50px;
+    height: 37px;
+    background-color: #e63c32; // Wattsan Red
+    border-radius: 1000px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
+    color: #ffffff;
+    font-family: 'Roboto', var(--font-roboto), sans-serif;
+    font-weight: 600; // SemiBold
+    font-size: 15px;
+    line-height: 21px;
+    letter-spacing: 0;
     flex-shrink: 0;
+
+    @media (max-width: 576px) {
+        display: none;
+    }
 }
 
 .stepTitle {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
+    font-family: 'Roboto', var(--font-roboto), sans-serif;
+    font-weight: 600; // SemiBold
     font-size: 24px;
+    line-height: 33.6px; // ~140%
+    letter-spacing: 0;
     color: #000000;
     margin: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
         font-size: 20px;
+        line-height: 28px;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 18px;
+        line-height: 25.2px;
     }
 }
 
 .stepDescription {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    color: #333333;
+    font-family: 'Roboto', var(--font-roboto), sans-serif;
+    font-weight: 400; // Regular
+    font-size: 15px;
+    line-height: 21px; // 140%
+    letter-spacing: 0;
+    color: #000000;
     margin: 0;
-    min-height: 80px; // Helps alignment
 
-    @media (max-width: 768px) {
+    // Static 4 lines: height is strictly fixed so all cards match height whether text has 1, 2, 3, or 4 lines
+    line-height: 21px;
+    height: 84px; // 4 lines * 21px = 84px
+    min-height: 84px;
+    max-height: 84px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+
+    p {
+        margin: 0;
+        padding: 0;
+        font: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+
+    @media (max-width: 968px) {
+        height: 84px;
+        min-height: 84px;
+        max-height: 84px;
+    }
+
+    @media (max-width: 576px) {
         font-size: 14px;
+        line-height: 19.6px;
+        height: auto;
         min-height: auto;
+        max-height: none;
+        display: block;
+        -webkit-line-clamp: unset;
     }
 }
 
 .imageContainer {
     width: 100%;
-    aspect-ratio: 16/9;
-    background: #F8F9FA;
-    border-radius: 20px;
+    aspect-ratio: 748 / 420;
+    max-height: 420px;
+    background-color: #f5f8fb;
+    border-radius: 16px;
     overflow: hidden;
+    position: relative;
 
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
         transition: transform 0.3s ease;
     }
 
     &:hover img {
         transform: scale(1.02);
+    }
+
+    @media (max-width: 968px) {
+        aspect-ratio: 569 / 420;
+    }
+
+    @media (max-width: 576px) {
+        order: 1;
+        aspect-ratio: 335 / 200;
+        margin-bottom: 24px;
     }
 }
