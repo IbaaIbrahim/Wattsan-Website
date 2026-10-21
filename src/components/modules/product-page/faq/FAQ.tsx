@@ -1,21 +1,33 @@
+'use client'
+
 import { FC, useState } from 'react'
 import clsx from 'clsx'
-import Button from '@components/ui/button/Button'
-import { Typography } from '@components/ui/typography/Typography'
+import Link from 'next/link'
 import styles from './FAQ.module.scss'
 
-interface FAQItem {
+export interface FAQItem {
     id: string
     question: string
     answer: string
 }
 
-interface FAQProps {
+export interface FAQProps {
+    title?: string
+    description?: string
+    buttonText?: string
+    buttonHref?: string
     items?: FAQItem[]
     className?: string
 }
 
-const FAQ: FC<FAQProps> = ({ items = [], className }) => {
+const FAQ: FC<FAQProps> = ({
+    title = 'FAQ',
+    description = "If you don't find the answer to your question, please visit our support section where you can contact our support team after registering.",
+    buttonText = 'Support section',
+    buttonHref = '/support',
+    items = [],
+    className
+}) => {
     const defaultItems: FAQItem[] = [
         {
             id: '1',
@@ -63,15 +75,17 @@ const FAQ: FC<FAQProps> = ({ items = [], className }) => {
             <div className={styles.container}>
                 <div className={styles.layout}>
                     <div className={styles.leftCol}>
-                        <Typography tag='h2' size='xl' weight='semi-bold' className={styles.title}>
-                            FAQ
-                        </Typography>
-                        <Typography tag='p' size='s' weight='regular' className={styles.description}>
-                            If you don't find the answer to your question, please visit our support section where you can contact our support team after registering.
-                        </Typography>
-                        <Button view='bordered' size='m' className={styles.supportBtn}>
-                            Support section
-                        </Button>
+                        <h2 className={styles.title}>
+                            {title}
+                        </h2>
+                        <p className={styles.description}>
+                            {description}
+                        </p>
+                        {buttonHref && (
+                            <Link href={buttonHref} className={styles.supportBtn}>
+                                {buttonText}
+                            </Link>
+                        )}
                     </div>
 
                     <div className={styles.rightCol}>
@@ -79,18 +93,31 @@ const FAQ: FC<FAQProps> = ({ items = [], className }) => {
                             {displayItems.map((item) => {
                                 const isOpen = openItems.includes(item.id)
                                 return (
-                                    <div key={item.id} className={clsx(styles.accordionItem, isOpen && styles.isOpen)}>
+                                    <div
+                                        key={item.id}
+                                        className={clsx(styles.accordionItem, isOpen && styles.isOpen)}
+                                    >
                                         <button
+                                            type='button'
                                             className={styles.accordionHeader}
                                             onClick={() => toggleItem(item.id)}
                                             aria-expanded={isOpen}
                                         >
-                                            <Typography tag='p' size='m' weight='semi-bold' className={styles.question}>
+                                            <p className={styles.question}>
                                                 {item.question}
-                                            </Typography>
+                                            </p>
                                             <span className={styles.icon}>
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6 9L12 15L18 9" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
+                                                        fill="currentColor"
+                                                    />
                                                 </svg>
                                             </span>
                                         </button>
