@@ -1,9 +1,10 @@
 'use client'
 
-import { FC, useRef, useState, useEffect, useCallback } from 'react'
+import { FC, ReactNode, useRef, useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import clsx from 'clsx'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './ProductReviews.module.scss'
 import arrowIcon from '@public/img/icons/arrow-left.svg'
 
@@ -26,6 +27,8 @@ export interface IReview {
 
 interface ProductReviewsProps {
 	reviews?: IReview[]
+	/** Overrides the default heading; supports *highlighted* words */
+	title?: ReactNode
 	className?: string
 }
 
@@ -40,21 +43,22 @@ const isVideoUrl = (url?: string): boolean => {
 	)
 }
 
-const ProductReviews: FC<ProductReviewsProps> = ({ reviews, className }) => {
+const ProductReviews: FC<ProductReviewsProps> = ({ reviews, title, className }) => {
 	// If no reviews or empty array, render nothing (no placeholders)
 	if (!reviews || reviews.length === 0) {
 		return null
 	}
 
-	return <ProductReviewsContent reviews={reviews} className={className} />
+	return <ProductReviewsContent reviews={reviews} title={title} className={className} />
 }
 
 interface ContentProps {
 	reviews: IReview[]
+	title?: ReactNode
 	className?: string
 }
 
-const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
+const ProductReviewsContent: FC<ContentProps> = ({ reviews, title, className }) => {
 	const trackRef = useRef<HTMLDivElement>(null)
 	const isInitialMount = useRef(true)
 	const isAutoScrollingRef = useRef(false)
@@ -158,7 +162,11 @@ const ProductReviewsContent: FC<ContentProps> = ({ reviews, className }) => {
 		<section className={clsx(styles.section, className)}>
 			<div className={styles.header}>
 				<h2 className={styles.title}>
-					<span className={styles.redHighlight}>Reviews</span> by clients and experts
+					{renderHighlightedTitle(title, styles.redHighlight) || (
+						<>
+							<span className={styles.redHighlight}>Reviews</span> by clients and experts
+						</>
+					)}
 				</h2>
 				<div className={styles.controls}>
 					<button

@@ -3,7 +3,7 @@ import * as mappers from './mappers';
 import { MOCK_LASER_TUBE_CUTTERS_DATA } from './mock-laser-tube-cutters';
 import { request } from '../../utils/request';
 import { API_URL } from '@constants/api';
-import { loadProductPageDynamicContent } from '@/services/content.service';
+import { loadSeriesPageContent } from '@/services/content.service';
 
 
 // Raw Mock Data simulating API response
@@ -278,7 +278,7 @@ export const MOCK_CNC_ROUTER_DATA = {
         {
             id: '12-tools',
             title: '12 tools',
-            description: 'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060. Due to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
+            description: 'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060.\nDue to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
             thumbnail: '',
             footerLabel: 'Twelve tools cannot be installed on the 1313, 1325, and 1616 models.',
             isWarning: true
@@ -323,6 +323,27 @@ export const MOCK_CNC_ROUTER_DATA = {
             ]
         }
     ],
+    multiSpindlesData: {
+        title: '4 spindles',
+        subtitle: 'x4 productivity',
+        description1: 'Wattsan milling machines with 4 synchronized spindles increase productivity by 4 times while maintaining high accuracy and repeatability. This saves changeover time, reduces personnel and equipment costs, and optimizes shop floor space utilization.',
+        description2: 'Wattsan provides equipment matching clients manufacturing needs, due to which a CNC router machine can have a singular spindle or multiple. This parameter defines speed and production volume. For example, with several spindles, you can simultaneously make 4 balusters.',
+        image: '/product-cards/cnc-router/spindles/spindles-4.svg',
+        specs: [
+            {
+                title: 'Spindles quantity',
+                description: 'A machine can only have a certain number of spindles installed (up to 4 pcs). It is determined by the diameter of the spindles and the length of the X-axis.'
+            },
+            {
+                title: 'X-axis length',
+                description: 'This is an axis that runs parallel to the gantry. Its length determines the max amount of spindles. On Wattsan machines, the max quantity is four.'
+            },
+            {
+                title: 'Spindle diameter',
+                description: 'It can be 80, 100, or 125 mm.'
+            }
+        ]
+    },
     multiSpindlesSpecs: [
         {
             title: 'Spindles quantity',
@@ -1632,11 +1653,11 @@ export const getProductPageData = async (seriesIdOrSlug: string | number, locale
     }
 
     try {
-        const cmsSections = await loadProductPageDynamicContent(seriesIdOrSlug, locale);
-        return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections || {});
+        const content = await loadSeriesPageContent(seriesIdOrSlug, locale);
+        return mappers.buildSeriesPageData(baseData, content);
     } catch (e) {
         console.error('Failed to load CMS content for series/product:', seriesIdOrSlug, e);
-        return mappers.mergeCmsDataIntoProductPageData(baseData, {});
+        return mappers.buildSeriesPageData(baseData, { settings: {}, blocks: [] });
     }
 };
 

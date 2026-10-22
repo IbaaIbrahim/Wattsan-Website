@@ -50,6 +50,10 @@ $color-red-hover: #C31B11;
     color: $color-black;
     margin: 0 0 24px 0;
 
+    .redText {
+        color: $color-red;
+    }
+
     @media (max-width: 968px) {
         font-weight: 600; // SemiBold
         font-size: 30px;

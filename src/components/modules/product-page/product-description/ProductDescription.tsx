@@ -9,6 +9,7 @@ import { formatMediaUrl } from '@/utils/helpers'
 import styles from './ProductDescription.module.scss'
 
 import { ProductFeature } from '@my-types/product'
+import { hasHighlightMarkers, renderHighlightedTitle } from '@/utils/highlight-title'
 
 interface ProductDescriptionProps {
 	title: ReactNode
@@ -19,6 +20,7 @@ interface ProductDescriptionProps {
 }
 
 const renderTitle = (titleNode: ReactNode) => {
+	if (hasHighlightMarkers(titleNode)) return renderHighlightedTitle(titleNode, styles.redHighlight)
 	if (typeof titleNode !== 'string') return titleNode
 	if (titleNode.includes('<span')) {
 		return <span dangerouslySetInnerHTML={{ __html: titleNode }} />

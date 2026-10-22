@@ -54,7 +54,7 @@ import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
 import { createBasket } from '@store/basket/actions'
 import { useFavoritesStore, TFavoriteItem } from '@store/favoritesStore'
-import { ProductPageData, ProductParameter, ComparisonSeries } from '@my-types/product'
+import { ProductPageData, ProductPageBlock, ProductParameter, ComparisonSeries } from '@my-types/product'
 
 import styles from './page.module.scss'
 
@@ -652,6 +652,221 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	}
 
 	const materialsProcessingData = baseMockData.materialsProcessingData || baseMockData.materialsProcessing
+	const specificationCategories = dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications
+	const comparisonSeries = dynamicSeriesComparison.length > 0 ? dynamicSeriesComparison : baseMockData.seriesComparison
+
+	// The info cards scroll to the first reviews block, so only that one carries the anchor
+	const firstReviewsBlockId = baseMockData.pageBlocks.find((block) => block.section === 'reviews')?.id
+
+	const renderPageBlock = ({ id, section, title, description, data }: ProductPageBlock) => {
+		switch (section) {
+			case 'facts_cards':
+				return (
+					<div key={id} className={styles.factsSliderSection}>
+						<WattsanFactsSlider cards={data} title={title} />
+					</div>
+				)
+			case 'power_of_machine':
+				return (
+					<div key={id} className={styles.powerSection}>
+						<ProductDescription
+							title={title || <><span style={{ color: '#E31E24' }}>The power</span> of machine</>}
+							image={data.image || galleryMain}
+							features={data.features}
+						/>
+					</div>
+				)
+			case 'heart_of_machinery':
+				return (
+					<div key={id} className={styles.heartSection}>
+						<HeartOfTheMachinery data={{ ...data, title }} />
+					</div>
+				)
+			case 'reviews':
+				return (
+					<div key={id} className={styles.reviewsSection} id={id === firstReviewsBlockId ? 'reviews-section' : undefined}>
+						<ProductReviews reviews={data} title={title} />
+					</div>
+				)
+			case 'made_with_wattsan':
+				return (
+					<div key={id} className={styles.madeWithSection}>
+						<MadeWithWattsan image={data.image} slides={data.slides} title={title} />
+					</div>
+				)
+			case 'production_process':
+				return (
+					<div key={id} className={styles.productionSection}>
+						<ProductionProcess steps={data} title={title} />
+					</div>
+				)
+			case 'service_and_support':
+				return (
+					<div key={id} className={styles.serviceSection}>
+						<ServiceAndSupport image={data.image} cards={data.cards} title={title} />
+					</div>
+				)
+			case 'package_list':
+				return (
+					<div key={id} className={styles.packageListSection}>
+						<PackageList items={data} title={title} />
+					</div>
+				)
+			case 'additional_content':
+				return (
+					<div key={id} className={styles.additionalContentSection}>
+						<AdditionalContent items={data} title={title} description={description} />
+					</div>
+				)
+			case 'faq':
+				return (
+					<div key={id} className={styles.faqSection}>
+						<FAQ items={data} title={title} description={description} />
+					</div>
+				)
+			case 'machine_advisor':
+				return (
+					<div key={id} className={styles.advisorSection}>
+						<MachineAdvisor data={data} />
+					</div>
+				)
+			case 'product_blog':
+				return (
+					<div key={id} className={styles.blogSection}>
+						<ProductBlog articles={data} title={title} />
+					</div>
+				)
+			case 'safety_cabin':
+				return (
+					<div key={id} className={styles.safetyCabinSection}>
+						<SafetyCabin
+							title={data.title || <span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>}
+							description={data.description}
+							features={data.features}
+							image={data.image || '/product-cards/cnc-router/safety-cabin/sc-1.png'}
+						/>
+					</div>
+				)
+			case 'rotary_device':
+				return (
+					<div key={id} className={styles.rotaryDeviceSection}>
+						<RotaryDevice
+							subtitle={data.subtitle || 'WATTSAN RD Rotary Device'}
+							title={data.title || 'Precision Multi-Sided Machining with Integrated Fourth Axis'}
+							description={data.description}
+							specs={data.specs}
+							image={data.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
+						/>
+					</div>
+				)
+			case 'separate_rotary_device':
+				return (
+					<div key={id} className={styles.separateRotaryDeviceSection}>
+						<SeparateRotaryDevice
+							title={data.title || <span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>}
+							description={data.description}
+							featuresTitle={data.featuresTitle || 'Key Features'}
+							features={data.features || []}
+							image={data.image || '/product-cards/cnc-router/rd-rotary/separate-rotary-device.svg'}
+						/>
+					</div>
+				)
+			case 'multi_spindles':
+				return (
+					<div key={id} className={styles.multiSpindlesSection}>
+						<MultiSpindles
+							title={data.title || '4 spindles'}
+							subtitle={data.subtitle || 'x4 productivity'}
+							description1={data.description1}
+							description2={data.description2}
+							specs={data.specs}
+							image={data.image || '/product-cards/cnc-router/spindles/spindles-4.svg'}
+						/>
+					</div>
+				)
+			case 'automatic_tool_switch':
+				return (
+					<div key={id} className={styles.toolSwitchSection}>
+						<AutomaticToolSwitch
+							title={data.title || <span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>}
+							subtitle={data.subtitle || 'Requires no intervention during operation'}
+							description={data.description}
+							subHeading={data.subHeading}
+							subDescription={data.subDescription}
+							variants={data.variants}
+							image={data.image || '/product-cards/cnc-router/automatic-tool-switch/image.png'}
+						/>
+					</div>
+				)
+			case 'liquid_cooling':
+				return (
+					<div key={id} className={styles.liquidCoolingSection}>
+						<LiquidCoolingSystem
+							title={data.title || <span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>}
+							subtitle={data.subtitle || 'All models supported'}
+							description={data.description}
+							types={data.types}
+						/>
+					</div>
+				)
+			case 'aspiration_system':
+				return (
+					<div key={id} className={styles.aspirationSection}>
+						<AspirationSystem
+							title={data.title || <span><span style={{ color: '#E31E24' }}>Aspiration</span> System</span>}
+							subtitle={data.subtitle || 'All models supported'}
+							description={data.description}
+							videoUrl={data.videoUrl}
+						/>
+					</div>
+				)
+			case 'table_types':
+				return (
+					<div key={id} className={styles.tableTypesSection}>
+						<TableTypes
+							title={title || <span><span style={{ color: '#E31E24' }}>Table types</span> for your tasks</span>}
+							items={data}
+						/>
+					</div>
+				)
+			case 'system_materials':
+				if (!materialsProcessingData || (!materialsProcessingData.materials?.length && !materialsProcessingData.images?.length)) return null
+				return (
+					<div key={id} className={styles.materialsSection} id="materials-section">
+						<PlentyOfMaterials data={materialsProcessingData} />
+					</div>
+				)
+			case 'system_specifications':
+				if (!specificationCategories?.length) return null
+				return (
+					<div key={id} className={styles.specsSection} id="specifications-table">
+						<ProductSpecifications categories={specificationCategories} image={galleryMain} />
+					</div>
+				)
+			case 'system_series_comparison':
+				if (!comparisonSeries?.length) return null
+				return (
+					<div key={id} className={styles.comparisonSection}>
+						<SeriesComparison seriesData={comparisonSeries} />
+					</div>
+				)
+			case 'system_reviews_questions':
+				return (
+					<div key={id} className={styles.reviewsAndQuestionsSection}>
+						<ProductReviewsAndQuestions />
+					</div>
+				)
+			case 'system_related_products':
+				if (!baseMockData.interestedProducts?.length) return null
+				return (
+					<div key={id} className={styles.interestedSection}>
+						<InterestedProducts products={baseMockData.interestedProducts} />
+					</div>
+				)
+			default:
+				return null
+		}
+	}
 
 	return (
 		<div className={`${styles.productPage} ${styles.productPageNoMargin}`}>
@@ -719,227 +934,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 					</div>
 				)}
 
-				{baseMockData.factsCards && baseMockData.factsCards.length > 0 && (
-					<div className={styles.factsSliderSection}>
-						<WattsanFactsSlider cards={baseMockData.factsCards} />
-					</div>
-				)}
-
-				{((baseMockData.powerOfMachineData?.features && baseMockData.powerOfMachineData.features.length > 0) || (baseMockData.machineFeatures && baseMockData.machineFeatures.length > 0)) && (
-					<div className={styles.powerSection}>
-						<ProductDescription
-							title={<><span style={{ color: '#E31E24' }}>The power</span> of machine</>}
-							image={baseMockData.powerOfMachineData?.image || galleryMain}
-							features={baseMockData.powerOfMachineData?.features || baseMockData.machineFeatures}
-						/>
-					</div>
-				)}
-
-				{baseMockData.heartOfTheMachinery && baseMockData.heartOfTheMachinery.tabs && baseMockData.heartOfTheMachinery.tabs.length > 0 && (
-					<div className={styles.heartSection}>
-						<HeartOfTheMachinery data={baseMockData.heartOfTheMachinery} />
-					</div>
-				)}
-
-				{materialsProcessingData && ((materialsProcessingData.materials && materialsProcessingData.materials.length > 0) || (materialsProcessingData.images && materialsProcessingData.images.length > 0)) && (
-					<div className={styles.materialsSection} id="materials-section">
-						<PlentyOfMaterials data={materialsProcessingData} />
-					</div>
-				)}
-
-				{(dynamicSpecifications.length > 0 || (baseMockData.specifications && baseMockData.specifications.length > 0)) && (
-					<div className={styles.specsSection} id="specifications-table">
-						<ProductSpecifications
-							categories={dynamicSpecifications.length > 0 ? dynamicSpecifications : baseMockData.specifications}
-							image={galleryMain}
-						/>
-					</div>
-				)}
-
-				{(dynamicSeriesComparison.length > 0 || (baseMockData.seriesComparison && baseMockData.seriesComparison.length > 0)) && (
-					<div className={styles.comparisonSection}>
-						<SeriesComparison seriesData={dynamicSeriesComparison.length > 0 ? dynamicSeriesComparison : baseMockData.seriesComparison} />
-					</div>
-				)}
-
-				{baseMockData.reviews && baseMockData.reviews.length > 0 && (
-					<div className={styles.reviewsSection} id="reviews-section">
-						<ProductReviews reviews={baseMockData.reviews} />
-					</div>
-				)}
-
-				{baseMockData.madeWithWattsan && (baseMockData.madeWithWattsan.slides?.length > 0 || baseMockData.madeWithWattsan.image) && (
-					<div className={styles.madeWithSection}>
-						<MadeWithWattsan
-							image={baseMockData.madeWithWattsan?.image}
-							slides={baseMockData.madeWithWattsan?.slides}
-						/>
-					</div>
-				)}
-
-				{baseMockData.productionProcess && baseMockData.productionProcess.length > 0 && (
-					<div className={styles.productionSection}>
-						<ProductionProcess steps={baseMockData.productionProcess} />
-					</div>
-				)}
-
-				{baseMockData.serviceAndSupport && baseMockData.serviceAndSupport.cards && baseMockData.serviceAndSupport.cards.length > 0 && (
-					<div className={styles.serviceSection}>
-						<ServiceAndSupport
-							image={baseMockData.serviceAndSupport.image}
-							cards={baseMockData.serviceAndSupport.cards}
-						/>
-					</div>
-				)}
-
-				<div className={styles.reviewsAndQuestionsSection}>
-					<ProductReviewsAndQuestions />
-				</div>
-
-				{baseMockData.packageList && baseMockData.packageList.length > 0 && (
-					<div className={styles.packageListSection}>
-						<PackageList items={baseMockData.packageList} />
-					</div>
-				)}
-
-				{baseMockData.additionalContent && (
-					<div className={styles.additionalContentSection}>
-						<AdditionalContent items={baseMockData.additionalContent} />
-					</div>
-				)}
-
-				{baseMockData.faqData && baseMockData.faqData.length > 0 && (
-					<div className={styles.faqSection}>
-						<FAQ items={baseMockData.faqData} />
-					</div>
-				)}
-
-				<div className={styles.advisorSection}>
-					<MachineAdvisor data={baseMockData.machineAdvisor} />
-				</div>
-
-				{baseMockData.interestedProducts && baseMockData.interestedProducts.length > 0 && (
-					<div className={styles.interestedSection}>
-						<InterestedProducts products={baseMockData.interestedProducts} />
-					</div>
-				)}
-
-				<div className={styles.blogSection}>
-					<ProductBlog articles={baseMockData.blogArticles} />
-				</div>
-
-				{baseMockData.safetyCabinData && (
-					<div className={styles.safetyCabinSection}>
-						<SafetyCabin
-							title={
-								baseMockData.safetyCabinData?.title || (
-									<span><span style={{ color: '#E31E24' }}>Safety</span> cabin</span>
-								)
-							}
-							description={baseMockData.safetyCabinData?.description}
-							features={baseMockData.safetyCabinData?.features || baseMockData.safetyCabinFeatures}
-							image={baseMockData.safetyCabinData?.image || '/product-cards/cnc-router/safety-cabin/sc-1.png'}
-						/>
-					</div>
-				)}
-
-				{baseMockData.rotaryDeviceData && (
-					<div className={styles.rotaryDeviceSection}>
-						<RotaryDevice
-							subtitle={baseMockData.rotaryDeviceData?.subtitle || 'WATTSAN RD Rotary Device'}
-							title={baseMockData.rotaryDeviceData?.title || 'Precision Multi-Sided Machining with Integrated Fourth Axis'}
-							description={baseMockData.rotaryDeviceData?.description}
-							specs={baseMockData.rotaryDeviceData?.specs || baseMockData.rotaryDeviceSpecs}
-							image={baseMockData.rotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
-						/>
-					</div>
-				)}
-
-				{baseMockData.separateRotaryDeviceData && (
-					<div className={styles.separateRotaryDeviceSection}>
-						<SeparateRotaryDevice
-							title={
-								baseMockData.separateRotaryDeviceData?.title || (
-									<span><span style={{ color: '#E31E24' }}>Separate</span> rotary device</span>
-								)
-							}
-							description={baseMockData.separateRotaryDeviceData?.description}
-							featuresTitle={baseMockData.separateRotaryDeviceData?.featuresTitle || 'Key Features'}
-							features={baseMockData.separateRotaryDeviceData?.features || []}
-							image={baseMockData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
-						/>
-					</div>
-				)}
-
-				{baseMockData.multiSpindlesData && (
-					<div className={styles.multiSpindlesSection}>
-						<MultiSpindles
-							title={baseMockData.multiSpindlesData?.title || '4 spindles'}
-							subtitle={baseMockData.multiSpindlesData?.subtitle || 'x4 productivity'}
-							description1={baseMockData.multiSpindlesData?.description1}
-							description2={baseMockData.multiSpindlesData?.description2}
-							specs={baseMockData.multiSpindlesData?.specs || baseMockData.multiSpindlesSpecs}
-							image={baseMockData.multiSpindlesData?.image || '/product-cards/cnc-router/spindles/spindles-4.png'}
-						/>
-					</div>
-				)}
-
-				{baseMockData.toolSwitchData && (
-					<div className={styles.toolSwitchSection}>
-						<AutomaticToolSwitch
-							title={
-								baseMockData.toolSwitchData?.title || (
-									<span><span style={{ color: '#E31E24' }}>Automatic</span> tool switch</span>
-								)
-							}
-							subtitle={baseMockData.toolSwitchData?.subtitle || 'Requires no intervention during operation'}
-							description={baseMockData.toolSwitchData?.description}
-							subHeading={baseMockData.toolSwitchData?.subHeading}
-							subDescription={baseMockData.toolSwitchData?.subDescription}
-							variants={baseMockData.toolSwitchData?.variants || baseMockData.toolSwitchVariants}
-							image={baseMockData.toolSwitchData?.image || '/product-cards/cnc-router/automatic-tool-switch/image.png'}
-						/>
-					</div>
-				)}
-
-				{baseMockData.liquidCoolingData && (
-					<div className={styles.liquidCoolingSection}>
-						<LiquidCoolingSystem
-							title={
-								baseMockData.liquidCoolingData?.title || (
-									<span><span style={{ color: '#E31E24' }}>Liquid</span> cooling system</span>
-								)
-							}
-							subtitle={baseMockData.liquidCoolingData?.subtitle || 'All models supported'}
-							description={baseMockData.liquidCoolingData?.description}
-							types={baseMockData.liquidCoolingData?.types || baseMockData.liquidCoolingTypes}
-						/>
-					</div>
-				)}
-
-				{baseMockData.aspirationData && (
-					<div className={styles.aspirationSection}>
-						<AspirationSystem
-							title={
-								baseMockData.aspirationData?.title || (
-									<span><span style={{ color: '#E31E24' }}>Aspiration</span> System</span>
-								)
-							}
-							subtitle={baseMockData.aspirationData?.subtitle || 'All models supported'}
-							description={baseMockData.aspirationData?.description}
-							videoUrl={baseMockData.aspirationData?.videoUrl || baseMockData.aspirationSystem?.videoUrl}
-						/>
-					</div>
-				)}
-
-				{baseMockData.tableTypes && baseMockData.tableTypes.length > 0 && (
-					<div className={styles.tableTypesSection}>
-						<TableTypes
-							title={<span><span style={{ color: '#E31E24' }}>Table types</span> for your tasks</span>}
-							items={baseMockData.tableTypes}
-						/>
-					</div>
-				)}
+				{baseMockData.pageBlocks.map(renderPageBlock)}
 			</div>
 
 			{/* Local Video Overlay Modal */}

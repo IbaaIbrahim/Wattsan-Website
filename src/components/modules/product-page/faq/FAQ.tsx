@@ -3,6 +3,7 @@
 import { FC, useState } from 'react'
 import clsx from 'clsx'
 import Link from 'next/link'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './FAQ.module.scss'
 
 export interface FAQItem {
@@ -76,7 +77,7 @@ const FAQ: FC<FAQProps> = ({
                 <div className={styles.layout}>
                     <div className={styles.leftCol}>
                         <h2 className={styles.title}>
-                            {title}
+                            {renderHighlightedTitle(title, styles.redText)}
                         </h2>
                         <p className={styles.description}>
                             {description}

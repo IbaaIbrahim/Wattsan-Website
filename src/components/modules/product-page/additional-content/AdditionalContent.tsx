@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { authStore } from '@store/auth'
 import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './AdditionalContent.module.scss'
 
 export type ContentType = 'video' | 'pdf' | 'image'
@@ -176,7 +177,7 @@ const AdditionalContent: FC<AdditionalContentProps> = ({
                 <div className={styles.header}>
                     <div className={styles.textSide}>
                         <h2 className={styles.title}>
-                            {title || (
+                            {renderHighlightedTitle(title, styles.redText) || (
                                 <>
                                     Additional <span className={styles.redText}>content</span>
                                 </>

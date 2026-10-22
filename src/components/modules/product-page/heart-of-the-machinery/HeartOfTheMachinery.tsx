@@ -8,6 +8,7 @@ import { HeartOfTheMachineryData } from '@my-types/product'
 import { formatMediaUrl } from '@/utils/helpers'
 
 import styles from './HeartOfTheMachinery.module.scss'
+import { hasHighlightMarkers, renderHighlightedTitle } from '@/utils/highlight-title'
 
 interface HeartOfTheMachineryProps {
     className?: string
@@ -22,6 +23,7 @@ const renderTitle = (titleNode?: ReactNode) => {
             </>
         )
     }
+    if (hasHighlightMarkers(titleNode)) return renderHighlightedTitle(titleNode, styles.redHighlight)
     if (typeof titleNode !== 'string') return titleNode
     if (titleNode.includes('<span')) {
         return <span dangerouslySetInnerHTML={{ __html: titleNode }} />

@@ -1,8 +1,9 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import Image from 'next/image'
 import EmblaCarousel from '@components/ui/embla-carousel/EmblaCarousel'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './WattsanFactsSlider.module.scss'
 
 export interface WattsanFactCardData {
@@ -18,6 +19,8 @@ export interface WattsanFactCardData {
 
 interface WattsanFactsSliderProps {
 	cards: WattsanFactCardData[]
+	/** Overrides the whole heading; supports *highlighted* words */
+	title?: ReactNode
 	titleHighlight?: string
 	className?: string
 }
@@ -36,6 +39,7 @@ const isHexDark = (hex?: string) => {
 
 const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({
 	cards,
+	title,
 	titleHighlight = 'Wattsan CNC routers',
 	className
 }) => {
@@ -131,7 +135,11 @@ const WattsanFactsSlider: FC<WattsanFactsSliderProps> = ({
 	return (
 		<section className={`${styles.section} ${className || ''}`}>
 			<h2 className={styles.title}>
-				A couple of facts about <span className={styles.titleHighlight}>{titleHighlight}</span>
+				{renderHighlightedTitle(title, styles.titleHighlight) || (
+					<>
+						A couple of facts about <span className={styles.titleHighlight}>{titleHighlight}</span>
+					</>
+				)}
 			</h2>
 			<div className={styles.carouselWrapper}>
 				<EmblaCarousel

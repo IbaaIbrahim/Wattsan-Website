@@ -1,16 +1,19 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import styles from './PackageList.module.scss'
 
 import { PackageItem } from '@my-types/product'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 
 interface PackageListProps {
     items?: PackageItem[]
+    /** Overrides the default heading; supports *highlighted* words */
+    title?: ReactNode
     className?: string
 }
 
-const PackageList: FC<PackageListProps> = ({ items = [], className }) => {
+const PackageList: FC<PackageListProps> = ({ items = [], title, className }) => {
     if (!items || items.length === 0) {
         return null
     }
@@ -20,7 +23,11 @@ const PackageList: FC<PackageListProps> = ({ items = [], className }) => {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>
-                        <span className={styles.redText}>Package</span> list
+                        {renderHighlightedTitle(title, styles.redText) || (
+                            <>
+                                <span className={styles.redText}>Package</span> list
+                            </>
+                        )}
                     </h2>
                 </div>
 

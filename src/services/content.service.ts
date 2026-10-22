@@ -2,20 +2,34 @@ import { contentApi } from '@/api/content.api'
 import { contentMetaApi } from '@/api/content-meta.api'
 import { API_FILE_MANAGER_READ } from '@/constants/api'
 import { request } from '@/utils/request'
+import {
+  SERIES_PAGE_REFERENCE_TYPE,
+  BLOCK_ITEM_REFERENCE_TYPE,
+  SERIES_PAGE_SETTINGS,
+  LEGACY_SETTING_ALIASES,
+  BLOCK_TEMPLATES,
+  SYSTEM_BLOCKS,
+  isSystemBlock,
+  isMultiItemTemplate,
+  type SeriesPageSetting
+} from '@/constants/content-sections'
 import { Content, ContentJson } from '../classes/content'
 
 /**
  * Standard method for fetching Content alongside its Metas and resolving them into ContentJson.
+ * Accepts either `{ key: value }` equality clauses or a ready Telerik filter string.
  */
 export async function readContentAsJsonByFilter(
-  filter: { [key: string]: string },
+  filter: { [key: string]: string } | string,
   locale: string = 'en'
 ): Promise<ContentJson[]> {
   try {
-    const filterString = Object.entries(filter)
-      .filter(([_, value]) => value !== undefined && value !== null && value !== '')
-      .map(([key, value]) => `${key}~eq~'${value}'`)
-      .join('~and~')
+    const filterString = typeof filter === 'string'
+      ? filter
+      : Object.entries(filter)
+        .filter(([_, value]) => value !== undefined && value !== null && value !== '')
+        .map(([key, value]) => `${key}~eq~'${value}'`)
+        .join('~and~')
 
     if (!filterString) {
       return []
@@ -154,58 +168,82 @@ export async function readContentAsJsonByFilter(
   }
 }
 
+export type SeriesPageBlockContent = {
+  /** The block row; holds the template's fields (or just the heading for multi-item templates) */
+  block: ContentJson
+  /** Child rows of a multi-item template, active and in display order */
+  items: ContentJson[]
+}
+
+export type SeriesPageContent = {
+  settings: Partial<Record<SeriesPageSetting, ContentJson>>
+  /** Active blocks in page order, including system blocks */
+  blocks: SeriesPageBlockContent[]
+}
+
+const byDisplayOrder = (a: ContentJson, b: ContentJson) =>
+  (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0) || a.id - b.id
+
 /**
- * Load all dynamic content sections for a given Series.
- * Queries `referenceType: 'series_page'` first, falling back to `product_page` if needed.
+ * Load a series page: its page settings and its ordered blocks with their items.
+ * System blocks the series never placed are appended in their default order.
  */
-export async function loadSeriesDynamicContent(
+export async function loadSeriesPageContent(
   seriesId: string | number,
   locale: string = 'en'
-): Promise<Record<string, ContentJson[]>> {
+): Promise<SeriesPageContent> {
+  const content: SeriesPageContent = { settings: {}, blocks: [] }
+  const placedSections = new Set<string>()
   try {
-    // 1. Primary lookup: series_page
-    let items = await readContentAsJsonByFilter(
-      {
-        referenceType: 'series_page',
-        referenceId: String(seriesId)
-      },
+    const rows = await readContentAsJsonByFilter(
+      { referenceType: SERIES_PAGE_REFERENCE_TYPE, referenceId: String(seriesId) },
       locale
     )
 
-    // 2. Fallback lookup: product_page (for backwards compatibility)
-    if (!items || items.length === 0) {
-      items = await readContentAsJsonByFilter(
-        {
-          referenceType: 'product_page',
-          referenceId: String(seriesId)
-        },
-        locale
-      )
-    }
-
-    const sectionsMap: Record<string, ContentJson[]> = {}
-    items.forEach((item) => {
-      if (!sectionsMap[item.section]) {
-        sectionsMap[item.section] = []
+    rows.forEach((row) => {
+      const setting = (SERIES_PAGE_SETTINGS as readonly string[]).includes(row.section)
+        ? (row.section as SeriesPageSetting)
+        : LEGACY_SETTING_ALIASES[row.section]
+      if (setting && row.isActive !== false && !content.settings[setting]) {
+        content.settings[setting] = row
       }
-      sectionsMap[item.section].push(item)
     })
 
-    return sectionsMap
-  } catch (error) {
-    console.error('Error loading series dynamic content:', error)
-    return {}
-  }
-}
+    const blockRows = rows.filter((row) => BLOCK_TEMPLATES[row.section] || isSystemBlock(row.section)).sort(byDisplayOrder)
+    blockRows.forEach((row) => placedSections.add(row.section))
 
-/**
- * Load all sections for a given product or series reference (alias for loadSeriesDynamicContent).
- */
-export async function loadProductPageDynamicContent(
-  referenceId: string | number,
-  locale: string = 'en'
-): Promise<Record<string, ContentJson[]>> {
-  return loadSeriesDynamicContent(referenceId, locale)
+    const multiBlockIds = blockRows.filter((row) => isMultiItemTemplate(row.section)).map((row) => row.id)
+    const items = multiBlockIds.length > 0
+      ? await readContentAsJsonByFilter(
+        `referenceType~eq~'${BLOCK_ITEM_REFERENCE_TYPE}'~and~(${multiBlockIds.map((id) => `referenceId~eq~'${id}'`).join('~or~')})`,
+        locale
+      )
+      : []
+
+    content.blocks = blockRows
+      .filter((row) => row.isActive !== false)
+      .map((block) => ({
+        block,
+        items: items
+          .filter((item) => String(item.referenceId) === String(block.id) && item.isActive !== false)
+          .sort(byDisplayOrder)
+      }))
+  } catch (error) {
+    console.error('Error loading series page content:', error)
+  }
+
+  SYSTEM_BLOCKS.forEach((section) => {
+    if (!placedSections.has(section)) {
+      content.blocks.push({
+        block: new ContentJson(
+          new Content(0, String(seriesId), SERIES_PAGE_REFERENCE_TYPE, section, null, content.blocks.length + 1, true),
+          locale
+        ),
+        items: []
+      })
+    }
+  })
+  return content
 }
 
 /**

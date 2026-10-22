@@ -1,5 +1,8 @@
 import * as ProductTypes from '@my-types/product';
 import { formatMediaUrl } from '@/utils/helpers';
+import { isSystemBlock, isMultiItemTemplate } from '@/constants/content-sections';
+import type { ContentJson } from '@/classes/content';
+import type { SeriesPageContent } from '@/services/content.service';
 
 // Simulated raw API types (could be 'any' or defined loosely)
 // For now, we assume the API returns roughly the correct shape, 
@@ -317,456 +320,208 @@ export const mapProductPageData = (data: any): ProductTypes.ProductPageData => {
             image: item.image,
             label: item.label
         })) || [],
-        additionalContent: data.additionalContent || undefined
+        additionalContent: data.additionalContent || undefined,
+        pageBlocks: []
     };
 };
 
-const getActiveSorted = (items?: any[]): any[] => {
-    if (!Array.isArray(items)) return [];
-    return items
-        .filter((c) => c && c.isActive !== false)
-        .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+type BlockDataBuilder = (rows: ContentJson[]) => unknown;
+
+const nonEmpty = <T,>(list: T[]): T[] | undefined => (list.length > 0 ? list : undefined);
+
+const withMediaUrl = (url?: string) => (url ? formatMediaUrl(url) : undefined);
+
+/**
+ * Builds the component data for one block. Multi-item templates receive the
+ * block's items; single templates receive the block row itself.
+ * Returning undefined means the block has nothing to show.
+ */
+const BLOCK_DATA_BUILDERS: Record<string, BlockDataBuilder> = {
+    facts_cards: (rows) => nonEmpty(rows
+        .map((c) => c.toFactsCard())
+        .filter(Boolean)
+        .map((f) => ({ ...f, imageUrl: withMediaUrl(f.imageUrl), videoUrl: withMediaUrl(f.videoUrl) }))),
+
+    power_of_machine: ([row]) => {
+        const power = row?.toPowerOfMachine();
+        if (!power?.features?.length) return undefined;
+        return {
+            ...power,
+            image: withMediaUrl(power.image),
+            features: power.features.map((f) => ({ ...f, image: withMediaUrl(f.image) }))
+        };
+    },
+
+    heart_of_machinery: (rows) => {
+        const tabs: ProductTypes.MachineTab[] = [];
+        const content: Record<string, ProductTypes.MachineTabContent> = {};
+        rows.forEach((c) => {
+            const tab = c.toHeartOfMachineryTab();
+            if (!tab) return;
+            tabs.push({ id: tab.id, label: tab.label || tab.title });
+            content[tab.id] = {
+                id: tab.id,
+                title: tab.title,
+                description: tab.description,
+                details: tab.details || [],
+                image: tab.image
+            };
+        });
+        return tabs.length > 0 ? { tabs, content } : undefined;
+    },
+
+    reviews: (rows) => nonEmpty(rows.map((c) => c.toReviewItem()).filter(Boolean)),
+
+    made_with_wattsan: (rows) => {
+        const slides = rows
+            .map((c) => c.toMadeWithWattsanSlide())
+            .filter((s) => s && s.image)
+            .map((s) => ({ ...s, image: formatMediaUrl(s.image) }));
+        return slides.length > 0 ? { image: slides[0].image, slides } : undefined;
+    },
+
+    production_process: (rows) => nonEmpty(rows.map((c) => c.toProductionStep()).filter(Boolean)),
+
+    service_and_support: ([row]) => {
+        const service = row?.toServiceAndSupport();
+        if (!service?.cards?.length) return undefined;
+        return { image: withMediaUrl(service.image) || '', cards: service.cards };
+    },
+
+    package_list: (rows) => nonEmpty(rows
+        .map((c) => c.toPackageListItem())
+        .filter(Boolean)
+        .map((item) => ({ ...item, image: withMediaUrl(item.image) || '' }))),
+
+    additional_content: (rows) => nonEmpty(rows.map((c) => c.toAdditionalContentItem()).filter(Boolean)),
+
+    faq: (rows) => nonEmpty(rows.map((c) => c.toFAQItem()).filter(Boolean)),
+
+    machine_advisor: ([row]) => row?.toMachineAdvisor(),
+
+    product_blog: (rows) => nonEmpty(rows.map((c) => c.toProductBlogItem()).filter(Boolean)),
+
+    safety_cabin: ([row]) => {
+        const cabin = row?.toSafetyCabin();
+        return cabin ? { ...cabin, image: withMediaUrl(cabin.image) } : undefined;
+    },
+
+    rotary_device: ([row]) => {
+        const rotary = row?.toRotaryDevice();
+        return rotary ? { ...rotary, image: withMediaUrl(rotary.image) } : undefined;
+    },
+
+    separate_rotary_device: ([row]) => {
+        const rotary = row?.toSeparateRotaryDevice();
+        return rotary ? { ...rotary, image: withMediaUrl(rotary.image) } : undefined;
+    },
+
+    multi_spindles: ([row]) => {
+        const spindles = row?.toMultiSpindles();
+        return spindles ? { ...spindles, image: withMediaUrl(spindles.image) } : undefined;
+    },
+
+    automatic_tool_switch: ([row]) => {
+        const toolSwitch = row?.toToolSwitch();
+        if (!toolSwitch) return undefined;
+        return {
+            ...toolSwitch,
+            image: withMediaUrl(toolSwitch.image),
+            variants: (toolSwitch.variants || []).map((v) => ({ ...v, thumbnail: withMediaUrl(v.thumbnail) }))
+        };
+    },
+
+    liquid_cooling: ([row]) => row?.toLiquidCooling() || undefined,
+
+    aspiration_system: ([row]) => row?.toAspiration() || undefined,
+
+    table_types: (rows) => nonEmpty(rows.map((c) => c.toTableTypeItem()).filter(Boolean))
+};
+
+const buildMaterialsProcessing = (row?: ContentJson): ProductTypes.MaterialsProcessingData | undefined => {
+    const materials = row?.toMaterialsProcessing();
+    if (!materials || (materials.materials.length === 0 && materials.images.length === 0)) return undefined;
+    return {
+        title: [
+            { text: 'Plenty of materials', color: '#E31E24' },
+            { text: 'available for processing' }
+        ],
+        images: materials.images,
+        materials: materials.materials
+    };
+};
+
+// Info cards come from the info_cards setting; the Materials card is filled from the materials setting
+const buildInfoCards = (
+    row: ContentJson | undefined,
+    materialsProcessing?: ProductTypes.MaterialsProcessingData
+): ProductTypes.ProductInfoCardData[] => {
+    const cards = row?.toProductInfoCards();
+    if (!cards?.length) return [];
+
+    const infoCards = cards.filter((card) => card.id !== 'materials');
+    const materials = (materialsProcessing?.materials || []).map((mat) => ({
+        name: mat.name,
+        image: mat.icon || undefined
+    }));
+    if (materials.length > 0) {
+        const materialsCard = { id: 'materials', title: 'Materials', materials };
+        const economyIdx = infoCards.findIndex((card) => card.id === 'economy');
+        infoCards.splice(economyIdx >= 0 ? economyIdx + 1 : infoCards.length, 0, materialsCard);
+    }
+    return infoCards;
+};
+
+const buildProductInfo = (
+    base: ProductTypes.ProductPageData['productInfo'],
+    row?: ContentJson
+): ProductTypes.ProductPageData['productInfo'] => {
+    const meta = row?.contentMetasJson || {};
+    return {
+        ...base,
+        shipment: meta.shipment || '',
+        delivery: meta.delivery || '',
+        deliveryNote: meta.delivery_note || '',
+        warranty: meta.warranty || base?.warranty,
+        deliveryMethods: meta.delivery_methods
+            ? String(meta.delivery_methods).split(',').map((s) => s.trim()).filter(Boolean)
+            : []
+    };
 };
 
 /**
- * Merges dynamic CMS Content & ContentMeta rows into ProductPageData.
- * Falls back safely to default structured data for any section not configured in the CMS.
+ * Builds the CMS-driven parts of a series product page: the top-of-page
+ * settings and the ordered list of page blocks. Blocks without content are
+ * dropped; system blocks are kept and rendered from product data by the page.
  */
-export const mergeCmsDataIntoProductPageData = (
+export const buildSeriesPageData = (
     baseData: ProductTypes.ProductPageData,
-    cmsSectionsMap: Record<string, any[]>
+    content: SeriesPageContent
 ): ProductTypes.ProductPageData => {
-    const merged = { ...baseData };
+    const materialsProcessing = buildMaterialsProcessing(content.settings.materials_processing);
 
-    // Clear all placeholder sections so that only sections with real CMS ContentMeta
-    // are shown (per client directive: when content meta does not exist we shouldn't show anything instead)
-    merged.infoCards = [];
-    merged.factsCards = [];
-    merged.powerOfMachineData = undefined;
-    merged.machineFeatures = [];
-    merged.heartOfTheMachinery = undefined;
-    merged.materialsProcessing = undefined;
-    merged.materialsProcessingData = undefined;
-    merged.safetyCabinData = undefined;
-    merged.safetyCabinFeatures = [];
-    merged.rotaryDeviceData = undefined;
-    merged.rotaryDeviceSpecs = [];
-    merged.separateRotaryDeviceData = undefined;
-    merged.multiSpindlesData = undefined;
-    merged.multiSpindlesSpecs = [];
-    merged.toolSwitchData = undefined;
-    merged.toolSwitchVariants = [];
-    merged.liquidCoolingData = undefined;
-    merged.liquidCoolingTypes = [];
-    merged.aspirationData = undefined;
-    merged.tableTypes = undefined;
-    merged.madeWithWattsan = undefined;
-    merged.productionProcess = [];
-    merged.serviceAndSupport = { image: '', cards: [] };
-    merged.packageList = [];
-    merged.additionalContent = undefined;
-    merged.faqData = [];
-    merged.machineAdvisor = undefined;
-    merged.blogArticles = undefined;
-    merged.reviews = [];
-    merged.productInfo = {
-        ...merged.productInfo,
-        shipment: '',
-        delivery: '',
-        deliveryNote: '',
-        deliveryMethods: []
+    const pageBlocks: ProductTypes.ProductPageBlock[] = content.blocks
+        .map(({ block, items }) => {
+            const meta = block.contentMetasJson || {};
+            const isSystem = isSystemBlock(block.section);
+            return {
+                id: isSystem ? block.section : String(block.id),
+                section: block.section,
+                title: meta.block_title || undefined,
+                description: meta.block_description || undefined,
+                data: isSystem
+                    ? undefined
+                    : BLOCK_DATA_BUILDERS[block.section]?.(isMultiItemTemplate(block.section) ? items : [block])
+            };
+        })
+        .filter((block) => isSystemBlock(block.section) || block.data !== undefined);
+
+    return {
+        ...baseData,
+        infoCards: buildInfoCards(content.settings.info_cards, materialsProcessing),
+        materialsProcessing,
+        materialsProcessingData: materialsProcessing,
+        productInfo: buildProductInfo(baseData.productInfo, content.settings.product_info_extra),
+        pageBlocks
     };
-
-    if (!cmsSectionsMap || Object.keys(cmsSectionsMap).length === 0) {
-        return merged;
-    }
-
-    // Materials shown on the page are always sourced from the materials_processing section
-    const materialsRows = getActiveSorted(cmsSectionsMap.materials_processing);
-    const customMaterialsProcessing = materialsRows[0]?.toMaterialsProcessing?.() || null;
-
-    // 1. Info Cards
-    const infoCardsRows = getActiveSorted(cmsSectionsMap.info_cards);
-    if (infoCardsRows[0]) {
-        const customInfoCards = infoCardsRows[0].toProductInfoCards?.();
-        if (customInfoCards && customInfoCards.length > 0) {
-            const infoCards = customInfoCards.filter((card: any) => card.id !== 'materials');
-
-            const infoCardMaterials = (customMaterialsProcessing?.materials || []).map((mat: any) => ({
-                name: mat.name,
-                image: mat.icon || undefined
-            }));
-            if (infoCardMaterials.length > 0) {
-                const materialsCard = { id: 'materials', title: 'Materials', materials: infoCardMaterials };
-                const economyIdx = infoCards.findIndex((card: any) => card.id === 'economy');
-                if (economyIdx >= 0) {
-                    infoCards.splice(economyIdx + 1, 0, materialsCard);
-                } else {
-                    infoCards.push(materialsCard);
-                }
-            }
-
-            merged.infoCards = infoCards;
-        }
-    }
-
-    // 2. Facts Cards
-    const factsCardsRows = getActiveSorted(cmsSectionsMap.facts_cards);
-    if (factsCardsRows.length > 0) {
-        const customFacts = factsCardsRows
-            .map((c) => c.toFactsCard?.())
-            .filter(Boolean)
-            .map((f: any) => ({
-                ...f,
-                imageUrl: f.imageUrl ? formatMediaUrl(f.imageUrl) : undefined,
-                videoUrl: f.videoUrl ? formatMediaUrl(f.videoUrl) : undefined
-            }));
-        if (customFacts.length > 0) {
-            merged.factsCards = customFacts;
-        }
-    }
-
-    // 3. Power of Machine (Features)
-    const powerRows = getActiveSorted(cmsSectionsMap.power_of_machine);
-    if (powerRows[0]) {
-        const customPower = powerRows[0].toPowerOfMachine?.();
-        if (customPower) {
-            merged.powerOfMachineData = {
-                ...customPower,
-                image: customPower.image ? formatMediaUrl(customPower.image) : undefined,
-                features: (customPower.features || []).map((f: any) => ({
-                    ...f,
-                    image: f.image ? formatMediaUrl(f.image) : undefined
-                }))
-            };
-            if (merged.powerOfMachineData.features && merged.powerOfMachineData.features.length > 0) {
-                merged.machineFeatures = merged.powerOfMachineData.features;
-            }
-        }
-    }
-
-    // 4. Heart of Machinery (Multi-item tabs, with legacy single-item fallback)
-    const heartRows = getActiveSorted(cmsSectionsMap.heart_of_machinery);
-    if (heartRows.length > 0) {
-        const firstMeta = heartRows[0]?.contentMetasJson || {};
-        const hasNewTabFormat = heartRows.some((c) => {
-            const m = c?.contentMetasJson || {};
-            return Boolean(m.tab_label || m.title || m.details);
-        });
-
-        if (hasNewTabFormat) {
-            const tabs: ProductTypes.MachineTab[] = [];
-            const content: Record<string, ProductTypes.MachineTabContent> = {};
-            heartRows.forEach((c) => {
-                const tabItem = c.toHeartOfMachineryTab?.();
-                if (tabItem) {
-                    tabs.push({ id: tabItem.id, label: tabItem.label || tabItem.title });
-                    content[tabItem.id] = {
-                        id: tabItem.id,
-                        title: tabItem.title,
-                        description: tabItem.description,
-                        details: tabItem.details || [],
-                        image: tabItem.image
-                    };
-                }
-            });
-            if (tabs.length > 0) {
-                merged.heartOfTheMachinery = { tabs, content };
-            }
-        } else if (firstMeta.spindle_title || firstMeta.worktable_title || firstMeta.control_system_title) {
-            const customHeart = heartRows[0].toHeartOfTheMachinery?.();
-            if (customHeart) {
-                const currentContent = merged.heartOfTheMachinery?.content || {};
-                merged.heartOfTheMachinery = {
-                    tabs: [
-                        { id: 'spindle', label: 'Spindle' },
-                        { id: 'worktable', label: 'Worktable' },
-                        { id: 'controlSystem', label: 'Control system' }
-                    ],
-                    content: {
-                        spindle: {
-                            id: 'spindle',
-                            title: customHeart.spindleTitle || currentContent.spindle?.title || 'Powerful spindle with upgrade option',
-                            description: customHeart.spindleDescription || currentContent.spindle?.description || '',
-                            details: currentContent.spindle?.details || [
-                                { label: 'POWER', value: 'from 2,2 kW' },
-                                { label: 'Z AXIS TRAVEL', value: '300 mm' }
-                            ],
-                            image: customHeart.spindleImage || currentContent.spindle?.image || '/product-cards/cnc-router/spindles/spindles-4.png'
-                        },
-                        worktable: {
-                            id: 'worktable',
-                            title: customHeart.worktableTitle || currentContent.worktable?.title || 'Reliable Worktable',
-                            description: customHeart.worktableDescription || currentContent.worktable?.description || '',
-                            details: currentContent.worktable?.details || [
-                                { label: 'TYPE', value: 'Vacuum + T-slots' },
-                                { label: 'ZONES', value: '4-6 zones' }
-                            ],
-                            image: customHeart.worktableImage || currentContent.worktable?.image || '/product-cards/cnc-router/image 11651.png'
-                        },
-                        controlSystem: {
-                            id: 'controlSystem',
-                            title: customHeart.controlSystemTitle || currentContent.controlSystem?.title || 'Advanced Control System',
-                            description: customHeart.controlSystemDescription || currentContent.controlSystem?.description || '',
-                            details: currentContent.controlSystem?.details || [
-                                { label: 'SYSTEM', value: 'DSP A11' },
-                                { label: 'COMPATIBILITY', value: 'Win/Mac/Linux' }
-                            ],
-                            image: customHeart.controlSystemImage || currentContent.controlSystem?.image || '/product-cards/cnc-router/image 11650.png'
-                        }
-                    }
-                };
-            }
-        }
-    }
-
-    // 5. Materials Processing (Plenty of Materials)
-    if (customMaterialsProcessing && ((customMaterialsProcessing.materials && customMaterialsProcessing.materials.length > 0) || (customMaterialsProcessing.images && customMaterialsProcessing.images.length > 0))) {
-        const nextMp: ProductTypes.MaterialsProcessingData = {
-            title: [
-                { text: 'Plenty of materials', color: '#E31E24' },
-                { text: 'available for processing' }
-            ],
-            images: customMaterialsProcessing.images,
-            materials: customMaterialsProcessing.materials
-        };
-        merged.materialsProcessing = nextMp;
-        merged.materialsProcessingData = nextMp;
-    }
-
-    // 6. Safety Cabin
-    const safetyCabinRows = getActiveSorted(cmsSectionsMap.safety_cabin);
-    if (safetyCabinRows[0]) {
-        const customCabin = safetyCabinRows[0].toSafetyCabin?.();
-        if (customCabin) {
-            merged.safetyCabinData = {
-                ...customCabin,
-                image: customCabin.image ? formatMediaUrl(customCabin.image) : undefined
-            };
-            if (customCabin.features && customCabin.features.length > 0) {
-                merged.safetyCabinFeatures = customCabin.features;
-            }
-        }
-    }
-
-    // 7. Rotary Device
-    const rotaryRows = getActiveSorted(cmsSectionsMap.rotary_device);
-    if (rotaryRows[0]) {
-        const customRotary = rotaryRows[0].toRotaryDevice?.();
-        if (customRotary) {
-            merged.rotaryDeviceData = {
-                ...customRotary,
-                image: customRotary.image ? formatMediaUrl(customRotary.image) : undefined
-            };
-            if (customRotary.specs && customRotary.specs.length > 0) {
-                merged.rotaryDeviceSpecs = customRotary.specs;
-            }
-        }
-    }
-
-    // 8. Separate Rotary Device
-    const separateRotaryRows = getActiveSorted(cmsSectionsMap.separate_rotary_device);
-    if (separateRotaryRows[0]) {
-        const customSeparateRotary = separateRotaryRows[0].toSeparateRotaryDevice?.();
-        if (customSeparateRotary) {
-            merged.separateRotaryDeviceData = {
-                ...customSeparateRotary,
-                image: customSeparateRotary.image ? formatMediaUrl(customSeparateRotary.image) : undefined
-            };
-        }
-    }
-
-    // 9. Multi Spindles
-    const multiSpindlesRows = getActiveSorted(cmsSectionsMap.multi_spindles);
-    if (multiSpindlesRows[0]) {
-        const customSpindles = multiSpindlesRows[0].toMultiSpindles?.();
-        if (customSpindles) {
-            merged.multiSpindlesData = {
-                ...customSpindles,
-                image: customSpindles.image ? formatMediaUrl(customSpindles.image) : undefined
-            };
-            if (customSpindles.specs && customSpindles.specs.length > 0) {
-                merged.multiSpindlesSpecs = customSpindles.specs;
-            }
-        }
-    }
-
-    // 10. Tool Switch
-    const toolSwitchRows = getActiveSorted(cmsSectionsMap.automatic_tool_switch);
-    if (toolSwitchRows[0]) {
-        const customToolSwitch = toolSwitchRows[0].toToolSwitch?.();
-        if (customToolSwitch) {
-            merged.toolSwitchData = {
-                ...customToolSwitch,
-                image: customToolSwitch.image ? formatMediaUrl(customToolSwitch.image) : undefined,
-                variants: (customToolSwitch.variants || []).map((v: any) => ({
-                    ...v,
-                    thumbnail: v.thumbnail ? formatMediaUrl(v.thumbnail) : undefined
-                }))
-            };
-            if (customToolSwitch.variants && customToolSwitch.variants.length > 0) {
-                merged.toolSwitchVariants = merged.toolSwitchData.variants || [];
-            }
-        }
-    }
-
-    // 11. Liquid Cooling
-    const liquidCoolingRows = getActiveSorted(cmsSectionsMap.liquid_cooling);
-    if (liquidCoolingRows[0]) {
-        const customCooling = liquidCoolingRows[0].toLiquidCooling?.();
-        if (customCooling) {
-            merged.liquidCoolingData = customCooling;
-            if (customCooling.types && customCooling.types.length > 0) {
-                merged.liquidCoolingTypes = customCooling.types;
-            }
-        }
-    }
-
-    // 12. Aspiration System
-    const aspirationRows = getActiveSorted(cmsSectionsMap.aspiration_system);
-    if (aspirationRows[0]) {
-        const customAspiration = aspirationRows[0].toAspiration?.();
-        if (customAspiration) {
-            merged.aspirationData = customAspiration;
-        }
-    }
-
-    // 13. Table Types
-    const tableTypesRows = getActiveSorted(cmsSectionsMap.table_types);
-    if (tableTypesRows.length > 0) {
-        const customTableTypes = tableTypesRows
-            .map((c) => c.toTableTypeItem?.())
-            .filter(Boolean);
-        if (customTableTypes.length > 0) {
-            merged.tableTypes = customTableTypes as any;
-        }
-    }
-
-    // 14. Made with Wattsan
-    const madeWithWattsanRows = getActiveSorted(cmsSectionsMap.made_with_wattsan);
-    if (madeWithWattsanRows.length > 0) {
-        const customSlides = madeWithWattsanRows
-            .map((c) => c.toMadeWithWattsanSlide?.())
-            .filter((s) => s && s.image)
-            .map((s) => ({
-                ...s,
-                image: formatMediaUrl(s.image)
-            }));
-        if (customSlides.length > 0) {
-            merged.madeWithWattsan = {
-                image: customSlides[0].image,
-                slides: customSlides
-            };
-        }
-    }
-
-    // 15. Production Process
-    const productionProcessRows = getActiveSorted(cmsSectionsMap.production_process);
-    if (productionProcessRows.length > 0) {
-        const customProcess = productionProcessRows
-            .map((c) => c.toProductionStep?.())
-            .filter(Boolean);
-        if (customProcess.length > 0) {
-            merged.productionProcess = customProcess;
-        }
-    }
-
-    // 16. Service and Support
-    const serviceRows = getActiveSorted(cmsSectionsMap.service_and_support);
-    if (serviceRows[0]) {
-        const customService = serviceRows[0].toServiceAndSupport?.();
-        if (customService) {
-            merged.serviceAndSupport = {
-                image: customService.image ? formatMediaUrl(customService.image) : '',
-                cards: customService.cards && customService.cards.length > 0
-                    ? (customService.cards as any)
-                    : []
-            };
-        }
-    }
-
-    // 17. Package List
-    const packageListRows = getActiveSorted(cmsSectionsMap.package_list);
-    if (packageListRows.length > 0) {
-        const customPackageList = packageListRows
-            .map((c) => c.toPackageListItem?.())
-            .filter(Boolean)
-            .map((item) => ({
-                ...item,
-                image: item.image ? formatMediaUrl(item.image) : ''
-            }));
-        if (customPackageList.length > 0) {
-            merged.packageList = customPackageList;
-        }
-    }
-
-    // 18. Additional Content
-    const additionalContentRows = getActiveSorted(cmsSectionsMap.additional_content);
-    if (additionalContentRows.length > 0) {
-        const customAdditional = additionalContentRows
-            .map((c) => c.toAdditionalContentItem?.())
-            .filter(Boolean);
-        if (customAdditional.length > 0) {
-            merged.additionalContent = customAdditional;
-        }
-    }
-
-    // 19. FAQ
-    const faqRows = getActiveSorted(cmsSectionsMap.faq);
-    if (faqRows.length > 0) {
-        const customFaq = faqRows
-            .map((c) => c.toFAQItem?.())
-            .filter(Boolean);
-        if (customFaq.length > 0) {
-            merged.faqData = customFaq;
-        }
-    }
-
-    // Machine Advisor
-    const machineAdvisorRows = getActiveSorted(cmsSectionsMap.machine_advisor);
-    if (machineAdvisorRows[0]) {
-        merged.machineAdvisor = machineAdvisorRows[0].toMachineAdvisor?.();
-    }
-
-    // Product Blog
-    const blogRows = getActiveSorted(cmsSectionsMap.product_blog || cmsSectionsMap.blog);
-    if (blogRows.length > 0) {
-        const customBlogArticles = blogRows
-            .map((c) => c.toProductBlogItem?.())
-            .filter(Boolean);
-        if (customBlogArticles.length > 0) {
-            merged.blogArticles = customBlogArticles as any;
-        }
-    }
-
-    // 20. Reviews
-    const reviewRows = getActiveSorted(cmsSectionsMap.reviews);
-    if (reviewRows.length > 0) {
-        const customReviews = reviewRows
-            .map((c) => c.toReviewItem?.())
-            .filter(Boolean);
-        if (customReviews.length > 0) {
-            merged.reviews = customReviews as any;
-        }
-    }
-
-    // 21. Product Info Extra (notes, shipment, delivery, warranty)
-    const productInfoExtraRows = getActiveSorted(cmsSectionsMap.product_info_extra || cmsSectionsMap.delivery_pricing_notes);
-    if (productInfoExtraRows[0]) {
-        const meta = productInfoExtraRows[0].contentMetasJson || {};
-        merged.productInfo = {
-            ...merged.productInfo,
-            shipment: meta.shipment || merged.productInfo?.shipment,
-            delivery: meta.delivery || merged.productInfo?.delivery,
-            deliveryNote: meta.delivery_note || merged.productInfo?.deliveryNote,
-            warranty: meta.warranty || merged.productInfo?.warranty,
-            deliveryMethods: meta.delivery_methods
-                ? String(meta.delivery_methods).split(',').map((s) => s.trim()).filter(Boolean)
-                : merged.productInfo?.deliveryMethods
-        };
-    }
-
-    return merged;
 };
-
-

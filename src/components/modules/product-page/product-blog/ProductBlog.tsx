@@ -1,8 +1,9 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import Image from 'next/image'
 import Button from '@components/ui/button/Button'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './ProductBlog.module.scss'
 
 export interface BlogCardData {
@@ -19,6 +20,8 @@ export interface BlogCardData {
 
 interface ProductBlogProps {
     className?: string
+    /** Overrides the default heading; supports *highlighted* words */
+    title?: ReactNode
     articles?: BlogCardData[]
 }
 
@@ -115,7 +118,7 @@ const BlogCard: FC<{ article: BlogCardData }> = ({ article }) => {
     )
 }
 
-const ProductBlog: FC<ProductBlogProps> = ({ className, articles: initialArticles }) => {
+const ProductBlog: FC<ProductBlogProps> = ({ className, title, articles: initialArticles }) => {
     const defaultArticles: BlogCardData[] = [
         {
             id: '1',
@@ -149,7 +152,11 @@ const ProductBlog: FC<ProductBlogProps> = ({ className, articles: initialArticle
     return (
         <section className={`${styles.section} ${className || ''}`}>
             <h2 className={styles.title}>
-                <span className={styles.titleHighlight}>Blog</span> about technology and manufacturing
+                {renderHighlightedTitle(title, styles.titleHighlight) || (
+                    <>
+                        <span className={styles.titleHighlight}>Blog</span> about technology and manufacturing
+                    </>
+                )}
             </h2>
             <div className={styles.grid}>
                 {articles.map((article) => (
