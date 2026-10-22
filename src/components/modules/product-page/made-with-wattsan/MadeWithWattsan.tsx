@@ -11,8 +11,12 @@ import styles from './MadeWithWattsan.module.scss'
 interface MadeWithWattsanProps {
     image?: string
     slides?: MadeWithWattsanSlide[]
+    /** Heading of the contact form; *asterisks* are removed since the form has no highlight style */
+    title?: string
     className?: string
 }
+
+const DEFAULT_TITLE = 'Demonstration of our machines in more than 50 countries worldwide or Online'
 
 const DEFAULT_SLIDES: MadeWithWattsanSlide[] = [
     {
@@ -23,7 +27,7 @@ const DEFAULT_SLIDES: MadeWithWattsanSlide[] = [
     }
 ]
 
-const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className }) => {
+const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, title, className }) => {
     const [activeIndex, setActiveIndex] = useState(0)
 
     const effectiveSlides: MadeWithWattsanSlide[] =
@@ -95,7 +99,7 @@ const MadeWithWattsan: FC<MadeWithWattsanProps> = ({ image, slides, className })
 
     return (
         <ContactSection
-            title="Demonstration of our machines in more than 50 countries worldwide or Online"
+            title={title ? title.replace(/\*/g, '') : DEFAULT_TITLE}
             leftContent={renderLeftContent()}
             className={className}
         />

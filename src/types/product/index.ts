@@ -455,6 +455,21 @@ export interface ProductPageData {
     }[]
     machineAdvisor?: MachineAdvisorData
     blogArticles?: BlogCardData[]
+    /** CMS blocks shown below the product overview, in page order */
+    pageBlocks: ProductPageBlock[]
+}
+
+// One block of a series page, built from a block template or a system block
+export interface ProductPageBlock {
+    /** Content row id, or the section key for system blocks */
+    id: string
+    /** Template or system block key, e.g. `faq` or `system_specifications` */
+    section: string
+    /** Optional heading overrides (`block_title` / `block_description` on the block) */
+    title?: string
+    description?: string
+    /** Component data built for the template; undefined for system blocks */
+    data?: any
 }
 
 export interface BlogCardData {

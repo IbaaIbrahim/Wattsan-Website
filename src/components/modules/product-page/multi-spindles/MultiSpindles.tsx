@@ -6,6 +6,7 @@ import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
 
 import styles from './MultiSpindles.module.scss'
+import { hasHighlightMarkers, renderHighlightedTitle } from '@/utils/highlight-title'
 
 export interface MultiSpindlesSpec {
     title: string
@@ -51,6 +52,7 @@ const renderTitle = (titleNode?: ReactNode) => {
         return DEFAULT_TITLE
     }
 
+    if (hasHighlightMarkers(titleNode)) return renderHighlightedTitle(titleNode, styles.redHighlight)
     if (typeof titleNode !== 'string') {
         return titleNode
     }

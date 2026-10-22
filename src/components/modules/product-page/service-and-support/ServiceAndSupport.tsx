@@ -1,8 +1,9 @@
 'use client'
 
-import { FC, useRef } from 'react'
+import { FC, ReactNode, useRef } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 import styles from './ServiceAndSupport.module.scss'
 import arrowIcon from '@public/img/icons/arrow-left.svg'
 import warrantyIcon from '@public/img/icons/service-and-support/warranty.svg'
@@ -65,11 +66,13 @@ const getCardIcon = (card: SupportCard) => {
 
 interface ServiceAndSupportProps {
     className?: string
+    /** Overrides the default heading; supports *highlighted* words */
+    title?: ReactNode
     image?: string
     cards?: SupportCard[]
 }
 
-const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className, image, cards }) => {
+const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className, title, image, cards }) => {
     const trackRef = useRef<HTMLDivElement>(null)
     const displayCards = cards && cards.length > 0 ? cards : DEFAULT_CARDS
     const displayImage = image || DEFAULT_IMAGE
@@ -97,7 +100,11 @@ const ServiceAndSupport: FC<ServiceAndSupportProps> = ({ className, image, cards
             <div className={styles.header}>
                 <div className={styles.headerRow}>
                     <h2 className={styles.title}>
-                        We provide the best <span className={styles.redText}>service and support</span>
+                        {renderHighlightedTitle(title, styles.redText) || (
+                            <>
+                                We provide the best <span className={styles.redText}>service and support</span>
+                            </>
+                        )}
                     </h2>
 
                     {/* Navigation Arrows */}

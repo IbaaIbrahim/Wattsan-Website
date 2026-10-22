@@ -1,383 +1,70 @@
-export interface MetaKeyDefinition {
+// Series page content model. The dashboard (views/dynamic-content-list/types.js
+// and views/page-builder) holds the field definitions; this file mirrors the
+// section keys the website needs to load and render a series page.
+//
+// A series page is built from Content rows with referenceType `series_page` and
+// referenceId = series id. The row's `section` is one of:
+//   - a page setting (one per series, feeds the top of the product page)
+//   - a block template (can be added many times, ordered by displayOrder)
+//   - a system block (generated from product data, can only be moved or hidden)
+// Templates with `multiple: true` keep their items as child Content rows with
+// referenceType `series_page_block` and referenceId = the block's id.
+
+export const SERIES_PAGE_REFERENCE_TYPE = 'series_page'
+export const BLOCK_ITEM_REFERENCE_TYPE = 'series_page_block'
+
+export const SERIES_PAGE_SETTINGS = ['info_cards', 'product_info_extra', 'materials_processing'] as const
+export type SeriesPageSetting = (typeof SERIES_PAGE_SETTINGS)[number]
+
+// Old section names still found in stored data
+export const LEGACY_SETTING_ALIASES: Record<string, SeriesPageSetting> = {
+  delivery_pricing_notes: 'product_info_extra'
+}
+
+export interface BlockTemplateDefinition {
   name: string
-  type: string
-  notTranslatable?: boolean
-  columns?: { key: string; label: string }[]
-  schema?: Record<string, MetaKeyDefinition>
-  allowed_types?: string[]
-  col?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number }
-  xs?: number
-  sm?: number
-  md?: number
-  lg?: number
-  xl?: number
-  className?: string
-  hint?: string
+  multiple: boolean
 }
 
-export interface SectionDefinition {
-  name: string
-  value: string
-  maxContentItems?: number
-  keys: Record<string, MetaKeyDefinition>
+// Named after their layout, as shown in the dashboard's block picker
+export const BLOCK_TEMPLATES: Record<string, BlockTemplateDefinition> = {
+  facts_cards: { name: 'Card Carousel', multiple: true },
+  power_of_machine: { name: 'Image with Feature Rows', multiple: false },
+  heart_of_machinery: { name: 'Tabbed Panels', multiple: true },
+  reviews: { name: 'Testimonial Slider', multiple: true },
+  made_with_wattsan: { name: 'Gallery with Contact Form', multiple: true },
+  production_process: { name: 'Numbered Steps', multiple: true },
+  service_and_support: { name: 'Image with Card Slider', multiple: false },
+  package_list: { name: 'Image Tiles', multiple: true },
+  additional_content: { name: 'Resource Links', multiple: true },
+  faq: { name: 'Accordion', multiple: true },
+  machine_advisor: { name: 'Video with Contact Form', multiple: false },
+  product_blog: { name: 'Article Cards', multiple: true },
+  safety_cabin: { name: 'Feature Rows with Side Image', multiple: false },
+  rotary_device: { name: 'Spec Rows with Side Image', multiple: false },
+  separate_rotary_device: { name: 'Bullet List with Side Image', multiple: false },
+  multi_spindles: { name: 'Banner with Spec Columns', multiple: false },
+  automatic_tool_switch: { name: 'Image Intro with Video Cards', multiple: false },
+  liquid_cooling: { name: 'Intro with Video Columns', multiple: false },
+  aspiration_system: { name: 'Text with Video', multiple: false },
+  table_types: { name: 'Media Columns', multiple: true }
 }
 
-export interface ReferenceTypeDefinition {
-  name: string
-  value: string
-  sections: Record<string, SectionDefinition>
-}
+// In default page order: a series that never placed a system block gets it appended in this order
+export const SYSTEM_BLOCKS = [
+  'system_materials',
+  'system_specifications',
+  'system_series_comparison',
+  'system_reviews_questions',
+  'system_related_products'
+] as const
+export type SystemBlock = (typeof SYSTEM_BLOCKS)[number]
 
-export const SeriesPageType: ReferenceTypeDefinition = {
-  name: 'Series Page',
-  value: 'series_page',
-  sections: {
-    info_cards: {
-      name: 'Info Cards & Highlights',
-      value: 'info_cards',
-      maxContentItems: 1,
-      keys: {
-        ideal_for: { name: 'Ideal for', type: 'text' },
-        economy: { name: 'Economy', type: 'text' },
-        materials: {
-          name: 'Materials',
-          type: 'table',
-          columns: [
-            { key: 'name', label: 'Material Name' },
-            { key: 'color', label: 'Color Hex (#RRGGBB)' }
-          ]
-        },
-        expert_reviews: { name: 'Expert reviews count', type: 'number' }
-      }
-    },
-    facts_cards: {
-      name: 'Wattsan Facts Slider Cards',
-      value: 'facts_cards',
-      maxContentItems: undefined,
-      keys: {
-        subtitle: { name: 'Subtitle', type: 'text' },
-        title: { name: 'Title', type: 'text' },
-        type: { name: 'Type (image / solid)', type: 'text' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        bg_color: { name: 'Background color hex', type: 'text', notTranslatable: true },
-        certifications: { name: 'Certifications', type: 'text' }
-      }
-    },
-    power_of_machine: {
-      name: 'Power of Machine (Description)',
-      value: 'power_of_machine',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle / Highlight', type: 'text' },
-        image: { name: 'Section image', type: 'image', notTranslatable: true },
-        features: {
-          name: 'Machine Features',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Feature Title' },
-            { key: 'description', label: 'Description' }
-          ]
-        }
-      }
-    },
-    heart_of_machinery: {
-      name: 'Heart of the Machinery',
-      value: 'heart_of_machinery',
-      maxContentItems: 1,
-      keys: {
-        spindle_title: { name: 'Spindle Title', type: 'text' },
-        spindle_description: { name: 'Spindle Description', type: 'richtext' },
-        spindle_image: { name: 'Spindle Diagram', type: 'image', notTranslatable: true },
-        worktable_title: { name: 'Worktable Title', type: 'text' },
-        worktable_description: { name: 'Worktable Description', type: 'richtext' },
-        worktable_image: { name: 'Worktable Diagram', type: 'image', notTranslatable: true },
-        control_system_title: { name: 'Control System Title', type: 'text' },
-        control_system_description: { name: 'Control System Description', type: 'richtext' },
-        control_system_image: { name: 'Control System Diagram', type: 'image', notTranslatable: true }
-      }
-    },
-    safety_cabin: {
-      name: 'Safety Cabin',
-      value: 'safety_cabin',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        image: { name: 'Cabin image', type: 'image', notTranslatable: true },
-        features: {
-          name: 'Cabin Features',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Title' },
-            { key: 'description', label: 'Description' }
-          ]
-        }
-      }
-    },
-    rotary_device: {
-      name: 'RD Rotary Device',
-      value: 'rotary_device',
-      maxContentItems: 1,
-      keys: {
-        subtitle: { name: 'Subtitle', type: 'text' },
-        title: { name: 'Title', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        specs: {
-          name: 'Specifications',
-          type: 'table',
-          columns: [
-            { key: 'label', label: 'Spec Label' },
-            { key: 'value', label: 'Spec Value' }
-          ]
-        }
-      }
-    },
-    separate_rotary_device: {
-      name: 'Separate Rotary Device',
-      value: 'separate_rotary_device',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        features_title: { name: 'Features Title', type: 'text' },
-        features: {
-          name: 'Features',
-          type: 'table',
-          columns: [{ key: 'text', label: 'Feature Text' }]
-        }
-      }
-    },
-    multi_spindles: {
-      name: 'Multi Spindles',
-      value: 'multi_spindles',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle', type: 'text' },
-        description1: { name: 'Description 1', type: 'richtext' },
-        description2: { name: 'Description 2', type: 'richtext' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        specs: {
-          name: 'Spindle Specs',
-          type: 'table',
-          columns: [
-            { key: 'label', label: 'Spec Label' },
-            { key: 'value', label: 'Spec Value' }
-          ]
-        }
-      }
-    },
-    automatic_tool_switch: {
-      name: 'Automatic Tool Switch',
-      value: 'automatic_tool_switch',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        sub_heading: { name: 'Sub-heading', type: 'text' },
-        sub_description: { name: 'Sub-description', type: 'text' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        variants: {
-          name: 'Variants',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Variant Title' },
-            { key: 'description', label: 'Description' },
-            { key: 'footerLabel', label: 'Footer / Warning Label' }
-          ]
-        }
-      }
-    },
-    liquid_cooling: {
-      name: 'Liquid Cooling System',
-      value: 'liquid_cooling',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        types: {
-          name: 'Cooling Types',
-          type: 'table',
-          columns: [
-            { key: 'title', label: 'Type Title' },
-            { key: 'description', label: 'Description' }
-          ]
-        }
-      }
-    },
-    aspiration_system: {
-      name: 'Aspiration System',
-      value: 'aspiration_system',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        subtitle: { name: 'Subtitle', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        videoUrl: { name: 'Video URL', type: 'video' }
-      }
-    },
-    table_types: {
-      name: 'Table Types',
-      value: 'table_types',
-      maxContentItems: undefined,
-      keys: {
-        attachment: {
-          name: 'Media Attachment (Image / Video)',
-          type: 'attachments',
-          allowed_types: ['image', 'video'],
-          notTranslatable: true,
-          col: { xs: 12, md: 12 }
-        },
-        title: { name: 'Title', type: 'text', col: { xs: 12, md: 12 } },
-        content: { name: 'Content (Rich Text)', type: 'richtext', col: { xs: 12, md: 12 } }
-      }
-    },
-    production_process: {
-      name: 'Production Process',
-      value: 'production_process',
-      maxContentItems: undefined,
-      keys: {
-        step_number: { name: 'Step number', type: 'number' },
-        title: { name: 'Title', type: 'text' },
-        description: { name: 'Description', type: 'richtext' },
-        image: { name: 'Step image', type: 'image', notTranslatable: true }
-      }
-    },
-    service_and_support: {
-      name: 'Service and Support',
-      value: 'service_and_support',
-      maxContentItems: 1,
-      keys: {
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        cards: {
-          name: 'Support Cards',
-          type: 'repeatable',
-          schema: {
-            logo: { name: 'Logo / Icon', type: 'image', notTranslatable: true },
-            title: { name: 'Title', type: 'text' },
-            content: { name: 'Content', type: 'richtext' }
-          }
-        }
-      }
-    },
-    package_list: {
-      name: 'Package List (Included Items)',
-      value: 'package_list',
-      maxContentItems: undefined,
-      keys: {
-        label: { name: 'Label', type: 'text' },
-        image: { name: 'Image', type: 'image', notTranslatable: true }
-      }
-    },
-    faq: {
-      name: 'Product FAQ',
-      value: 'faq',
-      maxContentItems: undefined,
-      keys: {
-        question: { name: 'Question', type: 'text' },
-        answer: { name: 'Answer', type: 'richtext' }
-      }
-    },
-    machine_advisor: {
-      name: 'Machine Advisor',
-      value: 'machine_advisor',
-      maxContentItems: 1,
-      keys: {
-        title: { name: 'Title', type: 'text' },
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        videoUrl: { name: 'Video URL', type: 'text', notTranslatable: true }
-      }
-    },
-    product_blog: {
-      name: 'Product Blog & Videos',
-      value: 'product_blog',
-      maxContentItems: undefined,
-      keys: {
-        categories: {
-          name: 'Categories',
-          type: 'text',
-          hint: 'Comma-separated categories (e.g. Event, Software, Education)'
-        },
-        title: {
-          name: 'Title',
-          type: 'text'
-        },
-        video_url: {
-          name: 'Video URL',
-          type: 'attachment',
-          allowed_types: ['video', 'image'],
-          notTranslatable: true
-        },
-        link: {
-          name: 'View Details Link',
-          type: 'text',
-          notTranslatable: true
-        },
-        content: {
-          name: 'Content (Rich Text)',
-          type: 'richtext'
-        }
-      }
-    },
-    reviews: {
-      name: 'Product Reviews',
-      value: 'reviews',
-      maxContentItems: undefined,
-      keys: {
-        image: { name: 'Review Photo', type: 'image', notTranslatable: true },
-        content: { name: 'Review Text', type: 'richtext' },
-        reviewed_by_image: { name: 'Reviewer Avatar', type: 'image', notTranslatable: true },
-        reviewed_by_name: { name: 'Reviewer Name', type: 'text' },
-        reviewed_by_type: { name: 'Reviewer Role / Title', type: 'text' }
-      }
-    },
-    product_info_extra: {
-      name: 'Product Delivery & Pricing Notes',
-      value: 'product_info_extra',
-      maxContentItems: 1,
-      keys: {
-        shipment: { name: 'Shipment Time', type: 'text' },
-        delivery: { name: 'Delivery Time', type: 'text' },
-        delivery_methods: { name: 'Delivery Methods', type: 'text' },
-        delivery_note: { name: 'Delivery Note', type: 'textarea' },
-        warranty: { name: 'Warranty Details', type: 'text' }
-      }
-    }
-  }
-}
+export const isSystemBlock = (section: string): section is SystemBlock =>
+  (SYSTEM_BLOCKS as readonly string[]).includes(section)
 
-export const ProductPageType: ReferenceTypeDefinition = {
-  ...SeriesPageType,
-  name: 'Product Page',
-  value: 'product_page'
-}
+export const isMultiItemTemplate = (section: string): boolean => Boolean(BLOCK_TEMPLATES[section]?.multiple)
 
-export const HomeType: ReferenceTypeDefinition = {
-  name: 'Home Page',
-  value: 'home',
-  sections: {
-    hero_slider: {
-      name: 'Hero Slider',
-      value: 'hero_slider',
-      maxContentItems: undefined,
-      keys: {
-        image: { name: 'Image', type: 'image', notTranslatable: true },
-        link: { name: 'Link URL', type: 'text', notTranslatable: true }
-      }
-    }
-  }
-}
-
-export const ReferenceTypes = {
-  series_page: SeriesPageType,
-  product_page: ProductPageType,
-  home: HomeType
-}
-
-export default ReferenceTypes
-
+// Home page sections, still edited section by section
+export const HOME_REFERENCE_TYPE = 'home'
+export const HOME_SECTIONS = ['hero_slider'] as const

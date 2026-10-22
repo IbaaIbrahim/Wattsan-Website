@@ -6,6 +6,7 @@ import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
 
 import styles from './SafetyCabin.module.scss'
+import { hasHighlightMarkers, renderHighlightedTitle } from '@/utils/highlight-title'
 
 export interface SafetyCabinFeature {
     title: string
@@ -28,6 +29,7 @@ const renderTitle = (titleNode?: ReactNode) => {
             </>
         )
     }
+    if (hasHighlightMarkers(titleNode)) return renderHighlightedTitle(titleNode, styles.redHighlight)
     if (typeof titleNode !== 'string') return titleNode
     if (titleNode.includes('<span')) {
         return <span dangerouslySetInnerHTML={{ __html: titleNode }} />

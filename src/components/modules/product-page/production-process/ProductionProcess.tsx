@@ -1,14 +1,17 @@
 'use client'
 
-import { FC, useRef, useState, useEffect, useCallback } from 'react'
+import { FC, ReactNode, useRef, useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import styles from './ProductionProcess.module.scss'
 import arrowIcon from '@public/img/icons/arrow-left.svg'
 import { ProductionProcessStep } from '@my-types/product'
+import { renderHighlightedTitle } from '@/utils/highlight-title'
 
 interface ProductionProcessProps {
     className?: string
+    /** Overrides the default heading; supports *highlighted* words */
+    title?: ReactNode
     steps: ProductionProcessStep[]
 }
 
@@ -17,7 +20,7 @@ const formatStepNumber = (step: ProductionProcessStep, index: number): string =>
     return String(raw).padStart(2, '0')
 }
 
-const ProductionProcess: FC<ProductionProcessProps> = ({ className, steps = [] }) => {
+const ProductionProcess: FC<ProductionProcessProps> = ({ className, title, steps = [] }) => {
     const trackRef = useRef<HTMLDivElement>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -106,7 +109,11 @@ const ProductionProcess: FC<ProductionProcessProps> = ({ className, steps = [] }
         <section className={clsx(styles.section, className)}>
             <div className={styles.header}>
                 <h2 className={styles.title}>
-                    <span className={styles.redText}>Production</span> process
+                    {renderHighlightedTitle(title, styles.redText) || (
+                        <>
+                            <span className={styles.redText}>Production</span> process
+                        </>
+                    )}
                 </h2>
 
                 {/* Navigation Arrows (Desktop / Tablet) */}

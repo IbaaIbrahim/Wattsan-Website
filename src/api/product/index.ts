@@ -3,7 +3,7 @@ import * as mappers from './mappers';
 import { MOCK_LASER_TUBE_CUTTERS_DATA } from './mock-laser-tube-cutters';
 import { request } from '../../utils/request';
 import { API_URL } from '@constants/api';
-import { loadProductPageDynamicContent } from '@/services/content.service';
+import { loadSeriesPageContent } from '@/services/content.service';
 
 
 // Raw Mock Data simulating API response
@@ -1653,11 +1653,11 @@ export const getProductPageData = async (seriesIdOrSlug: string | number, locale
     }
 
     try {
-        const cmsSections = await loadProductPageDynamicContent(seriesIdOrSlug, locale);
-        return mappers.mergeCmsDataIntoProductPageData(baseData, cmsSections || {});
+        const content = await loadSeriesPageContent(seriesIdOrSlug, locale);
+        return mappers.buildSeriesPageData(baseData, content);
     } catch (e) {
         console.error('Failed to load CMS content for series/product:', seriesIdOrSlug, e);
-        return mappers.mergeCmsDataIntoProductPageData(baseData, {});
+        return mappers.buildSeriesPageData(baseData, { settings: {}, blocks: [] });
     }
 };
 

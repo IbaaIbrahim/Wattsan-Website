@@ -356,5 +356,6 @@ export const MOCK_LASER_TUBE_CUTTERS_DATA: ProductPageData = {
 		{ id: '17', image: '/product-cards/cnc-router/image 11650.png', label: 'Laser head - 1 pc' },
 		{ id: '18', image: '/product-cards/cnc-router/image 11651.png', label: 'Chiller - 1 pc' },
 	],
+	pageBlocks: [],
 }
 

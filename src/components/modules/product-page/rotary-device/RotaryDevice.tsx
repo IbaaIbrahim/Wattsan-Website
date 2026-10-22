@@ -4,6 +4,7 @@ import { FC, ReactNode } from 'react'
 import Image from 'next/image'
 import { Typography } from '@components/ui/typography/Typography'
 import clsx from 'clsx'
+import { hasHighlightMarkers, renderHighlightedTitle } from '@/utils/highlight-title'
 
 import styles from './RotaryDevice.module.scss'
 
@@ -46,11 +47,11 @@ const renderHeading = (subtitle?: string, titleNode?: ReactNode) => {
         )
     }
 
-    if (typeof titleNode !== 'string') {
+    if (typeof titleNode !== 'string' || hasHighlightMarkers(titleNode)) {
         return (
             <>
                 {subtitle && <span className={styles.redHighlight}>{subtitle} </span>}
-                {titleNode}
+                {renderHighlightedTitle(titleNode, styles.redHighlight)}
             </>
         )
     }
