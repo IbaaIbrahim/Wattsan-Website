@@ -866,7 +866,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							description={baseMockData.separateRotaryDeviceData?.description}
 							featuresTitle={baseMockData.separateRotaryDeviceData?.featuresTitle || 'Key Features'}
 							features={baseMockData.separateRotaryDeviceData?.features || []}
-							image={baseMockData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/rd-r-1.png'}
+							image={baseMockData.separateRotaryDeviceData?.image || '/product-cards/cnc-router/rd-rotary/separate-rotary-device.svg'}
 						/>
 					</div>
 				)}
