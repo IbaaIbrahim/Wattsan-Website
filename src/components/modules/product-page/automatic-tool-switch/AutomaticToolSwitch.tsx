@@ -39,39 +39,7 @@ const DEFAULT_SUBDESCRIPTION =
     'The Wattsan M1 6090 features a 2.2 kW spindle as standard. The machine is designed with a safety margin to accommodate higher power.'
 const DEFAULT_IMAGE = '/product-cards/cnc-router/automatic-tool-switch/illustration.svg'
 
-const DEFAULT_VARIANTS: ToolSwitchVariant[] = [
-    {
-        id: '4-6-tools',
-        title: '4 and 6 tools',
-        description:
-            'These two options are available for any M3 model. This is the lowest amount of tools, though it may be enough, if your production process is strictly defined.',
-        footerLabel: 'All models supported',
-        isWarning: false
-    },
-    {
-        id: '8-tools',
-        title: '8 tools',
-        description:
-            "Eight tools is a medium number of instruments that is good for the majority of operations. It's a standard option for 1313 and 1325 Wattsan CNC machines.",
-        footerLabel: 'All models supported',
-        isWarning: false
-    },
-    {
-        id: '10-tools',
-        title: '10 tools',
-        description: 'This is a basic configuration for the M3 1616 Wattsan machine.',
-        footerLabel: 'Not available for smaller models.',
-        isWarning: true
-    },
-    {
-        id: '12-tools',
-        title: '12 tools',
-        description:
-            'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060.\nDue to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
-        footerLabel: 'Twelve tools cannot be installed on the 1313, 1325, and 1616 models.',
-        isWarning: true
-    }
-]
+const DEFAULT_VARIANTS: ToolSwitchVariant[] = []
 
 const renderTitle = (titleNode?: ReactNode) => {
     if (!titleNode) {
