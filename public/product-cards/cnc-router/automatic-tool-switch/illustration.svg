@@ -1,0 +1,21 @@
+<svg width="1063" height="500" viewBox="0 0 1063 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_604_6833)">
+<path d="M458.735 218.193H1948L1484.27 460.999H-5L458.735 218.193Z" fill="#FBFBFB" stroke="black"/>
+<path d="M251.535 374.998H997L894.465 428.998H149L251.535 374.998Z" fill="#FBFBFB" stroke="black"/>
+<ellipse cx="337.466" cy="405.263" rx="51.7613" ry="10.5635" fill="black" stroke="#FBFBFB"/>
+<ellipse cx="486.668" cy="405.263" rx="51.7613" ry="10.5635" fill="black" stroke="#FBFBFB"/>
+<ellipse cx="635.869" cy="405.263" rx="51.7613" ry="10.5635" fill="black" stroke="#FBFBFB"/>
+<ellipse cx="785.071" cy="405.263" rx="51.7613" ry="10.5635" fill="black" stroke="#FBFBFB"/>
+<rect x="482" y="361.998" width="6" height="43" fill="#FBFBFB" stroke="black"/>
+<rect x="623" y="361.998" width="22" height="43" fill="#FBFBFB" stroke="black"/>
+<path d="M783.5 363.998L795 406.998H772L783.5 363.998Z" fill="#FBFBFB" stroke="black"/>
+<path d="M487.875 -278.762H658.23V211.829L625.47 243.771H520.636L487.875 211.829V-278.762Z" fill="#FBFBFB" stroke="black"/>
+<rect x="559.949" y="243.77" width="27.8466" height="57.3312" fill="#FBFBFB" stroke="black"/>
+<rect x="571.415" y="301.104" width="4.9141" height="34.3987" fill="#FBFBFB" stroke="black"/>
+</g>
+<defs>
+<clipPath id="clip0_604_6833">
+<rect width="1063" height="500" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -278,7 +278,7 @@ export const MOCK_CNC_ROUTER_DATA = {
         {
             id: '12-tools',
             title: '12 tools',
-            description: 'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060. Due to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
+            description: 'This is the standard setup for large industrial Wattsan CNC machines such as 2030, 2040, and 2060.\nDue to the purposes, they must contain a large number of instruments to create complicated designs at rapid speeds.',
             thumbnail: '',
             footerLabel: 'Twelve tools cannot be installed on the 1313, 1325, and 1616 models.',
             isWarning: true
