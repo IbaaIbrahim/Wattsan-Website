@@ -20,19 +20,43 @@ interface SafetyCabinProps {
     className?: string
 }
 
+const renderTitle = (titleNode?: ReactNode) => {
+    if (!titleNode) {
+        return (
+            <>
+                <span className={styles.redHighlight}>Safety</span> cabin
+            </>
+        )
+    }
+    if (typeof titleNode !== 'string') return titleNode
+    if (titleNode.includes('<span')) {
+        return <span dangerouslySetInnerHTML={{ __html: titleNode }} />
+    }
+    const match = titleNode.match(/^(safety)(.*)$/i)
+    if (match) {
+        return (
+            <>
+                <span className={styles.redHighlight}>{match[1]}</span>
+                {match[2]}
+            </>
+        )
+    }
+    return titleNode
+}
+
 const SafetyCabin: FC<SafetyCabinProps> = ({
     title,
     description,
-    features,
+    features = [],
     image,
     className
 }) => {
     return (
-        <div className={clsx(styles.safetyCabin, className)}>
+        <section className={clsx(styles.safetyCabin, className)}>
             <div className={styles.content}>
                 <div className={styles.leftColumn}>
                     <Typography tag='h2' size='xxl' weight='bold' className={styles.title}>
-                        {title}
+                        {renderTitle(title)}
                     </Typography>
 
                     <div className={styles.description}>
@@ -43,35 +67,43 @@ const SafetyCabin: FC<SafetyCabinProps> = ({
                         )}
                     </div>
 
-                    <div className={styles.features}>
-                        {features.map((feature, index) => (
-                            <div key={index} className={styles.featureItem}>
-                                <div className={styles.featureTitle}>
-                                    <Typography tag='h4' size='m' weight='bold'>
+                    {features.length > 0 && (
+                        <div className={styles.features}>
+                            {features.map((feature, index) => (
+                                <div key={index} className={styles.featureItem}>
+                                    <Typography tag='h3' className={styles.featureTitle}>
                                         {feature.title}
                                     </Typography>
+                                    <div className={styles.featureDescription}>
+                                        {typeof feature.description === 'string' && feature.description.includes('<') ? (
+                                            <div dangerouslySetInnerHTML={{ __html: feature.description }} />
+                                        ) : (
+                                            <Typography tag='p' className={styles.featureDescriptionText}>
+                                                {feature.description}
+                                            </Typography>
+                                        )}
+                                    </div>
                                 </div>
-                                <Typography tag='p' size='s' weight='regular' className={styles.featureDescription}>
-                                    {feature.description}
-                                </Typography>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.rightColumn}>
                     <div className={styles.imageWrapper}>
-                        <Image
-                            src={image}
-                            alt="Safety Cabin"
-                            width={800}
-                            height={600}
-                            className={styles.image}
-                        />
+                        {image && (
+                            <Image
+                                src={image}
+                                alt="Safety Cabin"
+                                width={620}
+                                height={534}
+                                className={styles.image}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
