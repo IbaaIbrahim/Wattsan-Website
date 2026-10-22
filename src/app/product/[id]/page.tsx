@@ -879,7 +879,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							description1={baseMockData.multiSpindlesData?.description1}
 							description2={baseMockData.multiSpindlesData?.description2}
 							specs={baseMockData.multiSpindlesData?.specs || baseMockData.multiSpindlesSpecs}
-							image={baseMockData.multiSpindlesData?.image || '/product-cards/cnc-router/spindles/spindles-4.png'}
+							image={baseMockData.multiSpindlesData?.image || '/product-cards/cnc-router/spindles/spindles-4.svg'}
 						/>
 					</div>
 				)}
