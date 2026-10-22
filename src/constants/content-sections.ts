@@ -217,7 +217,8 @@ export const SeriesPageType: ReferenceTypeDefinition = {
       keys: {
         title: { name: 'Title', type: 'text' },
         subtitle: { name: 'Subtitle', type: 'text' },
-        description: { name: 'Description', type: 'richtext' }
+        description: { name: 'Description', type: 'richtext' },
+        videoUrl: { name: 'Video URL', type: 'video' }
       }
     },
     table_types: {
