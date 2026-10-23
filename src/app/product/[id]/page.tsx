@@ -52,7 +52,8 @@ import { formatMediaUrl } from '@/utils/helpers'
 import { authStore } from '@store/auth'
 import { modalsStore } from '@store/modals'
 import { MODALS } from '@components/ui/modal/Modal'
-import { createBasket } from '@store/basket/actions'
+import { basketStore } from '@store/basket'
+import { createBasket, getDeliveryMethods } from '@store/basket/actions'
 import { useFavoritesStore, TFavoriteItem } from '@store/favoritesStore'
 import { ProductPageData, ProductPageBlock, ProductParameter, ComparisonSeries } from '@my-types/product'
 
@@ -82,6 +83,16 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 	const [baseMockData, setBaseMockData] = useState<ProductPageData | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [isVideoOpen, setIsVideoOpen] = useState(false)
+
+	// Delivery methods: fetch all (no country filter) and group them by name
+	useEffect(() => {
+		getDeliveryMethods()
+	}, [])
+
+	const groupedDeliveryMethods = basketStore.use.groupedDeliveryMethodsSelector()
+	const deliveryMethodNames = groupedDeliveryMethods.length
+		? groupedDeliveryMethods.map(({ name }) => name)
+		: baseMockData?.productInfo.deliveryMethods ?? []
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -911,7 +922,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
 							shipment={baseMockData.productInfo.shipment || '2 days'}
 							delivery={baseMockData.productInfo.delivery || 'from 20 days'}
 							warranty={baseMockData.productInfo.warranty}
-							deliveryMethods={baseMockData.productInfo.deliveryMethods}
+							deliveryMethods={deliveryMethodNames}
 							activeDeliveryMethod="EXW"
 							onDeliveryMethodClick={(method) => console.log('Delivery method selected:', method)}
 							deliveryNote={baseMockData.productInfo.deliveryNote}

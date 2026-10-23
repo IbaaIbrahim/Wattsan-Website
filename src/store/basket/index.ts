@@ -185,6 +185,34 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 				?.find(
 					({ id }) => basketForm.get.valuesSelector()?.deliveryMethod === id
 				)?.name,
+		// All delivery methods grouped by name — no country filtering
+		groupedDeliveryMethodsSelector: () => {
+			const methods = get.deliveryMethods() ?? []
+			const grouped = new Map<
+				string,
+				{ name: string; details: string; order: number }
+			>()
+
+			methods.forEach(method => {
+				if (method?.isActive === false) return
+
+				const name = method?.name?.trim()
+				if (!name) return
+
+				const details = method?.details?.trim() || ''
+				const existing = grouped.get(name)
+
+				if (!existing) {
+					grouped.set(name, { name, details, order: method?.order ?? 0 })
+					return
+				}
+
+				existing.order = Math.min(existing.order, method?.order ?? 0)
+				if (!existing.details && details) existing.details = details
+			})
+
+			return [...grouped.values()].sort((a, b) => a.order - b.order)
+		},
 		allSelectedPositionsSelector: () =>
 			get.positions().every(({ selected }) => selected),
 		totalPriceSelector: () => {
