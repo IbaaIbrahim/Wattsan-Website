@@ -6,7 +6,8 @@
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 
 	@media (max-width: 768px) {
-		padding: 48px 16px 24px;
+		// Extra bottom space so content is not hidden under the fixed mobile navigation
+		padding: 48px 16px 96px;
 	}
 }
 

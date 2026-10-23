@@ -16,6 +16,12 @@
     @media (min-width: 768px) {
         display: none;
     }
+
+    // Keep the bar on one line on very narrow screens
+    @media (max-width: 430px) {
+        padding: 12px 10px;
+        gap: 8px;
+    }
 }
 
 .button {
@@ -32,6 +38,13 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    white-space: nowrap;
+
+    @media (max-width: 430px) {
+        min-width: 0;
+        font-size: 10px;
+        line-height: 13px;
+    }
 }
 
 .iconWrapper {
