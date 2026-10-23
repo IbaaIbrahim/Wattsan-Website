@@ -6,19 +6,30 @@ interface RatingStarsProps {
     rating: number
     max?: number
     size?: number
+    color?: string
+    emptyColor?: string
+    gap?: number
     className?: string
 }
 
-const RatingStars: FC<RatingStarsProps> = ({ rating, max = 5, size = 16, className }) => {
+const RatingStars: FC<RatingStarsProps> = ({
+    rating,
+    max = 5,
+    size = 16,
+    color = '#FFD700',
+    emptyColor = '#E0E0E0',
+    gap = 2,
+    className
+}) => {
     return (
-        <div className={clsx(styles.stars, className)}>
+        <div className={clsx(styles.stars, className)} style={{ gap }}>
             {[...Array(max)].map((_, i) => (
                 <svg
                     key={i}
                     width={size}
                     height={size}
                     viewBox='0 0 16 16'
-                    fill={i < Math.floor(rating) ? '#FFD700' : '#E0E0E0'}
+                    fill={i < Math.floor(rating) ? color : emptyColor}
                 >
                     <path d='M8 0L10.163 5.528L16 6.112L12 10.056L12.944 16L8 13.056L3.056 16L4 10.056L0 6.112L5.837 5.528L8 0Z' />
                 </svg>

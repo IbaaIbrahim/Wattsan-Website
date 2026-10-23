@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import Image from 'next/image'
 import RatingStars from '@components/ui/rating-stars/RatingStars'
-import { Typography } from '@components/ui/typography/Typography'
 import styles from './ProductReviewsAndQuestions.module.scss'
 
 export interface IReview {
@@ -23,66 +22,59 @@ interface ReviewCardProps {
 }
 
 const ReviewCard: FC<ReviewCardProps> = ({ review }) => {
+    const sections = [
+        { title: 'Advantages', text: review.advantages },
+        { title: 'Disadvantages', text: review.disadvantages },
+        { title: 'Opinion', text: review.opinion }
+    ].filter(section => section.text)
+
     return (
-        <div className={styles.reviewCard}>
+        <article className={styles.reviewCard}>
             <div className={styles.reviewHeader}>
                 <div className={styles.avatar}>
                     {review.author.avatar ? (
-                        <Image src={review.author.avatar} alt={review.author.name} width={40} height={40} />
+                        <Image src={review.author.avatar} alt={review.author.name} width={48} height={48} style={{ objectFit: 'cover' }} />
                     ) : (
-                        <div className={styles.avatarPlaceholder} />
+                        <div />
                     )}
                 </div>
                 <div className={styles.headerInfo}>
-                    <Typography tag='p' size='m' weight='semi-bold' className={styles.authorName}>
+                    <p className={styles.authorName}>
                         {review.author.name}
-                    </Typography>
+                    </p>
                     <div className={styles.ratingRow}>
-                        <RatingStars rating={review.rating} size={14} />
+                        <RatingStars rating={review.rating} size={16} color='#000000' gap={4} />
                         <span className={styles.date}>{review.date}</span>
                     </div>
                 </div>
             </div>
 
-            <div className={styles.reviewContent}>
-                <div className={styles.reviewSection}>
-                    <Typography tag='p' size='s' weight='semi-bold' className={styles.sectionTitle}>
-                        Advantages
-                    </Typography>
-                    <Typography tag='p' size='s' weight='regular' className={styles.sectionText}>
-                        {review.advantages}
-                    </Typography>
+            {sections.map(section => (
+                <div key={section.title} className={styles.reviewSection}>
+                    <p className={styles.sectionTitle}>
+                        {section.title}
+                    </p>
+                    <p className={styles.sectionText}>
+                        {section.text}
+                    </p>
                 </div>
+            ))}
 
-                <div className={styles.reviewSection}>
-                    <Typography tag='p' size='s' weight='semi-bold' className={styles.sectionTitle}>
-                        Disadvantages
-                    </Typography>
-                    <Typography tag='p' size='s' weight='regular' className={styles.sectionText}>
-                        {review.disadvantages}
-                    </Typography>
+            {review.images && review.images.length > 0 && (
+                <div className={styles.reviewImages}>
+                    {review.images.map((img, index) => (
+                        <div key={index} className={styles.imageThumb}>
+                            <Image src={img} alt={`Review image ${index + 1}`} width={100} height={100} style={{ objectFit: 'cover' }} />
+                        </div>
+                    ))}
+                    {review.images.length > 2 && (
+                        <div className={styles.moreThumb}>
+                            <span>+{review.images.length - 2}</span>
+                        </div>
+                    )}
                 </div>
-
-                <div className={styles.reviewSection}>
-                    <Typography tag='p' size='s' weight='semi-bold' className={styles.sectionTitle}>
-                        Opinion
-                    </Typography>
-                    <Typography tag='p' size='s' weight='regular' className={styles.sectionText}>
-                        {review.opinion}
-                    </Typography>
-                </div>
-
-                {review.images && review.images.length > 0 && (
-                    <div className={styles.reviewImages}>
-                        {review.images.map((img, index) => (
-                            <div key={index} className={styles.imageThumb}>
-                                <Image src={img} alt={`Review image ${index + 1}`} width={80} height={80} style={{ objectFit: 'cover' }} />
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
+            )}
+        </article>
     )
 }
 

@@ -1,9 +1,7 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
 import clsx from 'clsx'
-import { Typography } from '@components/ui/typography/Typography'
-import Checkbox, { Type } from '@components/ui/checkbox/Checkbox'
 import ReviewCard, { IReview } from './ReviewCard'
 import ReviewSidebar from './ReviewSidebar'
 import styles from './ProductReviewsAndQuestions.module.scss'
@@ -12,8 +10,33 @@ interface ProductReviewsAndQuestionsProps {
     className?: string
 }
 
+const SortArrowIcon = () => (
+    <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path
+            d='M8 3V13M8 13L3.5 8.5M8 13L12.5 8.5'
+            stroke='#000000'
+            strokeWidth='1.5'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+        />
+    </svg>
+)
+
+const CheckIcon = () => (
+    <svg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path
+            d='M2.5 7.5L5.5 10.5L11.5 3.5'
+            stroke='#FFFFFF'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+        />
+    </svg>
+)
+
 const ProductReviewsAndQuestions: FC<ProductReviewsAndQuestionsProps> = ({ className }) => {
     const [activeTab, setActiveTab] = useState<'reviews' | 'questions'>('reviews')
+    const [sortBy, setSortBy] = useState<'date' | 'evaluation'>('date')
     const [withPhoto, setWithPhoto] = useState(false)
     const [withVideo, setWithVideo] = useState(false)
 
@@ -61,62 +84,83 @@ const ProductReviewsAndQuestions: FC<ProductReviewsAndQuestionsProps> = ({ class
 
     return (
         <section className={clsx(styles.section, className)}>
-            <div className={styles.container}>
-                <Typography tag='h2' size='xl' weight='semi-bold' className={styles.sectionTitle}>
-                    <span className={styles.redText}>Reviews</span> and questions
-                </Typography>
+            <h2 className={styles.sectionTitle}>
+                <span className={styles.redText}>Reviews</span> and questions
+            </h2>
 
-                <div className={styles.tabs}>
-                    <button
-                        className={clsx(styles.tab, activeTab === 'reviews' && styles.active)}
-                        onClick={() => setActiveTab('reviews')}
-                    >
-                        Reviews <span className={styles.tabCount}>(10)</span>
-                    </button>
-                    <button
-                        className={clsx(styles.tab, activeTab === 'questions' && styles.active)}
-                        onClick={() => setActiveTab('questions')}
-                    >
-                        Questions <span className={styles.tabCount}>(21)</span>
+            <div className={styles.tabs}>
+                <button
+                    className={clsx(styles.tab, activeTab === 'reviews' && styles.active)}
+                    onClick={() => setActiveTab('reviews')}
+                >
+                    Reviews&nbsp;<span className={styles.tabCount}>(10)</span>
+                </button>
+                <button
+                    className={clsx(styles.tab, activeTab === 'questions' && styles.active)}
+                    onClick={() => setActiveTab('questions')}
+                >
+                    Questions&nbsp;<span className={styles.tabCount}>(21)</span>
+                </button>
+            </div>
+
+            <div className={styles.filtersBar}>
+                <span className={styles.filterLabel}>Sort by:</span>
+                <button
+                    className={clsx(styles.sortBtn, sortBy === 'date' && styles.active)}
+                    onClick={() => setSortBy('date')}
+                >
+                    Date
+                    {sortBy === 'date' && <SortArrowIcon />}
+                </button>
+                <button
+                    className={clsx(styles.sortBtn, sortBy === 'evaluation' && styles.active)}
+                    onClick={() => setSortBy('evaluation')}
+                >
+                    Evaluation
+                    {sortBy === 'evaluation' && <SortArrowIcon />}
+                </button>
+
+                <label className={styles.filterCheck}>
+                    <input
+                        className={styles.filterCheckInput}
+                        type='checkbox'
+                        checked={withPhoto}
+                        onChange={() => setWithPhoto(!withPhoto)}
+                    />
+                    <span className={styles.filterCheckBox}>
+                        <CheckIcon />
+                    </span>
+                    <span className={styles.filterCheckLabel}>With photo</span>
+                </label>
+
+                <label className={styles.filterCheck}>
+                    <input
+                        className={styles.filterCheckInput}
+                        type='checkbox'
+                        checked={withVideo}
+                        onChange={() => setWithVideo(!withVideo)}
+                    />
+                    <span className={styles.filterCheckBox}>
+                        <CheckIcon />
+                    </span>
+                    <span className={styles.filterCheckLabel}>With video</span>
+                </label>
+            </div>
+
+            <div className={styles.mainContent}>
+                <div className={styles.reviewsList}>
+                    {reviews.map((review, index) => (
+                        <Fragment key={review.id}>
+                            {index > 0 && <div className={styles.divider} />}
+                            <ReviewCard review={review} />
+                        </Fragment>
+                    ))}
+                    <button className={styles.viewMoreBtn}>
+                        View more reviews
                     </button>
                 </div>
 
-                <div className={styles.filtersBar}>
-                    <div className={styles.leftFilters}>
-                        <span className={styles.filterLabel}>Sort by:</span>
-                        <button className={clsx(styles.sortBtn, styles.active)}>
-                            Date ↓
-                        </button>
-                        <button className={styles.sortBtn}>
-                            Evaluation
-                        </button>
-                    </div>
-                    <div className={styles.rightFilters}>
-                        <Checkbox
-                            label='With photo'
-                            selected={withPhoto}
-                            type={Type.CATEGORY}
-                            onSelect={() => setWithPhoto(!withPhoto)}
-                        />
-                        <Checkbox
-                            label='With video'
-                            selected={withVideo}
-                            type={Type.CATEGORY}
-                            onSelect={() => setWithVideo(!withVideo)}
-                        />
-                    </div>
-                </div>
-
-                <div className={styles.mainContent}>
-                    <div className={styles.reviewsList}>
-                        {reviews.map((review) => (
-                            <ReviewCard key={review.id} review={review} />
-                        ))}
-                        <button className={styles.viewMoreBtn}>
-                            View more reviews
-                        </button>
-                    </div>
-
+                <div className={styles.sidebar}>
                     <ReviewSidebar
                         rating={5.0}
                         reviewCount={10}
