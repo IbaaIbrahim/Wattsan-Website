@@ -211,7 +211,7 @@ export const basketStore = createStore('basket')<TUseBasketStore>({
 				if (!existing.details && details) existing.details = details
 			})
 
-			return [...grouped.values()].sort((a, b) => a.order - b.order)
+			return Array.from(grouped.values()).sort((a, b) => a.order - b.order)
 		},
 		allSelectedPositionsSelector: () =>
 			get.positions().every(({ selected }) => selected),
